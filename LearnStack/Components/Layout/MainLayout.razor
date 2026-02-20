@@ -1,9 +1,99 @@
 ﻿@inherits LayoutComponentBase
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
 
-@Body
+@* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
+
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Elevation="1" Style="background-color: white; color: #1e293b;">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.MenuBook" Color="Color.Primary" />
+            <MudText Typo="Typo.h6" Style="font-weight: 600;">LearnStack</MudText>
+        </MudStack>
+        <MudSpacer />
+        <AuthorizeView>
+            <Authorized>
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                        <MudAvatar Color="Color.Primary" Size="Size.Small">
+                            @GetUserInitials(context.User.Identity?.Name)
+                        </MudAvatar>
+                        <MudStack Spacing="0">
+                            <MudText Typo="Typo.body2" Style="font-weight: 500;">@context.User.Identity?.Name</MudText>
+                            <MudText Typo="Typo.caption" Style="color: #64748b;">@GetUserEmail(context.User)</MudText>
+                        </MudStack>
+                    </MudStack>
+                    <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                        <MudMenuItem Href="Account/Manage">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                <MudIcon Icon="@Icons.Material.Filled.Settings" Size="Size.Small" />
+                                <MudText>Manage Account</MudText>
+                            </MudStack>
+                        </MudMenuItem>
+                        <MudDivider />
+                        <MudMenuItem Href="Account/Manage/ChangePassword">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" />
+                                <MudText>Change Password</MudText>
+                            </MudStack>
+                        </MudMenuItem>
+                        <MudDivider />
+                        <MudMenuItem>
+                            <form action="Account/Logout" method="post">
+                                <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; width: 100%; text-align: left;">
+                                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                        <MudIcon Icon="@Icons.Material.Filled.Logout" Size="Size.Small" Color="Color.Error" />
+                                        <MudText Color="Color.Error">Logout</MudText>
+                                    </MudStack>
+                                </button>
+                            </form>
+                        </MudMenuItem>
+                    </MudMenu>
+                </MudStack>
+            </Authorized>
+            <NotAuthorized>
+                <MudButton Href="Account/Login" Variant="Variant.Text" Color="Color.Primary" Style="text-transform: none;">
+                    Sign In
+                </MudButton>
+            </NotAuthorized>
+        </AuthorizeView>
+    </MudAppBar>
+    <MudMainContent Style="background-color: #f8fafc; min-height: 100vh; padding-top: 64px;">
+        @Body
+    </MudMainContent>
+</MudLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
     An unhandled error has occurred.
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private string GetUserInitials(string? name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return "U";
+        
+        var parts = name.Split('@')[0].Split('.');
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        
+        return name.Length >= 2 ? name.Substring(0, 2).ToUpper() : name.ToUpper();
+    }
+
+    private string GetUserEmail(System.Security.Claims.ClaimsPrincipal user)
+    {
+        return user.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value 
+               ?? user.Identity?.Name 
+               ?? "User";
+    }
+}

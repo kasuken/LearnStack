@@ -4,12 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using LearnStack.Components;
 using LearnStack.Components.Account;
 using LearnStack.Data;
+using LearnStack.Services;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddMudServices();
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -22,14 +26,15 @@ builder.Services.AddAuthentication(options =>
     })
     .AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+                       throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
     {
-        options.SignIn.RequireConfirmedAccount = true;
+        options.SignIn.RequireConfirmedAccount = false; // Set to true in production
         options.Stores.SchemaVersion = IdentitySchemaVersions.Version3;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -38,7 +43,34 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
+// Add application services
+builder.Services.AddScoped<ILearningResourceService, LearningResourceService>();
+builder.Services.AddScoped<IContentIdeaService, ContentIdeaService>();
+builder.Services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 var app = builder.Build();
+
+// Apply pending migrations automatically on startup
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    
+    try
+    {
+        // Apply any pending migrations
+        await dbContext.Database.MigrateAsync();
+        logger.LogInformation("Database migrations applied successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "An error occurred while migrating the database.");
+        throw;
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -51,6 +83,7 @@ else
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
 

@@ -1,1 +1,318 @@
-﻿
+﻿﻿@using LearnStack.Services
+@inject ILearningResourceService ResourceService
+@inject IOpenGraphService OpenGraphService
+@inject ISnackbar Snackbar
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form" @bind-IsValid="@isValid">
+            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.End">
+                <MudTextField @bind-Value="model.Url"
+                             Label="URL"
+                             Required="true"
+                             Variant="Variant.Outlined"
+                             Margin="Margin.Dense"
+                             HelperText="Enter the URL of the learning resource"
+                             Style="flex: 1;" />
+                <MudButton Variant="Variant.Filled"
+                          Color="Color.Secondary"
+                          OnClick="FetchMetadata"
+                          Disabled="@(string.IsNullOrWhiteSpace(model.Url) || isFetchingMetadata)"
+                          Style="margin-bottom: 4px;">
+                    @if (isFetchingMetadata)
+                    {
+                        <MudProgressCircular Size="Size.Small" Indeterminate="true" />
+                    }
+                    else
+                    {
+                        <MudIcon Icon="@Icons.Material.Filled.Download" />
+                    }
+                </MudButton>
+            </MudStack>
+
+            @if (!string.IsNullOrEmpty(model.ThumbnailPreview))
+            {
+                <MudPaper Class="pa-2 mb-2" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 8px;">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                        <MudImage Src="@model.ThumbnailPreview" Alt="Thumbnail" Height="60" ObjectFit="ObjectFit.Cover" Style="border-radius: 4px; width: 100px;" />
+                        <MudText Typo="Typo.caption" Color="Color.Success">Image will be saved</MudText>
+                        <MudSpacer />
+                        <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" OnClick="ClearThumbnail" />
+                    </MudStack>
+                </MudPaper>
+            }
+
+            <MudTextField @bind-Value="model.Title"
+                         Label="Title"
+                         Required="true"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Counter="500"
+                         MaxLength="500" />
+
+            <MudTextField @bind-Value="model.Description"
+                         Label="Description"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Lines="3"
+                         Counter="2000"
+                         MaxLength="2000" />
+
+            <MudSelect @bind-Value="model.ContentType"
+                      Label="Content Type"
+                      Required="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense">
+                <MudSelectItem Value="@ContentType.BlogPost">Blog Post</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Podcast">Podcast</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Video">Video</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Article">Article</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Course">Course</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Documentation">Documentation</MudSelectItem>
+            </MudSelect>
+
+            <MudSelect @bind-Value="model.Status"
+                      Label="Status"
+                      Required="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense">
+                <MudSelectItem Value="@ContentStatus.ToLearn">To Learn</MudSelectItem>
+                <MudSelectItem Value="@ContentStatus.InProgress">In Progress</MudSelectItem>
+                <MudSelectItem Value="@ContentStatus.Completed">Completed</MudSelectItem>
+            </MudSelect>
+
+            <MudSelect @bind-Value="model.Priority"
+                      Label="Priority"
+                      Required="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense">
+                <MudSelectItem Value="@Priority.Low">Low</MudSelectItem>
+                <MudSelectItem Value="@Priority.Medium">Medium</MudSelectItem>
+                <MudSelectItem Value="@Priority.High">High</MudSelectItem>
+            </MudSelect>
+
+            <MudTextField @bind-Value="model.Tags"
+                         Label="Tags"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         HelperText="Comma-separated tags"
+                         Counter="1000"
+                         MaxLength="1000" />
+
+            <MudTextField @bind-Value="model.Notes"
+                         Label="Notes"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Lines="5"
+                         HelperText="Add your notes, learnings, or thoughts" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" 
+                  Variant="Variant.Filled" 
+                  OnClick="Submit"
+                  Disabled="@(!isValid)">
+            @(IsEditMode ? "Update" : "Add")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public LearningResource? Resource { get; set; }
+
+    [Parameter]
+    public string UserId { get; set; } = string.Empty;
+
+    private MudForm form = null!;
+    private bool isValid;
+    private ResourceFormModel model = new();
+    private bool IsEditMode => Resource != null;
+    private bool isFetchingMetadata = false;
+
+    protected override void OnInitialized()
+    {
+        if (Resource != null)
+        {
+            model = new ResourceFormModel
+            {
+                Url = Resource.Url,
+                Title = Resource.Title,
+                Description = Resource.Description,
+                ContentType = Resource.ContentType,
+                Status = Resource.Status,
+                Priority = Resource.Priority,
+                Tags = Resource.Tags,
+                Notes = Resource.Notes,
+                ThumbnailImageData = Resource.ThumbnailImage
+            };
+            
+            // Create preview if image exists
+            if (Resource.ThumbnailImage != null)
+            {
+                model.ThumbnailPreview = $"data:image/png;base64,{Convert.ToBase64String(Resource.ThumbnailImage)}";
+            }
+        }
+        else
+        {
+            model = new ResourceFormModel
+            {
+                Status = ContentStatus.ToLearn,
+                Priority = Priority.Medium,
+                ContentType = ContentType.BlogPost
+            };
+        }
+    }
+
+    private async Task FetchMetadata()
+    {
+        if (string.IsNullOrWhiteSpace(model.Url))
+        {
+            Snackbar.Add("Please enter a URL first", Severity.Warning);
+            return;
+        }
+
+        isFetchingMetadata = true;
+        StateHasChanged();
+
+        try
+        {
+            var ogData = await OpenGraphService.FetchMetadataAsync(model.Url);
+            
+            if (ogData == null)
+            {
+                Snackbar.Add("Could not fetch metadata from URL", Severity.Warning);
+                return;
+            }
+
+            // Only fill empty fields to avoid overwriting user input
+            if (string.IsNullOrWhiteSpace(model.Title) && !string.IsNullOrWhiteSpace(ogData.Title))
+            {
+                model.Title = ogData.Title;
+            }
+
+            if (string.IsNullOrWhiteSpace(model.Description) && !string.IsNullOrWhiteSpace(ogData.Description))
+            {
+                model.Description = ogData.Description;
+            }
+
+            // Store image data if available
+            if (ogData.ImageData != null && ogData.ImageData.Length > 0)
+            {
+                model.ThumbnailImageData = ogData.ImageData;
+                model.ThumbnailPreview = $"data:image/png;base64,{Convert.ToBase64String((byte[])ogData.ImageData)}";
+            }
+
+            // Try to infer content type from og:type
+            if (!string.IsNullOrWhiteSpace(ogData.Type))
+            {
+                model.ContentType = ogData.Type.ToLower() switch
+                {
+                    "video" or "video.movie" or "video.episode" => ContentType.Video,
+                    "article" => ContentType.Article,
+                    "website" => ContentType.BlogPost,
+                    _ => model.ContentType
+                };
+            }
+
+            Snackbar.Add("Metadata fetched successfully!", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Error fetching metadata: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            isFetchingMetadata = false;
+            StateHasChanged();
+        }
+    }
+
+    private void ClearThumbnail()
+    {
+        model.ThumbnailImageData = null;
+        model.ThumbnailPreview = null;
+        StateHasChanged();
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task Submit()
+    {
+        await form.Validate();
+        
+        if (!isValid)
+            return;
+
+        if (IsEditMode && Resource != null)
+        {
+            Resource.Url = model.Url;
+            Resource.Title = model.Title;
+            Resource.Description = model.Description;
+            Resource.ContentType = model.ContentType;
+            Resource.Status = model.Status;
+            Resource.Priority = model.Priority;
+            Resource.Tags = model.Tags;
+            Resource.Notes = model.Notes;
+            Resource.ThumbnailImage = model.ThumbnailImageData;
+
+            if (model.Status == ContentStatus.Completed && Resource.DateCompleted == null)
+            {
+                Resource.DateCompleted = DateTime.UtcNow;
+            }
+            else if (model.Status != ContentStatus.Completed)
+            {
+                Resource.DateCompleted = null;
+            }
+
+            await ResourceService.UpdateAsync(Resource, UserId);
+        }
+        else
+        {
+            var newResource = new LearningResource
+            {
+                Url = model.Url,
+                Title = model.Title,
+                Description = model.Description,
+                ContentType = model.ContentType,
+                Status = model.Status,
+                Priority = model.Priority,
+                Tags = model.Tags,
+                Notes = model.Notes,
+                ThumbnailImage = model.ThumbnailImageData,
+                UserId = UserId,
+                DateAdded = DateTime.UtcNow,
+                DateCompleted = model.Status == ContentStatus.Completed ? DateTime.UtcNow : null
+            };
+
+            await ResourceService.CreateAsync(newResource);
+        }
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private class ResourceFormModel
+    {
+        public string Url { get; set; } = string.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public ContentType ContentType { get; set; }
+        public ContentStatus Status { get; set; }
+        public Priority Priority { get; set; }
+        public string? Tags { get; set; }
+        public string? Notes { get; set; }
+        public byte[]? ThumbnailImageData { get; set; }
+        public string? ThumbnailPreview { get; set; }
+    }
+}
+
+
+
+

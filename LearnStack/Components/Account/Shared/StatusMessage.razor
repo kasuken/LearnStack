@@ -9,11 +9,9 @@
 @code {
     private string? messageFromCookie;
 
-    [Parameter]
-    public string? Message { get; set; }
+    [Parameter] public string? Message { get; set; }
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
     private string? DisplayMessage => Message ?? messageFromCookie;
 
@@ -26,4 +24,5 @@
             HttpContext.Response.Cookies.Delete(IdentityRedirectManager.StatusCookieName);
         }
     }
+
 }

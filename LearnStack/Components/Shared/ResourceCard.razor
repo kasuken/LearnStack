@@ -1,1 +1,174 @@
-﻿
+﻿@using LearnStack.Services
+@inject ILearningResourceService ResourceService
+
+<MudCard Elevation="2" Class="d-flex flex-column" Style="height: 100%;">
+    @if (Resource.ThumbnailImage != null)
+    {
+        <MudCardMedia Image="@GetThumbnailDataUrl()" Height="180" />
+    }
+    else
+    {
+        <MudCardMedia Height="180" Style="background-color: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+            <MudIcon Icon="@Icons.Material.Filled.Image" Size="Size.Large" Style="font-size: 4rem; color: #bdbdbd;" />
+        </MudCardMedia>
+    }
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@Resource.Title</MudText>
+            <MudChip T="string" Size="Size.Small" Color="GetContentTypeColor()" Class="mt-1">
+                @Resource.ContentType.ToString()
+            </MudChip>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" 
+                          Size="Size.Small" 
+                          OnClick="OnEdit" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" 
+                          Size="Size.Small" 
+                          Color="Color.Error"
+                          OnClick="OnDelete" />
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent Class="flex-grow-1">
+        @if (!string.IsNullOrEmpty(Resource.Description))
+        {
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                @Resource.Description
+            </MudText>
+        }
+        
+        <MudDivider Class="my-2" />
+        
+        <MudStack Row="true" Spacing="1" Class="mb-2">
+            <MudChip T="string" Size="Size.Small" Color="GetStatusColor()">
+                @GetStatusText()
+            </MudChip>
+            <MudChip T="string" Size="Size.Small" Color="GetPriorityColor()">
+                @Resource.Priority.ToString()
+            </MudChip>
+        </MudStack>
+
+        @if (!string.IsNullOrEmpty(Resource.Tags))
+        {
+            <MudStack Row="true" Spacing="1" Class="flex-wrap">
+                @foreach (var tag in Resource.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined">@tag.Trim()</MudChip>
+                }
+            </MudStack>
+        }
+
+        @if (!string.IsNullOrEmpty(Resource.Notes))
+        {
+            <MudText Typo="Typo.body2" Class="mt-2">
+                <strong>Notes:</strong> @(Resource.Notes.Length > 100 ? Resource.Notes.Substring(0, 100) + "..." : Resource.Notes)
+            </MudText>
+        }
+    </MudCardContent>
+    <MudCardActions>
+        <MudButton Href="@Resource.Url" 
+                  Target="_blank" 
+                  StartIcon="@Icons.Material.Filled.OpenInNew"
+                  Size="Size.Small">
+            Open
+        </MudButton>
+        <MudSpacer />
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
+            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.ToLearn))">Mark as To Learn</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.InProgress))">Mark as In Progress</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.Completed))">Mark as Completed</MudMenuItem>
+        </MudMenu>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Parameter]
+    public LearningResource Resource { get; set; } = null!;
+
+    [Parameter]
+    public string UserId { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback OnStatusChange { get; set; }
+
+    private Color GetContentTypeColor()
+    {
+        return Resource.ContentType switch
+        {
+            ContentType.BlogPost => Color.Primary,
+            ContentType.Podcast => Color.Secondary,
+            ContentType.Video => Color.Error,
+            ContentType.Article => Color.Info,
+            ContentType.Course => Color.Warning,
+            ContentType.Documentation => Color.Success,
+            _ => Color.Default
+        };
+    }
+
+    private Color GetStatusColor()
+    {
+        return Resource.Status switch
+        {
+            ContentStatus.ToLearn => Color.Info,
+            ContentStatus.InProgress => Color.Warning,
+            ContentStatus.Completed => Color.Success,
+            _ => Color.Default
+        };
+    }
+
+    private Color GetPriorityColor()
+    {
+        return Resource.Priority switch
+        {
+            Priority.High => Color.Error,
+            Priority.Medium => Color.Warning,
+            Priority.Low => Color.Default,
+            _ => Color.Default
+        };
+    }
+
+    private string GetStatusText()
+    {
+        return Resource.Status switch
+        {
+            ContentStatus.ToLearn => "To Learn",
+            ContentStatus.InProgress => "In Progress",
+            ContentStatus.Completed => "Completed",
+            _ => "Unknown"
+        };
+    }
+
+    private string GetThumbnailDataUrl()
+    {
+        if (Resource.ThumbnailImage == null || Resource.ThumbnailImage.Length == 0)
+            return string.Empty;
+        
+        return $"data:image/png;base64,{Convert.ToBase64String(Resource.ThumbnailImage)}";
+    }
+
+    private async Task UpdateStatus(ContentStatus newStatus)
+    {
+        Resource.Status = newStatus;
+        if (newStatus == ContentStatus.Completed)
+        {
+            Resource.DateCompleted = DateTime.UtcNow;
+        }
+        else
+        {
+            Resource.DateCompleted = null;
+        }
+        
+        await ResourceService.UpdateAsync(Resource, UserId);
+        await OnStatusChange.InvokeAsync();
+    }
+}
+
+
+
+

@@ -26,7 +26,8 @@ internal sealed class IdentityRedirectManager(NavigationManager navigationManage
             uri = navigationManager.ToBaseRelativePath(uri);
         }
 
-        navigationManager.NavigateTo(uri);
+        // Use forceLoad to ensure proper navigation from SSR Account pages to Interactive pages
+        navigationManager.NavigateTo(uri, forceLoad: true);
     }
 
     public void RedirectTo(string uri, Dictionary<string, object?> queryParameters)
@@ -50,5 +51,6 @@ internal sealed class IdentityRedirectManager(NavigationManager navigationManage
         => RedirectToWithStatus(CurrentPath, message, context);
 
     public void RedirectToInvalidUser(UserManager<ApplicationUser> userManager, HttpContext context)
-        => RedirectToWithStatus("Account/InvalidUser", $"Error: Unable to load user with ID '{userManager.GetUserId(context.User)}'.", context);
+        => RedirectToWithStatus("Account/InvalidUser",
+            $"Error: Unable to load user with ID '{userManager.GetUserId(context.User)}'.", context);
 }

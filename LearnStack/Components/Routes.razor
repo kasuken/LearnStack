@@ -1,11 +1,25 @@
 ﻿@using LearnStack.Components.Account.Shared
-<Router AppAssembly="typeof(Program).Assembly" NotFoundPage="typeof(Pages.NotFound)">
+<Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
             <NotAuthorized>
-                <RedirectToLogin />
+                <RedirectToLogin/>
             </NotAuthorized>
         </AuthorizeRouteView>
-        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1"/>
     </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="typeof(Layout.MainLayout)">
+            <div class="d-flex flex-column align-center justify-center" style="min-height: 80vh;">
+                <MudIcon Icon="@Icons.Material.Filled.SearchOff" Size="Size.Large" Color="Color.Secondary" Style="font-size: 5rem;" />
+                <MudText Typo="Typo.h4" Class="mt-4">Page Not Found</MudText>
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-2">Sorry, the page you are looking for does not exist.</MudText>
+                <MudButton Href="/" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">
+                    Go to Home
+                </MudButton>
+            </div>
+        </LayoutView>
+    </NotFound>
 </Router>
+

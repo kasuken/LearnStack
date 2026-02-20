@@ -9,7 +9,7 @@
 @inject IdentityRedirectManager RedirectManager
 
 <EditForm Model="Input" OnValidSubmit="Rename" FormName="rename-passkey" method="post">
-    <DataAnnotationsValidator />
+    <DataAnnotationsValidator/>
     @if (passkey?.Name is { } name)
     {
         <h4>Enter a new name for your "@name" passkey</h4>
@@ -18,12 +18,12 @@
     {
         <h4>Enter a name for your passkey</h4>
     }
-    <hr />
-    <ValidationSummary class="text-danger" role="alert" />
+    <hr/>
+    <ValidationSummary class="text-danger" role="alert"/>
     <div class="form-floating mb-3">
-        <InputText @bind-Value="Input.Name" id="Input.Name" class="form-control" aria-required="true" placeholder="My passkey" />
+        <InputText @bind-Value="Input.Name" id="Input.Name" class="form-control" aria-required="true" placeholder="My passkey"/>
         <label for="Input.Name" class="form-label">Passkey name</label>
-        <ValidationMessage For="() => Input.Name" class="text-danger" />
+        <ValidationMessage For="() => Input.Name" class="text-danger"/>
     </div>
     <div>
         <button type="submit" class="w-100 btn btn-lg btn-primary">Continue</button>
@@ -34,14 +34,11 @@
     private ApplicationUser? user;
     private UserPasskeyInfo? passkey;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [Parameter]
-    public string? Id { get; set; }
+    [Parameter] public string? Id { get; set; }
 
-    [SupplyParameterFromForm]
-    private InputModel Input { get; set; } = default!;
+    [SupplyParameterFromForm] private InputModel Input { get; set; } = default!;
 
     protected override async Task OnInitializedAsync()
     {
@@ -92,4 +89,5 @@
         [StringLength(200, ErrorMessage = "Passkey names must be no longer than {1} characters.")]
         public string Name { get; set; } = "";
     }
+
 }

@@ -1,0 +1,244 @@
+@inherits LayoutComponentBase
+
+@* MudBlazor providers - required for static SSR *@
+<MudThemeProvider />
+
+<div class="marketing-layout">
+    @* Header/Navigation *@
+    <header class="marketing-header">
+        <nav class="marketing-nav">
+            <a href="/" class="marketing-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <span>LearnStack</span>
+            </a>
+            <div class="marketing-nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="Account/Login" class="btn-signin">Sign In</a>
+                <a href="Account/Register" class="btn-primary">Get Started Free</a>
+            </div>
+        </nav>
+    </header>
+
+    @* Main Content *@
+    <main>
+        @Body
+    </main>
+
+    @* Footer *@
+    <footer class="marketing-footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                    </svg>
+                    <span>LearnStack</span>
+                </div>
+                <p>Organize your AI learning journey. Track resources, take notes, and create content.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="#how-it-works">How It Works</a>
+                    <a href="Account/Register">Get Started</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Resources</h4>
+                    <a href="#">Documentation</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Support</a>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <a href="#">About</a>
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; @DateTime.Now.Year LearnStack. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
+
+<style>
+    :root {
+        --primary-color: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-light: #818cf8;
+        --text-primary: #1e293b;
+        --text-secondary: #64748b;
+        --background: #ffffff;
+        --background-alt: #f8fafc;
+        --border-color: #e2e8f0;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .marketing-layout {
+        font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        color: var(--text-primary);
+        line-height: 1.6;
+    }
+
+    /* Header */
+    .marketing-header {
+        position: sticky;
+        top: 0;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color);
+        z-index: 1000;
+    }
+
+    .marketing-nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .marketing-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        text-decoration: none;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .marketing-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .marketing-nav-links a {
+        text-decoration: none;
+        color: var(--text-secondary);
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+
+    .marketing-nav-links a:hover {
+        color: var(--primary-color);
+    }
+
+    .btn-signin {
+        color: var(--primary-color) !important;
+    }
+
+    .btn-primary {
+        background: var(--primary-color) !important;
+        color: white !important;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+        background: var(--primary-dark) !important;
+    }
+
+    /* Footer */
+    .marketing-footer {
+        background: var(--text-primary);
+        color: white;
+        padding: 4rem 2rem 2rem;
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 2fr 3fr;
+        gap: 4rem;
+    }
+
+    .footer-brand p {
+        color: var(--text-secondary);
+        margin-top: 1rem;
+        max-width: 300px;
+    }
+
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: white;
+    }
+
+    .footer-links {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .footer-column h4 {
+        font-size: 0.875rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+    }
+
+    .footer-column a {
+        display: block;
+        color: white;
+        text-decoration: none;
+        padding: 0.25rem 0;
+        opacity: 0.8;
+        transition: opacity 0.2s;
+    }
+
+    .footer-column a:hover {
+        opacity: 1;
+    }
+
+    .footer-bottom {
+        max-width: 1200px;
+        margin: 3rem auto 0;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+    }
+
+    @@media (max-width: 768px) {
+        .marketing-nav {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .marketing-nav-links {
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .footer-content {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .footer-links {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>

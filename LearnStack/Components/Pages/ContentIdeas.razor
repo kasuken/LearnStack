@@ -1,1 +1,587 @@
-﻿
+﻿@page "/content-ideas"
+@using LearnStack.Services
+@attribute [Authorize]
+@inject IContentIdeaService ContentIdeaService
+@inject ILearningResourceService ResourceService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Content Ideas - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
+    @* Back Button *@
+    <MudStack Row="true" Justify="Justify.FlexEnd" Class="mb-4">
+        <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => NavigationManager.NavigateTo("/resources"))" Style="text-transform: none;">
+            Back to Resources
+        </MudButton>
+    </MudStack>
+
+    @* Statistics Cards *@
+    <MudGrid Spacing="4" Class="mb-6">
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Info" Style="font-weight: 700;">@ideaCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">Ideas</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Warning" Style="font-weight: 700;">@inProgressCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">In Progress</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Success" Style="font-weight: 700;">@publishedCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">Published</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Primary" Style="font-weight: 700;">@totalCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">Total Ideas</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    @* Page Title *@
+    <MudText Typo="Typo.h5" Class="mb-4" Style="font-weight: 600;">
+        <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Class="mr-2" /> Content Ideas
+    </MudText>
+
+    @* Search and Filters Row *@
+    <MudPaper Class="pa-4 mb-4" Elevation="0" Style="background-color: #f8fafc; border-radius: 12px;">
+        <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
+            <MudItem xs="12" md="4">
+                <MudTextField @bind-Value="searchTerm"
+                             Placeholder="Search ideas..."
+                             Variant="Variant.Outlined"
+                             Adornment="Adornment.Start"
+                             AdornmentIcon="@Icons.Material.Filled.Search"
+                             Immediate="true"
+                             DebounceInterval="300"
+                             OnDebounceIntervalElapsed="ApplyFiltersWithReset"
+                             Style="background-color: white;" />
+            </MudItem>
+            <MudItem xs="12" md="8">
+                <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
+                    <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small">
+                        <MudIconButton Icon="@Icons.Material.Filled.GridView" 
+                                      Color="@(viewMode == ViewMode.Grid ? Color.Primary : Color.Default)"
+                                      OnClick="@(() => { viewMode = ViewMode.Grid; StateHasChanged(); })"
+                                      Title="Grid View" />
+                        <MudIconButton Icon="@Icons.Material.Filled.TableChart" 
+                                      Color="@(viewMode == ViewMode.DataGrid ? Color.Primary : Color.Default)"
+                                      OnClick="@(() => { viewMode = ViewMode.DataGrid; StateHasChanged(); })"
+                                      Title="Table View" />
+                    </MudButtonGroup>
+                    <MudSelect @bind-Value="filterStatus"
+                              @bind-Value:after="OnFilterChanged"
+                              Label="Status"
+                              Variant="Variant.Outlined"
+                              T="IdeaStatus?"
+                              Clearable="true"
+                              Style="width: 150px; background-color: white;">
+                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.Idea)">Idea</MudSelectItem>
+                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.InProgress)">In Progress</MudSelectItem>
+                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.Published)">Published</MudSelectItem>
+                    </MudSelect>
+                    <MudSelect @bind-Value="filterContentType"
+                              @bind-Value:after="OnFilterChanged"
+                              Label="Type"
+                              Variant="Variant.Outlined"
+                              T="ContentIdeaType?"
+                              Clearable="true"
+                              Style="width: 150px; background-color: white;">
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.BlogPost)">Blog Post</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Video)">Video</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.TweetThread)">Tweet Thread</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Tutorial)">Tutorial</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Other)">Other</MudSelectItem>
+                    </MudSelect>
+                    <MudSelect @bind-Value="filterPriority"
+                              @bind-Value:after="OnFilterChanged"
+                              Label="Priority"
+                              Variant="Variant.Outlined"
+                              T="Priority?"
+                              Clearable="true"
+                              Style="width: 130px; background-color: white;">
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.High)">High</MudSelectItem>
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Medium)">Medium</MudSelectItem>
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Low)">Low</MudSelectItem>
+                    </MudSelect>
+                    <MudButton Variant="Variant.Filled"
+                              Color="Color.Primary"
+                              StartIcon="@Icons.Material.Filled.Add"
+                              OnClick="OpenAddDialog"
+                              Style="text-transform: none; border-radius: 8px;">
+                        Add Idea
+                    </MudButton>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+    </MudPaper>
+
+    @* Ideas List *@
+    @if (isLoading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+    }
+    else if (!filteredIdeas.Any())
+    {
+        <MudPaper Class="pa-8 text-center" Elevation="0" Style="border: 2px dashed #e0e0e0; border-radius: 12px;">
+            <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Size="Size.Large" Color="Color.Secondary" Class="mb-4" />
+            <MudText Typo="Typo.h6" Color="Color.Secondary">No content ideas yet</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">Start planning your content creation journey</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddDialog">
+                Add Your First Idea
+            </MudButton>
+        </MudPaper>
+    }
+    else if (viewMode == ViewMode.Grid)
+    {
+        <MudDropContainer @key="@filterKey" T="ContentIdea" Items="pagedIdeas" ItemsSelector="@((item, dropzone) => true)" 
+                         ItemDropped="OnIdeaDropped">
+            <ChildContent>
+                <MudDropZone T="ContentIdea" Identifier="main-zone" AllowReorder="true">
+                    <MudGrid Spacing="3">
+                    </MudGrid>
+                </MudDropZone>
+            </ChildContent>
+            <ItemRenderer>
+                <div class="mud-grid-item mud-grid-item-xs-12 mud-grid-item-sm-6 mud-grid-item-md-4">
+                    <MudPaper Class="pa-4" Elevation="1" Style="border-radius: 12px; border: 1px solid #e8e8e8; height: 100%; cursor: move;">
+                        <MudStack Spacing="2" Style="height: 100%;">
+                            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Start">
+                                <MudChip T="string" Size="Size.Small" Color="@GetContentTypeColor(context.ContentType)" Variant="Variant.Filled">
+                                    @context.ContentType
+                                </MudChip>
+                                <MudStack Row="true" Spacing="0">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenEditDialog(context))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteIdea(context.Id))" />
+                                </MudStack>
+                            </MudStack>
+                            
+                            <MudText Typo="Typo.subtitle1" Style="font-weight: 600;">@context.Title</MudText>
+                            
+                            @if (!string.IsNullOrEmpty(context.Description))
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    @context.Description
+                                </MudText>
+                            }
+                            
+                            @if (context.SourceResources.Any())
+                            {
+                                <MudStack Spacing="1">
+                                    <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                        <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" /> @context.SourceResources.Count source(s)
+                                    </MudText>
+                                    @foreach (var sourceResource in context.SourceResources.Take(2))
+                                    {
+                                        if (sourceResource.LearningResource != null)
+                                        {
+                                            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Book" Style="max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
+                                                @sourceResource.LearningResource.Title
+                                            </MudChip>
+                                        }
+                                    }
+                                    @if (context.SourceResources.Count > 2)
+                                    {
+                                        <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                            +@(context.SourceResources.Count - 2) more...
+                                        </MudText>
+                                    }
+                                </MudStack>
+                            }
+                            
+                            <MudSpacer />
+                            
+                            <MudStack Row="true" Spacing="1">
+                                <MudChip T="string" Size="Size.Small" Color="@GetStatusColor(context.Status)" Variant="Variant.Outlined">
+                                    @context.Status
+                                </MudChip>
+                                <MudChip T="string" Size="Size.Small" Color="@GetPriorityColor(context.Priority)" Variant="Variant.Filled" Style="@GetPriorityStyle(context.Priority)">
+                                    @context.Priority
+                                </MudChip>
+                            </MudStack>
+                            
+                            <MudDivider />
+                            
+                            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    @GetRelativeDate(context.DateCreated)
+                                </MudText>
+                                <MudStack Row="true" Spacing="1">
+                                    @if (context.Status != IdeaStatus.InProgress)
+                                    {
+                                        <MudButton Size="Size.Small" Variant="Variant.Text" Color="Color.Warning" OnClick="@(() => UpdateStatus(context, IdeaStatus.InProgress))" Style="text-transform: none; font-size: 0.7rem;">
+                                            Start
+                                        </MudButton>
+                                    }
+                                    @if (context.Status != IdeaStatus.Published)
+                                    {
+                                        <MudButton Size="Size.Small" Variant="Variant.Text" Color="Color.Success" OnClick="@(() => UpdateStatus(context, IdeaStatus.Published))" Style="text-transform: none; font-size: 0.7rem;">
+                                            Publish
+                                        </MudButton>
+                                    }
+                                </MudStack>
+                            </MudStack>
+                        </MudStack>
+                    </MudPaper>
+                </div>
+            </ItemRenderer>
+        </MudDropContainer>
+        
+        @* Pagination *@
+        <MudPaper Class="pa-3 mt-4" Elevation="0">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) of @filteredIdeas.Count ideas
+                </MudText>
+                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3" />
+            </MudStack>
+        </MudPaper>
+    }
+    else if (viewMode == ViewMode.DataGrid)
+    {
+        <MudDataGrid T="ContentIdea" Items="@pagedIdeas" Striped="true" Dense="true" Hover="true" ReadOnly="false"
+                     Style="border-radius: 12px;">
+            <Columns>
+                <PropertyColumn Property="x => x.Title" Title="Title">
+                    <CellTemplate>
+                        <MudText Typo="Typo.body2" Style="font-weight: 600;">@context.Item.Title</MudText>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.ContentType" Title="Type">
+                    <CellTemplate>
+                        <MudChip T="string" Size="Size.Small" Color="@GetContentTypeColor(context.Item.ContentType)" Variant="Variant.Filled">
+                            @context.Item.ContentType
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.Status" Title="Status">
+                    <CellTemplate>
+                        <MudChip T="string" Size="Size.Small" Color="@GetStatusColor(context.Item.Status)">
+                            @context.Item.Status
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.Priority" Title="Priority">
+                    <CellTemplate>
+                        <MudChip T="string" Size="Size.Small" Color="@GetPriorityColor(context.Item.Priority)">
+                            @context.Item.Priority
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.DateCreated" Title="Date Created">
+                    <CellTemplate>
+                        <MudText Typo="Typo.body2">@GetRelativeDate(context.Item.DateCreated)</MudText>
+                    </CellTemplate>
+                </PropertyColumn>
+                <TemplateColumn Title="Sources" Sortable="false">
+                    <CellTemplate>
+                        <MudText Typo="Typo.body2">@context.Item.SourceResources.Count</MudText>
+                    </CellTemplate>
+                </TemplateColumn>
+                <TemplateColumn Title="Actions" Sortable="false">
+                    <CellTemplate>
+                        <MudStack Row="true" Spacing="1">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenEditDialog(context.Item))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteIdea(context.Item.Id))" />
+                            @if (context.Item.Status != IdeaStatus.Published)
+                            {
+                                <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" 
+                                              OnClick="@(() => UpdateStatus(context.Item, IdeaStatus.Published))" 
+                                              Title="Mark as Published" />
+                            }
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+        
+        @* Pagination *@
+        <MudPaper Class="pa-3 mt-4" Elevation="0">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) of @filteredIdeas.Count ideas
+                </MudText>
+                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3" />
+            </MudStack>
+        </MudPaper>
+    }
+</MudContainer>
+
+@code {
+    private enum ViewMode
+    {
+        Grid,
+        DataGrid
+    }
+
+    private List<ContentIdea> ideas = new();
+    private List<ContentIdea> filteredIdeas = new();
+    private List<ContentIdea> pagedIdeas = new();
+    private string searchTerm = string.Empty;
+    private IdeaStatus? filterStatus;
+    private ContentIdeaType? filterContentType;
+    private Priority? filterPriority;
+    private bool isLoading = true;
+    private string userId = string.Empty;
+    private ViewMode viewMode = ViewMode.Grid;
+    private int filterKey = 0;
+    
+    // Pagination
+    private int currentPage = 1;
+    private int pageSize = 50;
+    private int totalPages = 1;
+
+    // Statistics
+    private int ideaCount;
+    private int inProgressCount;
+    private int publishedCount;
+    private int totalCount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+        await LoadIdeas();
+        await LoadStatistics();
+    }
+
+    private async Task LoadIdeas()
+    {
+        if (string.IsNullOrEmpty(userId)) return;
+
+        isLoading = true;
+        ideas = await ContentIdeaService.GetAllAsync(userId);
+        ApplyFilters();
+        isLoading = false;
+    }
+
+    private async Task LoadStatistics()
+    {
+        if (string.IsNullOrEmpty(userId)) return;
+
+        ideaCount = ideas.Count(i => i.Status == IdeaStatus.Idea);
+        inProgressCount = ideas.Count(i => i.Status == IdeaStatus.InProgress);
+        publishedCount = ideas.Count(i => i.Status == IdeaStatus.Published);
+        totalCount = ideas.Count;
+    }
+
+    private void ApplyFilters(bool resetPage = false)
+    {
+        // Reset to page 1 if requested (typically when filters change)
+        if (resetPage)
+        {
+            currentPage = 1;
+        }
+
+        filteredIdeas = ideas;
+
+        if (filterStatus.HasValue)
+        {
+            filteredIdeas = filteredIdeas.Where(i => i.Status == filterStatus.Value).ToList();
+        }
+
+        if (filterContentType.HasValue)
+        {
+            filteredIdeas = filteredIdeas.Where(i => i.ContentType == filterContentType.Value).ToList();
+        }
+
+        if (filterPriority.HasValue)
+        {
+            filteredIdeas = filteredIdeas.Where(i => i.Priority == filterPriority.Value).ToList();
+        }
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var term = searchTerm.ToLower();
+            filteredIdeas = filteredIdeas.Where(i =>
+                i.Title.ToLower().Contains(term) ||
+                (i.Description?.ToLower().Contains(term) ?? false) ||
+                (i.Notes?.ToLower().Contains(term) ?? false) ||
+                i.SourceResources.Any(sr => sr.LearningResource != null && 
+                    sr.LearningResource.Title.ToLower().Contains(term))
+            ).ToList();
+        }
+
+        // Calculate pagination
+        totalPages = (int)Math.Ceiling(filteredIdeas.Count / (double)pageSize);
+        if (currentPage > totalPages && totalPages > 0)
+        {
+            currentPage = totalPages;
+        }
+        if (currentPage < 1)
+        {
+            currentPage = 1;
+        }
+        
+        // Apply pagination
+        pagedIdeas = filteredIdeas
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        filterKey++;
+        StateHasChanged();
+    }
+    
+    private void ApplyFiltersWithReset(string value)
+    {
+        ApplyFilters(true);
+    }
+    
+    private void OnFilterChanged()
+    {
+        ApplyFilters(true);
+    }
+    
+    private void OnPageChanged(int page)
+    {
+        currentPage = page;
+        pagedIdeas = filteredIdeas
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        StateHasChanged();
+    }
+
+    private async Task OnIdeaDropped(MudItemDropInfo<ContentIdea> dropItem)
+    {
+        if (dropItem.Item == null) return;
+
+        // Get the index in the paged list
+        var oldIndex = pagedIdeas.IndexOf(dropItem.Item);
+        if (oldIndex == -1) return;
+
+        // Calculate the global index offset for the current page
+        var pageOffset = (currentPage - 1) * pageSize;
+
+        // Remove from old position
+        pagedIdeas.RemoveAt(oldIndex);
+
+        // Insert at new position
+        var newIndex = dropItem.IndexInZone;
+        if (newIndex > pagedIdeas.Count)
+            newIndex = pagedIdeas.Count;
+            
+        pagedIdeas.Insert(newIndex, dropItem.Item);
+
+        // Update the order in the full filtered list
+        var globalOldIndex = oldIndex + pageOffset;
+        var globalNewIndex = newIndex + pageOffset;
+
+        filteredIdeas.RemoveAt(globalOldIndex);
+        filteredIdeas.Insert(globalNewIndex, dropItem.Item);
+
+        // Update the order in database
+        var orderedIds = filteredIdeas.Select(i => i.Id).ToList();
+        await ContentIdeaService.UpdateOrderAsync(userId, orderedIds);
+
+        // Refresh the display
+        StateHasChanged();
+    }
+
+    private async Task OpenAddDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(ContentIdeaForm.UserId), userId }
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<ContentIdeaForm>("Add Content Idea", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            await LoadIdeas();
+            await LoadStatistics();
+        }
+    }
+
+    private async Task OpenEditDialog(ContentIdea idea)
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(ContentIdeaForm.Idea), idea },
+            { nameof(ContentIdeaForm.UserId), userId }
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<ContentIdeaForm>("Edit Content Idea", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            await LoadIdeas();
+            await LoadStatistics();
+        }
+    }
+
+    private async Task DeleteIdea(int id)
+    {
+        await ContentIdeaService.DeleteAsync(id, userId);
+        await LoadIdeas();
+        await LoadStatistics();
+    }
+
+    private async Task UpdateStatus(ContentIdea idea, IdeaStatus newStatus)
+    {
+        idea.Status = newStatus;
+        idea.DatePublished = newStatus == IdeaStatus.Published ? DateTime.UtcNow : null;
+        await ContentIdeaService.UpdateAsync(idea, userId);
+        await LoadStatistics();
+        ApplyFilters();
+    }
+
+    private string GetRelativeDate(DateTime date)
+    {
+        var diff = DateTime.UtcNow - date;
+        if (diff.TotalDays < 1) return "Today";
+        if (diff.TotalDays < 2) return "Yesterday";
+        if (diff.TotalDays < 7) return $"{(int)diff.TotalDays} days ago";
+        if (diff.TotalDays < 30) return $"{(int)(diff.TotalDays / 7)} weeks ago";
+        if (diff.TotalDays < 365) return $"{(int)(diff.TotalDays / 30)} months ago";
+        return $"{(int)(diff.TotalDays / 365)} years ago";
+    }
+
+    private Color GetContentTypeColor(ContentIdeaType type) => type switch
+    {
+        ContentIdeaType.BlogPost => Color.Primary,
+        ContentIdeaType.Video => Color.Error,
+        ContentIdeaType.TweetThread => Color.Info,
+        ContentIdeaType.Tutorial => Color.Warning,
+        ContentIdeaType.Other => Color.Secondary,
+        _ => Color.Default
+    };
+
+    private Color GetStatusColor(IdeaStatus status) => status switch
+    {
+        IdeaStatus.Idea => Color.Info,
+        IdeaStatus.InProgress => Color.Warning,
+        IdeaStatus.Published => Color.Success,
+        _ => Color.Default
+    };
+
+    private Color GetPriorityColor(Priority priority) => priority switch
+    {
+        Priority.High => Color.Error,
+        Priority.Medium => Color.Warning,
+        Priority.Low => Color.Default,
+        _ => Color.Default
+    };
+
+    private string GetPriorityStyle(Priority priority) => priority switch
+    {
+        Priority.High => "background-color: #ffebee; color: #c62828;",
+        Priority.Medium => "background-color: #fff8e1; color: #f57f17;",
+        Priority.Low => "background-color: #f5f5f5; color: #757575;",
+        _ => ""
+    };
+}

@@ -1,1 +1,14 @@
-﻿
+﻿@inherits LayoutComponentBase
+
+@* Required MudBlazor providers for Account pages *@
+<MudThemeProvider />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudMainContent Style="background-color: #f8fafc; min-height: 100vh;">
+        @Body
+    </MudMainContent>
+</MudLayout>
+

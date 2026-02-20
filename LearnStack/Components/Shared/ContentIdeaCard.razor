@@ -1,1 +1,164 @@
-﻿
+﻿﻿@using LearnStack.Services
+@inject IContentIdeaService ContentIdeaService
+
+<MudCard Elevation="2" Class="d-flex flex-column" Style="height: 100%;">
+    <MudCardHeader>
+        <CardHeaderContent>
+            <MudText Typo="Typo.h6">@Idea.Title</MudText>
+            <MudChip T="string" Size="Size.Small" Color="GetContentTypeColor()" Class="mt-1">
+                @Idea.ContentType.ToString()
+            </MudChip>
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudIconButton Icon="@Icons.Material.Filled.Edit" 
+                          Size="Size.Small" 
+                          OnClick="OnEdit" />
+            <MudIconButton Icon="@Icons.Material.Filled.Delete" 
+                          Size="Size.Small" 
+                          Color="Color.Error"
+                          OnClick="OnDelete" />
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent Class="flex-grow-1">
+        @if (!string.IsNullOrEmpty(Idea.Description))
+        {
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+                @Idea.Description
+            </MudText>
+        }
+        
+        <MudDivider Class="my-2" />
+        
+        <MudStack Row="true" Spacing="1" Class="mb-2">
+            <MudChip T="string" Size="Size.Small" Color="GetStatusColor()">
+                @Idea.Status.ToString()
+            </MudChip>
+            <MudChip T="string" Size="Size.Small" Color="GetPriorityColor()">
+                @Idea.Priority.ToString()
+            </MudChip>
+        </MudStack>
+
+        @if (Idea.SourceResources.Any())
+        {
+            <MudText Typo="Typo.body2" Class="mt-2 mb-1">
+                <strong>Source Resources (@Idea.SourceResources.Count):</strong>
+            </MudText>
+            <MudStack Spacing="1">
+                @foreach (var sourceResource in Idea.SourceResources.Take(3))
+                {
+                    if (sourceResource.LearningResource != null)
+                    {
+                        <MudPaper Class="pa-2" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 4px;">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                                <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" Color="Color.Primary" />
+                                <MudText Typo="Typo.caption" Style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    @sourceResource.LearningResource.Title
+                                </MudText>
+                                <MudIconButton Icon="@Icons.Material.Filled.OpenInNew" 
+                                              Size="Size.Small" 
+                                              Href="@sourceResource.LearningResource.Url" 
+                                              Target="_blank" />
+                            </MudStack>
+                        </MudPaper>
+                    }
+                }
+                @if (Idea.SourceResources.Count > 3)
+                {
+                    <MudText Typo="Typo.caption" Color="Color.Secondary">
+                        +@(Idea.SourceResources.Count - 3) more...
+                    </MudText>
+                }
+            </MudStack>
+        }
+
+        @if (!string.IsNullOrEmpty(Idea.Outline))
+        {
+            <MudText Typo="Typo.body2" Class="mt-2">
+                <strong>Outline:</strong> @(Idea.Outline.Length > 100 ? Idea.Outline.Substring(0, 100) + "..." : Idea.Outline)
+            </MudText>
+        }
+    </MudCardContent>
+    <MudCardActions>
+        <MudText Typo="Typo.caption" Color="Color.Secondary">
+            Created: @Idea.DateCreated.ToShortDateString()
+        </MudText>
+        <MudSpacer />
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Idea))">Mark as Idea</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.InProgress))">Mark as In Progress</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Published))">Mark as Published</MudMenuItem>
+        </MudMenu>
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Parameter]
+    public ContentIdea Idea { get; set; } = null!;
+
+    [Parameter]
+    public string UserId { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback OnEdit { get; set; }
+
+    [Parameter]
+    public EventCallback OnDelete { get; set; }
+
+    [Parameter]
+    public EventCallback OnStatusChange { get; set; }
+
+    private Color GetContentTypeColor()
+    {
+        return Idea.ContentType switch
+        {
+            ContentIdeaType.BlogPost => Color.Primary,
+            ContentIdeaType.Video => Color.Error,
+            ContentIdeaType.TweetThread => Color.Info,
+            ContentIdeaType.Tutorial => Color.Warning,
+            ContentIdeaType.Other => Color.Secondary,
+            _ => Color.Default
+        };
+    }
+
+    private Color GetStatusColor()
+    {
+        return Idea.Status switch
+        {
+            IdeaStatus.Idea => Color.Info,
+            IdeaStatus.InProgress => Color.Warning,
+            IdeaStatus.Published => Color.Success,
+            _ => Color.Default
+        };
+    }
+
+    private Color GetPriorityColor()
+    {
+        return Idea.Priority switch
+        {
+            Priority.High => Color.Error,
+            Priority.Medium => Color.Warning,
+            Priority.Low => Color.Default,
+            _ => Color.Default
+        };
+    }
+
+    private async Task UpdateStatus(IdeaStatus newStatus)
+    {
+        Idea.Status = newStatus;
+        if (newStatus == IdeaStatus.Published)
+        {
+            Idea.DatePublished = DateTime.UtcNow;
+        }
+        else
+        {
+            Idea.DatePublished = null;
+        }
+        
+        await ContentIdeaService.UpdateAsync(Idea, UserId);
+        await OnStatusChange.InvokeAsync();
+    }
+}
+
+
+
+

@@ -1,0 +1,820 @@
+@page "/"
+@layout MarketingLayout
+@inject NavigationManager NavigationManager
+
+@* SEO Meta Tags - These will be used for unauthenticated visitors *@
+<PageTitle>LearnStack - Organize Your AI Learning Journey</PageTitle>
+
+<HeadContent>
+    @* Primary SEO Meta Tags *@
+    <meta name="description" content="LearnStack helps you organize and track your AI learning resources. Save blog posts, videos, podcasts, and courses. Take notes, prioritize content, and plan your learning journey." />
+    <meta name="keywords" content="AI learning, machine learning resources, learning management, content organization, educational tools, knowledge management, learning tracker" />
+    <meta name="author" content="LearnStack" />
+    <meta name="robots" content="index, follow" />
+    
+    @* Open Graph / Facebook *@
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://learnstack.app/" />
+    <meta property="og:title" content="LearnStack - Organize Your AI Learning Journey" />
+    <meta property="og:description" content="Track learning resources, take notes, and create content from your AI learning materials. Free to get started." />
+    <meta property="og:image" content="https://learnstack.app/images/og-image.png" />
+    <meta property="og:site_name" content="LearnStack" />
+    
+    @* Twitter Card *@
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://learnstack.app/" />
+    <meta name="twitter:title" content="LearnStack - Organize Your AI Learning Journey" />
+    <meta name="twitter:description" content="Track learning resources, take notes, and create content from your AI learning materials." />
+    <meta name="twitter:image" content="https://learnstack.app/images/twitter-card.png" />
+    
+    @* Canonical URL *@
+    <link rel="canonical" href="https://learnstack.app/" />
+    
+    @* Structured Data - Organization *@
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "WebApplication",
+        "name": "LearnStack",
+        "description": "A learning content management application for organizing and tracking AI-related learning resources",
+        "url": "https://learnstack.app",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "featureList": [
+            "Learning resource management",
+            "Note-taking",
+            "Content prioritization",
+            "Progress tracking",
+            "Content idea planning"
+        ]
+    }
+    </script>
+</HeadContent>
+
+<AuthorizeView>
+    <Authorized>
+        @* Authenticated users are redirected to the app *@
+    </Authorized>
+    <NotAuthorized>
+        @* Marketing content for non-authenticated visitors *@
+        @* Hero Section *@
+        <section class="hero">
+            <div class="hero-content">
+                <span class="hero-badge">🚀 Your AI Learning Companion</span>
+                <h1>Master AI One Resource at a Time</h1>
+                <p class="hero-description">
+                    Stop drowning in browser tabs. LearnStack helps you organize, prioritize, and track your AI learning resources 
+                    — from blog posts and podcasts to videos and courses. All in one place.
+                </p>
+                <div class="hero-cta">
+                    <a href="Account/Register" class="btn-hero-primary">
+                        Start Learning Free
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                    <a href="#features" class="btn-hero-secondary">See Features</a>
+                </div>
+                <p class="hero-trust">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zm-1.5-6l6.5-6.5-1.5-1.5-5 5-2-2-1.5 1.5 3.5 3.5z"/>
+                    </svg>
+                    No credit card required • Free forever for individuals
+                </p>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="card-header">
+                        <span class="card-dot"></span>
+                        <span class="card-dot"></span>
+                        <span class="card-dot"></span>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-stat">
+                            <span class="stat-number">12</span>
+                            <span class="stat-label">To Learn</span>
+                        </div>
+                        <div class="card-stat yellow">
+                            <span class="stat-number">5</span>
+                            <span class="stat-label">In Progress</span>
+                        </div>
+                        <div class="card-stat green">
+                            <span class="stat-number">28</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                    </div>
+                    <div class="card-items">
+                        <div class="item-row">
+                            <span class="item-badge video">Video</span>
+                            <span class="item-title">GPT-4 Deep Dive Tutorial</span>
+                        </div>
+                        <div class="item-row">
+                            <span class="item-badge blog">Blog</span>
+                            <span class="item-title">Understanding Transformers</span>
+                        </div>
+                        <div class="item-row">
+                            <span class="item-badge course">Course</span>
+                            <span class="item-title">Machine Learning Fundamentals</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        @* Features Section *@
+        <section class="features" id="features">
+            <div class="section-header">
+                <span class="section-badge">Features</span>
+                <h2>Everything You Need to Learn Efficiently</h2>
+                <p>Designed for developers, researchers, and AI enthusiasts who want to stay on top of their learning.</p>
+            </div>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Resource Library</h3>
+                    <p>Save and organize blog posts, videos, podcasts, courses, and documentation. Auto-fetch metadata from URLs for quick setup.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon purple">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="9 11 12 14 22 4"/>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                        </svg>
+                    </div>
+                    <h3>Progress Tracking</h3>
+                    <p>Track your learning status — To Learn, In Progress, or Completed. See your progress at a glance with visual statistics.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon green">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="2" y1="12" x2="22" y2="12"/>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                        </svg>
+                    </div>
+                    <h3>Smart Organization</h3>
+                    <p>Filter by content type, status, or priority. Use tags and search to find anything instantly. Drag and drop to reorder.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon orange">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                    </div>
+                    <h3>Rich Note-Taking</h3>
+                    <p>Capture key learnings, important quotes, and follow-up questions. Your notes are searchable and always accessible.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon pink">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <h3>Content Ideas</h3>
+                    <p>Plan your own content based on what you learn. Link ideas to source resources and track them from concept to published.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon teal">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="9"/>
+                            <rect x="14" y="3" width="7" height="5"/>
+                            <rect x="14" y="12" width="7" height="9"/>
+                            <rect x="3" y="16" width="7" height="5"/>
+                        </svg>
+                    </div>
+                    <h3>Multiple Views</h3>
+                    <p>Switch between card view and data grid. Customize your workspace to match how you like to work.</p>
+                </article>
+            </div>
+        </section>
+
+        @* How It Works Section *@
+        <section class="how-it-works" id="how-it-works">
+            <div class="section-header">
+                <span class="section-badge">How It Works</span>
+                <h2>Start Learning in 3 Simple Steps</h2>
+                <p>Get organized in minutes, not hours.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Save Resources</h3>
+                    <p>Paste a URL and LearnStack automatically fetches the title, description, and thumbnail. Add tags and set priority.</p>
+                </div>
+                <div class="step-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Learn & Take Notes</h3>
+                    <p>Work through your queue at your own pace. Capture insights, questions, and key takeaways as you learn.</p>
+                </div>
+                <div class="step-arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                        <polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Create Content</h3>
+                    <p>Turn your knowledge into content. Link your ideas to what you've learned and share with the world.</p>
+                </div>
+            </div>
+        </section>
+
+        @* Testimonials Section *@
+        <section class="testimonials" id="testimonials">
+            <div class="section-header">
+                <span class="section-badge">Testimonials</span>
+                <h2>Loved by Learners</h2>
+                <p>See what others are saying about LearnStack.</p>
+            </div>
+            <div class="testimonials-grid">
+                <blockquote class="testimonial">
+                    <p>"Finally, a tool that understands how developers learn. I've saved hundreds of resources and can actually find them when I need them."</p>
+                    <footer>
+                        <div class="testimonial-avatar">SM</div>
+                        <div class="testimonial-info">
+                            <strong>Sarah Mitchell</strong>
+                            <span>ML Engineer at TechCorp</span>
+                        </div>
+                    </footer>
+                </blockquote>
+                <blockquote class="testimonial">
+                    <p>"The content ideas feature is a game-changer. I can trace exactly which resources inspired each blog post I write."</p>
+                    <footer>
+                        <div class="testimonial-avatar">JK</div>
+                        <div class="testimonial-info">
+                            <strong>James Kim</strong>
+                            <span>Tech Blogger & Developer</span>
+                        </div>
+                    </footer>
+                </blockquote>
+                <blockquote class="testimonial">
+                    <p>"I went from 50+ open tabs to zero. LearnStack keeps everything organized so I can focus on actually learning."</p>
+                    <footer>
+                        <div class="testimonial-avatar">AL</div>
+                        <div class="testimonial-info">
+                            <strong>Anna Liu</strong>
+                            <span>AI Researcher</span>
+                        </div>
+                    </footer>
+                </blockquote>
+            </div>
+        </section>
+
+        @* CTA Section *@
+        <section class="cta">
+            <div class="cta-content">
+                <h2>Ready to Organize Your Learning?</h2>
+                <p>Join thousands of learners who use LearnStack to master AI, one resource at a time.</p>
+                <a href="Account/Register" class="btn-cta">
+                    Get Started Free
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <p class="cta-note">No credit card required</p>
+            </div>
+        </section>
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [CascadingParameter]
+    private Task<AuthenticationState>? AuthStateTask { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (AuthStateTask is not null)
+        {
+            var authState = await AuthStateTask;
+            if (authState.User.Identity?.IsAuthenticated == true)
+            {
+                // Redirect authenticated users to the app
+                NavigationManager.NavigateTo("/resources", forceLoad: true);
+            }
+        }
+    }
+}
+
+<style>
+    /* Hero Section */
+    .hero {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: center;
+    }
+
+    .hero-badge {
+        display: inline-block;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        line-height: 1.1;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #1e293b 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .hero-description {
+        font-size: 1.25rem;
+        color: #64748b;
+        margin-bottom: 2rem;
+        line-height: 1.7;
+    }
+
+    .hero-cta {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-hero-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+
+    .btn-hero-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+    }
+
+    .btn-hero-secondary {
+        display: inline-flex;
+        align-items: center;
+        padding: 1rem 2rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        color: #64748b;
+        font-weight: 600;
+        text-decoration: none;
+        transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-hero-secondary:hover {
+        border-color: #6366f1;
+        color: #6366f1;
+    }
+
+    .hero-trust {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #64748b;
+        font-size: 0.875rem;
+    }
+
+    .hero-trust svg {
+        color: #22c55e;
+    }
+
+    /* Hero Visual Card */
+    .hero-visual {
+        display: flex;
+        justify-content: center;
+    }
+
+    .hero-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        padding: 1.5rem;
+        width: 100%;
+        max-width: 400px;
+    }
+
+    .card-header {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: #e2e8f0;
+    }
+
+    .card-dot:nth-child(1) { background: #ef4444; }
+    .card-dot:nth-child(2) { background: #eab308; }
+    .card-dot:nth-child(3) { background: #22c55e; }
+
+    .card-content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .card-stat {
+        text-align: center;
+        padding: 1rem;
+        background: #f0f9ff;
+        border-radius: 12px;
+    }
+
+    .card-stat.yellow { background: #fef9c3; }
+    .card-stat.green { background: #dcfce7; }
+
+    .stat-number {
+        display: block;
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0369a1;
+    }
+
+    .card-stat.yellow .stat-number { color: #ca8a04; }
+    .card-stat.green .stat-number { color: #16a34a; }
+
+    .stat-label {
+        font-size: 0.75rem;
+        color: #64748b;
+    }
+
+    .card-items {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .item-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: #f8fafc;
+        border-radius: 8px;
+    }
+
+    .item-badge {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    .item-badge.video { background: #fee2e2; color: #dc2626; }
+    .item-badge.blog { background: #dbeafe; color: #2563eb; }
+    .item-badge.course { background: #fef3c7; color: #d97706; }
+
+    .item-title {
+        font-size: 0.875rem;
+        color: #1e293b;
+    }
+
+    /* Features Section */
+    .features {
+        background: #f8fafc;
+        padding: 6rem 2rem;
+    }
+
+    .section-header {
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 4rem;
+    }
+
+    .section-badge {
+        display: inline-block;
+        background: #ede9fe;
+        color: #6366f1;
+        padding: 0.375rem 0.875rem;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        color: #1e293b;
+    }
+
+    .section-header p {
+        color: #64748b;
+        font-size: 1.125rem;
+    }
+
+    .features-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .feature-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .feature-icon.blue { background: #dbeafe; color: #2563eb; }
+    .feature-icon.purple { background: #ede9fe; color: #7c3aed; }
+    .feature-icon.green { background: #dcfce7; color: #16a34a; }
+    .feature-icon.orange { background: #fed7aa; color: #ea580c; }
+    .feature-icon.pink { background: #fce7f3; color: #db2777; }
+    .feature-icon.teal { background: #ccfbf1; color: #0d9488; }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #1e293b;
+    }
+
+    .feature-card p {
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    /* How It Works */
+    .how-it-works {
+        padding: 6rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .steps {
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .step {
+        text-align: center;
+        max-width: 280px;
+    }
+
+    .step-number {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+    }
+
+    .step h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: #1e293b;
+    }
+
+    .step p {
+        color: #64748b;
+        line-height: 1.6;
+    }
+
+    .step-arrow {
+        color: #e2e8f0;
+        padding-top: 1.25rem;
+    }
+
+    /* Testimonials */
+    .testimonials {
+        background: #f8fafc;
+        padding: 6rem 2rem;
+    }
+
+    .testimonials-grid {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+    }
+
+    .testimonial {
+        background: white;
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin: 0;
+    }
+
+    .testimonial p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: #374151;
+        margin-bottom: 1.5rem;
+        font-style: italic;
+    }
+
+    .testimonial footer {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .testimonial-avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+
+    .testimonial-info strong {
+        display: block;
+        color: #1e293b;
+    }
+
+    .testimonial-info span {
+        font-size: 0.875rem;
+        color: #64748b;
+    }
+
+    /* CTA Section */
+    .cta {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        padding: 6rem 2rem;
+        text-align: center;
+    }
+
+    .cta-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .cta h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 1rem;
+    }
+
+    .cta > p {
+        color: #94a3b8;
+        font-size: 1.125rem;
+        margin-bottom: 2rem;
+    }
+
+    .cta-content > p {
+        color: #94a3b8;
+        font-size: 1.125rem;
+        margin-bottom: 2rem;
+    }
+
+    .btn-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: white;
+        color: #1e293b;
+        padding: 1rem 2.5rem;
+        border-radius: 12px;
+        font-weight: 600;
+        text-decoration: none;
+        font-size: 1.1rem;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    }
+
+    .cta-note {
+        margin-top: 1rem;
+        color: #64748b;
+        font-size: 0.875rem;
+    }
+
+    /* Responsive */
+    @@media (max-width: 1024px) {
+        .hero {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+        }
+
+        .hero-cta {
+            justify-content: center;
+        }
+
+        .hero-trust {
+            justify-content: center;
+        }
+
+        .features-grid,
+        .testimonials-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .steps {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .step-arrow {
+            transform: rotate(90deg);
+            padding: 1rem 0;
+        }
+    }
+
+    @@media (max-width: 640px) {
+        .hero h1 {
+            font-size: 2rem;
+        }
+
+        .hero-description {
+            font-size: 1rem;
+        }
+
+        .hero-cta {
+            flex-direction: column;
+        }
+
+        .features-grid,
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section-header h2 {
+            font-size: 1.75rem;
+        }
+
+        .cta h2 {
+            font-size: 1.75rem;
+        }
+    }
+</style>

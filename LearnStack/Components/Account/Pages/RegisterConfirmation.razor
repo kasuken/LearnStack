@@ -1,4 +1,5 @@
 ﻿@page "/Account/RegisterConfirmation"
+@layout LearnStack.Components.Account.Shared.AccountLayout
 
 @using System.Text
 @using Microsoft.AspNetCore.Identity
@@ -14,7 +15,7 @@
 
 <h1>Register confirmation</h1>
 
-<StatusMessage Message="@statusMessage" />
+<StatusMessage Message="@statusMessage"/>
 
 @if (emailConfirmationLink is not null)
 {
@@ -32,14 +33,11 @@ else
     private string? emailConfirmationLink;
     private string? statusMessage;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromQuery]
-    private string? Email { get; set; }
+    [SupplyParameterFromQuery] private string? Email { get; set; }
 
-    [SupplyParameterFromQuery]
-    private string? ReturnUrl { get; set; }
+    [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,4 +64,5 @@ else
                 new Dictionary<string, object?> { ["userId"] = userId, ["code"] = code, ["returnUrl"] = ReturnUrl });
         }
     }
+
 }

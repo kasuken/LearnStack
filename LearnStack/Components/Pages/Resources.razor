@@ -1,1 +1,682 @@
-﻿
+﻿@page "/resources"
+@using LearnStack.Services
+@attribute [Authorize]
+@inject ILearningResourceService ResourceService
+@inject IContentIdeaService ContentIdeaService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Learning Resources - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
+    @* Export Menu *@
+    <MudStack Row="true" Justify="Justify.FlexEnd" Class="mb-4">
+        <MudMenu Label="Export" Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Primary">
+            <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as JSON</MudMenuItem>
+            <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as CSV</MudMenuItem>
+        </MudMenu>
+    </MudStack>
+
+    @* Statistics Cards *@
+    <MudGrid Spacing="4" Class="mb-6">
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Primary" Style="font-weight: 700;">@toLearnCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">To Learn</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Warning" Style="font-weight: 700;">@inProgressCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">In Progress</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Success" Style="font-weight: 700;">@completedCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">Completed</MudText>
+            </MudPaper>
+        </MudItem>
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
+                <MudText Typo="Typo.h4" Color="Color.Info" Style="font-weight: 700;">@contentIdeasCount</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">Content Ideas</MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+
+    @* Tabs *@
+    @* Tabs *@
+    <MudTabs @bind-ActivePanelIndex="activeTabIndex" @bind-ActivePanelIndex:after="OnFilterChanged" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4">
+        <MudTabPanel Icon="@Icons.Material.Filled.GridView" Text="All Resources" BadgeColor="Color.Primary" />
+        <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="Active Learning" />
+        <MudTabPanel Icon="@Icons.Material.Filled.EventAvailable" Text="Completed" />
+        <MudTabPanel Icon="@Icons.Material.Filled.Lightbulb" Text="Content Ideas" OnClick="@(() => NavigationManager.NavigateTo("/content-ideas"))" />
+    </MudTabs>
+
+    @* Search and Filters Row *@
+    <MudPaper Class="pa-4 mb-4" Elevation="0" Style="background-color: #f8fafc; border-radius: 12px;">
+        <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
+            <MudItem xs="12" md="5">
+                <MudTextField @bind-Value="searchTerm"
+                             Placeholder="Search resources by title, description, notes, or tags..."
+                             Variant="Variant.Outlined"
+                             Adornment="Adornment.Start"
+                             AdornmentIcon="@Icons.Material.Filled.Search"
+                             Immediate="true"
+                             DebounceInterval="300"
+                             OnDebounceIntervalElapsed="ApplyFiltersWithReset"
+                             Style="background-color: white;" />
+            </MudItem>
+            <MudItem xs="12" md="7">
+                <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
+                    <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small">
+                        <MudIconButton Icon="@Icons.Material.Filled.ViewList" 
+                                      Color="@(viewMode == ViewMode.List ? Color.Primary : Color.Default)"
+                                      OnClick="@(() => { viewMode = ViewMode.List; StateHasChanged(); })"
+                                      Title="List View" />
+                        <MudIconButton Icon="@Icons.Material.Filled.TableChart" 
+                                      Color="@(viewMode == ViewMode.DataGrid ? Color.Primary : Color.Default)"
+                                      OnClick="@(() => { viewMode = ViewMode.DataGrid; StateHasChanged(); })"
+                                      Title="Table View" />
+                    </MudButtonGroup>
+                    <MudButton Variant="Variant.Outlined"
+                              EndIcon="@(showFilters ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
+                              OnClick="@(() => showFilters = !showFilters)"
+                              Style="text-transform: none;">
+                        Filters
+                    </MudButton>
+                    <MudSelect @bind-Value="sortOrder"
+                              @bind-Value:after="OnFilterChanged"
+                              Variant="Variant.Outlined"
+                              T="string"
+                              Style="width: 160px; background-color: white;">
+                        <MudSelectItem Value="@("custom")">Custom Order</MudSelectItem>
+                        <MudSelectItem Value="@("newest")">Newest First</MudSelectItem>
+                        <MudSelectItem Value="@("oldest")">Oldest First</MudSelectItem>
+                        <MudSelectItem Value="@("priority")">By Priority</MudSelectItem>
+                        <MudSelectItem Value="@("title")">By Title</MudSelectItem>
+                    </MudSelect>
+                    <MudButton Variant="Variant.Filled"
+                              Color="Color.Primary"
+                              StartIcon="@Icons.Material.Filled.Add"
+                              OnClick="OpenAddDialog"
+                              Style="text-transform: none; border-radius: 8px;">
+                        Add Resource
+                    </MudButton>
+                </MudStack>
+            </MudItem>
+        </MudGrid>
+
+        @* Expandable Filters *@
+        <MudCollapse Expanded="showFilters">
+            <MudGrid Class="mt-4" Spacing="3">
+                <MudItem xs="12" sm="4">
+                    <MudSelect @bind-Value="filterContentType"
+                              @bind-Value:after="OnFilterChanged"
+                              Label="Content Type"
+                              Variant="Variant.Outlined"
+                              T="ContentType?"
+                              Clearable="true"
+                              Style="background-color: white;">
+                        <MudSelectItem T="ContentType?" Value="@((ContentType?)ContentType.BlogPost)">Blog Post</MudSelectItem>
+                        <MudSelectItem T="ContentType?" Value="@((ContentType?)ContentType.Podcast)">Podcast</MudSelectItem>
+                        <MudSelectItem T="ContentType?" Value="@((ContentType?)ContentType.Video)">Video</MudSelectItem>
+                        <MudSelectItem T="ContentType?" Value="@((ContentType?)ContentType.Article)">Article</MudSelectItem>
+                        <MudSelectItem T="ContentType?" Value="@((ContentType?)ContentType.Course)">Course</MudSelectItem>
+                        <MudSelectItem T="ContentType?" Value="@((ContentType?)ContentType.Documentation)">Documentation</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudSelect @bind-Value="filterStatus"
+                              @bind-Value:after="OnFilterChanged"
+                              Label="Status"
+                              Variant="Variant.Outlined"
+                              T="ContentStatus?"
+                              Clearable="true"
+                              Style="background-color: white;">
+                        <MudSelectItem T="ContentStatus?" Value="@((ContentStatus?)ContentStatus.ToLearn)">To Learn</MudSelectItem>
+                        <MudSelectItem T="ContentStatus?" Value="@((ContentStatus?)ContentStatus.InProgress)">In Progress</MudSelectItem>
+                        <MudSelectItem T="ContentStatus?" Value="@((ContentStatus?)ContentStatus.Completed)">Completed</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+                <MudItem xs="12" sm="4">
+                    <MudSelect @bind-Value="filterPriority"
+                              @bind-Value:after="OnFilterChanged"
+                              Label="Priority"
+                              Variant="Variant.Outlined"
+                              T="Priority?"
+                              Clearable="true"
+                              Style="background-color: white;">
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.High)">High</MudSelectItem>
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Medium)">Medium</MudSelectItem>
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Low)">Low</MudSelectItem>
+                    </MudSelect>
+                </MudItem>
+            </MudGrid>
+        </MudCollapse>
+    </MudPaper>
+
+    @* Resource List *@
+    @if (isLoading)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+    }
+    else if (!filteredResources.Any())
+    {
+        <MudPaper Class="pa-8 text-center" Elevation="0" Style="border: 2px dashed #e0e0e0; border-radius: 12px;">
+            <MudIcon Icon="@Icons.Material.Filled.LibraryBooks" Size="Size.Large" Color="Color.Secondary" Class="mb-4" />
+            <MudText Typo="Typo.h6" Color="Color.Secondary">No resources found</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">Start building your learning library</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddDialog">
+                Add Your First Resource
+            </MudButton>
+        </MudPaper>
+    }
+    else if (viewMode == ViewMode.List)
+    {
+        <MudDropContainer @key="@filterKey" T="LearningResource" Items="pagedResources" ItemsSelector="@((item, dropzone) => true)" 
+                         ItemDropped="OnResourceDropped" Class="d-flex flex-column" Style="gap: 12px;">
+            <ChildContent>
+                <MudDropZone T="LearningResource" Identifier="main-zone" AllowReorder="true" Class="d-flex flex-column" Style="gap: 12px;" />
+            </ChildContent>
+            <ItemRenderer>
+                <MudPaper Class="pa-4" Elevation="1" Style="border-radius: 12px; border: 1px solid #e8e8e8; cursor: move;">
+                    <MudGrid Spacing="3">
+                        @* Drag Handle *@
+                        <MudItem xs="1" Class="d-flex align-center">
+                            <MudIcon Icon="@Icons.Material.Filled.DragIndicator" Color="Color.Default" Style="cursor: grab; opacity: 0.5;" />
+                        </MudItem>
+                        
+                        @* Thumbnail *@
+                        <MudItem xs="2" sm="1">
+                            <MudPaper Width="100px" Height="70px" Elevation="0" Style="border-radius: 8px; overflow: hidden; background-color: #f0f0f0;">
+                                @if (!string.IsNullOrEmpty(context.ThumbnailUrl))
+                                {
+                                    <MudImage Src="@context.ThumbnailUrl" Alt="@context.Title" Width="100" Height="70" ObjectFit="ObjectFit.Cover" />
+                                }
+                                else
+                                {
+                                    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Style="height: 100%;">
+                                        <MudIcon Icon="@GetContentTypeIcon(context.ContentType)" Size="Size.Large" Color="Color.Secondary" />
+                                    </MudStack>
+                                }
+                            </MudPaper>
+                        </MudItem>
+
+                        @* Content *@
+                        <MudItem xs="6" sm="7" md="8">
+                            <MudStack Spacing="1">
+                                <MudText Typo="Typo.subtitle1" Style="font-weight: 600;">@context.Title</MudText>
+                                <MudLink Href="@context.Url" Target="_blank" Typo="Typo.caption" Color="Color.Primary">
+                                    @GetDomainFromUrl(context.Url) <MudIcon Icon="@Icons.Material.Filled.OpenInNew" Size="Size.Small" />
+                                </MudLink>
+                                @if (!string.IsNullOrEmpty(context.Description))
+                                {
+                                    <MudText Typo="Typo.body2" Color="Color.Secondary" Style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        @context.Description
+                                    </MudText>
+                                }
+                                <MudStack Row="true" Spacing="1" Class="mt-1">
+                                    <MudChip T="string" Size="Size.Small" Color="@GetContentTypeColor(context.ContentType)" Variant="Variant.Outlined">
+                                        @context.ContentType
+                                    </MudChip>
+                                    <MudChip T="string" Size="Size.Small" Color="@GetStatusColor(context.Status)" Variant="Variant.Outlined">
+                                        @GetStatusText(context.Status)
+                                    </MudChip>
+                                    <MudChip T="string" Size="Size.Small" Color="@GetPriorityColor(context.Priority)" Variant="Variant.Filled" Style="@GetPriorityStyle(context.Priority)">
+                                        @context.Priority
+                                    </MudChip>
+                                </MudStack>
+                                <MudText Typo="Typo.caption" Color="Color.Secondary" Class="mt-1">
+                                    Added @GetRelativeDate(context.DateAdded)
+                                </MudText>
+                            </MudStack>
+                        </MudItem>
+
+                        @* Actions *@
+                        <MudItem xs="3" sm="3" md="2" Class="d-flex align-center">
+                            <MudStack Spacing="2">
+                                <MudStack Row="true" Spacing="1" Justify="Justify.FlexEnd">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenEditDialog(context))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteResource(context.Id))" />
+                                </MudStack>
+                                <MudStack Row="true" Spacing="1" Justify="Justify.FlexEnd">
+                                    @if (context.Status != ContentStatus.InProgress)
+                                    {
+                                        <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Warning" OnClick="@(() => UpdateStatus(context, ContentStatus.InProgress))" Style="text-transform: none; font-size: 0.75rem;">
+                                            In Progress
+                                        </MudButton>
+                                    }
+                                    @if (context.Status != ContentStatus.Completed)
+                                    {
+                                        <MudButton Size="Size.Small" Variant="Variant.Outlined" Color="Color.Success" OnClick="@(() => UpdateStatus(context, ContentStatus.Completed))" Style="text-transform: none; font-size: 0.75rem;">
+                                            Complete
+                                        </MudButton>
+                                    }
+                                </MudStack>
+                            </MudStack>
+                        </MudItem>
+                    </MudGrid>
+                </MudPaper>
+            </ItemRenderer>
+        </MudDropContainer>
+        
+        @* Pagination *@
+        <MudPaper Class="pa-3 mt-4" Elevation="0">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredResources.Count)) of @filteredResources.Count resources
+                </MudText>
+                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3" />
+            </MudStack>
+        </MudPaper>
+    }
+    else if (viewMode == ViewMode.DataGrid)
+    {
+        <MudDataGrid T="LearningResource" Items="@pagedResources" Striped="true" Dense="true" Hover="true" ReadOnly="false"
+                     Style="border-radius: 12px;">
+            <Columns>
+                <PropertyColumn Property="x => x.Title" Title="Title">
+                    <CellTemplate>
+                        <MudStack Spacing="0">
+                            <MudText Typo="Typo.body2" Style="font-weight: 600;">@context.Item.Title</MudText>
+                            <MudLink Href="@context.Item.Url" Target="_blank" Typo="Typo.caption" Color="Color.Primary">
+                                @GetDomainFromUrl(context.Item.Url)
+                            </MudLink>
+                        </MudStack>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.ContentType" Title="Type">
+                    <CellTemplate>
+                        <MudChip T="string" Size="Size.Small" Color="@GetContentTypeColor(context.Item.ContentType)" Variant="Variant.Outlined">
+                            @context.Item.ContentType
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.Status" Title="Status">
+                    <CellTemplate>
+                        <MudChip T="string" Size="Size.Small" Color="@GetStatusColor(context.Item.Status)">
+                            @GetStatusText(context.Item.Status)
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.Priority" Title="Priority">
+                    <CellTemplate>
+                        <MudChip T="string" Size="Size.Small" Color="@GetPriorityColor(context.Item.Priority)">
+                            @context.Item.Priority
+                        </MudChip>
+                    </CellTemplate>
+                </PropertyColumn>
+                <PropertyColumn Property="x => x.DateAdded" Title="Date Added">
+                    <CellTemplate>
+                        <MudText Typo="Typo.body2">@GetRelativeDate(context.Item.DateAdded)</MudText>
+                    </CellTemplate>
+                </PropertyColumn>
+                <TemplateColumn Title="Actions" Sortable="false">
+                    <CellTemplate>
+                        <MudStack Row="true" Spacing="1">
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenEditDialog(context.Item))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteResource(context.Item.Id))" />
+                            @if (context.Item.Status != ContentStatus.Completed)
+                            {
+                                <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" 
+                                              OnClick="@(() => UpdateStatus(context.Item, ContentStatus.Completed))" 
+                                              Title="Mark as Complete" />
+                            }
+                        </MudStack>
+                    </CellTemplate>
+                </TemplateColumn>
+            </Columns>
+        </MudDataGrid>
+        
+        @* Pagination *@
+        <MudPaper Class="pa-3 mt-4" Elevation="0">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                    Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredResources.Count)) of @filteredResources.Count resources
+                </MudText>
+                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3" />
+            </MudStack>
+        </MudPaper>
+    }
+</MudContainer>
+
+@code {
+    private enum ViewMode
+    {
+        List,
+        DataGrid
+    }
+
+    private List<LearningResource> resources = new();
+    private List<LearningResource> filteredResources = new();
+    private List<LearningResource> pagedResources = new();
+    private string searchTerm = string.Empty;
+    private ContentStatus? filterStatus;
+    private ContentType? filterContentType;
+    private Priority? filterPriority;
+    private string sortOrder = "custom";
+    private int filterKey = 0;
+    private bool isLoading = true;
+    private bool showFilters = false;
+    private string userId = string.Empty;
+    private int activeTabIndex = 0;
+    private ViewMode viewMode = ViewMode.List;
+    
+    // Pagination
+    private int currentPage = 1;
+    private int pageSize = 50;
+    private int totalPages = 1;
+
+    // Statistics
+    private int toLearnCount;
+    private int inProgressCount;
+    private int completedCount;
+    private int contentIdeasCount;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+        await LoadResources();
+        await LoadStatistics();
+    }
+
+    private async Task LoadResources()
+    {
+        if (string.IsNullOrEmpty(userId)) return;
+
+        isLoading = true;
+        resources = await ResourceService.GetAllAsync(userId);
+        ApplyFilters();
+        isLoading = false;
+    }
+
+    private async Task LoadStatistics()
+    {
+        if (string.IsNullOrEmpty(userId)) return;
+
+        var allResources = await ResourceService.GetAllAsync(userId);
+        toLearnCount = allResources.Count(r => r.Status == ContentStatus.ToLearn);
+        inProgressCount = allResources.Count(r => r.Status == ContentStatus.InProgress);
+        completedCount = allResources.Count(r => r.Status == ContentStatus.Completed);
+
+        var ideas = await ContentIdeaService.GetAllAsync(userId);
+        contentIdeasCount = ideas.Count;
+    }
+
+    private void ApplyFilters(bool resetPage = false)
+    {
+        // Reset to page 1 if requested (typically when filters/sort changes)
+        if (resetPage)
+        {
+            currentPage = 1;
+        }
+
+        filteredResources = resources;
+
+        // Apply tab filter
+        if (activeTabIndex == 1) // Active Learning
+        {
+            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.InProgress || r.Status == ContentStatus.ToLearn).ToList();
+        }
+        else if (activeTabIndex == 2) // Completed
+        {
+            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.Completed).ToList();
+        }
+
+        // Apply dropdown filters
+        if (filterStatus.HasValue)
+        {
+            filteredResources = filteredResources.Where(r => r.Status == filterStatus.Value).ToList();
+        }
+
+        if (filterContentType.HasValue)
+        {
+            filteredResources = filteredResources.Where(r => r.ContentType == filterContentType.Value).ToList();
+        }
+
+        if (filterPriority.HasValue)
+        {
+            filteredResources = filteredResources.Where(r => r.Priority == filterPriority.Value).ToList();
+        }
+
+        // Apply search
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            var term = searchTerm.ToLower();
+            filteredResources = filteredResources.Where(r =>
+                r.Title.ToLower().Contains(term) ||
+                (r.Description?.ToLower().Contains(term) ?? false) ||
+                (r.Notes?.ToLower().Contains(term) ?? false) ||
+                (r.Tags?.ToLower().Contains(term) ?? false)
+            ).ToList();
+        }
+
+        // Apply sorting
+        filteredResources = sortOrder switch
+        {
+            "newest" => filteredResources.OrderByDescending(r => r.DateAdded).ToList(),
+            "oldest" => filteredResources.OrderBy(r => r.DateAdded).ToList(),
+            "priority" => filteredResources.OrderByDescending(r => r.Priority).ThenByDescending(r => r.DateAdded).ToList(),
+            "title" => filteredResources.OrderBy(r => r.Title).ToList(),
+            _ => filteredResources.OrderBy(r => r.CustomOrder).ThenByDescending(r => r.DateAdded).ToList()
+        };
+
+        // Calculate pagination
+        totalPages = (int)Math.Ceiling(filteredResources.Count / (double)pageSize);
+        if (currentPage > totalPages && totalPages > 0)
+        {
+            currentPage = totalPages;
+        }
+        if (currentPage < 1)
+        {
+            currentPage = 1;
+        }
+        
+        // Apply pagination
+        pagedResources = filteredResources
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        filterKey++;
+        StateHasChanged();
+    }
+    
+    private void ApplyFiltersWithReset(string value)
+    {
+        ApplyFilters(true);
+    }
+    
+    private void OnFilterChanged()
+    {
+        ApplyFilters(true);
+    }
+    
+    private void OnPageChanged(int page)
+    {
+        currentPage = page;
+        pagedResources = filteredResources
+            .Skip((currentPage - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+        StateHasChanged();
+    }
+
+    private async Task OnResourceDropped(MudItemDropInfo<LearningResource> dropItem)
+    {
+        if (dropItem.Item == null) return;
+
+        // Only allow reordering when sorting by custom order
+        if (sortOrder != "custom")
+        {
+            return;
+        }
+
+        // Get the index in the paged list
+        var oldIndex = pagedResources.IndexOf(dropItem.Item);
+        if (oldIndex == -1) return;
+
+        // Calculate the global index offset for the current page
+        var pageOffset = (currentPage - 1) * pageSize;
+
+        // Remove from old position
+        pagedResources.RemoveAt(oldIndex);
+
+        // Insert at new position (index in dropItem represents the new position)
+        var newIndex = dropItem.IndexInZone;
+        if (newIndex > pagedResources.Count)
+            newIndex = pagedResources.Count;
+            
+        pagedResources.Insert(newIndex, dropItem.Item);
+
+        // Update the order in the full filtered list
+        var globalOldIndex = oldIndex + pageOffset;
+        var globalNewIndex = newIndex + pageOffset;
+
+        filteredResources.RemoveAt(globalOldIndex);
+        filteredResources.Insert(globalNewIndex, dropItem.Item);
+
+        // Update the order in database
+        var orderedIds = filteredResources.Select(r => r.Id).ToList();
+        await ResourceService.UpdateOrderAsync(userId, orderedIds);
+
+        // Refresh the display
+        StateHasChanged();
+    }
+
+    private async Task OpenAddDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(ResourceForm.UserId), userId }
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<ResourceForm>("Add Learning Resource", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            await LoadResources();
+            await LoadStatistics();
+        }
+    }
+
+    private async Task OpenEditDialog(LearningResource resource)
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(ResourceForm.Resource), resource },
+            { nameof(ResourceForm.UserId), userId }
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<ResourceForm>("Edit Learning Resource", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            await LoadResources();
+            await LoadStatistics();
+        }
+    }
+
+    private async Task DeleteResource(int id)
+    {
+        await ResourceService.DeleteAsync(id, userId);
+        await LoadResources();
+        await LoadStatistics();
+    }
+
+    private async Task UpdateStatus(LearningResource resource, ContentStatus newStatus)
+    {
+        resource.Status = newStatus;
+        resource.DateCompleted = newStatus == ContentStatus.Completed ? DateTime.UtcNow : null;
+        await ResourceService.UpdateAsync(resource, userId);
+        await LoadStatistics();
+        ApplyFilters();
+    }
+
+    private string GetDomainFromUrl(string url)
+    {
+        try
+        {
+            var uri = new Uri(url);
+            return uri.Host.Replace("www.", "");
+        }
+        catch
+        {
+            return url;
+        }
+    }
+
+    private string GetRelativeDate(DateTime date)
+    {
+        var diff = DateTime.UtcNow - date;
+        if (diff.TotalDays < 1) return "Today";
+        if (diff.TotalDays < 2) return "Yesterday";
+        if (diff.TotalDays < 7) return $"{(int)diff.TotalDays} days ago";
+        if (diff.TotalDays < 30) return $"{(int)(diff.TotalDays / 7)} weeks ago";
+        if (diff.TotalDays < 365) return $"{(int)(diff.TotalDays / 30)} months ago";
+        return $"{(int)(diff.TotalDays / 365)} years ago";
+    }
+
+    private string GetContentTypeIcon(ContentType type) => type switch
+    {
+        ContentType.BlogPost => Icons.Material.Filled.Article,
+        ContentType.Podcast => Icons.Material.Filled.Podcasts,
+        ContentType.Video => Icons.Material.Filled.VideoLibrary,
+        ContentType.Article => Icons.Material.Filled.Description,
+        ContentType.Course => Icons.Material.Filled.School,
+        ContentType.Documentation => Icons.Material.Filled.MenuBook,
+        _ => Icons.Material.Filled.Link
+    };
+
+    private Color GetContentTypeColor(ContentType type) => type switch
+    {
+        ContentType.BlogPost => Color.Primary,
+        ContentType.Podcast => Color.Secondary,
+        ContentType.Video => Color.Error,
+        ContentType.Article => Color.Info,
+        ContentType.Course => Color.Warning,
+        ContentType.Documentation => Color.Success,
+        _ => Color.Default
+    };
+
+    private Color GetStatusColor(ContentStatus status) => status switch
+    {
+        ContentStatus.ToLearn => Color.Info,
+        ContentStatus.InProgress => Color.Warning,
+        ContentStatus.Completed => Color.Success,
+        _ => Color.Default
+    };
+
+    private string GetStatusText(ContentStatus status) => status switch
+    {
+        ContentStatus.ToLearn => "To Learn",
+        ContentStatus.InProgress => "In Progress",
+        ContentStatus.Completed => "Completed",
+        _ => "Unknown"
+    };
+
+    private Color GetPriorityColor(Priority priority) => priority switch
+    {
+        Priority.High => Color.Error,
+        Priority.Medium => Color.Warning,
+        Priority.Low => Color.Default,
+        _ => Color.Default
+    };
+
+    private string GetPriorityStyle(Priority priority) => priority switch
+    {
+        Priority.High => "background-color: #ffebee; color: #c62828;",
+        Priority.Medium => "background-color: #fff8e1; color: #f57f17;",
+        Priority.Low => "background-color: #f5f5f5; color: #757575;",
+        _ => ""
+    };
+}

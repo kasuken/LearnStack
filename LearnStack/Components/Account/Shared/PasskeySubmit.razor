@@ -13,22 +13,15 @@
 @code {
     private AntiforgeryTokenSet? tokens;
 
-    [CascadingParameter]
-    private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [Parameter]
-    [EditorRequired]
-    public PasskeyOperation Operation { get; set; }
+    [Parameter] [EditorRequired] public PasskeyOperation Operation { get; set; }
 
-    [Parameter]
-    [EditorRequired]
-    public string Name { get; set; } = default!;
+    [Parameter] [EditorRequired] public string Name { get; set; } = default!;
 
-    [Parameter]
-    public string? EmailName { get; set; }
+    [Parameter] public string? EmailName { get; set; }
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object>? AdditionalAttributes { get; set; }
@@ -37,4 +30,5 @@
     {
         tokens = Services.GetService<IAntiforgery>()?.GetTokens(HttpContext);
     }
+
 }

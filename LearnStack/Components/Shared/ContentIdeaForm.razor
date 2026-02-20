@@ -1,1 +1,303 @@
-﻿
+﻿﻿@using LearnStack.Services
+@inject IContentIdeaService ContentIdeaService
+@inject ILearningResourceService ResourceService
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form" @bind-IsValid="@isValid">
+            <MudTextField @bind-Value="model.Title"
+                         Label="Title"
+                         Required="true"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Counter="500"
+                         MaxLength="500" />
+
+            <MudSelect @bind-Value="model.ContentType"
+                      Label="Content Type"
+                      Required="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense">
+                <MudSelectItem Value="@ContentIdeaType.BlogPost">Blog Post</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.Video">Video</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.TweetThread">Tweet Thread</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.Tutorial">Tutorial</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.Other">Other</MudSelectItem>
+            </MudSelect>
+
+            <MudTextField @bind-Value="model.Description"
+                         Label="Description"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Lines="3"
+                         Counter="2000"
+                         MaxLength="2000" />
+
+            <MudTextField @bind-Value="model.Outline"
+                         Label="Outline"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Lines="5"
+                         HelperText="Plan your content structure" />
+
+            <MudSelect @bind-Value="model.Status"
+                      Label="Status"
+                      Required="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense">
+                <MudSelectItem Value="@IdeaStatus.Idea">Idea</MudSelectItem>
+                <MudSelectItem Value="@IdeaStatus.InProgress">In Progress</MudSelectItem>
+                <MudSelectItem Value="@IdeaStatus.Published">Published</MudSelectItem>
+            </MudSelect>
+
+            <MudSelect @bind-Value="model.Priority"
+                      Label="Priority"
+                      Required="true"
+                      Variant="Variant.Outlined"
+                      Margin="Margin.Dense">
+                <MudSelectItem Value="@Priority.Low">Low</MudSelectItem>
+                <MudSelectItem Value="@Priority.Medium">Medium</MudSelectItem>
+                <MudSelectItem Value="@Priority.High">High</MudSelectItem>
+            </MudSelect>
+
+            <MudText Typo="Typo.subtitle2" Class="mt-3 mb-1">Source Resources</MudText>
+            <MudTextField @bind-Value="resourceSearchTerm"
+                         Label="Search Resources"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Adornment="Adornment.Start"
+                         AdornmentIcon="@Icons.Material.Filled.Search"
+                         DebounceInterval="300"
+                         OnDebounceIntervalElapsed="FilterResources"
+                         Clearable="true" />
+
+            <MudPaper Class="pa-2 mb-2" Elevation="0" Style="border: 1px solid #e0e0e0; max-height: 300px; overflow-y: auto;">
+                @if (filteredResources.Any())
+                {
+                    @foreach (var resource in filteredResources)
+                    {
+                        var isSelected = model.SelectedResourceIds.Contains(resource.Id);
+                        <MudChip T="string" 
+                                Color="@(isSelected ? Color.Primary : Color.Default)"
+                                Variant="@(isSelected ? Variant.Filled : Variant.Outlined)"
+                                OnClick="@(() => ToggleResourceSelection(resource.Id))"
+                                Style="cursor: pointer; margin: 4px;">
+                            @if (isSelected)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Class="mr-1" />
+                            }
+                            @resource.Title
+                        </MudChip>
+                    }
+                }
+                else if (!string.IsNullOrWhiteSpace(resourceSearchTerm))
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">No resources found matching "@resourceSearchTerm"</MudText>
+                }
+                else
+                {
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">No resources available. Add resources first.</MudText>
+                }
+            </MudPaper>
+
+            @if (model.SelectedResourceIds.Any())
+            {
+                <MudText Typo="Typo.caption" Color="Color.Success">
+                    @model.SelectedResourceIds.Count resource(s) selected
+                </MudText>
+            }
+
+            <MudTextField @bind-Value="model.Notes"
+                         Label="Notes"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Lines="5"
+                         HelperText="Add your thoughts and ideas" />
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" 
+                  Variant="Variant.Filled" 
+                  OnClick="Submit"
+                  Disabled="@(!isValid)">
+            @(IsEditMode ? "Update" : "Add")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public ContentIdea? Idea { get; set; }
+
+    [Parameter]
+    public string UserId { get; set; } = string.Empty;
+
+    private MudForm form = null!;
+    private bool isValid;
+    private IdeaFormModel model = new();
+    private bool IsEditMode => Idea != null;
+    
+    private List<LearningResource> allResources = new();
+    private List<LearningResource> filteredResources = new();
+    private string resourceSearchTerm = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load all user's resources
+        allResources = await ResourceService.GetAllAsync(UserId);
+        filteredResources = allResources;
+        
+        if (Idea != null)
+        {
+            model = new IdeaFormModel
+            {
+                Title = Idea.Title,
+                Description = Idea.Description,
+                Outline = Idea.Outline,
+                ContentType = Idea.ContentType,
+                Status = Idea.Status,
+                Priority = Idea.Priority,
+                Notes = Idea.Notes,
+                SelectedResourceIds = Idea.SourceResources
+                    .Select(sr => sr.LearningResourceId)
+                    .ToHashSet()
+            };
+        }
+        else
+        {
+            model = new IdeaFormModel
+            {
+                Status = IdeaStatus.Idea,
+                Priority = Priority.Medium,
+                ContentType = ContentIdeaType.BlogPost
+            };
+        }
+    }
+
+    private void FilterResources()
+    {
+        if (string.IsNullOrWhiteSpace(resourceSearchTerm))
+        {
+            filteredResources = allResources;
+        }
+        else
+        {
+            var term = resourceSearchTerm.ToLower();
+            filteredResources = allResources
+                .Where(r => r.Title.ToLower().Contains(term) ||
+                           (r.Description != null && r.Description.ToLower().Contains(term)) ||
+                           (r.Tags != null && r.Tags.ToLower().Contains(term)))
+                .ToList();
+        }
+        StateHasChanged();
+    }
+
+    private void ToggleResourceSelection(int resourceId)
+    {
+        if (model.SelectedResourceIds.Contains(resourceId))
+        {
+            model.SelectedResourceIds.Remove(resourceId);
+        }
+        else
+        {
+            model.SelectedResourceIds.Add(resourceId);
+        }
+        StateHasChanged();
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task Submit()
+    {
+        await form.Validate();
+        
+        if (!isValid)
+            return;
+
+        if (IsEditMode && Idea != null)
+        {
+            Idea.Title = model.Title;
+            Idea.Description = model.Description;
+            Idea.Outline = model.Outline;
+            Idea.ContentType = model.ContentType;
+            Idea.Status = model.Status;
+            Idea.Priority = model.Priority;
+            Idea.Notes = model.Notes;
+
+            if (model.Status == IdeaStatus.Published && Idea.DatePublished == null)
+            {
+                Idea.DatePublished = DateTime.UtcNow;
+            }
+            else if (model.Status != IdeaStatus.Published)
+            {
+                Idea.DatePublished = null;
+            }
+
+            await ContentIdeaService.UpdateAsync(Idea, UserId);
+            
+            // Update resource associations
+            var currentResourceIds = Idea.SourceResources.Select(sr => sr.LearningResourceId).ToHashSet();
+            
+            // Remove unselected resources
+            foreach (var resourceId in currentResourceIds.Except(model.SelectedResourceIds))
+            {
+                await ContentIdeaService.RemoveSourceResourceAsync(Idea.Id, resourceId, UserId);
+            }
+            
+            // Add newly selected resources
+            foreach (var resourceId in model.SelectedResourceIds.Except(currentResourceIds))
+            {
+                await ContentIdeaService.AddSourceResourceAsync(Idea.Id, resourceId, UserId);
+            }
+        }
+        else
+        {
+            var newIdea = new ContentIdea
+            {
+                Title = model.Title,
+                Description = model.Description,
+                Outline = model.Outline,
+                ContentType = model.ContentType,
+                Status = model.Status,
+                Priority = model.Priority,
+                Notes = model.Notes,
+                UserId = UserId,
+                DateCreated = DateTime.UtcNow,
+                DatePublished = model.Status == IdeaStatus.Published ? DateTime.UtcNow : null
+            };
+
+            await ContentIdeaService.CreateAsync(newIdea);
+            
+            // Add resource associations
+            foreach (var resourceId in model.SelectedResourceIds)
+            {
+                await ContentIdeaService.AddSourceResourceAsync(newIdea.Id, resourceId, UserId);
+            }
+        }
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private class IdeaFormModel
+    {
+        public string Title { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public string? Outline { get; set; }
+        public ContentIdeaType ContentType { get; set; }
+        public IdeaStatus Status { get; set; }
+        public Priority Priority { get; set; }
+        public string? Notes { get; set; }
+        public HashSet<int> SelectedResourceIds { get; set; } = new();
+    }
+}
+
+
+
+
