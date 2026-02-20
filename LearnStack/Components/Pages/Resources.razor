@@ -193,30 +193,38 @@
             </ChildContent>
             <ItemRenderer>
                 <MudPaper Class="pa-4" Elevation="1" Style="border-radius: 12px; border: 1px solid #e8e8e8; cursor: move;">
-                    <MudGrid Spacing="3">
+                    <div style="display: flex; gap: 16px; align-items: center;">
                         @* Drag Handle *@
-                        <MudItem xs="1" Class="d-flex align-center">
+                        <div style="flex-shrink: 0;">
                             <MudIcon Icon="@Icons.Material.Filled.DragIndicator" Color="Color.Default" Style="cursor: grab; opacity: 0.5;" />
-                        </MudItem>
+                        </div>
                         
                         @* Thumbnail *@
-                        <MudItem xs="2" sm="1">
-                            <MudPaper Width="100px" Height="70px" Elevation="0" Style="border-radius: 8px; overflow: hidden; background-color: #f0f0f0;">
-                                @if (!string.IsNullOrEmpty(context.ThumbnailUrl))
+                        <div style="flex-shrink: 0;">
+                            <div style="width: 100px; height: 70px; min-width: 100px; min-height: 70px; border-radius: 8px; overflow: hidden; background-color: #f0f0f0; position: relative;">
+                                @if (context.ThumbnailImage != null && context.ThumbnailImage.Length > 0)
                                 {
-                                    <MudImage Src="@context.ThumbnailUrl" Alt="@context.Title" Width="100" Height="70" ObjectFit="ObjectFit.Cover" />
+                                    <img src="@($"data:image/png;base64,{Convert.ToBase64String(context.ThumbnailImage)}")" 
+                                         alt="@context.Title" 
+                                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block;" />
+                                }
+                                else if (!string.IsNullOrEmpty(context.ThumbnailUrl))
+                                {
+                                    <img src="@context.ThumbnailUrl" 
+                                         alt="@context.Title" 
+                                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; display: block;" />
                                 }
                                 else
                                 {
-                                    <MudStack Justify="Justify.Center" AlignItems="AlignItems.Center" Style="height: 100%;">
+                                    <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
                                         <MudIcon Icon="@GetContentTypeIcon(context.ContentType)" Size="Size.Large" Color="Color.Secondary" />
-                                    </MudStack>
+                                    </div>
                                 }
-                            </MudPaper>
-                        </MudItem>
+                            </div>
+                        </div>
 
                         @* Content *@
-                        <MudItem xs="6" sm="7" md="8">
+                        <div style="flex: 1; min-width: 0;">
                             <MudStack Spacing="1">
                                 <MudText Typo="Typo.subtitle1" Style="font-weight: 600;">@context.Title</MudText>
                                 <MudLink Href="@context.Url" Target="_blank" Typo="Typo.caption" Color="Color.Primary">
@@ -243,10 +251,10 @@
                                     Added @GetRelativeDate(context.DateAdded)
                                 </MudText>
                             </MudStack>
-                        </MudItem>
+                        </div>
 
                         @* Actions *@
-                        <MudItem xs="3" sm="3" md="2" Class="d-flex align-center">
+                        <div style="flex-shrink: 0;">
                             <MudStack Spacing="2">
                                 <MudStack Row="true" Spacing="1" Justify="Justify.FlexEnd">
                                     <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenEditDialog(context))" />
@@ -267,8 +275,8 @@
                                     }
                                 </MudStack>
                             </MudStack>
-                        </MudItem>
-                    </MudGrid>
+                        </div>
+                    </div>
                 </MudPaper>
             </ItemRenderer>
         </MudDropContainer>
