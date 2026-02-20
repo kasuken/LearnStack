@@ -10,10 +10,17 @@
 <PageTitle>Content Ideas - LearnStack</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
-    @* Back Button *@
-    <MudStack Row="true" Justify="Justify.FlexEnd" Class="mb-4">
-        <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.ArrowBack" OnClick="@(() => NavigationManager.NavigateTo("/resources"))" Style="text-transform: none;">
-            Back to Resources
+    @* Page Header *@
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Size="Size.Large" Color="Color.Warning" />
+            <MudText Typo="Typo.h4" Style="font-weight: 700;">Content Ideas</MudText>
+        </MudStack>
+        <MudButton Variant="Variant.Outlined" 
+                  StartIcon="@Icons.Material.Filled.MenuBook" 
+                  OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
+                  Style="text-transform: none;">
+            Learning Resources
         </MudButton>
     </MudStack>
 
@@ -44,11 +51,6 @@
             </MudPaper>
         </MudItem>
     </MudGrid>
-
-    @* Page Title *@
-    <MudText Typo="Typo.h5" Class="mb-4" Style="font-weight: 600;">
-        <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Class="mr-2" /> Content Ideas
-    </MudText>
 
     @* Search and Filters Row *@
     <MudPaper Class="pa-4 mb-4" Elevation="0" Style="background-color: #f8fafc; border-radius: 12px;">

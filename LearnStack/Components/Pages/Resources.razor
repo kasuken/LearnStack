@@ -10,12 +10,24 @@
 <PageTitle>Learning Resources - LearnStack</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
-    @* Export Menu *@
-    <MudStack Row="true" Justify="Justify.FlexEnd" Class="mb-4">
-        <MudMenu Label="Export" Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Primary">
-            <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as JSON</MudMenuItem>
-            <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as CSV</MudMenuItem>
-        </MudMenu>
+    @* Page Header *@
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" Color="Color.Primary" />
+            <MudText Typo="Typo.h4" Style="font-weight: 700;">Learning Resources</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="2">
+            <MudButton Variant="Variant.Outlined" 
+                      StartIcon="@Icons.Material.Filled.Lightbulb" 
+                      OnClick="@(() => NavigationManager.NavigateTo("/content-ideas"))" 
+                      Style="text-transform: none;">
+                Content Ideas
+            </MudButton>
+            <MudMenu Label="Export" Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Primary">
+                <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as JSON</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as CSV</MudMenuItem>
+            </MudMenu>
+        </MudStack>
     </MudStack>
 
     @* Statistics Cards *@
@@ -47,12 +59,10 @@
     </MudGrid>
 
     @* Tabs *@
-    @* Tabs *@
     <MudTabs @bind-ActivePanelIndex="activeTabIndex" @bind-ActivePanelIndex:after="OnFilterChanged" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4">
         <MudTabPanel Icon="@Icons.Material.Filled.GridView" Text="All Resources" BadgeColor="Color.Primary" />
         <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="Active Learning" />
         <MudTabPanel Icon="@Icons.Material.Filled.EventAvailable" Text="Completed" />
-        <MudTabPanel Icon="@Icons.Material.Filled.Lightbulb" Text="Content Ideas" OnClick="@(() => NavigationManager.NavigateTo("/content-ideas"))" />
     </MudTabs>
 
     @* Search and Filters Row *@
