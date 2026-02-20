@@ -1,11 +1,14 @@
 ﻿@page "/resources"
 @using LearnStack.Services
+@using System.Text
+@using System.Text.Json
 @attribute [Authorize]
 @inject ILearningResourceService ResourceService
 @inject IContentIdeaService ContentIdeaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Learning Resources - LearnStack</PageTitle>
 
@@ -24,8 +27,8 @@
                 Content Ideas
             </MudButton>
             <MudMenu Label="Export" Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Primary">
-                <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as JSON</MudMenuItem>
-                <MudMenuItem Icon="@Icons.Material.Filled.Download">Export as CSV</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Download" OnClick="ExportAsJson">Export as JSON</MudMenuItem>
+                <MudMenuItem Icon="@Icons.Material.Filled.Download" OnClick="ExportAsCsv">Export as CSV</MudMenuItem>
             </MudMenu>
         </MudStack>
     </MudStack>
@@ -697,4 +700,67 @@
         Priority.Low => "background-color: #f5f5f5; color: #757575;",
         _ => ""
     };
+
+    private async Task ExportAsJson()
+    {
+        var exportData = filteredResources.Select(r => new
+        {
+            r.Title,
+            r.Url,
+            r.Description,
+            ContentType = r.ContentType.ToString(),
+            Status = r.Status.ToString(),
+            Priority = r.Priority.ToString(),
+            r.Tags,
+            r.Notes,
+            DateAdded = r.DateAdded.ToString("yyyy-MM-dd"),
+            DateCompleted = r.DateCompleted?.ToString("yyyy-MM-dd")
+        }).ToList();
+
+        var json = JsonSerializer.Serialize(exportData, new JsonSerializerOptions 
+        { 
+            WriteIndented = true 
+        });
+        
+        var fileName = $"learning-resources-{DateTime.Now:yyyyMMdd-HHmmss}.json";
+        await DownloadFileAsync(fileName, json, "application/json");
+    }
+
+    private async Task ExportAsCsv()
+    {
+        var csv = new StringBuilder();
+        csv.AppendLine("Title,URL,Description,Content Type,Status,Priority,Tags,Notes,Date Added,Date Completed");
+
+        foreach (var resource in filteredResources)
+        {
+            csv.AppendLine($"\"{EscapeCsv(resource.Title)}\"," +
+                          $"\"{EscapeCsv(resource.Url)}\"," +
+                          $"\"{EscapeCsv(resource.Description)}\"," +
+                          $"\"{resource.ContentType}\"," +
+                          $"\"{resource.Status}\"," +
+                          $"\"{resource.Priority}\"," +
+                          $"\"{EscapeCsv(resource.Tags)}\"," +
+                          $"\"{EscapeCsv(resource.Notes)}\"," +
+                          $"\"{resource.DateAdded:yyyy-MM-dd}\"," +
+                          $"\"{(resource.DateCompleted.HasValue ? resource.DateCompleted.Value.ToString("yyyy-MM-dd") : "")}\"");
+        }
+
+        var fileName = $"learning-resources-{DateTime.Now:yyyyMMdd-HHmmss}.csv";
+        await DownloadFileAsync(fileName, csv.ToString(), "text/csv");
+    }
+
+    private string EscapeCsv(string? value)
+    {
+        if (string.IsNullOrEmpty(value))
+            return "";
+        
+        return value.Replace("\"", "\"\"");
+    }
+
+    private async Task DownloadFileAsync(string fileName, string content, string contentType)
+    {
+        var bytes = Encoding.UTF8.GetBytes(content);
+        var base64 = Convert.ToBase64String(bytes);
+        await JSRuntime.InvokeVoidAsync("downloadFile", fileName, base64, contentType);
+    }
 }
