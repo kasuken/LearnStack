@@ -88,9 +88,10 @@
 
     @* Tabs *@
     <MudTabs @bind-ActivePanelIndex="activeTabIndex" @bind-ActivePanelIndex:after="OnFilterChanged" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4" Style="background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
-        <MudTabPanel Icon="@Icons.Material.Filled.GridView" Text="All Resources" BadgeColor="Color.Primary" />
-        <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="Active Learning" />
-        <MudTabPanel Icon="@Icons.Material.Filled.EventAvailable" Text="Completed" />
+        <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="To Learn" BadgeColor="Color.Primary" />
+        <MudTabPanel Icon="@Icons.Material.Filled.PlayCircle" Text="Learning" />
+        <MudTabPanel Icon="@Icons.Material.Filled.CheckCircle" Text="Completed" />
+        <MudTabPanel Icon="@Icons.Material.Filled.GridView" Text="All Resources" />
     </MudTabs>
 
     @* Search and Filters Row *@
@@ -211,12 +212,24 @@
             <div class="empty-state-icon">
                 <MudIcon Icon="@Icons.Material.Filled.AutoStories" Size="Size.Large" Style="color: #94a3b8;" />
             </div>
-            <MudText Typo="Typo.h6" Style="color: #212121; font-weight: 600; margin-bottom: 0.5rem;">No resources found</MudText>
-            <MudText Typo="Typo.body2" Style="color: #757575; margin-bottom: 1.5rem;">Start building your learning library</MudText>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddDialog"
-                      Style="border-radius: 6px;">
-                Add Your First Resource
-            </MudButton>
+            @if (activeTabIndex == 0)
+            {
+                <MudText Typo="Typo.h6" Style="color: #212121; font-weight: 600; margin-bottom: 0.5rem;">No resources to learn</MudText>
+                <MudText Typo="Typo.body2" Style="color: #757575; margin-bottom: 1.5rem;">Select a resource from All Resources to start learning</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AutoStories" OnClick="@(() => { activeTabIndex = 3; OnFilterChanged(); })"
+                          Style="border-radius: 6px;">
+                    Select a resource to Learn
+                </MudButton>
+            }
+            else
+            {
+                <MudText Typo="Typo.h6" Style="color: #212121; font-weight: 600; margin-bottom: 0.5rem;">No resources found</MudText>
+                <MudText Typo="Typo.body2" Style="color: #757575; margin-bottom: 1.5rem;">Start building your learning library</MudText>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddDialog"
+                          Style="border-radius: 6px;">
+                    Add Your First Resource
+                </MudButton>
+            }
         </div>
     }
     else if (viewMode == ViewMode.List)
@@ -476,14 +489,19 @@
         filteredResources = resources;
 
         // Apply tab filter
-        if (activeTabIndex == 1) // Active Learning
+        if (activeTabIndex == 0) // To Learn
         {
-            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.InProgress || r.Status == ContentStatus.ToLearn).ToList();
+            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.ToLearn).ToList();
+        }
+        else if (activeTabIndex == 1) // Learning
+        {
+            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.InProgress).ToList();
         }
         else if (activeTabIndex == 2) // Completed
         {
             filteredResources = filteredResources.Where(r => r.Status == ContentStatus.Completed).ToList();
         }
+        // activeTabIndex == 3 is All Resources - no filter applied
 
         // Apply dropdown filters
         if (filterStatus.HasValue)
