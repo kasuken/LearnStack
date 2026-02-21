@@ -5,11 +5,25 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      version_bump:
+        description: 'Version bump type (major, minor, patch)'
+        required: false
+        default: 'patch'
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
 
 env:
   AZURE_WEBAPP_NAME: 'learnstack-prod-001'    # Set this to your Azure Web App name
   AZURE_WEBAPP_PACKAGE_PATH: './LearnStack'
   DOTNET_VERSION: '10.0.x'
+
+permissions:
+  contents: write
+  packages: write
 
 jobs:
   build-and-deploy:
@@ -18,6 +32,43 @@ jobs:
     steps:
       - name: 🚀 Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for version calculation
+
+      - name: 🏷️ Calculate semantic version
+        id: version
+        run: |
+          # Get the latest tag, or start with v0.0.0 if no tags exist
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Latest tag: $LATEST_TAG"
+          
+          # Remove 'v' prefix and split into components
+          VERSION=${LATEST_TAG#v}
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$VERSION"
+          
+          # Default to patch bump, or use manual input
+          BUMP_TYPE="${{ github.event.inputs.version_bump || 'patch' }}"
+          
+          # Increment version based on bump type
+          case $BUMP_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+          
+          NEW_VERSION="v${MAJOR}.${MINOR}.${PATCH}"
+          echo "New version: $NEW_VERSION"
+          echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "version_number=${MAJOR}.${MINOR}.${PATCH}" >> $GITHUB_OUTPUT
 
       - name: 🔧 Setup .NET
         uses: actions/setup-dotnet@v4
@@ -38,11 +89,53 @@ jobs:
         run: dotnet publish ./LearnStack/LearnStack.csproj --configuration Release --no-build --output ./publish
 
       - name: 🌐 Deploy to Azure Web App
+        id: deploy
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish
 
+      - name: 📝 Generate release notes
+        id: release_notes
+        run: |
+          cat << EOF > release_notes.md
+          ## 🚀 LearnStack ${{ steps.version.outputs.version }}
+          
+          ### ✨ What's New
+          
+          This release has been automatically deployed to Azure App Service.
+          
+          **Deployment Details:**
+          - **Environment:** Production
+          - **Version:** ${{ steps.version.outputs.version }}
+          - **Deployed:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          - **Commit:** ${{ github.sha }}
+          
+          ### 📦 Deployment
+          The application is live at: https://${{ env.AZURE_WEBAPP_NAME }}.azurewebsites.net
+          
+          ### 🔗 Links
+          - [View Commit](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})
+          - [Compare Changes](${{ github.server_url }}/${{ github.repository }}/compare/$(git describe --tags --abbrev=0 2>/dev/null || echo 'initial')...${{ steps.version.outputs.version }})
+          EOF
+          
+          echo "Release notes generated"
+
+      - name: 🎉 Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Release ${{ steps.version.outputs.version }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: ✅ Deployment complete
-        run: echo "🎉 Deployment to Azure App Service completed successfully!"
+        run: |
+          echo "🎉 Deployment to Azure App Service completed successfully!"
+          echo "📦 Version ${{ steps.version.outputs.version }} is now live!"
+          echo "🏷️ GitHub release created: ${{ steps.version.outputs.version }}"

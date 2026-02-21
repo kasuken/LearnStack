@@ -134,7 +134,9 @@ Want to host it in the cloud? We've got you covered!
 git push origin main
 ```
 
-[📖 Full deployment guide](.github/DEPLOYMENT.md)
+Every deployment automatically creates a **GitHub release** with semantic versioning!
+
+[📖 Full deployment guide](.github/DEPLOYMENT.md) · [🏷️ Release & versioning guide](.github/RELEASES.md)
 
 ---
 
@@ -172,6 +174,12 @@ Have an idea? Found a bug? Want to make LearnStack even more awesome?
 **We'd love your help!**
 
 Every PR, every issue, every suggestion makes this better for everyone. Let's build something amazing together.
+
+### 🚀 Developer Resources
+- [📖 Deployment Guide](.github/DEPLOYMENT.md) - Deploy to Azure
+- [🏷️ Release Guide](.github/RELEASES.md) - Versioning & releases
+- [⚡ Quick Reference](.github/QUICK-REFERENCE.md) - Common commands
+- [📝 Changelog](CHANGELOG.md) - Version history
 
 ---
 

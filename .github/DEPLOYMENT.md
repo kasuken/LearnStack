@@ -1,6 +1,12 @@
 # 🚀 Azure App Service Deployment Guide
 
-This guide will help you deploy LearnStack to Azure App Service using GitHub Actions.
+This guide will help you deploy LearnStack to Azure App Service using GitHub Actions with automated versioning and releases.
+
+## 📚 Documentation
+
+- **[Release & Versioning Guide](RELEASES.md)** - Semantic versioning and release management
+- **[CI/CD Pipeline Overview](PIPELINE.md)** - Visual workflow diagrams and architecture
+- **[Changelog](../CHANGELOG.md)** - Project history and version notes
 
 ## Prerequisites
 
@@ -69,14 +75,41 @@ Edit `.github/workflows/azure-app-service.yml`:
 
 Monitor the deployment in the **Actions** tab of your GitHub repository.
 
+## 🏷️ Semantic Versioning
+
+### Automatic Version Bumping
+
+Every successful deployment automatically creates a GitHub release with semantic versioning (MAJOR.MINOR.PATCH):
+
+- **Patch** (default): Bug fixes and minor updates → `v1.0.0` → `v1.0.1`
+- **Minor**: New features (backward compatible) → `v1.0.1` → `v1.1.0`
+- **Major**: Breaking changes → `v1.1.0` → `v2.0.0`
+
+### How It Works
+
+1. **Automatic**: Push to `main` → auto-increments **patch** version
+2. **Manual**: Choose version bump type when triggering manually
+
+### Version History
+
+View all releases in the **Releases** section of your GitHub repository.
+
+Each release includes:
+- 📦 Version number
+- 📝 Deployment date and time
+- 🔗 Commit SHA and comparison link
+- 🌐 Live deployment URL
+
 ## Manual Deployment
 
-You can also trigger deployment manually:
+You can also trigger deployment manually with custom version bumping:
 
 1. Go to **Actions** tab in GitHub
 2. Select **Deploy to Azure App Service** workflow
 3. Click **Run workflow**
-4. Select the branch and click **Run workflow**
+4. Select the branch
+5. **Choose version bump type**: `major`, `minor`, or `patch`
+6. Click **Run workflow**
 
 ## Troubleshooting
 
