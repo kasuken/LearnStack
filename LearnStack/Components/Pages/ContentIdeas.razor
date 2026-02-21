@@ -11,49 +11,79 @@
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
     @* Page Header *@
-    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
-        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-            <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Size="Size.Large" Color="Color.Warning" />
-            <MudText Typo="Typo.h4" Style="font-weight: 700;">Content Ideas</MudText>
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4 page-header animate-fade-in-up">
+        <MudStack Spacing="1">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                <div style="background: #fb8c00; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                    <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: white;" Size="Size.Medium" />
+                </div>
+                <MudText Typo="Typo.h5" Class="page-title">Content Ideas</MudText>
+            </MudStack>
+            <MudText Typo="Typo.body2" Class="page-subtitle">Manage your content creation pipeline</MudText>
         </MudStack>
-        <MudButton Variant="Variant.Outlined" 
-                  StartIcon="@Icons.Material.Filled.MenuBook" 
-                  OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
-                  Style="text-transform: none;">
-            Learning Resources
-        </MudButton>
+        <MudStack Row="true" Spacing="2">
+            <MudButton Variant="Variant.Outlined" 
+                      StartIcon="@Icons.Material.Filled.MenuBook" 
+                      OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
+                      Style="border-radius: 6px;">
+                Learning Resources
+            </MudButton>
+            <MudButton Variant="Variant.Filled" 
+                      Color="Color.Warning"
+                      StartIcon="@Icons.Material.Filled.Add" 
+                      OnClick="OpenAddDialog"
+                      Style="border-radius: 6px;">
+                New Idea
+            </MudButton>
+        </MudStack>
     </MudStack>
 
     @* Statistics Cards *@
-    <MudGrid Spacing="4" Class="mb-6">
+    <MudGrid Spacing="3" Class="mb-4">
         <MudItem xs="6" sm="3">
-            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
-                <MudText Typo="Typo.h4" Color="Color.Info" Style="font-weight: 700;">@ideaCount</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary">Ideas</MudText>
-            </MudPaper>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e3f2fd;">
+                    <MudIcon Icon="@Icons.Material.Filled.EmojiObjects" Style="color: #1e88e5;" />
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">@ideaCount</span>
+                    <span class="stat-label">Ideas</span>
+                </div>
+            </div>
         </MudItem>
         <MudItem xs="6" sm="3">
-            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
-                <MudText Typo="Typo.h4" Color="Color.Warning" Style="font-weight: 700;">@inProgressCount</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary">In Progress</MudText>
-            </MudPaper>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fff3e0;">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" Style="color: #fb8c00;" />
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">@inProgressCount</span>
+                    <span class="stat-label">In Progress</span>
+                </div>
+            </div>
         </MudItem>
         <MudItem xs="6" sm="3">
-            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
-                <MudText Typo="Typo.h4" Color="Color.Success" Style="font-weight: 700;">@publishedCount</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary">Published</MudText>
-            </MudPaper>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e8f5e9;">
+                    <MudIcon Icon="@Icons.Material.Filled.Publish" Style="color: #43a047;" />
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">@publishedCount</span>
+                    <span class="stat-label">Published</span>
+                </div>
+            </div>
         </MudItem>
         <MudItem xs="6" sm="3">
-            <MudPaper Class="pa-4 text-center" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 12px;">
-                <MudText Typo="Typo.h4" Color="Color.Primary" Style="font-weight: 700;">@totalCount</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Secondary">Total Ideas</MudText>
-            </MudPaper>
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #ede7f6;">
+                    <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: #7b1fa2;" />
+                </div>
+            </div>
         </MudItem>
     </MudGrid>
 
     @* Search and Filters Row *@
-    <MudPaper Class="pa-4 mb-4" Elevation="0" Style="background-color: #f8fafc; border-radius: 12px;">
+    <div class="filter-section animate-fade-in-up">
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
             <MudItem xs="12" md="4">
                 <MudTextField @bind-Value="searchTerm"
@@ -70,11 +100,11 @@
                 <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
                     <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small">
                         <MudIconButton Icon="@Icons.Material.Filled.GridView" 
-                                      Color="@(viewMode == ViewMode.Grid ? Color.Primary : Color.Default)"
+                                      Color="@(viewMode == ViewMode.Grid ? Color.Warning : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.Grid; StateHasChanged(); })"
                                       Title="Grid View" />
                         <MudIconButton Icon="@Icons.Material.Filled.TableChart" 
-                                      Color="@(viewMode == ViewMode.DataGrid ? Color.Primary : Color.Default)"
+                                      Color="@(viewMode == ViewMode.DataGrid ? Color.Warning : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.DataGrid; StateHasChanged(); })"
                                       Title="Table View" />
                     </MudButtonGroup>
@@ -95,7 +125,7 @@
                               Variant="Variant.Outlined"
                               T="ContentIdeaType?"
                               Clearable="true"
-                              Style="width: 150px; background-color: white;">
+                              Style="width: 150px; background-color: white; border-radius: 10px;">
                         <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.BlogPost)">Blog Post</MudSelectItem>
                         <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Video)">Video</MudSelectItem>
                         <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.TweetThread)">Tweet Thread</MudSelectItem>
@@ -108,38 +138,37 @@
                               Variant="Variant.Outlined"
                               T="Priority?"
                               Clearable="true"
-                              Style="width: 130px; background-color: white;">
+                              Style="width: 130px; background-color: white; border-radius: 10px;">
                         <MudSelectItem T="Priority?" Value="@((Priority?)Priority.High)">High</MudSelectItem>
                         <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Medium)">Medium</MudSelectItem>
                         <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Low)">Low</MudSelectItem>
                     </MudSelect>
-                    <MudButton Variant="Variant.Filled"
-                              Color="Color.Primary"
-                              StartIcon="@Icons.Material.Filled.Add"
-                              OnClick="OpenAddDialog"
-                              Style="text-transform: none; border-radius: 8px;">
-                        Add Idea
-                    </MudButton>
                 </MudStack>
             </MudItem>
         </MudGrid>
-    </MudPaper>
+    </div>
 
     @* Ideas List *@
     @if (isLoading)
     {
-        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+        <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Style="padding: 4rem;">
+            <MudProgressCircular Color="Color.Warning" Indeterminate="true" Size="Size.Large" />
+            <MudText Typo="Typo.body2" Style="color: #64748b; margin-top: 1rem;">Loading your ideas...</MudText>
+        </MudStack>
     }
     else if (!filteredIdeas.Any())
     {
-        <MudPaper Class="pa-8 text-center" Elevation="0" Style="border: 2px dashed #e0e0e0; border-radius: 12px;">
-            <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Size="Size.Large" Color="Color.Secondary" Class="mb-4" />
-            <MudText Typo="Typo.h6" Color="Color.Secondary">No content ideas yet</MudText>
-            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-4">Start planning your content creation journey</MudText>
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddDialog">
+        <div class="empty-state animate-fade-in-up">
+            <div class="empty-state-icon">
+                <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Size="Size.Large" Style="color: #94a3b8;" />
+            </div>
+            <MudText Typo="Typo.h6" Style="color: #334155; font-weight: 600; margin-bottom: 0.5rem;">No content ideas yet</MudText>
+            <MudText Typo="Typo.body2" Style="color: #64748b; margin-bottom: 1.5rem;">Start planning your content creation journey</MudText>
+            <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddDialog"
+                      Style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 10px; padding: 10px 24px;">
                 Add Your First Idea
             </MudButton>
-        </MudPaper>
+        </div>
     }
     else if (viewMode == ViewMode.Grid)
     {
@@ -153,23 +182,23 @@
             </ChildContent>
             <ItemRenderer>
                 <div class="mud-grid-item mud-grid-item-xs-12 mud-grid-item-sm-6 mud-grid-item-md-4">
-                    <MudPaper Class="pa-4" Elevation="1" Style="border-radius: 12px; border: 1px solid #e8e8e8; height: 100%; cursor: move;">
+                    <div class="resource-card animate-fade-in-up" style="padding: 20px; height: 100%; cursor: move;">
                         <MudStack Spacing="2" Style="height: 100%;">
                             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Start">
-                                <MudChip T="string" Size="Size.Small" Color="@GetContentTypeColor(context.ContentType)" Variant="Variant.Filled">
+                                <MudChip T="string" Size="Size.Small" Style="@GetContentTypeChipStyle(context.ContentType)">
                                     @context.ContentType
                                 </MudChip>
                                 <MudStack Row="true" Spacing="0">
-                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenEditDialog(context))" />
-                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteIdea(context.Id))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Style="color: #667eea;" OnClick="@(() => OpenEditDialog(context))" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Style="color: #ef4444;" OnClick="@(() => DeleteIdea(context.Id))" />
                                 </MudStack>
                             </MudStack>
                             
-                            <MudText Typo="Typo.subtitle1" Style="font-weight: 600;">@context.Title</MudText>
+                            <MudText Typo="Typo.subtitle1" Style="font-weight: 700; color: #1e293b;">@context.Title</MudText>
                             
                             @if (!string.IsNullOrEmpty(context.Description))
                             {
-                                <MudText Typo="Typo.body2" Color="Color.Secondary" Style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                <MudText Typo="Typo.body2" Style="color: #64748b; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     @context.Description
                                 </MudText>
                             }
@@ -177,14 +206,15 @@
                             @if (context.SourceResources.Any())
                             {
                                 <MudStack Spacing="1">
-                                    <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                    <MudText Typo="Typo.caption" Style="color: #94a3b8;">
                                         <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" /> @context.SourceResources.Count source(s)
                                     </MudText>
                                     @foreach (var sourceResource in context.SourceResources.Take(2))
                                     {
                                         if (sourceResource.LearningResource != null)
                                         {
-                                            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Book" Style="max-width: 100%; overflow: hidden; text-overflow: ellipsis;">
+                                            <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Icon="@Icons.Material.Filled.Book" 
+                                                    Style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; border-color: #e2e8f0; color: #64748b;">
                                                 @sourceResource.LearningResource.Title
                                             </MudChip>
                                         }
@@ -200,101 +230,105 @@
                             
                             <MudSpacer />
                             
-                            <MudStack Row="true" Spacing="1">
-                                <MudChip T="string" Size="Size.Small" Color="@GetStatusColor(context.Status)" Variant="Variant.Outlined">
+                            <MudStack Row="true" Spacing="1" Style="flex-wrap: wrap;">
+                                <MudChip T="string" Size="Size.Small" Style="@GetStatusChipStyle(context.Status)">
                                     @context.Status
                                 </MudChip>
-                                <MudChip T="string" Size="Size.Small" Color="@GetPriorityColor(context.Priority)" Variant="Variant.Filled" Style="@GetPriorityStyle(context.Priority)">
+                                <MudChip T="string" Size="Size.Small" Style="@GetPriorityChipStyle(context.Priority)">
                                     @context.Priority
                                 </MudChip>
                             </MudStack>
                             
-                            <MudDivider />
+                            <MudDivider Style="border-color: #e2e8f0;" />
                             
                             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
-                                <MudText Typo="Typo.caption" Color="Color.Secondary">
+                                <MudText Typo="Typo.caption" Style="color: #94a3b8;">
                                     @GetRelativeDate(context.DateCreated)
                                 </MudText>
                                 <MudStack Row="true" Spacing="1">
                                     @if (context.Status != IdeaStatus.InProgress)
                                     {
-                                        <MudButton Size="Size.Small" Variant="Variant.Text" Color="Color.Warning" OnClick="@(() => UpdateStatus(context, IdeaStatus.InProgress))" Style="text-transform: none; font-size: 0.7rem;">
+                                        <MudButton Size="Size.Small" Variant="Variant.Text" OnClick="@(() => UpdateStatus(context, IdeaStatus.InProgress))" 
+                                                  Style="text-transform: none; font-size: 0.7rem; color: #f59e0b;">
                                             Start
                                         </MudButton>
                                     }
                                     @if (context.Status != IdeaStatus.Published)
                                     {
-                                        <MudButton Size="Size.Small" Variant="Variant.Text" Color="Color.Success" OnClick="@(() => UpdateStatus(context, IdeaStatus.Published))" Style="text-transform: none; font-size: 0.7rem;">
+                                        <MudButton Size="Size.Small" Variant="Variant.Text" OnClick="@(() => UpdateStatus(context, IdeaStatus.Published))" 
+                                                  Style="text-transform: none; font-size: 0.7rem; color: #10b981;">
                                             Publish
                                         </MudButton>
                                     }
                                 </MudStack>
                             </MudStack>
                         </MudStack>
-                    </MudPaper>
+                    </div>
                 </div>
             </ItemRenderer>
         </MudDropContainer>
         
         @* Pagination *@
-        <MudPaper Class="pa-3 mt-4" Elevation="0">
+        <div class="resource-card" style="padding: 16px; margin-top: 20px;">
             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
-                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                <MudText Typo="Typo.body2" Style="color: #64748b; font-weight: 500;">
                     Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) of @filteredIdeas.Count ideas
                 </MudText>
-                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3" />
+                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3"
+                              Color="Color.Warning" Variant="Variant.Filled" />
             </MudStack>
-        </MudPaper>
+        </div>
     }
     else if (viewMode == ViewMode.DataGrid)
     {
-        <MudDataGrid T="ContentIdea" Items="@pagedIdeas" Striped="true" Dense="true" Hover="true" ReadOnly="false"
-                     Style="border-radius: 12px;">
+        <MudPaper Elevation="0" Style="border-radius: 16px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.1);">
+        <MudDataGrid T="ContentIdea" Items="@pagedIdeas" Striped="true" Dense="false" Hover="true" ReadOnly="false"
+                     Style="background: white;">
             <Columns>
                 <PropertyColumn Property="x => x.Title" Title="Title">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2" Style="font-weight: 600;">@context.Item.Title</MudText>
+                        <MudText Typo="Typo.body2" Style="font-weight: 600; color: #1e293b;">@context.Item.Title</MudText>
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.ContentType" Title="Type">
                     <CellTemplate>
-                        <MudChip T="string" Size="Size.Small" Color="@GetContentTypeColor(context.Item.ContentType)" Variant="Variant.Filled">
+                        <MudChip T="string" Size="Size.Small" Style="@GetContentTypeChipStyle(context.Item.ContentType)">
                             @context.Item.ContentType
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.Status" Title="Status">
                     <CellTemplate>
-                        <MudChip T="string" Size="Size.Small" Color="@GetStatusColor(context.Item.Status)">
+                        <MudChip T="string" Size="Size.Small" Style="@GetStatusChipStyle(context.Item.Status)">
                             @context.Item.Status
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.Priority" Title="Priority">
                     <CellTemplate>
-                        <MudChip T="string" Size="Size.Small" Color="@GetPriorityColor(context.Item.Priority)">
+                        <MudChip T="string" Size="Size.Small" Style="@GetPriorityChipStyle(context.Item.Priority)">
                             @context.Item.Priority
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.DateCreated" Title="Date Created">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2">@GetRelativeDate(context.Item.DateCreated)</MudText>
+                        <MudText Typo="Typo.body2" Style="color: #64748b;">@GetRelativeDate(context.Item.DateCreated)</MudText>
                     </CellTemplate>
                 </PropertyColumn>
                 <TemplateColumn Title="Sources" Sortable="false">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2">@context.Item.SourceResources.Count</MudText>
+                        <MudText Typo="Typo.body2" Style="color: #64748b;">@context.Item.SourceResources.Count</MudText>
                     </CellTemplate>
                 </TemplateColumn>
                 <TemplateColumn Title="Actions" Sortable="false">
                     <CellTemplate>
                         <MudStack Row="true" Spacing="1">
-                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" OnClick="@(() => OpenEditDialog(context.Item))" />
-                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Color="Color.Error" OnClick="@(() => DeleteIdea(context.Item.Id))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Style="color: #f59e0b;" OnClick="@(() => OpenEditDialog(context.Item))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Size="Size.Small" Style="color: #ef4444;" OnClick="@(() => DeleteIdea(context.Item.Id))" />
                             @if (context.Item.Status != IdeaStatus.Published)
                             {
-                                <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Color="Color.Success" 
+                                <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color: #10b981;" 
                                               OnClick="@(() => UpdateStatus(context.Item, IdeaStatus.Published))" 
                                               Title="Mark as Published" />
                             }
@@ -303,16 +337,18 @@
                 </TemplateColumn>
             </Columns>
         </MudDataGrid>
+        </MudPaper>
         
         @* Pagination *@
-        <MudPaper Class="pa-3 mt-4" Elevation="0">
+        <div class="resource-card" style="padding: 16px; margin-top: 20px;">
             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
-                <MudText Typo="Typo.body2" Color="Color.Secondary">
+                <MudText Typo="Typo.body2" Style="color: #64748b; font-weight: 500;">
                     Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) of @filteredIdeas.Count ideas
                 </MudText>
-                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3" />
+                <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3"
+                              Color="Color.Warning" Variant="Variant.Filled" />
             </MudStack>
-        </MudPaper>
+        </div>
     }
 </MudContainer>
 
@@ -585,5 +621,31 @@
         Priority.Medium => "background-color: #fff8e1; color: #f57f17;",
         Priority.Low => "background-color: #f5f5f5; color: #757575;",
         _ => ""
+    };
+
+    private string GetContentTypeChipStyle(ContentIdeaType contentType) => contentType switch
+    {
+        ContentIdeaType.Video => "background: #ffebee; color: #c62828; font-weight: 500;",
+        ContentIdeaType.BlogPost => "background: #e3f2fd; color: #1565c0; font-weight: 500;",
+        ContentIdeaType.Tutorial => "background: #fff3e0; color: #e65100; font-weight: 500;",
+        ContentIdeaType.TweetThread => "background: #f3e8ff; color: #7b1fa2; font-weight: 500;",
+        ContentIdeaType.Other => "background: #e8f5e9; color: #2e7d32; font-weight: 500;",
+        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
+    };
+
+    private string GetStatusChipStyle(IdeaStatus status) => status switch
+    {
+        IdeaStatus.Idea => "background: #e3f2fd; color: #1565c0; font-weight: 500;",
+        IdeaStatus.InProgress => "background: #fff3e0; color: #e65100; font-weight: 500;",
+        IdeaStatus.Published => "background: #e8f5e9; color: #2e7d32; font-weight: 500;",
+        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
+    };
+
+    private string GetPriorityChipStyle(Priority priority) => priority switch
+    {
+        Priority.High => "background: #ffebee; color: #c62828; font-weight: 500;",
+        Priority.Medium => "background: #fff3e0; color: #e65100; font-weight: 500;",
+        Priority.Low => "background: #f5f5f5; color: #616161; font-weight: 500;",
+        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
     };
 }

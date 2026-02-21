@@ -2,8 +2,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 
-@* Required *@
-<MudThemeProvider />
+@* Theme Provider with Custom Theme *@
+<MudThemeProvider Theme="@_theme" />
 <MudPopoverProvider />
 
 @* Needed for dialogs *@
@@ -13,45 +13,49 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="1" Style="background-color: white; color: #1e293b;">
-        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-            <MudIcon Icon="@Icons.Material.Filled.MenuBook" Color="Color.Primary" />
-            <MudText Typo="Typo.h6" Style="font-weight: 600;">LearnStack</MudText>
+    <MudAppBar Elevation="0" Class="app-header" Style="background: #ffffff; border-bottom: 1px solid #e0e0e0;">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Style="cursor: pointer;" @onclick="@(() => NavigationManager.NavigateTo("/resources"))">
+            <div style="background: #5c6bc0; border-radius: 6px; padding: 8px; display: flex; align-items: center; justify-content: center;">
+                <MudIcon Icon="@Icons.Material.Filled.AutoStories" Style="color: white;" Size="Size.Medium" />
+            </div>
+            <MudText Typo="Typo.h6" Style="font-weight: 600; color: #5c6bc0;">
+                LearnStack
+            </MudText>
         </MudStack>
         <MudSpacer />
         <AuthorizeView>
             <Authorized>
                 <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                        <MudAvatar Color="Color.Primary" Size="Size.Small">
+                        <MudAvatar Style="background: #5c6bc0; font-weight: 500;" Size="Size.Medium">
                             @GetUserInitials(context.User.Identity?.Name)
                         </MudAvatar>
-                        <MudStack Spacing="0">
-                            <MudText Typo="Typo.body2" Style="font-weight: 500;">@context.User.Identity?.Name</MudText>
-                            <MudText Typo="Typo.caption" Style="color: #64748b;">@GetUserEmail(context.User)</MudText>
+                        <MudStack Spacing="0" Class="d-none d-sm-flex">
+                            <MudText Typo="Typo.body2" Style="font-weight: 600; color: #212121;">@context.User.Identity?.Name?.Split('@')[0]</MudText>
+                            <MudText Typo="Typo.caption" Style="color: #757575;">@GetUserEmail(context.User)</MudText>
                         </MudStack>
                     </MudStack>
-                    <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-                        <MudMenuItem Href="Account/Manage">
+                    <MudMenu Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight"
+                            Dense="true">
+                        <MudMenuItem Href="Account/Manage" Style="padding: 10px 16px;">
                             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                                <MudIcon Icon="@Icons.Material.Filled.Settings" Size="Size.Small" />
-                                <MudText>Manage Account</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Style="color: #757575;" />
+                                <MudText Style="color: #212121;">Manage Account</MudText>
                             </MudStack>
                         </MudMenuItem>
-                        <MudDivider />
-                        <MudMenuItem Href="Account/Manage/ChangePassword">
+                        <MudMenuItem Href="Account/Manage/ChangePassword" Style="padding: 10px 16px;">
                             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                                <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" />
-                                <MudText>Change Password</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" Style="color: #757575;" />
+                                <MudText Style="color: #212121;">Change Password</MudText>
                             </MudStack>
                         </MudMenuItem>
-                        <MudDivider />
-                        <MudMenuItem>
+                        <MudDivider Class="my-1" />
+                        <MudMenuItem Style="padding: 10px 16px;">
                             <form action="Account/Logout" method="post">
                                 <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; width: 100%; text-align: left;">
                                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                                        <MudIcon Icon="@Icons.Material.Filled.Logout" Size="Size.Small" Color="Color.Error" />
-                                        <MudText Color="Color.Error">Logout</MudText>
+                                        <MudIcon Icon="@Icons.Material.Filled.Logout" Size="Size.Small" Style="color: #e53935;" />
+                                        <MudText Style="color: #e53935; font-weight: 500;">Sign Out</MudText>
                                     </MudStack>
                                 </button>
                             </form>
@@ -60,13 +64,14 @@
                 </MudStack>
             </Authorized>
             <NotAuthorized>
-                <MudButton Href="Account/Login" Variant="Variant.Text" Color="Color.Primary" Style="text-transform: none;">
+                <MudButton Href="Account/Login" Variant="Variant.Filled" Color="Color.Primary"
+                          Style="font-weight: 500; padding: 8px 20px; border-radius: 6px;">
                     Sign In
                 </MudButton>
             </NotAuthorized>
         </AuthorizeView>
     </MudAppBar>
-    <MudMainContent Style="background-color: #f8fafc; min-height: 100vh; padding-top: 64px;">
+    <MudMainContent Style="background: #fafafa; min-height: 100vh; padding-top: 64px;">
         @Body
     </MudMainContent>
 </MudLayout>
@@ -78,6 +83,40 @@
 </div>
 
 @code {
+    private MudTheme _theme = new()
+    {
+        PaletteLight = new PaletteLight()
+        {
+            Primary = "#5c6bc0",
+            PrimaryDarken = "#3f51b5",
+            PrimaryLighten = "#7986cb",
+            Secondary = "#78909c",
+            SecondaryDarken = "#546e7a",
+            SecondaryLighten = "#90a4ae",
+            Success = "#4caf50",
+            SuccessDarken = "#388e3c",
+            SuccessLighten = "#66bb6a",
+            Warning = "#fb8c00",
+            WarningDarken = "#ef6c00",
+            WarningLighten = "#ffa726",
+            Error = "#e53935",
+            ErrorDarken = "#c62828",
+            ErrorLighten = "#ef5350",
+            Info = "#1e88e5",
+            InfoDarken = "#1565c0",
+            InfoLighten = "#42a5f5",
+            Background = "#fafafa",
+            Surface = "#ffffff",
+            TextPrimary = "#212121",
+            TextSecondary = "#757575",
+            DrawerBackground = "#ffffff"
+        },
+        LayoutProperties = new LayoutProperties()
+        {
+            DefaultBorderRadius = "12px"
+        }
+    };
+
     private string GetUserInitials(string? name)
     {
         if (string.IsNullOrEmpty(name))
