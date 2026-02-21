@@ -6,6 +6,7 @@
 
 **Stop drowning in browser tabs. Start creating content that matters.**
 
+[![Deploy to Azure](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml/badge.svg)](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml)
 [![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/kasuken/LearnStack)
 [![Built with Blazor](https://img.shields.io/badge/Built%20with-Blazor-512BD4?logo=blazor)](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/kasuken/LearnStack/pulls)
@@ -120,6 +121,20 @@ dotnet run
 ```
 
 Open `https://localhost:5001` and start your journey!
+
+### 🌐 Deploy to Azure
+
+Want to host it in the cloud? We've got you covered!
+
+```bash
+# One-time setup: Configure your Azure App Service and GitHub secrets
+# See .github/DEPLOYMENT.md for detailed instructions
+
+# Then just push to main branch - automatic deployment! 🚀
+git push origin main
+```
+
+[📖 Full deployment guide](.github/DEPLOYMENT.md)
 
 ---
 

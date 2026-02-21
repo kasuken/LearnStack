@@ -1,0 +1,48 @@
+name: Deploy to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  AZURE_WEBAPP_NAME: 'learnstack-prod-001'    # Set this to your Azure Web App name
+  AZURE_WEBAPP_PACKAGE_PATH: './LearnStack'
+  DOTNET_VERSION: '10.0.x'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🚀 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔧 Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: 📦 Restore dependencies
+        run: dotnet restore ./LearnStack/LearnStack.csproj
+
+      - name: 🔨 Build application
+        run: dotnet build ./LearnStack/LearnStack.csproj --configuration Release --no-restore
+
+      - name: 🧪 Run tests (if any)
+        run: dotnet test --no-build --verbosity normal
+        continue-on-error: true
+
+      - name: 📤 Publish application
+        run: dotnet publish ./LearnStack/LearnStack.csproj --configuration Release --no-build --output ./publish
+
+      - name: 🌐 Deploy to Azure Web App
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
+
+      - name: ✅ Deployment complete
+        run: echo "🎉 Deployment to Azure App Service completed successfully!"
