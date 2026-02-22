@@ -26,6 +26,12 @@
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudButton Variant="Variant.Outlined" 
+                      StartIcon="@Icons.Material.Filled.Share" 
+                      OnClick="@(() => NavigationManager.NavigateTo("/shared-groups"))" 
+                      Style="border-radius: 6px;">
+                Shared Collections
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.Lightbulb" 
                       OnClick="@(() => NavigationManager.NavigateTo("/content-ideas"))" 
                       Style="border-radius: 6px;">
