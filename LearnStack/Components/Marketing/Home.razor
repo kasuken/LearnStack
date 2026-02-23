@@ -7,25 +7,34 @@
 
 <HeadContent>
     @* Primary SEO Meta Tags *@
-    <meta name="description" content="LearnStack helps you organize and track your AI learning resources. Save blog posts, videos, podcasts, and courses. Take notes, prioritize content, and plan your learning journey." />
-    <meta name="keywords" content="AI learning, machine learning resources, learning management, content organization, educational tools, knowledge management, learning tracker" />
+    <meta name="description" content="LearnStack helps you organize and track your AI learning resources. Save blog posts, videos, podcasts, and courses. Take notes, prioritize content, and plan your learning journey. Experience fast learning with shared learning links made easy." />
+    <meta name="keywords" content="AI learning, machine learning resources, learning management, content organization, educational tools, knowledge management, learning tracker, fast learning, shared learning links, organize learning resources, track learning progress, learning content management, AI education platform, learning resource organizer" />
     <meta name="author" content="LearnStack" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="format-detection" content="telephone=no" />
     
     @* Open Graph / Facebook *@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://learnstack.app/" />
     <meta property="og:title" content="LearnStack - Organize Your AI Learning Journey" />
-    <meta property="og:description" content="Track learning resources, take notes, and create content from your AI learning materials. Free to get started." />
+    <meta property="og:description" content="Track learning resources, take notes, and create content from your AI learning materials. Fast learning with shared learning links. Free to get started." />
     <meta property="og:image" content="https://learnstack.app/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LearnStack - Organize Your AI Learning Journey" />
     <meta property="og:site_name" content="LearnStack" />
+    <meta property="og:locale" content="en_US" />
     
     @* Twitter Card *@
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@@learnstack" />
+    <meta name="twitter:creator" content="@@learnstack" />
     <meta name="twitter:url" content="https://learnstack.app/" />
     <meta name="twitter:title" content="LearnStack - Organize Your AI Learning Journey" />
-    <meta name="twitter:description" content="Track learning resources, take notes, and create content from your AI learning materials." />
+    <meta name="twitter:description" content="Track learning resources, take notes, and create content from your AI learning materials. Fast learning with shared learning links." />
     <meta name="twitter:image" content="https://learnstack.app/images/twitter-card.png" />
+    <meta name="twitter:image:alt" content="LearnStack - Organize Your AI Learning Journey" />
     
     @* Canonical URL *@
     <link rel="canonical" href="https://learnstack.app/" />
@@ -36,21 +45,79 @@
         "@@context": "https://schema.org",
         "@@type": "WebApplication",
         "name": "LearnStack",
-        "description": "A learning content management application for organizing and tracking AI-related learning resources",
+        "alternateName": "LearnStack - AI Learning Organizer",
+        "description": "A learning content management application for organizing and tracking AI-related learning resources. Fast learning with shared learning links for developers, researchers, and AI enthusiasts.",
         "url": "https://learnstack.app",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Web Browser",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "offers": {
             "@@type": "Offer",
             "price": "0",
-            "priceCurrency": "USD"
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
         },
         "featureList": [
             "Learning resource management",
-            "Note-taking",
-            "Content prioritization",
-            "Progress tracking",
-            "Content idea planning"
+            "Note-taking and knowledge capture",
+            "Content prioritization and organization",
+            "Progress tracking and statistics",
+            "Content idea planning",
+            "Shared learning links",
+            "Fast learning organization",
+            "Multiple content type support (blog posts, videos, podcasts, courses)",
+            "Tag-based filtering and search"
+        ],
+        "screenshot": "https://learnstack.app/images/screenshot.png"
+    }
+    </script>
+    
+    @* Structured Data - FAQ *@
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "What is LearnStack?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "LearnStack is a learning content management application that helps you organize and track your AI learning resources. Save blog posts, videos, podcasts, and courses all in one place. Take notes, prioritize content, and plan your learning journey efficiently."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "How does LearnStack help with fast learning?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "LearnStack accelerates your learning by organizing all your resources in one place, allowing you to prioritize content, track progress, take searchable notes, and eliminate browser tab overload. You can quickly find any resource with powerful search and filtering capabilities."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Can I share learning resources with others?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes, LearnStack supports shared learning links, allowing you to organize and share curated collections of learning resources with teammates, study groups, or the community."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Is LearnStack free to use?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes, LearnStack is free to get started with no credit card required. It's free forever for individuals who want to organize their AI learning journey."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "What types of learning content can I organize?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "LearnStack supports multiple content types including blog posts, videos, podcasts, online courses, documentation, and articles. You can add any URL and LearnStack will automatically fetch metadata like title, description, and thumbnail."
+                }
+            }
         ]
     }
     </script>
@@ -69,7 +136,7 @@
                 <h1>Master AI One Resource at a Time</h1>
                 <p class="hero-description">
                     Stop drowning in browser tabs. LearnStack helps you organize, prioritize, and track your AI learning resources 
-                    — from blog posts and podcasts to videos and courses. All in one place.
+                    — from blog posts and podcasts to videos and courses. Fast learning with shared learning links. All in one place.
                 </p>
                 <div class="hero-cta">
                     <a href="Account/Register" class="btn-hero-primary">
