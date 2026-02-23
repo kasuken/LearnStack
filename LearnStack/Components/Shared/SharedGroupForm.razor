@@ -1,4 +1,5 @@
 @using LearnStack.Services
+@using LearnStack.Data.Models
 @inject ISharedResourceGroupService SharedGroupService
 @inject ILearningResourceService ResourceService
 
@@ -30,18 +31,107 @@
             @if (availableResources.Any())
             {
                 <MudText Typo="Typo.subtitle2" Class="mt-4 mb-2" Style="font-weight: 600; color: #212121;">Select Resources</MudText>
-                <MudPaper Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 8px; max-height: 300px; overflow-y: auto;">
-                    @foreach (var resource in availableResources)
+                
+                @* Filters Section *@
+                <MudPaper Elevation="0" Class="pa-3 mb-2" Style="background: #f5f5f5; border-radius: 8px;">
+                    <MudGrid Spacing="2">
+                        <MudItem xs="12">
+                            <MudTextField @bind-Value="searchText"
+                                        Label="Search"
+                                        Variant="Variant.Outlined"
+                                        Margin="Margin.Dense"
+                                        Adornment="Adornment.Start"
+                                        AdornmentIcon="@Icons.Material.Filled.Search"
+                                        Immediate="true"
+                                        DebounceInterval="300"
+                                        Placeholder="Search by title or tags..." />
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudSelect @bind-Value="filterContentType"
+                                     Label="Content Type"
+                                     Variant="Variant.Outlined"
+                                     Margin="Margin.Dense"
+                                     Clearable="true"
+                                     AdornmentIcon="@Icons.Material.Filled.Category">
+                                <MudSelectItem T="ContentType?" Value="@((ContentType?)null)">All Types</MudSelectItem>
+                                @foreach (ContentType type in Enum.GetValues(typeof(ContentType)))
+                                {
+                                    <MudSelectItem T="ContentType?" Value="@type">@type.ToString()</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudSelect @bind-Value="filterStatus"
+                                     Label="Status"
+                                     Variant="Variant.Outlined"
+                                     Margin="Margin.Dense"
+                                     Clearable="true"
+                                     AdornmentIcon="@Icons.Material.Filled.Flag">
+                                <MudSelectItem T="ContentStatus?" Value="@((ContentStatus?)null)">All Statuses</MudSelectItem>
+                                @foreach (ContentStatus status in Enum.GetValues(typeof(ContentStatus)))
+                                {
+                                    <MudSelectItem T="ContentStatus?" Value="@status">@status.ToString()</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="4">
+                            <MudSelect @bind-Value="filterPriority"
+                                     Label="Priority"
+                                     Variant="Variant.Outlined"
+                                     Margin="Margin.Dense"
+                                     Clearable="true"
+                                     AdornmentIcon="@Icons.Material.Filled.PriorityHigh">
+                                <MudSelectItem T="Priority?" Value="@((Priority?)null)">All Priorities</MudSelectItem>
+                                @foreach (Priority priority in Enum.GetValues(typeof(Priority)))
+                                {
+                                    <MudSelectItem T="Priority?" Value="@priority">@priority.ToString()</MudSelectItem>
+                                }
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                    @if (HasActiveFilters())
                     {
-                        <MudCheckBox T="bool" 
-                                    Value="@selectedResourceIds.Contains(resource.Id)"
-                                    ValueChanged="@((bool val) => ToggleResource(resource.Id, val))"
-                                    Label="@resource.Title"
-                                    Dense="true"
-                                    Class="px-3" />
+                        <MudButton OnClick="ClearFilters" 
+                                  Size="Size.Small" 
+                                  StartIcon="@Icons.Material.Filled.Clear" 
+                                  Class="mt-2"
+                                  Style="text-transform: none;">
+                            Clear Filters
+                        </MudButton>
                     }
                 </MudPaper>
-                <MudText Typo="Typo.caption" Style="color: #757575;" Class="mt-1">@selectedResourceIds.Count resource(s) selected</MudText>
+
+                @* Resources List *@
+                <MudPaper Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 8px; max-height: 300px; overflow-y: auto;">
+                    @{
+                        var filteredResources = GetFilteredResources();
+                    }
+                    @if (filteredResources.Any())
+                    {
+                        @foreach (var resource in filteredResources)
+                        {
+                            <MudCheckBox T="bool" 
+                                        Value="@selectedResourceIds.Contains(resource.Id)"
+                                        ValueChanged="@((bool val) => ToggleResource(resource.Id, val))"
+                                        Dense="true"
+                                        Class="px-3">
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                                    <MudText Typo="Typo.body2">@resource.Title</MudText>
+                                    <MudChip T="string" Size="Size.Small" Style="height: 20px;">@resource.ContentType</MudChip>
+                                </MudStack>
+                            </MudCheckBox>
+                        }
+                    }
+                    else
+                    {
+                        <div class="pa-4" style="text-align: center; color: #9e9e9e;">
+                            <MudText Typo="Typo.body2">No resources match the selected filters</MudText>
+                        </div>
+                    }
+                </MudPaper>
+                <MudText Typo="Typo.caption" Style="color: #757575;" Class="mt-1">
+                    @selectedResourceIds.Count of @GetFilteredResources().Count() resource(s) selected
+                </MudText>
             }
             else
             {
@@ -77,6 +167,12 @@
     private List<LearningResource> availableResources = new();
     private HashSet<int> selectedResourceIds = new();
 
+    // Filter state
+    private string searchText = string.Empty;
+    private ContentType? filterContentType = null;
+    private ContentStatus? filterStatus = null;
+    private Priority? filterPriority = null;
+
     protected override async Task OnInitializedAsync()
     {
         availableResources = await ResourceService.GetAllAsync(UserId);
@@ -106,6 +202,56 @@
             selectedResourceIds.Add(resourceId);
         else
             selectedResourceIds.Remove(resourceId);
+    }
+
+    private IEnumerable<LearningResource> GetFilteredResources()
+    {
+        var filtered = availableResources.AsEnumerable();
+
+        // Search filter
+        if (!string.IsNullOrWhiteSpace(searchText))
+        {
+            var search = searchText.ToLower();
+            filtered = filtered.Where(r => 
+                r.Title.ToLower().Contains(search) || 
+                (r.Tags != null && r.Tags.ToLower().Contains(search)));
+        }
+
+        // Content type filter
+        if (filterContentType.HasValue)
+        {
+            filtered = filtered.Where(r => r.ContentType == filterContentType.Value);
+        }
+
+        // Status filter
+        if (filterStatus.HasValue)
+        {
+            filtered = filtered.Where(r => r.Status == filterStatus.Value);
+        }
+
+        // Priority filter
+        if (filterPriority.HasValue)
+        {
+            filtered = filtered.Where(r => r.Priority == filterPriority.Value);
+        }
+
+        return filtered.OrderBy(r => r.Title);
+    }
+
+    private bool HasActiveFilters()
+    {
+        return !string.IsNullOrWhiteSpace(searchText) || 
+               filterContentType.HasValue || 
+               filterStatus.HasValue || 
+               filterPriority.HasValue;
+    }
+
+    private void ClearFilters()
+    {
+        searchText = string.Empty;
+        filterContentType = null;
+        filterStatus = null;
+        filterPriority = null;
     }
 
     private void Cancel()
