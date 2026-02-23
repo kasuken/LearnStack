@@ -1,0 +1,280 @@
+@page "/shared-groups"
+@using LearnStack.Services
+@attribute [Authorize]
+@inject ISharedResourceGroupService SharedGroupService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+@inject ISnackbar Snackbar
+
+<PageTitle>Shared Collections - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
+    @* Page Header *@
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4 page-header animate-fade-in-up">
+        <MudStack Spacing="1">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                <div style="background: #26a69a; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                    <MudIcon Icon="@Icons.Material.Filled.Share" Style="color: white;" Size="Size.Medium" />
+                </div>
+                <MudText Typo="Typo.h5" Class="page-title">Shared Collections</MudText>
+            </MudStack>
+            <MudText Typo="Typo.body2" Class="page-subtitle">Create and manage shareable groups of resources</MudText>
+        </MudStack>
+        <MudStack Row="true" Spacing="2">
+            <MudButton Variant="Variant.Outlined" 
+                      StartIcon="@Icons.Material.Filled.MenuBook" 
+                      OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
+                      Style="border-radius: 6px;">
+                Learning Resources
+            </MudButton>
+            <MudButton Variant="Variant.Filled" 
+                      Color="Color.Primary"
+                      StartIcon="@Icons.Material.Filled.Add" 
+                      OnClick="OpenAddDialog"
+                      Style="border-radius: 6px; background: #26a69a;">
+                New Collection
+            </MudButton>
+        </MudStack>
+    </MudStack>
+
+    @* Statistics *@
+    <MudGrid Spacing="3" Class="mb-4">
+        <MudItem xs="6" sm="4">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e0f2f1;">
+                    <MudIcon Icon="@Icons.Material.Filled.FolderShared" Style="color: #26a69a;" />
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">@groups.Count</span>
+                    <span class="stat-label">Total Collections</span>
+                </div>
+            </div>
+        </MudItem>
+        <MudItem xs="6" sm="4">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #e8f5e9;">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color: #43a047;" />
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">@groups.Count(g => g.IsActive)</span>
+                    <span class="stat-label">Active</span>
+                </div>
+            </div>
+        </MudItem>
+        <MudItem xs="6" sm="4">
+            <div class="stat-card">
+                <div class="stat-icon" style="background: #fce4ec;">
+                    <MudIcon Icon="@Icons.Material.Filled.LinkOff" Style="color: #e53935;" />
+                </div>
+                <div class="stat-content">
+                    <span class="stat-value">@groups.Count(g => !g.IsActive)</span>
+                    <span class="stat-label">Inactive</span>
+                </div>
+            </div>
+        </MudItem>
+    </MudGrid>
+
+    @if (isLoading)
+    {
+        <MudStack AlignItems="AlignItems.Center" Class="py-8">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">Loading collections...</MudText>
+        </MudStack>
+    }
+    else if (!groups.Any())
+    {
+        <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e0e0e0; border-radius: 12px;">
+            <MudIcon Icon="@Icons.Material.Filled.FolderShared" Size="Size.Large" Style="font-size: 4rem; color: #bdbdbd;" />
+            <MudText Typo="Typo.h6" Class="mt-4" Style="color: #757575;">No shared collections yet</MudText>
+            <MudText Typo="Typo.body2" Class="mt-2" Style="color: #9e9e9e;">Create a collection to share your curated resources with others.</MudText>
+            <MudButton Variant="Variant.Filled" 
+                      StartIcon="@Icons.Material.Filled.Add" 
+                      OnClick="OpenAddDialog" 
+                      Class="mt-4"
+                      Style="background: #26a69a; color: white; border-radius: 6px;">
+                Create Your First Collection
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        <MudGrid Spacing="3">
+            @foreach (var group in groups)
+            {
+                <MudItem xs="12" md="6" lg="4">
+                    <MudCard Elevation="2" Style="height: 100%; border-radius: 12px;">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                    <MudText Typo="Typo.h6" Style="font-weight: 600;">@group.Name</MudText>
+                                    <MudChip T="string" Size="Size.Small" 
+                                            Style="@(group.IsActive ? "background: #e8f5e9; color: #2e7d32;" : "background: #fce4ec; color: #c62828;")">
+                                        @(group.IsActive ? "Active" : "Inactive")
+                                    </MudChip>
+                                </MudStack>
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+                                    <MudMenuItem Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialog(group))">Edit</MudMenuItem>
+                                    <MudMenuItem Icon="@Icons.Material.Filled.ContentCopy" OnClick="@(() => CopyShareLink(group))">Copy Link</MudMenuItem>
+                                    <MudMenuItem Icon="@Icons.Material.Filled.OpenInNew" OnClick="@(() => OpenShareLink(group))">Open Link</MudMenuItem>
+                                    <MudDivider />
+                                    <MudMenuItem Icon="@Icons.Material.Filled.Delete" Style="color: #e53935;" OnClick="@(() => DeleteGroup(group.Id))">Delete</MudMenuItem>
+                                </MudMenu>
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <MudCardContent>
+                            @if (!string.IsNullOrEmpty(group.Description))
+                            {
+                                <MudText Typo="Typo.body2" Style="color: #757575;" Class="mb-3">@group.Description</MudText>
+                            }
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mb-2">
+                                <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" Style="color: #26a69a;" />
+                                <MudText Typo="Typo.caption" Style="color: #9e9e9e; word-break: break-all;">
+                                    @GetShareUrl(group)
+                                </MudText>
+                            </MudStack>
+                            <MudDivider Class="my-2" />
+                            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                                    <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Style="color: #5c6bc0;" />
+                                    <MudText Typo="Typo.body2" Style="font-weight: 500;">@group.Items.Count resource(s)</MudText>
+                                </MudStack>
+                                <MudText Typo="Typo.caption" Style="color: #9e9e9e;">@group.DateCreated.ToString("MMM dd, yyyy")</MudText>
+                            </MudStack>
+                            @if (group.Items.Any())
+                            {
+                                <MudStack Class="mt-2" Spacing="1">
+                                    @foreach (var item in group.Items.Take(3))
+                                    {
+                                        @if (item.LearningResource != null)
+                                        {
+                                            <MudChip T="string" Size="Size.Small" Style="background: #f5f5f5; color: #424242; max-width: 100%;">
+                                                @TruncateTitle(item.LearningResource.Title, 40)
+                                            </MudChip>
+                                        }
+                                    }
+                                    @if (group.Items.Count > 3)
+                                    {
+                                        <MudText Typo="Typo.caption" Style="color: #9e9e9e;">+@(group.Items.Count - 3) more</MudText>
+                                    }
+                                </MudStack>
+                            }
+                        </MudCardContent>
+                        <MudCardActions Style="justify-content: flex-end; padding: 8px 16px;">
+                            <MudButton Variant="Variant.Text" 
+                                      StartIcon="@Icons.Material.Filled.ContentCopy" 
+                                      Size="Size.Small"
+                                      OnClick="@(() => CopyShareLink(group))"
+                                      Style="color: #26a69a;">
+                                Copy Link
+                            </MudButton>
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+    private List<SharedResourceGroup> groups = new();
+    private bool isLoading = true;
+    private string userId = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+        await LoadGroups();
+    }
+
+    private async Task LoadGroups()
+    {
+        if (string.IsNullOrEmpty(userId)) return;
+
+        isLoading = true;
+        groups = await SharedGroupService.GetAllAsync(userId);
+        isLoading = false;
+    }
+
+    private string GetShareUrl(SharedResourceGroup group)
+    {
+        return $"{NavigationManager.BaseUri}shared/{group.ShareToken}";
+    }
+
+    private string TruncateTitle(string title, int maxLength)
+    {
+        return title.Length <= maxLength ? title : title.Substring(0, maxLength) + "...";
+    }
+
+    private async Task CopyShareLink(SharedResourceGroup group)
+    {
+        var url = GetShareUrl(group);
+        await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
+        Snackbar.Add("Share link copied to clipboard!", Severity.Success);
+    }
+
+    private void OpenShareLink(SharedResourceGroup group)
+    {
+        NavigationManager.NavigateTo($"/shared/{group.ShareToken}", forceLoad: true);
+    }
+
+    private async Task OpenAddDialog()
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(SharedGroupForm.UserId), userId }
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<SharedGroupForm>("Create Shared Collection", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            await LoadGroups();
+        }
+    }
+
+    private async Task OpenEditDialog(SharedResourceGroup group)
+    {
+        // Reload group to ensure fresh data
+        var freshGroup = await SharedGroupService.GetByIdAsync(group.Id, userId);
+        if (freshGroup == null) return;
+
+        var parameters = new DialogParameters
+        {
+            { nameof(SharedGroupForm.Group), freshGroup },
+            { nameof(SharedGroupForm.UserId), userId }
+        };
+
+        var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
+        var dialog = await DialogService.ShowAsync<SharedGroupForm>("Edit Shared Collection", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled)
+        {
+            await LoadGroups();
+        }
+    }
+
+    private async Task DeleteGroup(int groupId)
+    {
+        var result = await DialogService.ShowMessageBox(
+            "Delete Collection",
+            "Are you sure you want to delete this shared collection? The share link will stop working.",
+            yesText: "Delete",
+            cancelText: "Cancel");
+
+        if (result == true)
+        {
+            await SharedGroupService.DeleteAsync(groupId, userId);
+            await LoadGroups();
+            Snackbar.Add("Collection deleted.", Severity.Info);
+        }
+    }
+}

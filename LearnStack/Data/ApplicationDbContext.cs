@@ -10,6 +10,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<LearningResource> LearningResources { get; set; }
     public DbSet<ContentIdea> ContentIdeas { get; set; }
     public DbSet<ContentIdeaResource> ContentIdeaResources { get; set; }
+    public DbSet<SharedResourceGroup> SharedResourceGroups { get; set; }
+    public DbSet<SharedResourceGroupItem> SharedResourceGroupItems { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -41,5 +43,30 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany()
             .HasForeignKey(ci => ci.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<SharedResourceGroup>()
+            .HasIndex(sg => sg.ShareToken)
+            .IsUnique();
+
+        builder.Entity<SharedResourceGroup>()
+            .HasOne(sg => sg.User)
+            .WithMany()
+            .HasForeignKey(sg => sg.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<SharedResourceGroupItem>()
+            .HasKey(sgi => new { sgi.SharedResourceGroupId, sgi.LearningResourceId });
+
+        builder.Entity<SharedResourceGroupItem>()
+            .HasOne(sgi => sgi.SharedResourceGroup)
+            .WithMany(sg => sg.Items)
+            .HasForeignKey(sgi => sgi.SharedResourceGroupId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<SharedResourceGroupItem>()
+            .HasOne(sgi => sgi.LearningResource)
+            .WithMany()
+            .HasForeignKey(sgi => sgi.LearningResourceId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

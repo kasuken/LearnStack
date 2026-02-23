@@ -1,0 +1,170 @@
+@using LearnStack.Services
+@inject ISharedResourceGroupService SharedGroupService
+@inject ILearningResourceService ResourceService
+
+<MudDialog>
+    <DialogContent>
+        <MudForm @ref="form" @bind-IsValid="@isValid">
+            <MudTextField @bind-Value="model.Name"
+                         Label="Group Name"
+                         Required="true"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Counter="500"
+                         MaxLength="500"
+                         HelperText="Give your shared collection a name" />
+
+            <MudTextField @bind-Value="model.Description"
+                         Label="Description"
+                         Variant="Variant.Outlined"
+                         Margin="Margin.Dense"
+                         Lines="3"
+                         Counter="2000"
+                         MaxLength="2000"
+                         HelperText="Describe what this collection is about" />
+
+            <MudSwitch @bind-Value="model.IsActive" 
+                      Color="Color.Primary"
+                      Label="@(model.IsActive ? "Active (link is accessible)" : "Inactive (link is disabled)")" />
+
+            @if (availableResources.Any())
+            {
+                <MudText Typo="Typo.subtitle2" Class="mt-4 mb-2" Style="font-weight: 600; color: #212121;">Select Resources</MudText>
+                <MudPaper Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 8px; max-height: 300px; overflow-y: auto;">
+                    @foreach (var resource in availableResources)
+                    {
+                        <MudCheckBox T="bool" 
+                                    Value="@selectedResourceIds.Contains(resource.Id)"
+                                    ValueChanged="@((bool val) => ToggleResource(resource.Id, val))"
+                                    Label="@resource.Title"
+                                    Dense="true"
+                                    Class="px-3" />
+                    }
+                </MudPaper>
+                <MudText Typo="Typo.caption" Style="color: #757575;" Class="mt-1">@selectedResourceIds.Count resource(s) selected</MudText>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Info" Class="mt-4">No learning resources available. Add some resources first.</MudAlert>
+            }
+        </MudForm>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" 
+                  Variant="Variant.Filled" 
+                  OnClick="Submit"
+                  Disabled="@(!isValid)">
+            @(IsEditMode ? "Update" : "Create")
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; } = null!;
+
+    [Parameter]
+    public SharedResourceGroup? Group { get; set; }
+
+    [Parameter]
+    public string UserId { get; set; } = string.Empty;
+
+    private MudForm form = null!;
+    private bool isValid;
+    private SharedGroupFormModel model = new();
+    private bool IsEditMode => Group != null;
+    private List<LearningResource> availableResources = new();
+    private HashSet<int> selectedResourceIds = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        availableResources = await ResourceService.GetAllAsync(UserId);
+
+        if (Group != null)
+        {
+            model = new SharedGroupFormModel
+            {
+                Name = Group.Name,
+                Description = Group.Description,
+                IsActive = Group.IsActive
+            };
+            selectedResourceIds = Group.Items.Select(i => i.LearningResourceId).ToHashSet();
+        }
+        else
+        {
+            model = new SharedGroupFormModel
+            {
+                IsActive = true
+            };
+        }
+    }
+
+    private void ToggleResource(int resourceId, bool selected)
+    {
+        if (selected)
+            selectedResourceIds.Add(resourceId);
+        else
+            selectedResourceIds.Remove(resourceId);
+    }
+
+    private void Cancel()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task Submit()
+    {
+        await form.Validate();
+
+        if (!isValid)
+            return;
+
+        if (IsEditMode && Group != null)
+        {
+            Group.Name = model.Name;
+            Group.Description = model.Description;
+            Group.IsActive = model.IsActive;
+
+            await SharedGroupService.UpdateAsync(Group, UserId);
+
+            // Sync resources: remove unselected, add newly selected
+            var currentIds = Group.Items.Select(i => i.LearningResourceId).ToHashSet();
+            foreach (var id in currentIds.Except(selectedResourceIds))
+            {
+                await SharedGroupService.RemoveResourceAsync(Group.Id, id, UserId);
+            }
+            foreach (var id in selectedResourceIds.Except(currentIds))
+            {
+                await SharedGroupService.AddResourceAsync(Group.Id, id, UserId);
+            }
+        }
+        else
+        {
+            var newGroup = new SharedResourceGroup
+            {
+                Name = model.Name,
+                Description = model.Description,
+                IsActive = model.IsActive,
+                UserId = UserId,
+                DateCreated = DateTime.UtcNow
+            };
+
+            var created = await SharedGroupService.CreateAsync(newGroup);
+
+            foreach (var resourceId in selectedResourceIds)
+            {
+                await SharedGroupService.AddResourceAsync(created.Id, resourceId, UserId);
+            }
+        }
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private class SharedGroupFormModel
+    {
+        public string Name { get; set; } = string.Empty;
+        public string? Description { get; set; }
+        public bool IsActive { get; set; } = true;
+    }
+}
