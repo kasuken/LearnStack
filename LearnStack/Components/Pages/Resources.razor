@@ -17,10 +17,10 @@
     <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4 page-header animate-fade-in-up">
         <MudStack Spacing="1">
             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                <div style="background: #5c6bc0; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                <div style="background: linear-gradient(135deg, #4f46e5, #818cf8); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
                     <MudIcon Icon="@Icons.Material.Filled.AutoStories" Style="color: white;" Size="Size.Medium" />
                 </div>
-                <MudText Typo="Typo.h5" Class="page-title">Learning Resources</MudText>
+                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">Learning Resources</MudText>
             </MudStack>
             <MudText Typo="Typo.body2" Class="page-subtitle">Track and organize your learning materials</MudText>
         </MudStack>
@@ -28,16 +28,16 @@
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.Share" 
                       OnClick="@(() => NavigationManager.NavigateTo("/shared-groups"))" 
-                      Style="border-radius: 6px;">
+                      Style="border-radius: 10px; font-weight: 600;">
                 Shared Collections
             </MudButton>
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.Lightbulb" 
                       OnClick="@(() => NavigationManager.NavigateTo("/content-ideas"))" 
-                      Style="border-radius: 6px;">
+                      Style="border-radius: 10px; font-weight: 600;">
                 Content Ideas
             </MudButton>
-            <MudMenu Label="Export" Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Primary" Style="border-radius: 6px;">
+            <MudMenu Label="Export" Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Primary" Style="border-radius: 10px; font-weight: 600;">
                 <MudMenuItem Icon="@Icons.Material.Filled.Download" OnClick="ExportAsJson">Export as JSON</MudMenuItem>
                 <MudMenuItem Icon="@Icons.Material.Filled.Download" OnClick="ExportAsCsv">Export as CSV</MudMenuItem>
             </MudMenu>
@@ -48,8 +48,8 @@
     <MudGrid Spacing="3" Class="mb-4">
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #e8eaf6;">
-                    <MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="color: #5c6bc0;" />
+                <div class="stat-icon" style="background: #e0e7ff;">
+                    <MudIcon Icon="@Icons.Material.Filled.MenuBook" Style="color: #4f46e5;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@toLearnCount</span>
@@ -59,8 +59,8 @@
         </MudItem>
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #fff3e0;">
-                    <MudIcon Icon="@Icons.Material.Filled.PlayCircle" Style="color: #fb8c00;" />
+                <div class="stat-icon" style="background: #fef3c7;">
+                    <MudIcon Icon="@Icons.Material.Filled.PlayCircle" Style="color: #f59e0b;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@inProgressCount</span>
@@ -70,8 +70,8 @@
         </MudItem>
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #e8f5e9;">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color: #43a047;" />
+                <div class="stat-icon" style="background: #dcfce7;">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color: #10b981;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@completedCount</span>
@@ -81,8 +81,8 @@
         </MudItem>
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #e3f2fd;">
-                    <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: #1e88e5;" />
+                <div class="stat-icon" style="background: #dbeafe;">
+                    <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: #3b82f6;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@contentIdeasCount</span>
@@ -93,7 +93,7 @@
     </MudGrid>
 
     @* Tabs *@
-    <MudTabs @bind-ActivePanelIndex="activeTabIndex" @bind-ActivePanelIndex:after="OnFilterChanged" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4" Style="background: white; border-radius: 8px; border: 1px solid #e0e0e0;">
+    <MudTabs @bind-ActivePanelIndex="activeTabIndex" @bind-ActivePanelIndex:after="OnFilterChanged" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4" Style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
         <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="To Learn" BadgeColor="Color.Primary" />
         <MudTabPanel Icon="@Icons.Material.Filled.PlayCircle" Text="Learning" />
         <MudTabPanel Icon="@Icons.Material.Filled.CheckCircle" Text="Completed" />
@@ -101,7 +101,7 @@
     </MudTabs>
 
     @* Search and Filters Row *@
-    <MudPaper Class="filter-section" Elevation="0" Style="padding: 1rem; margin-bottom: 1rem; border: 1px solid #e0e0e0; border-radius: 8px;">
+    <MudPaper Class="filter-section" Elevation="0" Style="padding: 1rem; margin-bottom: 1rem; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
             <MudItem xs="12" md="5">
                 <MudTextField @bind-Value="searchTerm"
@@ -130,14 +130,14 @@
                     <MudButton Variant="Variant.Outlined"
                               EndIcon="@(showFilters ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
                               OnClick="@(() => showFilters = !showFilters)"
-                              Style="border-radius: 10px;">
+                              Style="border-radius: 10px; font-weight: 600;">
                         Filters
                     </MudButton>
                     <MudSelect @bind-Value="sortOrder"
                               @bind-Value:after="OnFilterChanged"
                               Variant="Variant.Outlined"
                               T="string"
-                              Style="width: 160px; background-color: white;">
+                              Style="width: 160px; background-color: white; border-radius: 10px;">
                         <MudSelectItem Value="@("custom")">Custom Order</MudSelectItem>
                         <MudSelectItem Value="@("newest")">Newest First</MudSelectItem>
                         <MudSelectItem Value="@("oldest")">Oldest First</MudSelectItem>
@@ -148,7 +148,7 @@
                               Color="Color.Primary"
                               StartIcon="@Icons.Material.Filled.Add"
                               OnClick="OpenAddDialog"
-                              Style="text-transform: none; border-radius: 8px;">
+                              Style="border-radius: 10px; font-weight: 600; padding: 8px 16px; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
                         Add Resource
                     </MudButton>
                 </MudStack>

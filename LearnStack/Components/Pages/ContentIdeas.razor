@@ -14,10 +14,10 @@
     <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4 page-header animate-fade-in-up">
         <MudStack Spacing="1">
             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                <div style="background: #fb8c00; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                <div style="background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);">
                     <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: white;" Size="Size.Medium" />
                 </div>
-                <MudText Typo="Typo.h5" Class="page-title">Content Ideas</MudText>
+                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">Content Ideas</MudText>
             </MudStack>
             <MudText Typo="Typo.body2" Class="page-subtitle">Manage your content creation pipeline</MudText>
         </MudStack>
@@ -25,14 +25,14 @@
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.MenuBook" 
                       OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
-                      Style="border-radius: 6px;">
+                      Style="border-radius: 10px; font-weight: 600;">
                 Learning Resources
             </MudButton>
             <MudButton Variant="Variant.Filled" 
                       Color="Color.Warning"
                       StartIcon="@Icons.Material.Filled.Add" 
                       OnClick="OpenAddDialog"
-                      Style="border-radius: 6px;">
+                      Style="border-radius: 10px; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);">
                 New Idea
             </MudButton>
         </MudStack>
@@ -42,8 +42,8 @@
     <MudGrid Spacing="3" Class="mb-4">
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #e3f2fd;">
-                    <MudIcon Icon="@Icons.Material.Filled.EmojiObjects" Style="color: #1e88e5;" />
+                <div class="stat-icon" style="background: #dbeafe;">
+                    <MudIcon Icon="@Icons.Material.Filled.EmojiObjects" Style="color: #3b82f6;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@ideaCount</span>
@@ -53,8 +53,8 @@
         </MudItem>
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #fff3e0;">
-                    <MudIcon Icon="@Icons.Material.Filled.Edit" Style="color: #fb8c00;" />
+                <div class="stat-icon" style="background: #fef3c7;">
+                    <MudIcon Icon="@Icons.Material.Filled.Edit" Style="color: #f59e0b;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@inProgressCount</span>
@@ -64,8 +64,8 @@
         </MudItem>
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #e8f5e9;">
-                    <MudIcon Icon="@Icons.Material.Filled.Publish" Style="color: #43a047;" />
+                <div class="stat-icon" style="background: #dcfce7;">
+                    <MudIcon Icon="@Icons.Material.Filled.Publish" Style="color: #10b981;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@publishedCount</span>
@@ -75,15 +75,15 @@
         </MudItem>
         <MudItem xs="6" sm="3">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #ede7f6;">
-                    <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: #7b1fa2;" />
+                <div class="stat-icon" style="background: #f3e8ff;">
+                    <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: #a855f7;" />
                 </div>
             </div>
         </MudItem>
     </MudGrid>
 
     @* Search and Filters Row *@
-    <div class="filter-section animate-fade-in-up">
+    <div class="filter-section animate-fade-in-up" style="border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
             <MudItem xs="12" md="4">
                 <MudTextField @bind-Value="searchTerm"
@@ -94,7 +94,7 @@
                              Immediate="true"
                              DebounceInterval="300"
                              OnDebounceIntervalElapsed="ApplyFiltersWithReset"
-                             Style="background-color: white;" />
+                             Style="background-color: white; border-radius: 12px;" />
             </MudItem>
             <MudItem xs="12" md="8">
                 <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">

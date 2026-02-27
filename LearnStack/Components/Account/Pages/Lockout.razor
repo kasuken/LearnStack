@@ -1,9 +1,98 @@
 ﻿@page "/Account/Lockout"
 @layout LearnStack.Components.Account.Shared.AccountLayout
 
-<PageTitle>Locked out</PageTitle>
+<PageTitle>Locked out - LearnStack</PageTitle>
 
-<header>
-    <h1 class="text-danger">Locked out</h1>
-    <p class="text-danger" role="alert">This account has been locked out, please try again later.</p>
-</header>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#ef4444">
+                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                </svg>
+            </div>
+            <h1>Account Locked</h1>
+        </div>
+
+        <div class="alert alert-error" role="alert">
+            This account has been locked out due to multiple failed login attempts. Please try again later.
+        </div>
+
+        <div class="auth-links">
+            <a href="/">Return to Home</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8fafc;
+        padding: 20px;
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+        border: 1px solid #e2e8f0;
+        padding: 40px;
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .auth-logo {
+        margin-bottom: 16px;
+    }
+
+    .auth-header h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 8px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .alert {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .alert-error {
+        background-color: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+
+    .auth-links {
+        text-align: center;
+    }
+
+    .auth-links a {
+        display: inline-block;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    }
+
+    .auth-links a:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3);
+    }
+</style>

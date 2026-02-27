@@ -1,5 +1,99 @@
 ﻿@page "/not-found"
 @layout MainLayout
 
-<h3>Not Found</h3>
-<p>Sorry, the content you are looking for does not exist.</p>
+<PageTitle>Not Found - LearnStack</PageTitle>
+
+<div class="not-found-container">
+    <div class="not-found-content">
+        <div class="not-found-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+        </div>
+        <h1>404</h1>
+        <h2>Page Not Found</h2>
+        <p>Sorry, the content you are looking for does not exist or has been moved.</p>
+        
+        <a href="/" class="btn-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px;">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+            </svg>
+            Return to Home
+        </a>
+    </div>
+</div>
+
+<style>
+    .not-found-container {
+        min-height: calc(100vh - 100px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .not-found-content {
+        text-align: center;
+        max-width: 500px;
+    }
+
+    .not-found-icon {
+        margin-bottom: 24px;
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .not-found-content h1 {
+        font-size: 6rem;
+        font-weight: 800;
+        color: #0f172a;
+        margin: 0;
+        line-height: 1;
+        background: linear-gradient(135deg, #4f46e5, #818cf8);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .not-found-content h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin: 16px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .not-found-content p {
+        color: #64748b;
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+        line-height: 1.6;
+    }
+
+    .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 12px -1px rgba(79, 70, 229, 0.3);
+        color: white;
+    }
+
+    @@keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+    }
+</style>

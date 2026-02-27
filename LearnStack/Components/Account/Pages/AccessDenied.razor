@@ -1,9 +1,98 @@
 ﻿@page "/Account/AccessDenied"
 @layout LearnStack.Components.Account.Shared.AccountLayout
 
-<PageTitle>Access denied</PageTitle>
+<PageTitle>Access denied - LearnStack</PageTitle>
 
-<header>
-    <h1 class="text-danger">Access denied</h1>
-    <p class="text-danger">You do not have access to this resource.</p>
-</header>
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#ef4444">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+            </div>
+            <h1>Access Denied</h1>
+        </div>
+
+        <div class="alert alert-error" role="alert">
+            You do not have access to this resource.
+        </div>
+
+        <div class="auth-links">
+            <a href="/">Return to Home</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8fafc;
+        padding: 20px;
+    }
+
+    .auth-card {
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+        border: 1px solid #e2e8f0;
+        padding: 40px;
+        width: 100%;
+        max-width: 420px;
+    }
+
+    .auth-header {
+        text-align: center;
+        margin-bottom: 32px;
+    }
+
+    .auth-logo {
+        margin-bottom: 16px;
+    }
+
+    .auth-header h1 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0 0 8px 0;
+        letter-spacing: -0.5px;
+    }
+
+    .alert {
+        padding: 16px;
+        border-radius: 12px;
+        margin-bottom: 24px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .alert-error {
+        background-color: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+
+    .auth-links {
+        text-align: center;
+    }
+
+    .auth-links a {
+        display: inline-block;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
+        color: white;
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
+    }
+
+    .auth-links a:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3);
+    }
+</style>

@@ -18,15 +18,15 @@
     }
     else if (group == null)
     {
-        <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e0e0e0; border-radius: 12px;">
-            <MudIcon Icon="@Icons.Material.Filled.LinkOff" Size="Size.Large" Style="font-size: 4rem; color: #bdbdbd;" />
-            <MudText Typo="Typo.h5" Class="mt-4" Style="color: #757575;">Collection Not Found</MudText>
-            <MudText Typo="Typo.body1" Class="mt-2" Style="color: #9e9e9e;">This shared collection doesn't exist or has been deactivated.</MudText>
+        <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc;">
+            <MudIcon Icon="@Icons.Material.Filled.LinkOff" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
+            <MudText Typo="Typo.h5" Class="mt-4" Style="color: #475569; font-weight: 600;">Collection Not Found</MudText>
+            <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">This shared collection doesn't exist or has been deactivated.</MudText>
             <MudButton Variant="Variant.Filled" 
                       Color="Color.Primary" 
                       Href="/"
                       Class="mt-4"
-                      Style="border-radius: 6px;">
+                      Style="border-radius: 10px; font-weight: 600;">
                 Go Home
             </MudButton>
         </MudPaper>
@@ -34,29 +34,29 @@
     else
     {
         @* Collection Header *@
-        <MudPaper Elevation="2" Class="pa-6 mb-4" Style="border-radius: 12px;">
+        <MudPaper Elevation="0" Class="pa-6 mb-4" Style="border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);">
             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mb-2">
-                <div style="background: #26a69a; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                <div style="background: linear-gradient(135deg, #10b981, #34d399); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
                     <MudIcon Icon="@Icons.Material.Filled.Share" Style="color: white;" Size="Size.Medium" />
                 </div>
                 <MudStack Spacing="0">
-                    <MudText Typo="Typo.h5" Style="font-weight: 600;">@group.Name</MudText>
+                    <MudText Typo="Typo.h5" Style="font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">@group.Name</MudText>
                     @if (group.User != null)
                     {
-                        <MudText Typo="Typo.caption" Style="color: #9e9e9e;">Shared by @group.User.UserName?.Split('@')[0]</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;">Shared by @group.User.UserName?.Split('@')[0]</MudText>
                     }
                 </MudStack>
             </MudStack>
             @if (!string.IsNullOrEmpty(group.Description))
             {
-                <MudText Typo="Typo.body1" Style="color: #757575;" Class="mt-2">@group.Description</MudText>
+                <MudText Typo="Typo.body1" Style="color: #475569; line-height: 1.6;" Class="mt-3">@group.Description</MudText>
             }
-            <MudStack Row="true" Spacing="3" Class="mt-3">
-                <MudChip T="string" Size="Size.Small" Style="background: #e0f2f1; color: #00695c;">
+            <MudStack Row="true" Spacing="3" Class="mt-4">
+                <MudChip T="string" Size="Size.Small" Style="background: #dcfce7; color: #059669; font-weight: 600; border-radius: 6px;">
                     <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Class="mr-1" />
                     @group.Items.Count resource(s)
                 </MudChip>
-                <MudChip T="string" Size="Size.Small" Style="background: #f5f5f5; color: #757575;">
+                <MudChip T="string" Size="Size.Small" Style="background: #f1f5f9; color: #475569; font-weight: 600; border-radius: 6px;">
                     @group.DateCreated.ToString("MMMM dd, yyyy")
                 </MudChip>
             </MudStack>
@@ -65,8 +65,8 @@
         @* Resources List *@
         @if (!group.Items.Any())
         {
-            <MudPaper Elevation="0" Class="pa-6" Style="text-align: center; border: 1px solid #e0e0e0; border-radius: 12px;">
-                <MudText Typo="Typo.body1" Style="color: #9e9e9e;">This collection has no resources yet.</MudText>
+            <MudPaper Elevation="0" Class="pa-6" Style="text-align: center; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc;">
+                <MudText Typo="Typo.body1" Style="color: #64748b;">This collection has no resources yet.</MudText>
             </MudPaper>
         }
         else
@@ -78,49 +78,49 @@
                     {
                         var resource = item.LearningResource;
                         <MudItem xs="12" sm="6" md="4">
-                            <MudCard Elevation="2" Style="height: 100%; border-radius: 12px;">
+                            <MudCard Elevation="0" Style="height: 100%; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); overflow: hidden;">
                                 @if (resource.ThumbnailImage != null)
                                 {
-                                    <MudCardMedia Image="@GetThumbnailDataUrl(resource)" Height="160" />
+                                    <MudCardMedia Image="@GetThumbnailDataUrl(resource)" Height="160" Style="border-bottom: 1px solid #e2e8f0;" />
                                 }
                                 else
                                 {
-                                    <div style="height: 160px; background: linear-gradient(135deg, #e0f2f1, #b2dfdb); display: flex; align-items: center; justify-content: center; border-radius: 12px 12px 0 0;">
-                                        <MudIcon Icon="@GetContentTypeIcon(resource.ContentType)" Size="Size.Large" Style="font-size: 3rem; color: #00695c; opacity: 0.5;" />
+                                    <div style="height: 160px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e2e8f0;">
+                                        <MudIcon Icon="@GetContentTypeIcon(resource.ContentType)" Size="Size.Large" Style="font-size: 3rem; color: #cbd5e1;" />
                                     </div>
                                 }
                                 <MudCardContent>
-                                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1" Class="mb-2">
-                                        <MudChip T="string" Size="Size.Small" Style="@GetContentTypeChipStyle(resource.ContentType)">
+                                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mb-3">
+                                        <MudChip T="string" Size="Size.Small" Style="@(GetContentTypeChipStyle(resource.ContentType) + "; font-weight: 600; border-radius: 6px;")">
                                             @resource.ContentType
                                         </MudChip>
-                                        <MudChip T="string" Size="Size.Small" Style="@GetPriorityChipStyle(resource.Priority)">
+                                        <MudChip T="string" Size="Size.Small" Style="@(GetPriorityChipStyle(resource.Priority) + "; font-weight: 600; border-radius: 6px;")">
                                             @resource.Priority
                                         </MudChip>
                                     </MudStack>
-                                    <MudText Typo="Typo.h6" Style="font-weight: 600; font-size: 1rem;">@resource.Title</MudText>
+                                    <MudText Typo="Typo.h6" Style="font-weight: 700; font-size: 1.1rem; color: #0f172a; line-height: 1.4;" Class="mb-2">@resource.Title</MudText>
                                     @if (!string.IsNullOrEmpty(resource.Description))
                                     {
-                                        <MudText Typo="Typo.body2" Style="color: #757575;" Class="mt-1">
+                                        <MudText Typo="Typo.body2" Style="color: #475569; line-height: 1.6;" Class="mb-3">
                                             @TruncateText(resource.Description, 120)
                                         </MudText>
                                     }
                                     @if (!string.IsNullOrEmpty(resource.Tags))
                                     {
-                                        <MudStack Row="true" Spacing="1" Class="mt-2" Style="flex-wrap: wrap;">
+                                        <MudStack Row="true" Spacing="1" Style="flex-wrap: wrap;">
                                             @foreach (var tag in resource.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Take(3))
                                             {
-                                                <MudChip T="string" Size="Size.Small" Style="background: #f5f5f5; color: #616161; font-size: 0.7rem;">@tag</MudChip>
+                                                <MudChip T="string" Size="Size.Small" Style="background: #f1f5f9; color: #475569; font-size: 0.75rem; font-weight: 500; border-radius: 6px;">@tag</MudChip>
                                             }
                                         </MudStack>
                                     }
                                 </MudCardContent>
-                                <MudCardActions Style="padding: 8px 16px;">
+                                <MudCardActions Style="padding: 12px 16px; border-top: 1px solid #f1f5f9; background: #f8fafc;">
                                     <MudButton Variant="Variant.Text" 
                                               StartIcon="@Icons.Material.Filled.OpenInNew" 
                                               Href="@resource.Url"
                                               Target="_blank"
-                                              Style="color: #26a69a;">
+                                              Style="color: #4f46e5; font-weight: 600; border-radius: 8px;">
                                         Visit Resource
                                     </MudButton>
                                 </MudCardActions>
@@ -132,10 +132,12 @@
         }
 
         @* Footer *@
-        <MudStack AlignItems="AlignItems.Center" Class="mt-6">
-            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
-                <MudIcon Icon="@Icons.Material.Filled.AutoStories" Size="Size.Small" Style="color: #5c6bc0;" />
-                <MudText Typo="Typo.caption" Style="color: #9e9e9e;">Powered by LearnStack</MudText>
+        <MudStack AlignItems="AlignItems.Center" Class="mt-8 mb-4">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                <div style="background: linear-gradient(135deg, #4f46e5, #818cf8); border-radius: 8px; padding: 6px; display: flex; align-items: center; justify-content: center;">
+                    <MudIcon Icon="@Icons.Material.Filled.AutoStories" Size="Size.Small" Style="color: white;" />
+                </div>
+                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; letter-spacing: 0.5px;">POWERED BY LEARNSTACK</MudText>
             </MudStack>
         </MudStack>
     }
@@ -181,20 +183,20 @@
 
     private string GetContentTypeChipStyle(ContentType type) => type switch
     {
-        ContentType.BlogPost => "background: #e3f2fd; color: #1565c0;",
-        ContentType.Podcast => "background: #f3e5f5; color: #7b1fa2;",
-        ContentType.Video => "background: #fce4ec; color: #c62828;",
-        ContentType.Article => "background: #e8eaf6; color: #283593;",
-        ContentType.Course => "background: #fff3e0; color: #e65100;",
-        ContentType.Documentation => "background: #e0f2f1; color: #00695c;",
-        _ => "background: #f5f5f5; color: #616161;"
+        ContentType.BlogPost => "background: #eff6ff; color: #2563eb;",
+        ContentType.Podcast => "background: #faf5ff; color: #9333ea;",
+        ContentType.Video => "background: #fef2f2; color: #dc2626;",
+        ContentType.Article => "background: #eef2ff; color: #4f46e5;",
+        ContentType.Course => "background: #fff7ed; color: #ea580c;",
+        ContentType.Documentation => "background: #ecfdf5; color: #059669;",
+        _ => "background: #f1f5f9; color: #475569;"
     };
 
     private string GetPriorityChipStyle(Priority priority) => priority switch
     {
-        Priority.High => "background: #fce4ec; color: #c62828;",
-        Priority.Medium => "background: #fff3e0; color: #e65100;",
-        Priority.Low => "background: #f5f5f5; color: #757575;",
-        _ => "background: #f5f5f5; color: #757575;"
+        Priority.High => "background: #fef2f2; color: #dc2626;",
+        Priority.Medium => "background: #fffbeb; color: #d97706;",
+        Priority.Low => "background: #f1f5f9; color: #64748b;",
+        _ => "background: #f1f5f9; color: #64748b;"
     };
 }
