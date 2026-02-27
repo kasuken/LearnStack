@@ -60,7 +60,7 @@
                 <MudSelectItem Value="@Priority.High">High</MudSelectItem>
             </MudSelect>
 
-            <MudText Typo="Typo.subtitle2" Class="mt-3 mb-1">Source Resources</MudText>
+            <MudText Typo="Typo.subtitle2" Class="mt-3 mb-1" Style="font-weight: 600; color: #475569;">Source Resources</MudText>
             <MudTextField @bind-Value="resourceSearchTerm"
                          Label="Search Resources"
                          Variant="Variant.Outlined"
@@ -71,32 +71,34 @@
                          OnDebounceIntervalElapsed="FilterResources"
                          Clearable="true" />
 
-            <MudPaper Class="pa-2 mb-2" Elevation="0" Style="border: 1px solid #e0e0e0; max-height: 300px; overflow-y: auto;">
+            <MudPaper Class="pa-3 mb-2 mt-2" Elevation="0" Style="border: 1px solid #e2e8f0; border-radius: 12px; max-height: 300px; overflow-y: auto; background: #f8fafc;">
                 @if (filteredResources.Any())
                 {
-                    @foreach (var resource in filteredResources)
-                    {
-                        var isSelected = model.SelectedResourceIds.Contains(resource.Id);
-                        <MudChip T="string" 
-                                Color="@(isSelected ? Color.Primary : Color.Default)"
-                                Variant="@(isSelected ? Variant.Filled : Variant.Outlined)"
-                                OnClick="@(() => ToggleResourceSelection(resource.Id))"
-                                Style="cursor: pointer; margin: 4px;">
-                            @if (isSelected)
-                            {
-                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Class="mr-1" />
-                            }
-                            @resource.Title
-                        </MudChip>
-                    }
+                    <MudStack Row="true" Style="flex-wrap: wrap;" Spacing="1">
+                        @foreach (var resource in filteredResources)
+                        {
+                            var isSelected = model.SelectedResourceIds.Contains(resource.Id);
+                            <MudChip T="string" 
+                                    Color="@(isSelected ? Color.Primary : Color.Default)"
+                                    Variant="@(isSelected ? Variant.Filled : Variant.Outlined)"
+                                    OnClick="@(() => ToggleResourceSelection(resource.Id))"
+                                    Style="@(isSelected ? "cursor: pointer; margin: 4px; font-weight: 600; border-radius: 8px;" : "cursor: pointer; margin: 4px; border-radius: 8px; background: white;")">
+                                @if (isSelected)
+                                {
+                                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Class="mr-1" />
+                                }
+                                @resource.Title
+                            </MudChip>
+                        }
+                    </MudStack>
                 }
                 else if (!string.IsNullOrWhiteSpace(resourceSearchTerm))
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">No resources found matching "@resourceSearchTerm"</MudText>
+                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">No resources found matching "@resourceSearchTerm"</MudText>
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">No resources available. Add resources first.</MudText>
+                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">No resources available. Add resources first.</MudText>
                 }
             </MudPaper>
 

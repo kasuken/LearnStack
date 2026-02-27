@@ -8,22 +8,22 @@
 
 <PageTitle>Personal Data</PageTitle>
 
-<StatusMessage/>
-<h3>Personal Data</h3>
+<div class="manage-section-header">
+    <h3>Personal Data</h3>
+    <p>Download or delete your personal data.</p>
+</div>
 
-<div class="row">
-    <div class="col-md-6">
-        <p>Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
-        <p>
-            <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-        </p>
+<StatusMessage/>
+
+<div class="manage-card">
+    <p style="color: #475569; line-height: 1.6; margin-bottom: 16px;">Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
+    <p style="color: #b91c1c; font-weight: 500; margin-bottom: 24px;">Deleting this data will permanently remove your account, and this cannot be recovered.</p>
+    <div class="btn-group">
         <form action="Account/Manage/DownloadPersonalData" method="post">
             <AntiforgeryToken/>
-            <button class="btn btn-primary" type="submit">Download</button>
+            <button class="btn-primary" type="submit">Download my data</button>
         </form>
-        <p>
-            <a href="Account/Manage/DeletePersonalData" class="btn btn-danger">Delete</a>
-        </p>
+        <a href="Account/Manage/DeletePersonalData" class="btn-danger">Delete my account</a>
     </div>
 </div>
 

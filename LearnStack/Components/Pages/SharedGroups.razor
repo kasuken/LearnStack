@@ -15,10 +15,10 @@
     <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4 page-header animate-fade-in-up">
         <MudStack Spacing="1">
             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                <div style="background: #26a69a; border-radius: 8px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+                <div style="background: linear-gradient(135deg, #10b981, #34d399); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
                     <MudIcon Icon="@Icons.Material.Filled.Share" Style="color: white;" Size="Size.Medium" />
                 </div>
-                <MudText Typo="Typo.h5" Class="page-title">Shared Collections</MudText>
+                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">Shared Collections</MudText>
             </MudStack>
             <MudText Typo="Typo.body2" Class="page-subtitle">Create and manage shareable groups of resources</MudText>
         </MudStack>
@@ -26,14 +26,14 @@
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.MenuBook" 
                       OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
-                      Style="border-radius: 6px;">
+                      Style="border-radius: 10px; font-weight: 600;">
                 Learning Resources
             </MudButton>
             <MudButton Variant="Variant.Filled" 
                       Color="Color.Primary"
                       StartIcon="@Icons.Material.Filled.Add" 
                       OnClick="OpenAddDialog"
-                      Style="border-radius: 6px; background: #26a69a;">
+                      Style="border-radius: 10px; font-weight: 600; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
                 New Collection
             </MudButton>
         </MudStack>
@@ -43,8 +43,8 @@
     <MudGrid Spacing="3" Class="mb-4">
         <MudItem xs="6" sm="4">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #e0f2f1;">
-                    <MudIcon Icon="@Icons.Material.Filled.FolderShared" Style="color: #26a69a;" />
+                <div class="stat-icon" style="background: #dcfce7;">
+                    <MudIcon Icon="@Icons.Material.Filled.FolderShared" Style="color: #10b981;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@groups.Count</span>
@@ -54,8 +54,8 @@
         </MudItem>
         <MudItem xs="6" sm="4">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #e8f5e9;">
-                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color: #43a047;" />
+                <div class="stat-icon" style="background: #dbeafe;">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Style="color: #3b82f6;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@groups.Count(g => g.IsActive)</span>
@@ -65,8 +65,8 @@
         </MudItem>
         <MudItem xs="6" sm="4">
             <div class="stat-card">
-                <div class="stat-icon" style="background: #fce4ec;">
-                    <MudIcon Icon="@Icons.Material.Filled.LinkOff" Style="color: #e53935;" />
+                <div class="stat-icon" style="background: #fee2e2;">
+                    <MudIcon Icon="@Icons.Material.Filled.LinkOff" Style="color: #ef4444;" />
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@groups.Count(g => !g.IsActive)</span>
@@ -85,15 +85,15 @@
     }
     else if (!groups.Any())
     {
-        <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e0e0e0; border-radius: 12px;">
-            <MudIcon Icon="@Icons.Material.Filled.FolderShared" Size="Size.Large" Style="font-size: 4rem; color: #bdbdbd;" />
-            <MudText Typo="Typo.h6" Class="mt-4" Style="color: #757575;">No shared collections yet</MudText>
-            <MudText Typo="Typo.body2" Class="mt-2" Style="color: #9e9e9e;">Create a collection to share your curated resources with others.</MudText>
+        <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc;">
+            <MudIcon Icon="@Icons.Material.Filled.FolderShared" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
+            <MudText Typo="Typo.h6" Class="mt-4" Style="color: #475569; font-weight: 600;">No shared collections yet</MudText>
+            <MudText Typo="Typo.body2" Class="mt-2" Style="color: #64748b;">Create a collection to share your curated resources with others.</MudText>
             <MudButton Variant="Variant.Filled" 
                       StartIcon="@Icons.Material.Filled.Add" 
                       OnClick="OpenAddDialog" 
                       Class="mt-4"
-                      Style="background: #26a69a; color: white; border-radius: 6px;">
+                      Style="background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 10px; font-weight: 600;">
                 Create Your First Collection
             </MudButton>
         </MudPaper>

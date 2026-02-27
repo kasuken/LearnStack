@@ -20,46 +20,44 @@
 }
 else
 {
+    <div class="manage-section-header">
+        <h3>Configure authenticator app</h3>
+        <p>Set up two-factor authentication with an authenticator app.</p>
+    </div>
+
     <StatusMessage Message="@message"/>
-    <h3>Configure authenticator app</h3>
-    <div>
-        <p>To use an authenticator app go through the following steps:</p>
-        <ol class="list">
-            <li>
-                <p>
-                    Download a two-factor authenticator app like Microsoft Authenticator for
-                    <a href="https://go.microsoft.com/fwlink/?Linkid=825072">Android</a> and
-                    <a href="https://go.microsoft.com/fwlink/?Linkid=825073">iOS</a> or
-                    Google Authenticator for
-                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en">Android</a> and
-                    <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8">iOS</a>.
-                </p>
+
+    <div class="manage-card">
+        <p style="color: #475569; line-height: 1.6; margin-bottom: 16px;">To use an authenticator app go through the following steps:</p>
+        <ol style="color: #475569; line-height: 1.8; padding-left: 20px; margin-bottom: 24px;">
+            <li style="margin-bottom: 12px;">
+                Download a two-factor authenticator app like Microsoft Authenticator for
+                <a href="https://go.microsoft.com/fwlink/?Linkid=825072" style="color: #4f46e5; font-weight: 500;">Android</a> and
+                <a href="https://go.microsoft.com/fwlink/?Linkid=825073" style="color: #4f46e5; font-weight: 500;">iOS</a> or
+                Google Authenticator for
+                <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&amp;hl=en" style="color: #4f46e5; font-weight: 500;">Android</a> and
+                <a href="https://itunes.apple.com/us/app/google-authenticator/id388497605?mt=8" style="color: #4f46e5; font-weight: 500;">iOS</a>.
             </li>
-            <li>
-                <p>Scan the QR Code or enter this key <kbd>@sharedKey</kbd> into your two factor authenticator app. Spaces and casing do not matter.</p>
-                <div class="alert alert-info">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.</div>
-                <div></div>
+            <li style="margin-bottom: 12px;">
+                <p style="margin-bottom: 8px;">Scan the QR Code or enter this key into your two factor authenticator app:</p>
+                <code style="display: inline-block; padding: 8px 16px; background: #f1f5f9; border-radius: 8px; font-size: 0.95rem; color: #0f172a; font-weight: 600; letter-spacing: 0.5px;">@sharedKey</code>
+                <p style="margin-top: 8px; font-size: 0.85rem; color: #94a3b8;">Spaces and casing do not matter.</p>
+                <div class="alert-info" style="margin-top: 12px;">Learn how to <a href="https://go.microsoft.com/fwlink/?Linkid=852423">enable QR code generation</a>.</div>
                 <div data-url="@authenticatorUri"></div>
             </li>
             <li>
-                <p>
-                    Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
-                    with a unique code. Enter the code in the confirmation box below.
-                </p>
-                <div class="row">
-                    <div class="col-xl-6">
-                        <EditForm Model="Input" FormName="send-code" OnValidSubmit="OnValidSubmitAsync" method="post">
-                            <DataAnnotationsValidator/>
-                            <div class="form-floating mb-3">
-                                <InputText @bind-Value="Input.Code" id="Input.Code" class="form-control" autocomplete="off" placeholder="Enter the code"/>
-                                <label for="Input.Code" class="control-label form-label">Verification Code</label>
-                                <ValidationMessage For="() => Input.Code" class="text-danger"/>
-                            </div>
-                            <button type="submit" class="w-100 btn btn-lg btn-primary">Verify</button>
-                            <ValidationSummary class="text-danger" role="alert"/>
-                        </EditForm>
+                <p style="margin-bottom: 16px;">Once you have scanned the QR code or input the key above, your two factor authentication app will provide you
+                    with a unique code. Enter the code in the confirmation box below.</p>
+                <EditForm Model="Input" FormName="send-code" OnValidSubmit="OnValidSubmitAsync" method="post">
+                    <DataAnnotationsValidator/>
+                    <div class="form-group">
+                        <label for="Input.Code" class="form-label">Verification Code</label>
+                        <InputText @bind-Value="Input.Code" id="Input.Code" class="form-input" autocomplete="off" placeholder="Enter the 6-digit code"/>
+                        <ValidationMessage For="() => Input.Code" class="validation-message"/>
                     </div>
-                </div>
+                    <button type="submit" class="btn-primary w-100">Verify</button>
+                    <ValidationSummary class="alert-error" role="alert" style="margin-top: 12px;"/>
+                </EditForm>
             </li>
         </ol>
     </div>

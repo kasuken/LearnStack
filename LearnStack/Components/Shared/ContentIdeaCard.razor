@@ -1,18 +1,19 @@
 ﻿﻿@using LearnStack.Services
 @inject IContentIdeaService ContentIdeaService
 
-<MudCard Elevation="2" Class="d-flex flex-column" Style="height: 100%;">
-    <MudCardHeader>
+<MudCard Elevation="0" Class="resource-card d-flex flex-column" Style="height: 100%; border-radius: 16px; overflow: hidden;">
+    <MudCardHeader Style="background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-bottom: 1px solid #e2e8f0;">
         <CardHeaderContent>
-            <MudText Typo="Typo.h6">@Idea.Title</MudText>
-            <MudChip T="string" Size="Size.Small" Color="GetContentTypeColor()" Class="mt-1">
+            <MudText Typo="Typo.h6" Style="font-weight: 700; line-height: 1.3; margin-bottom: 4px; color: #0f172a;">@Idea.Title</MudText>
+            <MudChip T="string" Size="Size.Small" Color="GetContentTypeColor()" Class="mt-1" Style="font-weight: 600; border-radius: 6px;">
                 @Idea.ContentType.ToString()
             </MudChip>
         </CardHeaderContent>
         <CardHeaderActions>
             <MudIconButton Icon="@Icons.Material.Filled.Edit" 
                           Size="Size.Small" 
-                          OnClick="OnEdit" />
+                          OnClick="OnEdit" 
+                          Style="color: #64748b;" />
             <MudIconButton Icon="@Icons.Material.Filled.Delete" 
                           Size="Size.Small" 
                           Color="Color.Error"
@@ -22,49 +23,50 @@
     <MudCardContent Class="flex-grow-1">
         @if (!string.IsNullOrEmpty(Idea.Description))
         {
-            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-2">
+            <MudText Typo="Typo.body2" Style="color: #475569; line-height: 1.6;" Class="mb-3">
                 @Idea.Description
             </MudText>
         }
         
-        <MudDivider Class="my-2" />
+        <MudDivider Class="my-3" Style="border-color: #f1f5f9;" />
         
-        <MudStack Row="true" Spacing="1" Class="mb-2">
-            <MudChip T="string" Size="Size.Small" Color="GetStatusColor()">
+        <MudStack Row="true" Spacing="2" Class="mb-3">
+            <MudChip T="string" Size="Size.Small" Color="GetStatusColor()" Style="font-weight: 600; border-radius: 6px;">
                 @Idea.Status.ToString()
             </MudChip>
-            <MudChip T="string" Size="Size.Small" Color="GetPriorityColor()">
+            <MudChip T="string" Size="Size.Small" Color="GetPriorityColor()" Style="font-weight: 600; border-radius: 6px;">
                 @Idea.Priority.ToString()
             </MudChip>
         </MudStack>
 
         @if (Idea.SourceResources.Any())
         {
-            <MudText Typo="Typo.body2" Class="mt-2 mb-1">
-                <strong>Source Resources (@Idea.SourceResources.Count):</strong>
+            <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 8px;">
+                SOURCE RESOURCES (@Idea.SourceResources.Count)
             </MudText>
-            <MudStack Spacing="1">
+            <MudStack Spacing="2" Class="mb-3">
                 @foreach (var sourceResource in Idea.SourceResources.Take(3))
                 {
                     if (sourceResource.LearningResource != null)
                     {
-                        <MudPaper Class="pa-2" Elevation="0" Style="border: 1px solid #e0e0e0; border-radius: 4px;">
-                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
+                        <MudPaper Class="pa-2" Elevation="0" Style="border: 1px solid #e2e8f0; border-radius: 8px; background: #f8fafc;">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
                                 <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" Color="Color.Primary" />
-                                <MudText Typo="Typo.caption" Style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <MudText Typo="Typo.caption" Style="flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; color: #334155;">
                                     @sourceResource.LearningResource.Title
                                 </MudText>
                                 <MudIconButton Icon="@Icons.Material.Filled.OpenInNew" 
                                               Size="Size.Small" 
                                               Href="@sourceResource.LearningResource.Url" 
-                                              Target="_blank" />
+                                              Target="_blank" 
+                                              Style="color: #64748b; padding: 4px;" />
                             </MudStack>
                         </MudPaper>
                     }
                 }
                 @if (Idea.SourceResources.Count > 3)
                 {
-                    <MudText Typo="Typo.caption" Color="Color.Secondary">
+                    <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;">
                         +@(Idea.SourceResources.Count - 3) more...
                     </MudText>
                 }
@@ -73,20 +75,23 @@
 
         @if (!string.IsNullOrEmpty(Idea.Outline))
         {
-            <MudText Typo="Typo.body2" Class="mt-2">
-                <strong>Outline:</strong> @(Idea.Outline.Length > 100 ? Idea.Outline.Substring(0, 100) + "..." : Idea.Outline)
-            </MudText>
+            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid #f1f5f9;">
+                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 4px;">OUTLINE</MudText>
+                <MudText Typo="Typo.body2" Style="color: #334155;">
+                    @(Idea.Outline.Length > 100 ? Idea.Outline.Substring(0, 100) + "..." : Idea.Outline)
+                </MudText>
+            </div>
         }
     </MudCardContent>
-    <MudCardActions>
-        <MudText Typo="Typo.caption" Color="Color.Secondary">
+    <MudCardActions Style="padding: 8px 16px 16px; border-top: 1px solid #f8fafc;">
+        <MudText Typo="Typo.caption" Style="color: #94a3b8; font-weight: 500;">
             Created: @Idea.DateCreated.ToShortDateString()
         </MudText>
         <MudSpacer />
-        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small">
-            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Idea))">Mark as Idea</MudMenuItem>
-            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.InProgress))">Mark as In Progress</MudMenuItem>
-            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Published))">Mark as Published</MudMenuItem>
+        <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Style="color: #64748b;" PopoverClass="rounded-xl shadow-lg border border-slate-100">
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Idea))" Style="border-radius: 8px; margin: 4px;">Mark as Idea</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.InProgress))" Style="border-radius: 8px; margin: 4px;">Mark as In Progress</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Published))" Style="border-radius: 8px; margin: 4px;">Mark as Published</MudMenuItem>
         </MudMenu>
     </MudCardActions>
 </MudCard>

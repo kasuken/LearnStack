@@ -11,29 +11,30 @@
 
 <PageTitle>Delete Personal Data</PageTitle>
 
-<StatusMessage Message="@message"/>
-
-<h3>Delete Personal Data</h3>
-
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
-    </p>
+<div class="manage-section-header">
+    <h3>Delete Personal Data</h3>
+    <p>Permanently remove your account and all associated data.</p>
 </div>
 
-<div>
+<StatusMessage Message="@message"/>
+
+<div class="manage-card">
+    <div class="alert-danger" role="alert">
+        <strong>Deleting this data will permanently remove your account, and this cannot be recovered.</strong>
+    </div>
+
     <EditForm Model="Input" FormName="delete-user" OnValidSubmit="OnValidSubmitAsync" method="post">
         <DataAnnotationsValidator/>
-        <ValidationSummary class="text-danger" role="alert"/>
+        <ValidationSummary class="alert-error" role="alert"/>
         @if (requirePassword)
         {
-            <div class="form-floating mb-3">
-                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Please enter your password."/>
-                <label for="Input.Password" class="form-label">Password</label>
-                <ValidationMessage For="() => Input.Password" class="text-danger"/>
+            <div class="form-group">
+                <label for="Input.Password" class="form-label">Confirm your password</label>
+                <InputText type="password" @bind-Value="Input.Password" id="Input.Password" class="form-input" autocomplete="current-password" aria-required="true" placeholder="Enter your password to confirm"/>
+                <ValidationMessage For="() => Input.Password" class="validation-message"/>
             </div>
         }
-        <button class="w-100 btn btn-lg btn-danger" type="submit">Delete data and close my account</button>
+        <button class="btn-danger w-100" type="submit">Delete data and close my account</button>
     </EditForm>
 </div>
 

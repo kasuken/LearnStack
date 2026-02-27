@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using MudBlazor
+@inherits LayoutComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 
@@ -13,12 +14,12 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0" Class="app-header" Style="background: #ffffff; border-bottom: 1px solid #e0e0e0;">
+    <MudAppBar Elevation="0" Class="app-header" Style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0;">
         <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Style="cursor: pointer;" @onclick="@(() => NavigationManager.NavigateTo("/resources"))">
-            <div style="background: #5c6bc0; border-radius: 6px; padding: 8px; display: flex; align-items: center; justify-content: center;">
+            <div style="background: linear-gradient(135deg, #4f46e5, #818cf8); border-radius: 10px; padding: 8px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
                 <MudIcon Icon="@Icons.Material.Filled.AutoStories" Style="color: white;" Size="Size.Medium" />
             </div>
-            <MudText Typo="Typo.h6" Style="font-weight: 600; color: #5c6bc0;">
+            <MudText Typo="Typo.h6" Style="font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">
                 LearnStack
             </MudText>
         </MudStack>
@@ -27,35 +28,37 @@
             <Authorized>
                 <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                        <MudAvatar Style="background: #5c6bc0; font-weight: 500;" Size="Size.Medium">
+                        <MudAvatar Style="background: #4f46e5; font-weight: 600; color: white;" Size="Size.Medium">
                             @GetUserInitials(context.User.Identity?.Name)
                         </MudAvatar>
                         <MudStack Spacing="0" Class="d-none d-sm-flex">
-                            <MudText Typo="Typo.body2" Style="font-weight: 600; color: #212121;">@context.User.Identity?.Name?.Split('@')[0]</MudText>
-                            <MudText Typo="Typo.caption" Style="color: #757575;">@GetUserEmail(context.User)</MudText>
+                            <MudText Typo="Typo.body2" Style="font-weight: 600; color: #0f172a;">@context.User.Identity?.Name?.Split('@')[0]</MudText>
+                            <MudText Typo="Typo.caption" Style="color: #475569;">@GetUserEmail(context.User)</MudText>
                         </MudStack>
                     </MudStack>
                     <MudMenu Icon="@Icons.Material.Filled.KeyboardArrowDown" Size="Size.Small" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight"
-                            Dense="true">
-                        <MudMenuItem Href="Account/Manage" Style="padding: 10px 16px;">
+                            Dense="true" PopoverClass="rounded-xl shadow-lg border border-slate-100">
+                        <MudMenuItem Href="Account/Manage" Style="padding: 12px 16px; border-radius: 8px; margin: 4px;">
                             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Style="color: #757575;" />
-                                <MudText Style="color: #212121;">Manage Account</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.Person" Size="Size.Small" Style="color: #475569;" />
+                                <MudText Style="color: #0f172a; font-weight: 500;">Manage Account</MudText>
                             </MudStack>
                         </MudMenuItem>
-                        <MudMenuItem Href="Account/Manage/ChangePassword" Style="padding: 10px 16px;">
+                        <MudMenuItem Href="Account/Manage/ChangePassword" Style="padding: 12px 16px; border-radius: 8px; margin: 4px;">
                             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                                <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" Style="color: #757575;" />
-                                <MudText Style="color: #212121;">Change Password</MudText>
+                                <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" Style="color: #475569;" />
+                                <MudText Style="color: #0f172a; font-weight: 500;">Change Password</MudText>
                             </MudStack>
                         </MudMenuItem>
                         <MudDivider Class="my-1" />
-                        <MudMenuItem Style="padding: 10px 16px;">
+                        <MudMenuItem Style="padding: 12px 16px; border-radius: 8px; margin: 4px;">
                             <form action="Account/Logout" method="post">
+                                <AntiforgeryToken />
+                                <input type="hidden" name="returnUrl" value="/" />
                                 <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; width: 100%; text-align: left;">
                                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
-                                        <MudIcon Icon="@Icons.Material.Filled.Logout" Size="Size.Small" Style="color: #e53935;" />
-                                        <MudText Style="color: #e53935; font-weight: 500;">Sign Out</MudText>
+                                        <MudIcon Icon="@Icons.Material.Filled.Logout" Size="Size.Small" Style="color: #ef4444;" />
+                                        <MudText Style="color: #ef4444; font-weight: 600;">Sign Out</MudText>
                                     </MudStack>
                                 </button>
                             </form>
@@ -65,13 +68,13 @@
             </Authorized>
             <NotAuthorized>
                 <MudButton Href="Account/Login" Variant="Variant.Filled" Color="Color.Primary"
-                          Style="font-weight: 500; padding: 8px 20px; border-radius: 6px;">
+                          Style="font-weight: 600; padding: 8px 24px; border-radius: 8px; text-transform: none; letter-spacing: 0;">
                     Sign In
                 </MudButton>
             </NotAuthorized>
         </AuthorizeView>
     </MudAppBar>
-    <MudMainContent Style="background: #fafafa; min-height: 100vh; padding-top: 64px;">
+    <MudMainContent Style="background: #f8fafc; min-height: 100vh; padding-top: 64px;">
         @Body
     </MudMainContent>
 </MudLayout>
@@ -87,33 +90,55 @@
     {
         PaletteLight = new PaletteLight()
         {
-            Primary = "#5c6bc0",
-            PrimaryDarken = "#3f51b5",
-            PrimaryLighten = "#7986cb",
-            Secondary = "#78909c",
-            SecondaryDarken = "#546e7a",
-            SecondaryLighten = "#90a4ae",
-            Success = "#4caf50",
-            SuccessDarken = "#388e3c",
-            SuccessLighten = "#66bb6a",
-            Warning = "#fb8c00",
-            WarningDarken = "#ef6c00",
-            WarningLighten = "#ffa726",
-            Error = "#e53935",
-            ErrorDarken = "#c62828",
-            ErrorLighten = "#ef5350",
-            Info = "#1e88e5",
-            InfoDarken = "#1565c0",
-            InfoLighten = "#42a5f5",
-            Background = "#fafafa",
+            Primary = "#4f46e5",
+            PrimaryDarken = "#4338ca",
+            PrimaryLighten = "#818cf8",
+            Secondary = "#0f172a",
+            SecondaryDarken = "#020617",
+            SecondaryLighten = "#334155",
+            Success = "#10b981",
+            SuccessDarken = "#059669",
+            SuccessLighten = "#34d399",
+            Warning = "#f59e0b",
+            WarningDarken = "#d97706",
+            WarningLighten = "#fbbf24",
+            Error = "#ef4444",
+            ErrorDarken = "#dc2626",
+            ErrorLighten = "#f87171",
+            Info = "#3b82f6",
+            InfoDarken = "#2563eb",
+            InfoLighten = "#60a5fa",
+            Background = "#f8fafc",
             Surface = "#ffffff",
-            TextPrimary = "#212121",
-            TextSecondary = "#757575",
+            TextPrimary = "#0f172a",
+            TextSecondary = "#475569",
             DrawerBackground = "#ffffff"
+        },
+        Typography = new Typography()
+        {
+            Default = new DefaultTypography()
+            {
+                FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" },
+                FontSize = "1rem",
+                FontWeight = "400",
+                LineHeight = "1.5",
+                LetterSpacing = "normal"
+            },
+            H1 = new H1Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "3.5rem", FontWeight = "700", LineHeight = "1.2", LetterSpacing = "-0.02em" },
+            H2 = new H2Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "2.5rem", FontWeight = "700", LineHeight = "1.2", LetterSpacing = "-0.01em" },
+            H3 = new H3Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "2rem", FontWeight = "600", LineHeight = "1.2", LetterSpacing = "-0.01em" },
+            H4 = new H4Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "1.5rem", FontWeight = "600", LineHeight = "1.3", LetterSpacing = "normal" },
+            H5 = new H5Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "1.25rem", FontWeight = "600", LineHeight = "1.4", LetterSpacing = "normal" },
+            H6 = new H6Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "1.125rem", FontWeight = "600", LineHeight = "1.4", LetterSpacing = "normal" },
+            Button = new ButtonTypography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "0.875rem", FontWeight = "600", LineHeight = "1.75", LetterSpacing = "0.02em", TextTransform = "none" },
+            Body1 = new Body1Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "1rem", FontWeight = "400", LineHeight = "1.5", LetterSpacing = "normal" },
+            Body2 = new Body2Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "0.875rem", FontWeight = "400", LineHeight = "1.43", LetterSpacing = "normal" },
+            Subtitle1 = new Subtitle1Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "1rem", FontWeight = "500", LineHeight = "1.75", LetterSpacing = "normal" },
+            Subtitle2 = new Subtitle2Typography() { FontFamily = new[] { "Inter", "system-ui", "-apple-system", "sans-serif" }, FontSize = "0.875rem", FontWeight = "500", LineHeight = "1.57", LetterSpacing = "normal" }
         },
         LayoutProperties = new LayoutProperties()
         {
-            DefaultBorderRadius = "12px"
+            DefaultBorderRadius = "16px"
         }
     };
 

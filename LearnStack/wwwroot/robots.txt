@@ -1,0 +1,12 @@
+# robots.txt for LearnStack
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Disallow crawling of account management pages
+Disallow: /Account/
+Disallow: /Identity/
+
+# Sitemap location
+Sitemap: https://learnstack.app/sitemap.xml

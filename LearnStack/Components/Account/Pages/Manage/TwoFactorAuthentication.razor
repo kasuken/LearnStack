@@ -10,64 +10,76 @@
 
 <PageTitle>Two-factor authentication (2FA)</PageTitle>
 
+<div class="manage-section-header">
+    <h3>Two-factor authentication</h3>
+    <p>Add an extra layer of security to your account.</p>
+</div>
+
 <StatusMessage/>
-<h3>Two-factor authentication (2FA)</h3>
-@if (canTrack)
-{
-    if (is2faEnabled)
+
+<div class="manage-card">
+    @if (canTrack)
     {
-        if (recoveryCodesLeft == 0)
+        if (is2faEnabled)
         {
-            <div class="alert alert-danger">
-                <strong>You have no recovery codes left.</strong>
-                <p>You must <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a> before you can log in with a recovery code.</p>
-            </div>
-        }
-        else if (recoveryCodesLeft == 1)
-        {
-            <div class="alert alert-danger">
-                <strong>You have 1 recovery code left.</strong>
-                <p>You can <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
-            </div>
-        }
-        else if (recoveryCodesLeft <= 3)
-        {
-            <div class="alert alert-warning">
-                <strong>You have @recoveryCodesLeft recovery codes left.</strong>
-                <p>You should <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
+            if (recoveryCodesLeft == 0)
+            {
+                <div class="alert-danger">
+                    <strong>You have no recovery codes left.</strong>
+                    <p style="margin: 8px 0 0 0;">You must <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a> before you can log in with a recovery code.</p>
+                </div>
+            }
+            else if (recoveryCodesLeft == 1)
+            {
+                <div class="alert-danger">
+                    <strong>You have 1 recovery code left.</strong>
+                    <p style="margin: 8px 0 0 0;">You can <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
+                </div>
+            }
+            else if (recoveryCodesLeft <= 3)
+            {
+                <div class="alert-warning">
+                    <strong>You have @recoveryCodesLeft recovery codes left.</strong>
+                    <p style="margin: 8px 0 0 0;">You should <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
+                </div>
+            }
+
+            <div class="btn-group" style="margin-bottom: 24px;">
+                @if (isMachineRemembered)
+                {
+                    <form style="display: inline-flex;" @formname="forget-browser" @onsubmit="OnSubmitForgetBrowserAsync" method="post">
+                        <AntiforgeryToken/>
+                        <button type="submit" class="btn-secondary">Forget this browser</button>
+                    </form>
+                }
+                <a href="Account/Manage/Disable2fa" class="btn-secondary">Disable 2FA</a>
+                <a href="Account/Manage/GenerateRecoveryCodes" class="btn-secondary">Reset recovery codes</a>
             </div>
         }
 
-        if (isMachineRemembered)
-        {
-            <form style="display: inline-block" @formname="forget-browser" @onsubmit="OnSubmitForgetBrowserAsync" method="post">
-                <AntiforgeryToken/>
-                <button type="submit" class="btn btn-primary">Forget this browser</button>
-            </form>
-        }
-
-        <a href="Account/Manage/Disable2fa" class="btn btn-primary">Disable 2FA</a>
-        <a href="Account/Manage/GenerateRecoveryCodes" class="btn btn-primary">Reset recovery codes</a>
-    }
-
-    <h4>Authenticator app</h4>
-    @if (!hasAuthenticator)
-    {
-        <a href="Account/Manage/EnableAuthenticator" class="btn btn-primary">Add authenticator app</a>
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 4px;">
+            <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">Authenticator app</h4>
+            <div class="btn-group">
+                @if (!hasAuthenticator)
+                {
+                    <a href="Account/Manage/EnableAuthenticator" class="btn-primary">Add authenticator app</a>
+                }
+                else
+                {
+                    <a href="Account/Manage/EnableAuthenticator" class="btn-primary">Set up authenticator app</a>
+                    <a href="Account/Manage/ResetAuthenticator" class="btn-secondary">Reset authenticator app</a>
+                }
+            </div>
+        </div>
     }
     else
     {
-        <a href="Account/Manage/EnableAuthenticator" class="btn btn-primary">Set up authenticator app</a>
-        <a href="Account/Manage/ResetAuthenticator" class="btn btn-primary">Reset authenticator app</a>
+        <div class="alert-danger">
+            <strong>Privacy and cookie policy have not been accepted.</strong>
+            <p style="margin: 8px 0 0 0;">You must accept the policy before you can enable two factor authentication.</p>
+        </div>
     }
-}
-else
-{
-    <div class="alert alert-danger">
-        <strong>Privacy and cookie policy have not been accepted.</strong>
-        <p>You must accept the policy before you can enable two factor authentication.</p>
-    </div>
-}
+</div>
 
 @code {
     private bool canTrack;

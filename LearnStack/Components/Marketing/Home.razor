@@ -10,7 +10,9 @@
     <meta name="description" content="LearnStack helps you organize and track learning resources from across the internet. Save blog posts, videos, podcasts, and courses. Take notes, prioritize content, and plan your learning journey." />
     <meta name="keywords" content="learning resources, online learning, learning management, content organization, educational tools, knowledge management, learning tracker" />
     <meta name="author" content="LearnStack" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="theme-color" content="#6366f1" />
+    <meta name="format-detection" content="telephone=no" />
     
     @* Open Graph / Facebook *@
     <meta property="og:type" content="website" />
@@ -18,14 +20,21 @@
     <meta property="og:title" content="LearnStack - Organize Your Learning Journey" />
     <meta property="og:description" content="Track learning resources from the internet, take notes, and create content from your learning materials. Free to get started." />
     <meta property="og:image" content="https://learnstack.app/images/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LearnStack - Organize Your AI Learning Journey" />
     <meta property="og:site_name" content="LearnStack" />
+    <meta property="og:locale" content="en_US" />
     
     @* Twitter Card *@
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@@learnstack" />
+    <meta name="twitter:creator" content="@@learnstack" />
     <meta name="twitter:url" content="https://learnstack.app/" />
     <meta name="twitter:title" content="LearnStack - Organize Your Learning Journey" />
     <meta name="twitter:description" content="Track learning resources from the internet, take notes, and create content from your learning materials." />
     <meta name="twitter:image" content="https://learnstack.app/images/twitter-card.png" />
+    <meta name="twitter:image:alt" content="LearnStack - Organize Your AI Learning Journey" />
     
     @* Canonical URL *@
     <link rel="canonical" href="https://learnstack.app/" />
@@ -40,17 +49,74 @@
         "url": "https://learnstack.app",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Web Browser",
+        "browserRequirements": "Requires JavaScript. Requires HTML5.",
         "offers": {
             "@@type": "Offer",
             "price": "0",
-            "priceCurrency": "USD"
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
         },
         "featureList": [
             "Learning resource management",
-            "Note-taking",
-            "Content prioritization",
-            "Progress tracking",
-            "Content idea planning"
+            "Note-taking and knowledge capture",
+            "Content prioritization and organization",
+            "Progress tracking and statistics",
+            "Content idea planning",
+            "Shared learning links",
+            "Fast learning organization",
+            "Multiple content type support (blog posts, videos, podcasts, courses)",
+            "Tag-based filtering and search"
+        ],
+        "screenshot": "https://learnstack.app/images/screenshot.png"
+    }
+    </script>
+    
+    @* Structured Data - FAQ *@
+    <script type="application/ld+json">
+    {
+        "@@context": "https://schema.org",
+        "@@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@@type": "Question",
+                "name": "What is LearnStack?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "LearnStack is a learning content management application that helps you organize and track your AI learning resources. Save blog posts, videos, podcasts, and courses all in one place. Take notes, prioritize content, and plan your learning journey efficiently."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "How does LearnStack help with fast learning?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "LearnStack accelerates your learning by organizing all your resources in one place, allowing you to prioritize content, track progress, take searchable notes, and eliminate browser tab overload. You can quickly find any resource with powerful search and filtering capabilities."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Can I share learning resources with others?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes, LearnStack supports shared learning links, allowing you to organize and share curated collections of learning resources with teammates, study groups, or the community."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "Is LearnStack free to use?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "Yes, LearnStack is free to get started with no credit card required. It's free forever for individuals who want to organize their AI learning journey."
+                }
+            },
+            {
+                "@@type": "Question",
+                "name": "What types of learning content can I organize?",
+                "acceptedAnswer": {
+                    "@@type": "Answer",
+                    "text": "LearnStack supports multiple content types including blog posts, videos, podcasts, online courses, documentation, and articles. You can add any URL and LearnStack will automatically fetch metadata like title, description, and thumbnail."
+                }
+            }
         ]
     }
     </script>
@@ -330,29 +396,31 @@
 
     .hero-badge {
         display: inline-block;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
         color: white;
         padding: 0.5rem 1rem;
         border-radius: 999px;
         font-size: 0.875rem;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 1.5rem;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.2);
     }
 
     .hero h1 {
-        font-size: 3.5rem;
+        font-size: 4rem;
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #1e293b 0%, #6366f1 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #4f46e5 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
+        letter-spacing: -0.03em;
     }
 
     .hero-description {
         font-size: 1.25rem;
-        color: #64748b;
+        color: #475569;
         margin-bottom: 2rem;
         line-height: 1.7;
     }
@@ -367,7 +435,7 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
         color: white;
         padding: 1rem 2rem;
         border-radius: 12px;
@@ -375,12 +443,12 @@
         text-decoration: none;
         font-size: 1.1rem;
         transition: transform 0.2s, box-shadow 0.2s;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
     }
 
     .btn-hero-primary:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+        box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
     }
 
     .btn-hero-secondary {
@@ -389,42 +457,62 @@
         padding: 1rem 2rem;
         border: 2px solid #e2e8f0;
         border-radius: 12px;
-        color: #64748b;
+        color: #475569;
         font-weight: 600;
         text-decoration: none;
-        transition: border-color 0.2s, color 0.2s;
+        transition: border-color 0.2s, color 0.2s, background-color 0.2s;
     }
 
     .btn-hero-secondary:hover {
-        border-color: #6366f1;
-        color: #6366f1;
+        border-color: #4f46e5;
+        color: #4f46e5;
+        background-color: #f8fafc;
     }
 
     .hero-trust {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        color: #64748b;
+        color: #475569;
         font-size: 0.875rem;
+        font-weight: 500;
     }
 
     .hero-trust svg {
-        color: #22c55e;
+        color: #10b981;
     }
 
     /* Hero Visual Card */
     .hero-visual {
         display: flex;
         justify-content: center;
+        position: relative;
+    }
+    
+    .hero-visual::before {
+        content: '';
+        position: absolute;
+        top: -10%;
+        left: -10%;
+        right: -10%;
+        bottom: -10%;
+        background: radial-gradient(circle at center, rgba(79, 70, 229, 0.1) 0%, transparent 70%);
+        z-index: -1;
     }
 
     .hero-card {
         background: white;
-        border-radius: 16px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(15, 23, 42, 0.05);
         padding: 1.5rem;
         width: 100%;
         max-width: 400px;
+        transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+        transition: transform 0.3s ease;
+    }
+    
+    .hero-card:hover {
+        transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
     }
 
     .card-header {
@@ -521,24 +609,25 @@
 
     .section-badge {
         display: inline-block;
-        background: #ede9fe;
-        color: #6366f1;
+        background: #e0e7ff;
+        color: #4f46e5;
         padding: 0.375rem 0.875rem;
         border-radius: 999px;
         font-size: 0.875rem;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 1rem;
     }
 
     .section-header h2 {
         font-size: 2.5rem;
-        font-weight: 700;
+        font-weight: 800;
         margin-bottom: 1rem;
-        color: #1e293b;
+        color: #0f172a;
+        letter-spacing: -0.02em;
     }
 
     .section-header p {
-        color: #64748b;
+        color: #475569;
         font-size: 1.125rem;
     }
 
@@ -553,14 +642,15 @@
     .feature-card {
         background: white;
         padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        transition: transform 0.2s, box-shadow 0.2s;
+        border-radius: 20px;
+        box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
+        border: 1px solid #f1f5f9;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .feature-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 20px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
     }
 
     .feature-icon {
@@ -615,7 +705,7 @@
         width: 64px;
         height: 64px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+        background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
         color: white;
         font-size: 1.5rem;
         font-weight: 700;
@@ -623,22 +713,23 @@
         align-items: center;
         justify-content: center;
         margin: 0 auto 1.5rem;
+        box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
     }
 
     .step h3 {
         font-size: 1.25rem;
-        font-weight: 600;
+        font-weight: 700;
         margin-bottom: 0.75rem;
-        color: #1e293b;
+        color: #0f172a;
     }
 
     .step p {
-        color: #64748b;
+        color: #475569;
         line-height: 1.6;
     }
 
     .step-arrow {
-        color: #e2e8f0;
+        color: #cbd5e1;
         padding-top: 1.25rem;
     }
 
@@ -659,15 +750,16 @@
     .testimonial {
         background: white;
         padding: 2rem;
-        border-radius: 16px;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);
+        border: 1px solid #f1f5f9;
         margin: 0;
     }
 
     .testimonial p {
         font-size: 1.1rem;
         line-height: 1.7;
-        color: #374151;
+        color: #334155;
         margin-bottom: 1.5rem;
         font-style: italic;
     }
@@ -682,7 +774,7 @@
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        background: linear-gradient(135deg, #4f46e5 0%, #a855f7 100%);
         color: white;
         display: flex;
         align-items: center;
@@ -692,17 +784,18 @@
 
     .testimonial-info strong {
         display: block;
-        color: #1e293b;
+        color: #0f172a;
+        font-weight: 600;
     }
 
     .testimonial-info span {
         font-size: 0.875rem;
-        color: #64748b;
+        color: #475569;
     }
 
     /* CTA Section */
     .cta {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
         padding: 6rem 2rem;
         text-align: center;
     }
@@ -714,9 +807,10 @@
 
     .cta h2 {
         font-size: 2.5rem;
-        font-weight: 700;
+        font-weight: 800;
         color: white;
         margin-bottom: 1rem;
+        letter-spacing: -0.02em;
     }
 
     .cta > p {
@@ -736,10 +830,10 @@
         align-items: center;
         gap: 0.5rem;
         background: white;
-        color: #1e293b;
+        color: #0f172a;
         padding: 1rem 2.5rem;
         border-radius: 12px;
-        font-weight: 600;
+        font-weight: 700;
         text-decoration: none;
         font-size: 1.1rem;
         transition: transform 0.2s, box-shadow 0.2s;

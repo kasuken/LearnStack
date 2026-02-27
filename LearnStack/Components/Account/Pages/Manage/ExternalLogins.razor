@@ -11,56 +11,67 @@
 
 <PageTitle>Manage your external logins</PageTitle>
 
+<div class="manage-section-header">
+    <h3>External logins</h3>
+    <p>Manage your linked external login providers.</p>
+</div>
+
 <StatusMessage/>
-@if (currentLogins?.Count > 0)
-{
-    <h3>Registered Logins</h3>
-    <table class="table">
-        <tbody>
-        @foreach (var login in currentLogins)
+
+<div class="manage-card">
+    @if (currentLogins?.Count > 0)
+    {
+        <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">Registered Logins</h4>
+        <table class="manage-table">
+            <tbody>
+            @foreach (var login in currentLogins)
+            {
+                <tr>
+                    <td class="provider-name">@login.ProviderDisplayName</td>
+                    <td class="table-actions">
+                        @if (showRemoveButton)
+                        {
+                            <form @formname="@($"remove-login-{login.LoginProvider}")" @onsubmit="OnSubmitAsync" method="post">
+                                <AntiforgeryToken/>
+                                <div>
+                                    <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider"/>
+                                    <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey"/>
+                                    <button type="submit" class="btn-danger btn-sm" title="Remove this @login.ProviderDisplayName login from your account">Remove</button>
+                                </div>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+
+    @if (otherLogins?.Count > 0)
+    {
+        @if (currentLogins?.Count > 0)
         {
-            <tr>
-                <td>@login.ProviderDisplayName</td>
-                <td>
-                    @if (showRemoveButton)
-                    {
-                        <form @formname="@($"remove-login-{login.LoginProvider}")" @onsubmit="OnSubmitAsync" method="post">
-                            <AntiforgeryToken/>
-                            <div>
-                                <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider"/>
-                                <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey"/>
-                                <button type="submit" class="btn btn-primary" title="Remove this @login.ProviderDisplayName login from your account">Remove</button>
-                            </div>
-                        </form>
-                    }
-                    else
-                    {
-                        @: &nbsp;
-                    }
-                </td>
-            </tr>
+            <div style="border-top: 1px solid #e2e8f0; margin: 20px 0;"></div>
         }
-        </tbody>
-    </table>
-}
-@if (otherLogins?.Count > 0)
-{
-    <h4>Add another service to log in.</h4>
-    <hr/>
-    <form class="form-horizontal" action="Account/Manage/LinkExternalLogin" method="post">
-        <AntiforgeryToken/>
-        <div>
-            <p>
+        <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">Add another service</h4>
+        <form action="Account/Manage/LinkExternalLogin" method="post">
+            <AntiforgeryToken/>
+            <div class="btn-group">
                 @foreach (var provider in otherLogins)
                 {
-                    <button type="submit" class="btn btn-primary" name="Provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                    <button type="submit" class="btn-secondary" name="Provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
                         @provider.DisplayName
                     </button>
                 }
-            </p>
-        </div>
-    </form>
-}
+            </div>
+        </form>
+    }
+
+    @if ((currentLogins?.Count ?? 0) == 0 && (otherLogins?.Count ?? 0) == 0)
+    {
+        <p style="color: #64748b; margin: 0;">No external login providers are available.</p>
+    }
+</div>
 
 @code {
     public const string LinkLoginCallbackAction = "LinkLoginCallback";

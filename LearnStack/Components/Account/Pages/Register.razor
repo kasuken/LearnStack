@@ -18,7 +18,7 @@
     <div class="register-card">
         <div class="register-header">
             <div class="register-logo">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#1976d2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#4f46e5">
                     <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
                 </svg>
             </div>
@@ -103,8 +103,9 @@
 
     .register-card {
         background: white;
-        border-radius: 16px;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border-radius: 24px;
+        box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.01);
+        border: 1px solid #e2e8f0;
         padding: 40px;
         width: 100%;
         max-width: 420px;
@@ -121,9 +122,10 @@
 
     .register-header h1 {
         font-size: 1.75rem;
-        font-weight: 600;
-        color: #1e293b;
+        font-weight: 700;
+        color: #0f172a;
         margin: 0 0 8px 0;
+        letter-spacing: -0.5px;
     }
 
     .register-header p {
@@ -133,7 +135,7 @@
 
     .alert {
         padding: 12px 16px;
-        border-radius: 8px;
+        border-radius: 12px;
         margin-bottom: 20px;
     }
 
@@ -150,33 +152,35 @@
     .form-group label {
         display: block;
         font-size: 0.875rem;
-        font-weight: 500;
-        color: #374151;
+        font-weight: 600;
+        color: #475569;
         margin-bottom: 6px;
     }
 
     .form-input {
         width: 100%;
         padding: 12px 16px;
-        border: 1px solid #d1d5db;
-        border-radius: 8px;
+        border: 1px solid #cbd5e1;
+        border-radius: 12px;
         font-size: 1rem;
-        transition: border-color 0.2s, box-shadow 0.2s;
+        transition: all 0.2s;
         box-sizing: border-box;
+        background-color: #f8fafc;
     }
 
     .form-input:focus {
         outline: none;
-        border-color: #1976d2;
-        box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        border-color: #4f46e5;
+        background-color: white;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
     }
 
     .form-input::placeholder {
-        color: #9ca3af;
+        color: #94a3b8;
     }
 
     .validation-message {
-        color: #dc2626;
+        color: #ef4444;
         font-size: 0.75rem;
         margin-top: 4px;
     }
@@ -184,18 +188,20 @@
     .btn-primary {
         width: 100%;
         padding: 14px 24px;
-        background-color: #1976d2;
+        background: linear-gradient(135deg, #4f46e5, #6366f1);
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 12px;
         font-size: 1rem;
-        font-weight: 500;
+        font-weight: 600;
         cursor: pointer;
-        transition: background-color 0.2s;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);
     }
 
     .btn-primary:hover {
-        background-color: #1565c0;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 8px -1px rgba(79, 70, 229, 0.3);
     }
 
     .divider {
@@ -209,26 +215,31 @@
         content: "";
         flex: 1;
         height: 1px;
-        background-color: #e5e7eb;
+        background-color: #e2e8f0;
     }
 
     .divider span {
         padding: 0 16px;
-        color: #9ca3af;
+        color: #94a3b8;
         font-size: 0.875rem;
+        font-weight: 500;
     }
 
     .register-links {
         text-align: center;
+        margin-top: 24px;
     }
 
     .register-links a {
-        color: #1976d2;
+        color: #4f46e5;
         text-decoration: none;
         font-size: 0.875rem;
+        font-weight: 500;
+        transition: color 0.2s;
     }
 
     .register-links a:hover {
+        color: #4338ca;
         text-decoration: underline;
     }
 </style>

@@ -1,37 +1,38 @@
 /* ========================================
    LearnStack - Professional UI Stylesheet
-   Clean, Material-inspired Design
+   Clean, Modern Design
    ======================================== */
 
 /* Global Styles & Typography */
 :root {
-    --primary: #5c6bc0;
-    --primary-dark: #3949ab;
-    --primary-light: #7986cb;
-    --secondary: #78909c;
-    --success: #43a047;
-    --warning: #fb8c00;
-    --error: #e53935;
-    --info: #1e88e5;
-    --text-primary: #212121;
-    --text-secondary: #757575;
-    --text-disabled: #9e9e9e;
-    --divider: #e0e0e0;
-    --background: #fafafa;
+    --primary: #4f46e5;
+    --primary-dark: #4338ca;
+    --primary-light: #818cf8;
+    --secondary: #0f172a;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #3b82f6;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-disabled: #94a3b8;
+    --divider: #e2e8f0;
+    --background: #f8fafc;
     --surface: #ffffff;
-    --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-    --card-shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --border-radius: 8px;
-    --border-radius-sm: 4px;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    --border-radius: 16px;
+    --border-radius-sm: 8px;
     --transition-fast: 0.15s ease;
     --transition-normal: 0.2s ease;
 }
 
 html, body {
-    font-family: 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: var(--background);
+    color: var(--text-primary);
 }
 
 /* Focus States */
