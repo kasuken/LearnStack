@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema",
+  "version": "1.0.0",
+  "description": "LearnStack version tracking",
+  "releaseDate": "2026-02-21",
+  "changelog": {
+    "1.0.0": {
+      "date": "2026-02-21",
+      "changes": [
+        "Initial release",
+        "Learning resource management",
+        "Content ideas planning",
+        "Azure App Service deployment support",
+        "Automated GitHub releases with semantic versioning"
+      ]
+    }
+  }
+}
