@@ -23,6 +23,16 @@ public class LearningResourceService : ILearningResourceService
             .ToListAsync();
     }
 
+    public async Task<bool> ToggleArchiveAsync(int id, string userId)
+    {
+        var resource = await GetByIdAsync(id, userId);
+        if (resource == null) return false;
+
+        resource.IsArchived = !resource.IsArchived;
+        await _context.SaveChangesAsync();
+        return resource.IsArchived;
+    }
+
     public async Task<List<LearningResource>> GetByStatusAsync(string userId, ContentStatus status)
     {
         return await _context.LearningResources
@@ -64,6 +74,7 @@ public class LearningResourceService : ILearningResourceService
         existing.ThumbnailImage = resource.ThumbnailImage;
         existing.CustomOrder = resource.CustomOrder;
         existing.DateCompleted = resource.DateCompleted;
+        existing.IsArchived = resource.IsArchived;
         
         await _context.SaveChangesAsync();
         return existing;

@@ -200,6 +200,12 @@
                         <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Low)">Low</MudSelectItem>
                     </MudSelect>
                 </MudItem>
+                @if (activeTabIndex == 3)
+                {
+                    <MudItem xs="12">
+                        <MudSwitch @bind-Value="showArchived" @bind-Value:after="OnFilterChanged" Color="Color.Primary" Label="Show Archived" />
+                    </MudItem>
+                }
             </MudGrid>
         </MudCollapse>
     </MudPaper>
@@ -328,6 +334,13 @@
                                         </MudButton>
                                     }
                                 </MudStack>
+                                <MudStack Row="true" Spacing="1" Justify="Justify.FlexEnd">
+                                    <MudIconButton Icon="@(context.IsArchived ? Icons.Material.Filled.Unarchive : Icons.Material.Filled.Archive)" 
+                                                  Size="Size.Small" 
+                                                  Style="color: #94a3b8;" 
+                                                  Title="@(context.IsArchived ? "Unarchive" : "Archive")" 
+                                                  OnClick="@(() => ToggleArchive(context))" />
+                                </MudStack>
                             </MudStack>
                         </div>
                     </div>
@@ -399,6 +412,10 @@
                                               OnClick="@(() => UpdateStatus(context.Item, ContentStatus.Completed))" 
                                               Title="Mark as Complete" />
                             }
+                            <MudIconButton Icon="@(context.Item.IsArchived ? Icons.Material.Filled.Unarchive : Icons.Material.Filled.Archive)" 
+                                          Size="Size.Small" Style="color: #94a3b8;" 
+                                          Title="@(context.Item.IsArchived ? "Unarchive" : "Archive")" 
+                                          OnClick="@(() => ToggleArchive(context.Item))" />
                         </MudStack>
                     </CellTemplate>
                 </TemplateColumn>
@@ -437,6 +454,7 @@
     private int filterKey = 0;
     private bool isLoading = true;
     private bool showFilters = false;
+    private bool showArchived = false;
     private string userId = string.Empty;
     private int activeTabIndex = 0;
     private ViewMode viewMode = ViewMode.List;
@@ -476,9 +494,9 @@
         if (string.IsNullOrEmpty(userId)) return;
 
         var allResources = await ResourceService.GetAllAsync(userId);
-        toLearnCount = allResources.Count(r => r.Status == ContentStatus.ToLearn);
-        inProgressCount = allResources.Count(r => r.Status == ContentStatus.InProgress);
-        completedCount = allResources.Count(r => r.Status == ContentStatus.Completed);
+        toLearnCount = allResources.Count(r => r.Status == ContentStatus.ToLearn && !r.IsArchived);
+        inProgressCount = allResources.Count(r => r.Status == ContentStatus.InProgress && !r.IsArchived);
+        completedCount = allResources.Count(r => r.Status == ContentStatus.Completed && !r.IsArchived);
 
         var ideas = await ContentIdeaService.GetAllAsync(userId);
         contentIdeasCount = ideas.Count;
@@ -497,17 +515,21 @@
         // Apply tab filter
         if (activeTabIndex == 0) // To Learn
         {
-            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.ToLearn).ToList();
+            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.ToLearn && !r.IsArchived).ToList();
         }
         else if (activeTabIndex == 1) // Learning
         {
-            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.InProgress).ToList();
+            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.InProgress && !r.IsArchived).ToList();
         }
         else if (activeTabIndex == 2) // Completed
         {
-            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.Completed).ToList();
+            filteredResources = filteredResources.Where(r => r.Status == ContentStatus.Completed && !r.IsArchived).ToList();
         }
-        // activeTabIndex == 3 is All Resources - no filter applied
+        // activeTabIndex == 3 is All Resources - filter by archived toggle
+        else if (!showArchived)
+        {
+            filteredResources = filteredResources.Where(r => !r.IsArchived).ToList();
+        }
 
         // Apply dropdown filters
         if (filterStatus.HasValue)
@@ -679,6 +701,14 @@
         resource.Status = newStatus;
         resource.DateCompleted = newStatus == ContentStatus.Completed ? DateTime.UtcNow : null;
         await ResourceService.UpdateAsync(resource, userId);
+        await LoadStatistics();
+        ApplyFilters();
+    }
+
+    private async Task ToggleArchive(LearningResource resource)
+    {
+        await ResourceService.ToggleArchiveAsync(resource.Id, userId);
+        resource.IsArchived = !resource.IsArchived;
         await LoadStatistics();
         ApplyFilters();
     }
