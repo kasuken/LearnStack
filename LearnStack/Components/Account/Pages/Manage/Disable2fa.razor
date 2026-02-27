@@ -9,23 +9,23 @@
 
 <PageTitle>Disable two-factor authentication (2FA)</PageTitle>
 
-<StatusMessage/>
-<h3>Disable two-factor authentication (2FA)</h3>
-
-<div class="alert alert-warning" role="alert">
-    <p>
-        <strong>This action only disables 2FA.</strong>
-    </p>
-    <p>
-        Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key
-        used in an authenticator app you should <a href="Account/Manage/ResetAuthenticator">reset your authenticator keys.</a>
-    </p>
+<div class="manage-section-header">
+    <h3>Disable two-factor authentication</h3>
+    <p>Remove the extra security layer from your account.</p>
 </div>
 
-<div>
+<StatusMessage/>
+
+<div class="manage-card">
+    <div class="alert-warning" role="alert">
+        <p style="margin: 0 0 8px 0;"><strong>This action only disables 2FA.</strong></p>
+        <p style="margin: 0;">Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key
+            used in an authenticator app you should <a href="Account/Manage/ResetAuthenticator">reset your authenticator keys.</a></p>
+    </div>
+
     <form @formname="disable-2fa" @onsubmit="OnSubmitAsync" method="post">
         <AntiforgeryToken/>
-        <button class="btn btn-danger" type="submit">Disable 2FA</button>
+        <button class="btn-danger" type="submit">Disable 2FA</button>
     </form>
 </div>
 
