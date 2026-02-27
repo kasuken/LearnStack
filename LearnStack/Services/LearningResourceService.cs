@@ -33,6 +33,26 @@ public class LearningResourceService : ILearningResourceService
         return resource.IsArchived;
     }
 
+    public async Task ArchiveStaleResourcesAsync(string userId)
+    {
+        var cutoff = DateTime.UtcNow.AddDays(-180);
+        var staleResources = await _context.LearningResources
+            .Where(lr => lr.UserId == userId
+                      && lr.Status == ContentStatus.ToLearn
+                      && !lr.IsArchived
+                      && lr.DateAdded <= cutoff)
+            .ToListAsync();
+
+        if (staleResources.Count == 0) return;
+
+        foreach (var resource in staleResources)
+        {
+            resource.IsArchived = true;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<List<LearningResource>> GetByStatusAsync(string userId, ContentStatus status)
     {
         return await _context.LearningResources

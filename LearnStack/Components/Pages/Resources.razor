@@ -475,6 +475,7 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
+        await ResourceService.ArchiveStaleResourcesAsync(userId);
         await LoadResources();
         await LoadStatistics();
     }

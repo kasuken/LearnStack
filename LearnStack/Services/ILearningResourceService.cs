@@ -14,5 +14,6 @@ public interface ILearningResourceService
     Task<List<LearningResource>> SearchAsync(string userId, string searchTerm);
     Task UpdateOrderAsync(string userId, List<int> orderedIds);
     Task<bool> ToggleArchiveAsync(int id, string userId);
+    Task ArchiveStaleResourcesAsync(string userId);
 }
 
