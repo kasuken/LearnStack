@@ -6,7 +6,7 @@
 <MudDialog>
     <DialogContent>
         <MudForm @ref="form" @bind-IsValid="@isValid">
-            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.End">
+            <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Start">
                 <MudTextField @bind-Value="model.Url"
                              Label="URL"
                              Required="true"
@@ -18,7 +18,7 @@
                           Color="Color.Secondary"
                           OnClick="FetchMetadata"
                           Disabled="@(string.IsNullOrWhiteSpace(model.Url) || isFetchingMetadata)"
-                          Style="margin-bottom: 4px;">
+                          Style="margin-top: 4px; height: 40px;">
                     @if (isFetchingMetadata)
                     {
                         <MudProgressCircular Size="Size.Small" Indeterminate="true" />
