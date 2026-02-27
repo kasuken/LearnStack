@@ -53,6 +53,8 @@
                         <MudDivider Class="my-1" />
                         <MudMenuItem Style="padding: 12px 16px; border-radius: 8px; margin: 4px;">
                             <form action="Account/Logout" method="post">
+                                <AntiforgeryToken />
+                                <input type="hidden" name="returnUrl" value="/" />
                                 <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer; width: 100%; text-align: left;">
                                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
                                         <MudIcon Icon="@Icons.Material.Filled.Logout" Size="Size.Small" Style="color: #ef4444;" />
