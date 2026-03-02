@@ -93,7 +93,7 @@
     </MudGrid>
 
     @* Tabs *@
-    <MudTabs @bind-ActivePanelIndex="activeTabIndex" @bind-ActivePanelIndex:after="OnFilterChanged" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4" Style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
+    <MudTabs ActivePanelIndex="@activeTabIndex" ActivePanelIndexChanged="OnTabChangedAsync" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4" Style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
         <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="To Learn" BadgeColor="Color.Primary" />
         <MudTabPanel Icon="@Icons.Material.Filled.PlayCircle" Text="Learning" />
         <MudTabPanel Icon="@Icons.Material.Filled.CheckCircle" Text="Completed" />
@@ -228,7 +228,7 @@
             {
                 <MudText Typo="Typo.h6" Style="color: #212121; font-weight: 600; margin-bottom: 0.5rem;">No resources to learn</MudText>
                 <MudText Typo="Typo.body2" Style="color: #757575; margin-bottom: 1.5rem;">Select a resource from All Resources to start learning</MudText>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AutoStories" OnClick="@(() => { activeTabIndex = 3; OnFilterChanged(); })"
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.AutoStories" OnClick="@(() => OnTabChangedAsync(3))"
                           Style="border-radius: 6px;">
                     Select a resource to Learn
                 </MudButton>
@@ -485,9 +485,22 @@
         if (string.IsNullOrEmpty(userId)) return;
 
         isLoading = true;
-        resources = await ResourceService.GetAllAsync(userId);
-        ApplyFilters();
+        await LoadResourcesForCurrentTabAsync();
+        ApplyFilters(true);
         isLoading = false;
+    }
+
+    private async Task LoadResourcesForCurrentTabAsync()
+    {
+        if (string.IsNullOrEmpty(userId)) return;
+
+        resources = activeTabIndex switch
+        {
+            0 => await ResourceService.GetByStatusAsync(userId, ContentStatus.ToLearn),
+            1 => await ResourceService.GetByStatusAsync(userId, ContentStatus.InProgress),
+            2 => await ResourceService.GetByStatusAsync(userId, ContentStatus.Completed),
+            _ => await ResourceService.GetAllAsync(userId)
+        };
     }
 
     private async Task LoadStatistics()
@@ -599,6 +612,12 @@
     private void OnFilterChanged()
     {
         ApplyFilters(true);
+    }
+
+    private async Task OnTabChangedAsync(int tabIndex)
+    {
+        activeTabIndex = tabIndex;
+        await LoadResources();
     }
     
     private void OnPageChanged(int page)
