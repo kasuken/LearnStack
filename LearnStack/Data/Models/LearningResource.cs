@@ -43,6 +43,8 @@ public class LearningResource
 
     public int CustomOrder { get; set; }
 
+    public bool IsArchived { get; set; }
+
     [Required]
     public string UserId { get; set; } = string.Empty;
 
