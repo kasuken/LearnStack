@@ -69,6 +69,30 @@ public class LearningResourceService : ILearningResourceService
             .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
     }
 
+    public async Task<bool> UrlExistsAsync(string userId, string url, int? excludeResourceId = null)
+    {
+        var normalizedUrl = NormalizeUrl(url);
+        if (string.IsNullOrWhiteSpace(normalizedUrl))
+        {
+            return false;
+        }
+
+        var query = _context.LearningResources
+            .Where(lr => lr.UserId == userId);
+
+        if (excludeResourceId.HasValue)
+        {
+            query = query.Where(lr => lr.Id != excludeResourceId.Value);
+        }
+
+        var existingUrls = await query
+            .Select(lr => lr.Url)
+            .ToListAsync();
+
+        return existingUrls.Any(existingUrl =>
+            string.Equals(NormalizeUrl(existingUrl), normalizedUrl, StringComparison.OrdinalIgnoreCase));
+    }
+
     public async Task<LearningResource> CreateAsync(LearningResource resource)
     {
         _context.LearningResources.Add(resource);
@@ -136,6 +160,29 @@ public class LearningResourceService : ILearningResourceService
             }
         }
         await _context.SaveChangesAsync();
+    }
+
+    private static string NormalizeUrl(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return string.Empty;
+        }
+
+        var trimmedUrl = url.Trim();
+
+        if (Uri.TryCreate(trimmedUrl, UriKind.Absolute, out var uri))
+        {
+            var builder = new UriBuilder(uri)
+            {
+                Host = uri.Host.ToLowerInvariant(),
+                Scheme = uri.Scheme.ToLowerInvariant()
+            };
+
+            return builder.Uri.AbsoluteUri.TrimEnd('/');
+        }
+
+        return trimmedUrl.TrimEnd('/').ToLowerInvariant();
     }
 }
 

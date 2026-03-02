@@ -1,6 +1,7 @@
 ﻿﻿@using LearnStack.Services
 @inject ILearningResourceService ResourceService
 @inject IOpenGraphService OpenGraphService
+@inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
 <MudDialog>
@@ -276,6 +277,21 @@
         }
         else
         {
+            var duplicateExists = await ResourceService.UrlExistsAsync(UserId, model.Url);
+            if (duplicateExists)
+            {
+                var shouldAddDuplicate = await DialogService.ShowMessageBox(
+                    "Duplicate URL detected",
+                    "This URL already exists in your resources. Do you want to add it anyway?",
+                    yesText: "Add anyway",
+                    cancelText: "Cancel");
+
+                if (shouldAddDuplicate != true)
+                {
+                    return;
+                }
+            }
+
             var newResource = new LearningResource
             {
                 Url = model.Url,
