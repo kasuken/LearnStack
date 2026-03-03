@@ -4,6 +4,23 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [0.0.8] - 2026-03-03
+
+### Added
+- Archive feature for learning resources (archive/unarchive, filter, and display)
+- New "IsArchived" property and migration for LearningResource
+- Improved tab functionality and resource loading on Resources page
+- Enhanced account management layouts and navigation (AccountLayout, ManageLayout, ManageNavMenu)
+- More robust statistics and export options for resources
+
+### Changed
+- Modernized and unified UI for account and resource management
+- Improved sidebar and top bar navigation for account settings
+- Refined card, tab, and chip styling for consistency
+
+### Fixed
+- Various UI/UX bugs in resource and account management
+
 ## [0.0.5] - 2026-02-27
 
 ### Added
