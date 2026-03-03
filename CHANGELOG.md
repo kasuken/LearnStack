@@ -2,10 +2,45 @@
 
 All notable changes to LearnStack will be documented in this file.
 
-
 ---
 
-## [1.0.0] - 2026-02-21
+## [0.0.8] - 2026-03-03
+
+### Added
+- Archive feature for learning resources (archive/unarchive, filter, and display)
+- New "IsArchived" property and migration for LearningResource
+- Improved tab functionality and resource loading on Resources page
+- Enhanced account management layouts and navigation (AccountLayout, ManageLayout, ManageNavMenu)
+- More robust statistics and export options for resources
+
+### Changed
+- Modernized and unified UI for account and resource management
+- Improved sidebar and top bar navigation for account settings
+- Refined card, tab, and chip styling for consistency
+
+### Fixed
+- Various UI/UX bugs in resource and account management
+
+## [0.0.5] - 2026-02-27
+
+### Added
+- New account settings shell with sticky top bar and sidebar navigation
+- Shared, consistent design system for Account/Manage pages
+
+### Changed
+- Modernized UI across core pages, dialogs, and error states
+- Replaced Bootstrap-based Account/Manage pages with custom layout and styles
+- Unified form, card, and navigation styling for consistency
+- Updated MudBlazor typography configuration for v8 compatibility
+
+### Fixed
+- Resource metadata button alignment in the add resource dialog
+- Logout form missing antiforgery token and returnUrl binding
+- Logout redirect validation for minimal API LocalRedirect
+- Account navigation not working in SSR/static mode
+- MudBlazor v8 typography type/name and value mismatches
+
+## 2026-02-21
 
 ### Added
 - 🎉 Initial release of LearnStack
@@ -39,120 +74,3 @@ All notable changes to LearnStack will be documented in this file.
   - Automatic version bumping
   - GitHub release generation
   - Release notes automation
-
-### Technical Stack
-- .NET 10 with Blazor Server
-- MudBlazor 8.15.0
-- Entity Framework Core 10.0.3
-- SQL Server
-- ASP.NET Core Identity
-
----
-
-## Version History Format
-
-### Version Number Format
-```
-v{MAJOR}.{MINOR}.{PATCH}
-
-Example: v1.2.3
-- MAJOR: 1 (Breaking changes)
-- MINOR: 2 (New features, backward compatible)
-- PATCH: 3 (Bug fixes)
-```
-
-### Change Categories
-
-Use these categories in your changelog entries:
-
-- **Added** - New features
-- **Changed** - Changes in existing functionality
-- **Deprecated** - Soon-to-be removed features
-- **Removed** - Removed features
-- **Fixed** - Bug fixes
-- **Security** - Security vulnerability fixes
-
-### Example Entry
-
-```markdown
-## [1.1.0] - 2026-03-01
-
-### Added
-- Export resources to CSV format
-- Dark mode support
-- Search with keyboard shortcuts (Ctrl+K)
-
-### Changed
-- Improved resource card layout
-- Updated navigation menu design
-
-### Fixed
-- Login redirect issue after registration
-- Resource filter not persisting
-- Tag autocomplete performance
-
-### Security
-- Updated authentication token expiration
-```
-
----
-
-## Future Releases
-
-### Planned for v1.1.0
-- 🔍 Advanced search and filtering
-- 📊 Learning statistics and analytics
-- 📤 Export/import functionality
-- 🌙 Dark mode support
-- ⌨️ Keyboard shortcuts
-
-### Planned for v1.2.0
-- 🔗 URL metadata extraction (Open Graph)
-- 🖼️ Thumbnail previews
-- 🏷️ Enhanced tag management
-- 📱 Mobile-optimized views
-
-### Planned for v2.0.0
-- 🤝 Collaboration features
-- 🔌 Browser extension
-- 📱 Progressive Web App (PWA)
-- 🤖 AI-powered content suggestions
-- 🌐 Multi-language support
-
----
-
-## How to Update This File
-
-### For Maintainers
-
-1. Update the `[Unreleased]` section as you work
-2. When releasing, move items to a new version section
-3. Update the version links at the bottom
-4. Follow the format consistently
-
-### Commit Message to Changelog Mapping
-
-| Commit Type | Changelog Section |
-|-------------|------------------|
-| `feat:` | Added |
-| `fix:` | Fixed |
-| `perf:` | Changed |
-| `refactor:` | Changed |
-| `docs:` | Changed (Documentation) |
-| `style:` | Changed |
-| `test:` | Added/Changed |
-| `chore:` | (Usually not in changelog) |
-| `BREAKING CHANGE:` | Changed/Removed + note |
-
----
-
-## Links
-
-- [Repository](https://github.com/kasuken/LearnStack)
-- [Releases](https://github.com/kasuken/LearnStack/releases)
-- [Issues](https://github.com/kasuken/LearnStack/issues)
-- [Deployment Guide](.github/DEPLOYMENT.md)
-- [Release Guide](.github/RELEASES.md)
-
-[Unreleased]: https://github.com/kasuken/LearnStack/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/kasuken/LearnStack/releases/tag/v1.0.0

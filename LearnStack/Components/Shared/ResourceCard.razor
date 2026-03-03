@@ -80,6 +80,11 @@
             Open Link
         </MudButton>
         <MudSpacer />
+        <MudIconButton Icon="@(Resource.IsArchived ? Icons.Material.Filled.Unarchive : Icons.Material.Filled.Archive)" 
+                      Size="Size.Small" 
+                      Title="@(Resource.IsArchived ? "Unarchive" : "Archive")" 
+                      Style="color: #94a3b8;" 
+                      OnClick="ToggleArchive" />
         <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Style="color: #64748b;" PopoverClass="rounded-xl shadow-lg border border-slate-100">
             <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.ToLearn))" Style="border-radius: 8px; margin: 4px;">Mark as To Learn</MudMenuItem>
             <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.InProgress))" Style="border-radius: 8px; margin: 4px;">Mark as In Progress</MudMenuItem>
@@ -103,6 +108,9 @@
 
     [Parameter]
     public EventCallback OnStatusChange { get; set; }
+
+    [Parameter]
+    public EventCallback OnArchiveToggle { get; set; }
 
     private Color GetContentTypeColor()
     {
@@ -173,6 +181,13 @@
         
         await ResourceService.UpdateAsync(Resource, UserId);
         await OnStatusChange.InvokeAsync();
+    }
+
+    private async Task ToggleArchive()
+    {
+        await ResourceService.ToggleArchiveAsync(Resource.Id, UserId);
+        Resource.IsArchived = !Resource.IsArchived;
+        await OnArchiveToggle.InvokeAsync();
     }
 }
 

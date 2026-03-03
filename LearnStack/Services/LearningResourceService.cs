@@ -23,6 +23,36 @@ public class LearningResourceService : ILearningResourceService
             .ToListAsync();
     }
 
+    public async Task<bool> ToggleArchiveAsync(int id, string userId)
+    {
+        var resource = await GetByIdAsync(id, userId);
+        if (resource == null) return false;
+
+        resource.IsArchived = !resource.IsArchived;
+        await _context.SaveChangesAsync();
+        return resource.IsArchived;
+    }
+
+    public async Task ArchiveStaleResourcesAsync(string userId)
+    {
+        var cutoff = DateTime.UtcNow.AddDays(-180);
+        var staleResources = await _context.LearningResources
+            .Where(lr => lr.UserId == userId
+                      && lr.Status == ContentStatus.ToLearn
+                      && !lr.IsArchived
+                      && lr.DateAdded <= cutoff)
+            .ToListAsync();
+
+        if (staleResources.Count == 0) return;
+
+        foreach (var resource in staleResources)
+        {
+            resource.IsArchived = true;
+        }
+
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<List<LearningResource>> GetByStatusAsync(string userId, ContentStatus status)
     {
         return await _context.LearningResources
@@ -37,6 +67,30 @@ public class LearningResourceService : ILearningResourceService
     {
         return await _context.LearningResources
             .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
+    }
+
+    public async Task<bool> UrlExistsAsync(string userId, string url, int? excludeResourceId = null)
+    {
+        var normalizedUrl = NormalizeUrl(url);
+        if (string.IsNullOrWhiteSpace(normalizedUrl))
+        {
+            return false;
+        }
+
+        var query = _context.LearningResources
+            .Where(lr => lr.UserId == userId);
+
+        if (excludeResourceId.HasValue)
+        {
+            query = query.Where(lr => lr.Id != excludeResourceId.Value);
+        }
+
+        var existingUrls = await query
+            .Select(lr => lr.Url)
+            .ToListAsync();
+
+        return existingUrls.Any(existingUrl =>
+            string.Equals(NormalizeUrl(existingUrl), normalizedUrl, StringComparison.OrdinalIgnoreCase));
     }
 
     public async Task<LearningResource> CreateAsync(LearningResource resource)
@@ -64,6 +118,7 @@ public class LearningResourceService : ILearningResourceService
         existing.ThumbnailImage = resource.ThumbnailImage;
         existing.CustomOrder = resource.CustomOrder;
         existing.DateCompleted = resource.DateCompleted;
+        existing.IsArchived = resource.IsArchived;
         
         await _context.SaveChangesAsync();
         return existing;
@@ -105,6 +160,29 @@ public class LearningResourceService : ILearningResourceService
             }
         }
         await _context.SaveChangesAsync();
+    }
+
+    private static string NormalizeUrl(string url)
+    {
+        if (string.IsNullOrWhiteSpace(url))
+        {
+            return string.Empty;
+        }
+
+        var trimmedUrl = url.Trim();
+
+        if (Uri.TryCreate(trimmedUrl, UriKind.Absolute, out var uri))
+        {
+            var builder = new UriBuilder(uri)
+            {
+                Host = uri.Host.ToLowerInvariant(),
+                Scheme = uri.Scheme.ToLowerInvariant()
+            };
+
+            return builder.Uri.AbsoluteUri.TrimEnd('/');
+        }
+
+        return trimmedUrl.TrimEnd('/').ToLowerInvariant();
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using System.Text.Json;
 
 namespace LearnStack.Services;
 
@@ -21,10 +22,21 @@ public class OpenGraphService : IOpenGraphService
     {
         try
         {
-            if (string.IsNullOrWhiteSpace(url) || !Uri.TryCreate(url, UriKind.Absolute, out _))
+            if (string.IsNullOrWhiteSpace(url) || !Uri.TryCreate(url, UriKind.Absolute, out var uri))
             {
                 _logger.LogWarning("Invalid URL provided: {Url}", url);
                 return null;
+            }
+
+            // YouTube pages are frequently protected and can return consent pages.
+            // Use oEmbed first to reliably fetch video metadata without API keys.
+            if (IsYouTubeUrl(uri))
+            {
+                var youtubeData = await FetchYouTubeMetadataAsync(uri);
+                if (youtubeData != null)
+                {
+                    return youtubeData;
+                }
             }
 
             var response = await _httpClient.GetAsync(url);
@@ -70,6 +82,65 @@ public class OpenGraphService : IOpenGraphService
             _logger.LogError(ex, "Error fetching OpenGraph data from URL: {Url}", url);
             return null;
         }
+    }
+
+    private async Task<OpenGraphData?> FetchYouTubeMetadataAsync(Uri url)
+    {
+        try
+        {
+            var oEmbedUrl =
+                $"https://www.youtube.com/oembed?url={Uri.EscapeDataString(url.ToString())}&format=json";
+
+            var response = await _httpClient.GetAsync(oEmbedUrl);
+            if (!response.IsSuccessStatusCode)
+            {
+                _logger.LogWarning("YouTube oEmbed failed for URL: {Url}, Status: {Status}",
+                    url, response.StatusCode);
+                return null;
+            }
+
+            await using var stream = await response.Content.ReadAsStreamAsync();
+            using var json = await JsonDocument.ParseAsync(stream);
+            var root = json.RootElement;
+
+            string? title = root.TryGetProperty("title", out var titleElement)
+                ? titleElement.GetString()
+                : null;
+
+            string? thumbnailUrl = root.TryGetProperty("thumbnail_url", out var thumbnailElement)
+                ? thumbnailElement.GetString()
+                : null;
+
+            var ogData = new OpenGraphData
+            {
+                Title = title,
+                Description = null,
+                ImageUrl = thumbnailUrl,
+                SiteName = "YouTube",
+                Type = "video"
+            };
+
+            if (!string.IsNullOrWhiteSpace(ogData.ImageUrl))
+            {
+                ogData.ImageData = await DownloadImageAsync(ogData.ImageUrl);
+            }
+
+            return ogData;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error fetching YouTube metadata for URL: {Url}", url);
+            return null;
+        }
+    }
+
+    private static bool IsYouTubeUrl(Uri uri)
+    {
+        var host = uri.Host.ToLowerInvariant();
+
+        return host == "youtube.com"
+               || host.EndsWith(".youtube.com", StringComparison.Ordinal)
+               || host == "youtu.be";
     }
 
     private string? GetMetaContent(HtmlDocument doc, string property)
