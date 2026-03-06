@@ -62,7 +62,7 @@
         @if (!string.IsNullOrEmpty(Resource.Notes))
         {
             <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid #f1f5f9;">
-                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 4px;">NOTES</MudText>
+                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 4px;">@L["Notes"]</MudText>
                 <MudText Typo="Typo.body2" Style="color: #334155; font-style: italic;">
                     @(Resource.Notes.Length > 80 ? Resource.Notes.Substring(0, 80) + "..." : Resource.Notes)
                 </MudText>
@@ -77,18 +77,18 @@
                   Variant="Variant.Text"
                   Color="Color.Primary"
                   Style="font-weight: 600; border-radius: 8px;">
-            Open Link
+            @L["OpenLink"]
         </MudButton>
         <MudSpacer />
         <MudIconButton Icon="@(Resource.IsArchived ? Icons.Material.Filled.Unarchive : Icons.Material.Filled.Archive)" 
                       Size="Size.Small" 
-                      Title="@(Resource.IsArchived ? "Unarchive" : "Archive")" 
+                      Title="@(Resource.IsArchived ? L["Inactive"] : L["Active"])" 
                       Style="color: #94a3b8;" 
                       OnClick="ToggleArchive" />
         <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Style="color: #64748b;" PopoverClass="rounded-xl shadow-lg border border-slate-100">
-            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.ToLearn))" Style="border-radius: 8px; margin: 4px;">Mark as To Learn</MudMenuItem>
-            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.InProgress))" Style="border-radius: 8px; margin: 4px;">Mark as In Progress</MudMenuItem>
-            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.Completed))" Style="border-radius: 8px; margin: 4px;">Mark as Completed</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.ToLearn))" Style="border-radius: 8px; margin: 4px;">@L["ToLearn"]</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.InProgress))" Style="border-radius: 8px; margin: 4px;">@L["InProgress"]</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(ContentStatus.Completed))" Style="border-radius: 8px; margin: 4px;">@L["MarkAsComplete"]</MudMenuItem>
         </MudMenu>
     </MudCardActions>
 </MudCard>
@@ -152,10 +152,10 @@
     {
         return Resource.Status switch
         {
-            ContentStatus.ToLearn => "To Learn",
-            ContentStatus.InProgress => "In Progress",
-            ContentStatus.Completed => "Completed",
-            _ => "Unknown"
+            ContentStatus.ToLearn => L["ToLearn"],
+            ContentStatus.InProgress => L["InProgress"],
+            ContentStatus.Completed => L["Completed"],
+            _ => L["Status"]
         };
     }
 

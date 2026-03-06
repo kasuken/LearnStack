@@ -42,7 +42,7 @@
         @if (Idea.SourceResources.Any())
         {
             <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 8px;">
-                SOURCE RESOURCES (@Idea.SourceResources.Count)
+                @L["Sources"] (@Idea.SourceResources.Count)
             </MudText>
             <MudStack Spacing="2" Class="mb-3">
                 @foreach (var sourceResource in Idea.SourceResources.Take(3))
@@ -67,7 +67,7 @@
                 @if (Idea.SourceResources.Count > 3)
                 {
                     <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;">
-                        +@(Idea.SourceResources.Count - 3) more...
+                        @L["MoreCount", Idea.SourceResources.Count - 3]
                     </MudText>
                 }
             </MudStack>
@@ -76,7 +76,7 @@
         @if (!string.IsNullOrEmpty(Idea.Outline))
         {
             <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid #f1f5f9;">
-                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 4px;">OUTLINE</MudText>
+                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 4px;">@L["ContentIdeas"]</MudText>
                 <MudText Typo="Typo.body2" Style="color: #334155;">
                     @(Idea.Outline.Length > 100 ? Idea.Outline.Substring(0, 100) + "..." : Idea.Outline)
                 </MudText>
@@ -85,13 +85,13 @@
     </MudCardContent>
     <MudCardActions Style="padding: 8px 16px 16px; border-top: 1px solid #f8fafc;">
         <MudText Typo="Typo.caption" Style="color: #94a3b8; font-weight: 500;">
-            Created: @Idea.DateCreated.ToShortDateString()
+            @L["DateCreated"]: @Idea.DateCreated.ToShortDateString()
         </MudText>
         <MudSpacer />
         <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Style="color: #64748b;" PopoverClass="rounded-xl shadow-lg border border-slate-100">
-            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Idea))" Style="border-radius: 8px; margin: 4px;">Mark as Idea</MudMenuItem>
-            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.InProgress))" Style="border-radius: 8px; margin: 4px;">Mark as In Progress</MudMenuItem>
-            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Published))" Style="border-radius: 8px; margin: 4px;">Mark as Published</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Idea))" Style="border-radius: 8px; margin: 4px;">@L["Idea"]</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.InProgress))" Style="border-radius: 8px; margin: 4px;">@L["InProgress"]</MudMenuItem>
+            <MudMenuItem OnClick="@(() => UpdateStatus(IdeaStatus.Published))" Style="border-radius: 8px; margin: 4px;">@L["MarkAsPublished"]</MudMenuItem>
         </MudMenu>
     </MudCardActions>
 </MudCard>

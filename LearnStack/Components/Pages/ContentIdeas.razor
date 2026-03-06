@@ -1,4 +1,4 @@
-﻿@page "/content-ideas"
+@page "/content-ideas"
 @using LearnStack.Services
 @attribute [Authorize]
 @inject IContentIdeaService ContentIdeaService
@@ -7,7 +7,7 @@
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 
-<PageTitle>Content Ideas - LearnStack</PageTitle>
+<PageTitle>@L["ContentIdeas"] - LearnStack</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
     @* Page Header *@
@@ -17,23 +17,23 @@
                 <div style="background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);">
                     <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: white;" Size="Size.Medium" />
                 </div>
-                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">Content Ideas</MudText>
+                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">@L["ContentIdeas"]</MudText>
             </MudStack>
-            <MudText Typo="Typo.body2" Class="page-subtitle">Manage your content creation pipeline</MudText>
+            <MudText Typo="Typo.body2" Class="page-subtitle">@L["ContentIdeasSubtitle"]</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.MenuBook" 
                       OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
                       Style="border-radius: 10px; font-weight: 600;">
-                Learning Resources
+                @L["LearningResources"]
             </MudButton>
             <MudButton Variant="Variant.Filled" 
                       Color="Color.Warning"
                       StartIcon="@Icons.Material.Filled.Add" 
                       OnClick="OpenAddDialog"
                       Style="border-radius: 10px; font-weight: 600; box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.2);">
-                New Idea
+                @L["NewIdea"]
             </MudButton>
         </MudStack>
     </MudStack>
@@ -47,7 +47,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@ideaCount</span>
-                    <span class="stat-label">Ideas</span>
+                    <span class="stat-label">@L["Ideas"]</span>
                 </div>
             </div>
         </MudItem>
@@ -58,7 +58,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@inProgressCount</span>
-                    <span class="stat-label">In Progress</span>
+                    <span class="stat-label">@L["InProgress"]</span>
                 </div>
             </div>
         </MudItem>
@@ -69,7 +69,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@publishedCount</span>
-                    <span class="stat-label">Published</span>
+                    <span class="stat-label">@L["Published"]</span>
                 </div>
             </div>
         </MudItem>
@@ -87,7 +87,7 @@
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
             <MudItem xs="12" md="4">
                 <MudTextField @bind-Value="searchTerm"
-                             Placeholder="Search ideas..."
+                             Placeholder="@(L["SearchIdeasPlaceholder"])"
                              Variant="Variant.Outlined"
                              Adornment="Adornment.Start"
                              AdornmentIcon="@Icons.Material.Filled.Search"
@@ -102,46 +102,46 @@
                         <MudIconButton Icon="@Icons.Material.Filled.GridView" 
                                       Color="@(viewMode == ViewMode.Grid ? Color.Warning : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.Grid; StateHasChanged(); })"
-                                      Title="Grid View" />
+                                      Title="@(L["GridView"])" />
                         <MudIconButton Icon="@Icons.Material.Filled.TableChart" 
                                       Color="@(viewMode == ViewMode.DataGrid ? Color.Warning : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.DataGrid; StateHasChanged(); })"
-                                      Title="Table View" />
+                                      Title="@(L["TableView"])" />
                     </MudButtonGroup>
                     <MudSelect @bind-Value="filterStatus"
                               @bind-Value:after="OnFilterChanged"
-                              Label="Status"
+                              Label="@(L["Status"])"
                               Variant="Variant.Outlined"
                               T="IdeaStatus?"
                               Clearable="true"
                               Style="width: 150px; background-color: white;">
-                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.Idea)">Idea</MudSelectItem>
-                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.InProgress)">In Progress</MudSelectItem>
-                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.Published)">Published</MudSelectItem>
+                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.Idea)">@L["Idea"]</MudSelectItem>
+                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.InProgress)">@L["InProgress"]</MudSelectItem>
+                        <MudSelectItem T="IdeaStatus?" Value="@((IdeaStatus?)IdeaStatus.Published)">@L["Published"]</MudSelectItem>
                     </MudSelect>
                     <MudSelect @bind-Value="filterContentType"
                               @bind-Value:after="OnFilterChanged"
-                              Label="Type"
+                              Label="@(L["Type"])"
                               Variant="Variant.Outlined"
                               T="ContentIdeaType?"
                               Clearable="true"
                               Style="width: 150px; background-color: white; border-radius: 10px;">
-                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.BlogPost)">Blog Post</MudSelectItem>
-                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Video)">Video</MudSelectItem>
-                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.TweetThread)">Tweet Thread</MudSelectItem>
-                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Tutorial)">Tutorial</MudSelectItem>
-                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Other)">Other</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.BlogPost)">@L["BlogPost"]</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Video)">@L["Video"]</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.TweetThread)">@L["TweetThread"]</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Tutorial)">@L["Tutorial"]</MudSelectItem>
+                        <MudSelectItem T="ContentIdeaType?" Value="@((ContentIdeaType?)ContentIdeaType.Other)">@L["Other"]</MudSelectItem>
                     </MudSelect>
                     <MudSelect @bind-Value="filterPriority"
                               @bind-Value:after="OnFilterChanged"
-                              Label="Priority"
+                              Label="@(L["Priority"])"
                               Variant="Variant.Outlined"
                               T="Priority?"
                               Clearable="true"
                               Style="width: 130px; background-color: white; border-radius: 10px;">
-                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.High)">High</MudSelectItem>
-                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Medium)">Medium</MudSelectItem>
-                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Low)">Low</MudSelectItem>
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.High)">@L["High"]</MudSelectItem>
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Medium)">@L["Medium"]</MudSelectItem>
+                        <MudSelectItem T="Priority?" Value="@((Priority?)Priority.Low)">@L["Low"]</MudSelectItem>
                     </MudSelect>
                 </MudStack>
             </MudItem>
@@ -153,7 +153,7 @@
     {
         <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Style="padding: 4rem;">
             <MudProgressCircular Color="Color.Warning" Indeterminate="true" Size="Size.Large" />
-            <MudText Typo="Typo.body2" Style="color: #64748b; margin-top: 1rem;">Loading your ideas...</MudText>
+            <MudText Typo="Typo.body2" Style="color: #64748b; margin-top: 1rem;">@L["LoadingIdeas"]</MudText>
         </MudStack>
     }
     else if (!filteredIdeas.Any())
@@ -162,11 +162,11 @@
             <div class="empty-state-icon">
                 <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Size="Size.Large" Style="color: #94a3b8;" />
             </div>
-            <MudText Typo="Typo.h6" Style="color: #334155; font-weight: 600; margin-bottom: 0.5rem;">No content ideas yet</MudText>
-            <MudText Typo="Typo.body2" Style="color: #64748b; margin-bottom: 1.5rem;">Start planning your content creation journey</MudText>
+            <MudText Typo="Typo.h6" Style="color: #334155; font-weight: 600; margin-bottom: 0.5rem;">@L["NoContentIdeasYet"]</MudText>
+            <MudText Typo="Typo.body2" Style="color: #64748b; margin-bottom: 1.5rem;">@L["NoContentIdeasDescription"]</MudText>
             <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Add" OnClick="OpenAddDialog"
                       Style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 10px; padding: 10px 24px;">
-                Add Your First Idea
+                @L["AddFirstIdea"]
             </MudButton>
         </div>
     }
@@ -207,7 +207,7 @@
                             {
                                 <MudStack Spacing="1">
                                     <MudText Typo="Typo.caption" Style="color: #94a3b8;">
-                                        <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" /> @context.SourceResources.Count source(s)
+                                            <MudIcon Icon="@Icons.Material.Filled.Link" Size="Size.Small" /> @L["ResourceCount", context.SourceResources.Count]
                                     </MudText>
                                     @foreach (var sourceResource in context.SourceResources.Take(2))
                                     {
@@ -222,7 +222,7 @@
                                     @if (context.SourceResources.Count > 2)
                                     {
                                         <MudText Typo="Typo.caption" Color="Color.Secondary">
-                                            +@(context.SourceResources.Count - 2) more...
+                                            @L["MoreCount", context.SourceResources.Count - 2]
                                         </MudText>
                                     }
                                 </MudStack>
@@ -250,14 +250,14 @@
                                     {
                                         <MudButton Size="Size.Small" Variant="Variant.Text" OnClick="@(() => UpdateStatus(context, IdeaStatus.InProgress))" 
                                                   Style="text-transform: none; font-size: 0.7rem; color: #f59e0b;">
-                                            Start
+                                            @L["InProgress"]
                                         </MudButton>
                                     }
                                     @if (context.Status != IdeaStatus.Published)
                                     {
                                         <MudButton Size="Size.Small" Variant="Variant.Text" OnClick="@(() => UpdateStatus(context, IdeaStatus.Published))" 
                                                   Style="text-transform: none; font-size: 0.7rem; color: #10b981;">
-                                            Publish
+                                            @L["Published"]
                                         </MudButton>
                                     }
                                 </MudStack>
@@ -272,7 +272,7 @@
         <div class="resource-card" style="padding: 16px; margin-top: 20px;">
             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.body2" Style="color: #64748b; font-weight: 500;">
-                    Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) of @filteredIdeas.Count ideas
+                    @L["Ideas"]: @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) / @filteredIdeas.Count
                 </MudText>
                 <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3"
                               Color="Color.Warning" Variant="Variant.Filled" />
@@ -285,43 +285,43 @@
         <MudDataGrid T="ContentIdea" Items="@pagedIdeas" Striped="true" Dense="false" Hover="true" ReadOnly="false"
                      Style="background: white;">
             <Columns>
-                <PropertyColumn Property="x => x.Title" Title="Title">
+                <PropertyColumn Property="x => x.Title" Title="@(L["Title"])">
                     <CellTemplate>
                         <MudText Typo="Typo.body2" Style="font-weight: 600; color: #1e293b;">@context.Item.Title</MudText>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.ContentType" Title="Type">
+                <PropertyColumn Property="x => x.ContentType" Title="@(L["Type"])">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Style="@GetContentTypeChipStyle(context.Item.ContentType)">
                             @context.Item.ContentType
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.Status" Title="Status">
+                <PropertyColumn Property="x => x.Status" Title="@(L["Status"])">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Style="@GetStatusChipStyle(context.Item.Status)">
                             @context.Item.Status
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.Priority" Title="Priority">
+                <PropertyColumn Property="x => x.Priority" Title="@(L["Priority"])">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Style="@GetPriorityChipStyle(context.Item.Priority)">
                             @context.Item.Priority
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.DateCreated" Title="Date Created">
+                <PropertyColumn Property="x => x.DateCreated" Title="@(L["DateCreated"])">
                     <CellTemplate>
                         <MudText Typo="Typo.body2" Style="color: #64748b;">@GetRelativeDate(context.Item.DateCreated)</MudText>
                     </CellTemplate>
                 </PropertyColumn>
-                <TemplateColumn Title="Sources" Sortable="false">
+                <TemplateColumn Title="@(L["Sources"])" Sortable="false">
                     <CellTemplate>
                         <MudText Typo="Typo.body2" Style="color: #64748b;">@context.Item.SourceResources.Count</MudText>
                     </CellTemplate>
                 </TemplateColumn>
-                <TemplateColumn Title="Actions" Sortable="false">
+                <TemplateColumn Title="@(L["Actions"])" Sortable="false">
                     <CellTemplate>
                         <MudStack Row="true" Spacing="1">
                             <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Style="color: #f59e0b;" OnClick="@(() => OpenEditDialog(context.Item))" />
@@ -330,7 +330,7 @@
                             {
                                 <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color: #10b981;" 
                                               OnClick="@(() => UpdateStatus(context.Item, IdeaStatus.Published))" 
-                                              Title="Mark as Published" />
+                                              Title="@(L["MarkAsPublished"])" />
                             }
                         </MudStack>
                     </CellTemplate>
@@ -343,7 +343,7 @@
         <div class="resource-card" style="padding: 16px; margin-top: 20px;">
             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
                 <MudText Typo="Typo.body2" Style="color: #64748b; font-weight: 500;">
-                    Showing @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) of @filteredIdeas.Count ideas
+                    @L["Ideas"]: @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) / @filteredIdeas.Count
                 </MudText>
                 <MudPagination Count="@totalPages" Selected="@currentPage" SelectedChanged="OnPageChanged" BoundaryCount="1" MiddleCount="3"
                               Color="Color.Warning" Variant="Variant.Filled" />
@@ -533,7 +533,7 @@
         };
 
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = await DialogService.ShowAsync<ContentIdeaForm>("Add Content Idea", parameters, options);
+        var dialog = await DialogService.ShowAsync<ContentIdeaForm>(L["AddContentIdeaDialog"], parameters, options);
         var result = await dialog.Result;
 
         if (result is not null && !result.Canceled)
@@ -552,7 +552,7 @@
         };
 
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = await DialogService.ShowAsync<ContentIdeaForm>("Edit Content Idea", parameters, options);
+        var dialog = await DialogService.ShowAsync<ContentIdeaForm>(L["EditContentIdeaDialog"], parameters, options);
         var result = await dialog.Result;
 
         if (result is not null && !result.Canceled)
@@ -581,12 +581,12 @@
     private string GetRelativeDate(DateTime date)
     {
         var diff = DateTime.UtcNow - date;
-        if (diff.TotalDays < 1) return "Today";
-        if (diff.TotalDays < 2) return "Yesterday";
-        if (diff.TotalDays < 7) return $"{(int)diff.TotalDays} days ago";
-        if (diff.TotalDays < 30) return $"{(int)(diff.TotalDays / 7)} weeks ago";
-        if (diff.TotalDays < 365) return $"{(int)(diff.TotalDays / 30)} months ago";
-        return $"{(int)(diff.TotalDays / 365)} years ago";
+        if (diff.TotalDays < 1) return L["Today"];
+        if (diff.TotalDays < 2) return L["Yesterday"];
+        if (diff.TotalDays < 7) return L["DaysAgo", (int)diff.TotalDays];
+        if (diff.TotalDays < 30) return L["WeeksAgo", (int)(diff.TotalDays / 7)];
+        if (diff.TotalDays < 365) return L["MonthsAgo", (int)(diff.TotalDays / 30)];
+        return L["YearsAgo", (int)(diff.TotalDays / 365)];
     }
 
     private Color GetContentTypeColor(ContentIdeaType type) => type switch
@@ -649,3 +649,4 @@
         _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
     };
 }
+

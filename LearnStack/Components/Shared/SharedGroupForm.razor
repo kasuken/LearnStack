@@ -16,7 +16,7 @@
                          HelperText="Give your shared collection a name" />
 
             <MudTextField @bind-Value="model.Description"
-                         Label="Description"
+                         Label="@(L["Description"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="3"
@@ -26,11 +26,11 @@
 
             <MudSwitch @bind-Value="model.IsActive" 
                       Color="Color.Primary"
-                      Label="@(model.IsActive ? "Active (link is accessible)" : "Inactive (link is disabled)")" />
+                      Label="@(model.IsActive ? L["Active"] : L["Inactive"])" />
 
             @if (availableResources.Any())
             {
-                <MudText Typo="Typo.subtitle2" Class="mt-4 mb-2" Style="font-weight: 600; color: #0f172a;">Select Resources</MudText>
+                <MudText Typo="Typo.subtitle2" Class="mt-4 mb-2" Style="font-weight: 600; color: #0f172a;">@L["LearningResources"]</MudText>
                 
                 @* Filters Section *@
                 <MudPaper Elevation="0" Class="pa-3 mb-2" Style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px;">
@@ -44,16 +44,16 @@
                                         AdornmentIcon="@Icons.Material.Filled.Search"
                                         Immediate="true"
                                         DebounceInterval="300"
-                                        Placeholder="Search by title or tags..." />
+                                        Placeholder="@(L["SearchResourcesPlaceholder"])" />
                         </MudItem>
                         <MudItem xs="12" sm="4">
                             <MudSelect @bind-Value="filterContentType"
-                                     Label="Content Type"
+                                     Label="@(L["ContentType"])"
                                      Variant="Variant.Outlined"
                                      Margin="Margin.Dense"
                                      Clearable="true"
                                      AdornmentIcon="@Icons.Material.Filled.Category">
-                                <MudSelectItem T="ContentType?" Value="@((ContentType?)null)">All Types</MudSelectItem>
+                                <MudSelectItem T="ContentType?" Value="@((ContentType?)null)">@L["AllResources"]</MudSelectItem>
                                 @foreach (ContentType type in Enum.GetValues(typeof(ContentType)))
                                 {
                                     <MudSelectItem T="ContentType?" Value="@type">@type.ToString()</MudSelectItem>
@@ -62,12 +62,12 @@
                         </MudItem>
                         <MudItem xs="12" sm="4">
                             <MudSelect @bind-Value="filterStatus"
-                                     Label="Status"
+                                     Label="@(L["Status"])"
                                      Variant="Variant.Outlined"
                                      Margin="Margin.Dense"
                                      Clearable="true"
                                      AdornmentIcon="@Icons.Material.Filled.Flag">
-                                <MudSelectItem T="ContentStatus?" Value="@((ContentStatus?)null)">All Statuses</MudSelectItem>
+                                <MudSelectItem T="ContentStatus?" Value="@((ContentStatus?)null)">@L["AllResources"]</MudSelectItem>
                                 @foreach (ContentStatus status in Enum.GetValues(typeof(ContentStatus)))
                                 {
                                     <MudSelectItem T="ContentStatus?" Value="@status">@status.ToString()</MudSelectItem>
@@ -76,12 +76,12 @@
                         </MudItem>
                         <MudItem xs="12" sm="4">
                             <MudSelect @bind-Value="filterPriority"
-                                     Label="Priority"
+                                     Label="@(L["Priority"])"
                                      Variant="Variant.Outlined"
                                      Margin="Margin.Dense"
                                      Clearable="true"
                                      AdornmentIcon="@Icons.Material.Filled.PriorityHigh">
-                                <MudSelectItem T="Priority?" Value="@((Priority?)null)">All Priorities</MudSelectItem>
+                                <MudSelectItem T="Priority?" Value="@((Priority?)null)">@L["AllResources"]</MudSelectItem>
                                 @foreach (Priority priority in Enum.GetValues(typeof(Priority)))
                                 {
                                     <MudSelectItem T="Priority?" Value="@priority">@priority.ToString()</MudSelectItem>
@@ -96,7 +96,7 @@
                                   StartIcon="@Icons.Material.Filled.Clear" 
                                   Class="mt-2"
                                   Style="text-transform: none; color: #64748b; font-weight: 500;">
-                            Clear Filters
+                            @L["Filters"]
                         </MudButton>
                     }
                 </MudPaper>
@@ -126,28 +126,28 @@
                     else
                     {
                         <div class="pa-4" style="text-align: center; color: #64748b;">
-                            <MudText Typo="Typo.body2">No resources match the selected filters</MudText>
+                            <MudText Typo="Typo.body2">@L["NoResourcesFound"]</MudText>
                         </div>
                     }
                 </MudPaper>
                 <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;" Class="mt-2 d-block">
-                    @selectedResourceIds.Count of @GetFilteredResources().Count() resource(s) selected
+                    @L["ResourceCount", selectedResourceIds.Count] / @GetFilteredResources().Count()
                 </MudText>
             }
             else
             {
-                <MudAlert Severity="Severity.Info" Class="mt-4" Style="border-radius: 12px;">No learning resources available. Add some resources first.</MudAlert>
+                <MudAlert Severity="Severity.Info" Class="mt-4" Style="border-radius: 12px;">@L["NoResourcesFoundDescription"]</MudAlert>
             }
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel" Style="color: #64748b; font-weight: 600; border-radius: 8px;">Cancel</MudButton>
+        <MudButton OnClick="Cancel" Style="color: #64748b; font-weight: 600; border-radius: 8px;">@L["Cancel"]</MudButton>
         <MudButton Color="Color.Primary" 
                   Variant="Variant.Filled" 
                   OnClick="Submit"
                   Disabled="@(!isValid)"
                   Style="font-weight: 600; border-radius: 8px; padding: 8px 24px;">
-            @(IsEditMode ? "Update" : "Create")
+            @(IsEditMode ? L["Edit"] : L["CreateSharedCollectionDialog"])
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -316,3 +316,4 @@
         public bool IsActive { get; set; } = true;
     }
 }
+

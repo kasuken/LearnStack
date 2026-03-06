@@ -1,4 +1,4 @@
-﻿﻿@using LearnStack.Services
+﻿@using LearnStack.Services
 @inject ILearningResourceService ResourceService
 @inject IOpenGraphService OpenGraphService
 @inject IDialogService DialogService
@@ -36,7 +36,7 @@
                 <MudPaper Class="pa-2 mb-2" Elevation="0" Style="border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;">
                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
                         <MudImage Src="@model.ThumbnailPreview" Alt="Thumbnail" Height="60" ObjectFit="ObjectFit.Cover" Style="border-radius: 8px; width: 100px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" />
-                        <MudText Typo="Typo.caption" Style="color: #059669; font-weight: 600;">Image will be saved</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #059669; font-weight: 600;">@L["SaveResources"]</MudText>
                         <MudSpacer />
                         <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" OnClick="ClearThumbnail" Style="color: #94a3b8;" />
                     </MudStack>
@@ -44,7 +44,7 @@
             }
 
             <MudTextField @bind-Value="model.Title"
-                         Label="Title"
+                         Label="@(L["Title"])"
                          Required="true"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
@@ -52,7 +52,7 @@
                          MaxLength="500" />
 
             <MudTextField @bind-Value="model.Description"
-                         Label="Description"
+                         Label="@(L["Description"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="3"
@@ -60,40 +60,40 @@
                          MaxLength="2000" />
 
             <MudSelect @bind-Value="model.ContentType"
-                      Label="Content Type"
+                      Label="@(L["ContentType"])"
                       Required="true"
                       Variant="Variant.Outlined"
                       Margin="Margin.Dense">
-                <MudSelectItem Value="@ContentType.BlogPost">Blog Post</MudSelectItem>
-                <MudSelectItem Value="@ContentType.Podcast">Podcast</MudSelectItem>
-                <MudSelectItem Value="@ContentType.Video">Video</MudSelectItem>
-                <MudSelectItem Value="@ContentType.Article">Article</MudSelectItem>
-                <MudSelectItem Value="@ContentType.Course">Course</MudSelectItem>
-                <MudSelectItem Value="@ContentType.Documentation">Documentation</MudSelectItem>
+                <MudSelectItem Value="@ContentType.BlogPost">@L["BlogPost"]</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Podcast">@L["Podcast"]</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Video">@L["Video"]</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Article">@L["Article"]</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Course">@L["Course"]</MudSelectItem>
+                <MudSelectItem Value="@ContentType.Documentation">@L["Documentation"]</MudSelectItem>
             </MudSelect>
 
             <MudSelect @bind-Value="model.Status"
-                      Label="Status"
+                      Label="@(L["Status"])"
                       Required="true"
                       Variant="Variant.Outlined"
                       Margin="Margin.Dense">
-                <MudSelectItem Value="@ContentStatus.ToLearn">To Learn</MudSelectItem>
-                <MudSelectItem Value="@ContentStatus.InProgress">In Progress</MudSelectItem>
-                <MudSelectItem Value="@ContentStatus.Completed">Completed</MudSelectItem>
+                <MudSelectItem Value="@ContentStatus.ToLearn">@L["ToLearn"]</MudSelectItem>
+                <MudSelectItem Value="@ContentStatus.InProgress">@L["InProgress"]</MudSelectItem>
+                <MudSelectItem Value="@ContentStatus.Completed">@L["Completed"]</MudSelectItem>
             </MudSelect>
 
             <MudSelect @bind-Value="model.Priority"
-                      Label="Priority"
+                      Label="@(L["Priority"])"
                       Required="true"
                       Variant="Variant.Outlined"
                       Margin="Margin.Dense">
-                <MudSelectItem Value="@Priority.Low">Low</MudSelectItem>
-                <MudSelectItem Value="@Priority.Medium">Medium</MudSelectItem>
-                <MudSelectItem Value="@Priority.High">High</MudSelectItem>
+                <MudSelectItem Value="@Priority.Low">@L["Low"]</MudSelectItem>
+                <MudSelectItem Value="@Priority.Medium">@L["Medium"]</MudSelectItem>
+                <MudSelectItem Value="@Priority.High">@L["High"]</MudSelectItem>
             </MudSelect>
 
             <MudTextField @bind-Value="model.Tags"
-                         Label="Tags"
+                         Label="@(L["Filters"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          HelperText="Comma-separated tags"
@@ -101,7 +101,7 @@
                          MaxLength="1000" />
 
             <MudTextField @bind-Value="model.Notes"
-                         Label="Notes"
+                         Label="@(L["Notes"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="5"
@@ -109,12 +109,12 @@
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="Cancel">@L["Cancel"]</MudButton>
         <MudButton Color="Color.Primary" 
                   Variant="Variant.Filled" 
                   OnClick="Submit"
                   Disabled="@(!isValid)">
-            @(IsEditMode ? "Update" : "Add")
+            @(IsEditMode ? L["Edit"] : L["AddResource"])
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -328,6 +328,7 @@
         public string? ThumbnailPreview { get; set; }
     }
 }
+
 
 
 

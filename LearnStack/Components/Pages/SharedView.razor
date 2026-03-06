@@ -6,28 +6,28 @@
 @inject NavigationManager NavigationManager
 @layout LearnStack.Components.Layout.MainLayout
 
-<PageTitle>@(group != null ? $"{group.Name} - Shared Collection" : "Shared Collection") - LearnStack</PageTitle>
+<PageTitle>@(group != null ? $"{group.Name} - {L["SharedCollection"]}" : L["SharedCollection"].Value) - LearnStack</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="py-6">
     @if (isLoading)
     {
         <MudStack AlignItems="AlignItems.Center" Class="py-8">
             <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">Loading shared collection...</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">@L["LoadingSharedCollection"]</MudText>
         </MudStack>
     }
     else if (group == null)
     {
         <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc;">
             <MudIcon Icon="@Icons.Material.Filled.LinkOff" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
-            <MudText Typo="Typo.h5" Class="mt-4" Style="color: #475569; font-weight: 600;">Collection Not Found</MudText>
-            <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">This shared collection doesn't exist or has been deactivated.</MudText>
+            <MudText Typo="Typo.h5" Class="mt-4" Style="color: #475569; font-weight: 600;">@L["CollectionNotFound"]</MudText>
+            <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">@L["SharedCollectionMissingDescription"]</MudText>
             <MudButton Variant="Variant.Filled" 
                       Color="Color.Primary" 
                       Href="/"
                       Class="mt-4"
                       Style="border-radius: 10px; font-weight: 600;">
-                Go Home
+                @L["GoHome"]
             </MudButton>
         </MudPaper>
     }
@@ -43,7 +43,7 @@
                     <MudText Typo="Typo.h5" Style="font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">@group.Name</MudText>
                     @if (group.User != null)
                     {
-                        <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;">Shared by @group.User.UserName?.Split('@')[0]</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;">@L["SharedBy", group.User.UserName?.Split('@')[0] ?? L["UserFallback"].Value]</MudText>
                     }
                 </MudStack>
             </MudStack>
@@ -54,7 +54,7 @@
             <MudStack Row="true" Spacing="3" Class="mt-4">
                 <MudChip T="string" Size="Size.Small" Style="background: #dcfce7; color: #059669; font-weight: 600; border-radius: 6px;">
                     <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Class="mr-1" />
-                    @group.Items.Count resource(s)
+                    @L["ResourceCount", group.Items.Count]
                 </MudChip>
                 <MudChip T="string" Size="Size.Small" Style="background: #f1f5f9; color: #475569; font-weight: 600; border-radius: 6px;">
                     @group.DateCreated.ToString("MMMM dd, yyyy")
@@ -66,7 +66,7 @@
         @if (!group.Items.Any())
         {
             <MudPaper Elevation="0" Class="pa-6" Style="text-align: center; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc;">
-                <MudText Typo="Typo.body1" Style="color: #64748b;">This collection has no resources yet.</MudText>
+                <MudText Typo="Typo.body1" Style="color: #64748b;">@L["NoResourcesInCollection"]</MudText>
             </MudPaper>
         }
         else
@@ -121,7 +121,7 @@
                                               Href="@resource.Url"
                                               Target="_blank"
                                               Style="color: #4f46e5; font-weight: 600; border-radius: 8px;">
-                                        Visit Resource
+                                        @L["VisitResource"]
                                     </MudButton>
                                 </MudCardActions>
                             </MudCard>
@@ -137,7 +137,7 @@
                 <div style="background: linear-gradient(135deg, #4f46e5, #818cf8); border-radius: 8px; padding: 6px; display: flex; align-items: center; justify-content: center;">
                     <MudIcon Icon="@Icons.Material.Filled.AutoStories" Size="Size.Small" Style="color: white;" />
                 </div>
-                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; letter-spacing: 0.5px;">POWERED BY LEARNSTACK</MudText>
+                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; letter-spacing: 0.5px;">@L["PoweredByLearnStack"]</MudText>
             </MudStack>
         </MudStack>
     }
