@@ -9,11 +9,11 @@
 @inject IUserStore<ApplicationUser> UserStore
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Manage your external logins</PageTitle>
+<PageTitle>@L["Manage your external logins"]</PageTitle>
 
 <div class="manage-section-header">
-    <h3>External logins</h3>
-    <p>Manage your linked external login providers.</p>
+    <h3>@L["External logins"]</h3>
+    <p>@L["Manage your linked external login providers."]</p>
 </div>
 
 <StatusMessage/>
@@ -21,7 +21,7 @@
 <div class="manage-card">
     @if (currentLogins?.Count > 0)
     {
-        <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">Registered Logins</h4>
+        <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">@L["Registered Logins"]</h4>
         <table class="manage-table">
             <tbody>
             @foreach (var login in currentLogins)
@@ -36,7 +36,7 @@
                                 <div>
                                     <input type="hidden" name="@nameof(LoginProvider)" value="@login.LoginProvider"/>
                                     <input type="hidden" name="@nameof(ProviderKey)" value="@login.ProviderKey"/>
-                                    <button type="submit" class="btn-danger btn-sm" title="Remove this @login.ProviderDisplayName login from your account">Remove</button>
+                                    <button type="submit" class="btn-danger btn-sm" title="@L["Remove this {0} login from your account", login.ProviderDisplayName ?? string.Empty]">@L["Remove"]</button>
                                 </div>
                             </form>
                         }
@@ -53,13 +53,13 @@
         {
             <div style="border-top: 1px solid #e2e8f0; margin: 20px 0;"></div>
         }
-        <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">Add another service</h4>
+        <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">@L["Add another service"]</h4>
         <form action="Account/Manage/LinkExternalLogin" method="post">
             <AntiforgeryToken/>
             <div class="btn-group">
                 @foreach (var provider in otherLogins)
                 {
-                    <button type="submit" class="btn-secondary" name="Provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                    <button type="submit" class="btn-secondary" name="Provider" value="@provider.Name" title="@L["Log in using your {0} account", provider.DisplayName ?? provider.Name]">
                         @provider.DisplayName
                     </button>
                 }
@@ -69,7 +69,7 @@
 
     @if ((currentLogins?.Count ?? 0) == 0 && (otherLogins?.Count ?? 0) == 0)
     {
-        <p style="color: #64748b; margin: 0;">No external login providers are available.</p>
+        <p style="color: #64748b; margin: 0;">@L["No external login providers are available."]</p>
     }
 </div>
 
@@ -128,12 +128,12 @@
         var result = await UserManager.RemoveLoginAsync(user, LoginProvider!, ProviderKey!);
         if (!result.Succeeded)
         {
-            RedirectManager.RedirectToCurrentPageWithStatus("Error: The external login was not removed.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(L["Error: The external login was not removed."], HttpContext);
         }
         else
         {
             await SignInManager.RefreshSignInAsync(user);
-            RedirectManager.RedirectToCurrentPageWithStatus("The external login was removed.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(L["The external login was removed."], HttpContext);
         }
     }
 
@@ -149,7 +149,7 @@
         var info = await SignInManager.GetExternalLoginInfoAsync(userId);
         if (info is null)
         {
-            RedirectManager.RedirectToCurrentPageWithStatus("Error: Could not load external login info.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(L["Error: Could not load external login info."], HttpContext);
             return;
         }
 
@@ -159,11 +159,11 @@
             // Clear the existing external cookie to ensure a clean login process
             await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
 
-            RedirectManager.RedirectToCurrentPageWithStatus("The external login was added.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(L["The external login was added."], HttpContext);
         }
         else
         {
-            RedirectManager.RedirectToCurrentPageWithStatus("Error: The external login was not added. External logins can only be associated with one account.", HttpContext);
+            RedirectManager.RedirectToCurrentPageWithStatus(L["Error: The external login was not added. External logins can only be associated with one account."], HttpContext);
         }
     }
 

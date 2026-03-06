@@ -10,7 +10,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
-<PageTitle>Learning Resources - LearnStack</PageTitle>
+<PageTitle>@L["ResourceLibrary"] - LearnStack</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
     @* Page Header *@
@@ -20,22 +20,22 @@
                 <div style="background: linear-gradient(135deg, #4f46e5, #818cf8); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
                     <MudIcon Icon="@Icons.Material.Filled.AutoStories" Style="color: white;" Size="Size.Medium" />
                 </div>
-                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">Learning Resources</MudText>
+                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">@L["ResourceLibrary"]</MudText>
             </MudStack>
-            <MudText Typo="Typo.body2" Class="page-subtitle">Track and organize your learning materials</MudText>
+            <MudText Typo="Typo.body2" Class="page-subtitle">@L["ResourceLibraryDescription"]</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.Share" 
                       OnClick="@(() => NavigationManager.NavigateTo("/shared-groups"))" 
                       Style="border-radius: 10px; font-weight: 600;">
-                Shared Collections
+                @L["SharedCollections"]
             </MudButton>
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.Lightbulb" 
                       OnClick="@(() => NavigationManager.NavigateTo("/content-ideas"))" 
                       Style="border-radius: 10px; font-weight: 600;">
-                Content Ideas
+                @L["ContentIdeas"]
             </MudButton>
             <MudMenu Label="Export" Variant="Variant.Outlined" EndIcon="@Icons.Material.Filled.KeyboardArrowDown" IconColor="Color.Primary" Style="border-radius: 10px; font-weight: 600;">
                 <MudMenuItem Icon="@Icons.Material.Filled.Download" OnClick="ExportAsJson">Export as JSON</MudMenuItem>
@@ -53,7 +53,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@toLearnCount</span>
-                    <span class="stat-label">To Learn</span>
+                    <span class="stat-label">@L["ToLearn"]</span>
                 </div>
             </div>
         </MudItem>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@inProgressCount</span>
-                    <span class="stat-label">In Progress</span>
+                    <span class="stat-label">@L["InProgress"]</span>
                 </div>
             </div>
         </MudItem>
@@ -75,7 +75,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@completedCount</span>
-                    <span class="stat-label">Completed</span>
+                    <span class="stat-label">@L["Completed"]</span>
                 </div>
             </div>
         </MudItem>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@contentIdeasCount</span>
-                    <span class="stat-label">Content Ideas</span>
+                    <span class="stat-label">@L["ContentIdeas"]</span>
                 </div>
             </div>
         </MudItem>
@@ -94,10 +94,10 @@
 
     @* Tabs *@
     <MudTabs ActivePanelIndex="@activeTabIndex" ActivePanelIndexChanged="OnTabChangedAsync" Elevation="0" Rounded="true" ApplyEffectsToContainer="true" Class="mb-4" Style="background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);">
-        <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="To Learn" BadgeColor="Color.Primary" />
-        <MudTabPanel Icon="@Icons.Material.Filled.PlayCircle" Text="Learning" />
-        <MudTabPanel Icon="@Icons.Material.Filled.CheckCircle" Text="Completed" />
-        <MudTabPanel Icon="@Icons.Material.Filled.GridView" Text="All Resources" />
+        <MudTabPanel Icon="@Icons.Material.Filled.MenuBook" Text="@L["ToLearn"]" BadgeColor="Color.Primary" />
+        <MudTabPanel Icon="@Icons.Material.Filled.PlayCircle" Text="@L["InProgress"]" />
+        <MudTabPanel Icon="@Icons.Material.Filled.CheckCircle" Text="@L["Completed"]" />
+        <MudTabPanel Icon="@Icons.Material.Filled.GridView" Text="@L["AllResources"]" />
     </MudTabs>
 
     @* Search and Filters Row *@
@@ -105,7 +105,7 @@
         <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
             <MudItem xs="12" md="5">
                 <MudTextField @bind-Value="searchTerm"
-                             Placeholder="Search resources by title, description, notes, or tags..."
+                             Placeholder="@L["SearchResourcesPlaceholder"]"
                              Variant="Variant.Outlined"
                              Adornment="Adornment.Start"
                              AdornmentIcon="@Icons.Material.Filled.Search"

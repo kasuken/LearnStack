@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using LearnStack.Components;
 using LearnStack.Components.Account;
 using LearnStack.Data;
+using LearnStack.Middleware;
 using LearnStack.Services;
 using MudBlazor.Services;
 
@@ -12,6 +13,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddLocalization();
+builder.Services.AddControllers();
 
 builder.Services.AddMudServices();
 
@@ -87,9 +91,13 @@ else
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
+app.UseMiddleware<CultureMiddleware>();
 
+app.UseRouting();
+app.UseAuthorization();
 app.UseAntiforgery();
 
+app.MapControllers();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

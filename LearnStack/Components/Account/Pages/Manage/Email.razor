@@ -12,11 +12,11 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Manage email</PageTitle>
+<PageTitle>@L["Manage email"]</PageTitle>
 
 <div class="manage-section-header">
-    <h3>Manage email</h3>
-    <p>Update your email address and verification status.</p>
+    <h3>@L["Manage email"]</h3>
+    <p>@L["Update your email address and verification status."]</p>
 </div>
 
 <StatusMessage Message="@message"/>
@@ -32,9 +32,9 @@
         @if (isEmailConfirmed)
         {
             <div class="form-group">
-                <label for="email" class="form-label">Email</label>
+                <label for="email" class="form-label">@L["Email"]</label>
                 <div style="position: relative; display: flex; align-items: center;">
-                    <input type="text" value="@email" id="email" class="form-input" style="padding-right: 48px;" placeholder="Enter your email" disabled/>
+                    <input type="text" value="@email" id="email" class="form-input" style="padding-right: 48px;" placeholder="@L["Enter your email"]" disabled/>
                     <div style="position: absolute; right: 16px; color: #10b981; display: flex; align-items: center;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -46,19 +46,19 @@
         else
         {
             <div class="form-group">
-                <label for="email" class="form-label">Email</label>
-                <input type="text" value="@email" id="email" class="form-input" placeholder="Enter your email" disabled/>
-                <button type="submit" style="background: none; border: none; color: #4f46e5; font-weight: 500; font-size: 0.9rem; padding: 0; cursor: pointer; text-decoration: underline; margin-top: 8px;" form="send-verification-form">Send verification email</button>
+                <label for="email" class="form-label">@L["Email"]</label>
+                <input type="text" value="@email" id="email" class="form-input" placeholder="@L["Enter your email"]" disabled/>
+                <button type="submit" style="background: none; border: none; color: #4f46e5; font-weight: 500; font-size: 0.9rem; padding: 0; cursor: pointer; text-decoration: underline; margin-top: 8px;" form="send-verification-form">@L["Send verification email"]</button>
             </div>
         }
         
         <div class="form-group">
-            <label for="Input.NewEmail" class="form-label">New email</label>
-            <InputText @bind-Value="Input.NewEmail" id="Input.NewEmail" class="form-input" autocomplete="email" aria-required="true" placeholder="Enter a new email"/>
+            <label for="Input.NewEmail" class="form-label">@L["New email"]</label>
+            <InputText @bind-Value="Input.NewEmail" id="Input.NewEmail" class="form-input" autocomplete="email" aria-required="true" placeholder="@L["Enter a new email"]"/>
             <ValidationMessage For="() => Input.NewEmail" class="validation-message"/>
         </div>
         
-        <button type="submit" class="btn-primary w-100">Change email</button>
+        <button type="submit" class="btn-primary w-100">@L["Change email"]</button>
     </EditForm>
 </div>
 @code {
@@ -93,7 +93,7 @@
     {
         if (Input.NewEmail is null || Input.NewEmail == email)
         {
-            message = "Your email is unchanged.";
+            message = L["Your email is unchanged."];
             return;
         }
 
@@ -112,7 +112,7 @@
 
         await EmailSender.SendConfirmationLinkAsync(user, Input.NewEmail, HtmlEncoder.Default.Encode(callbackUrl));
 
-        message = "Confirmation link to change email sent. Please check your email.";
+        message = L["Confirmation link to change email sent. Please check your email."];
     }
 
     private async Task OnSendEmailVerificationAsync()
@@ -137,7 +137,7 @@
 
         await EmailSender.SendConfirmationLinkAsync(user, email, HtmlEncoder.Default.Encode(callbackUrl));
 
-        message = "Verification email sent. Please check your email.";
+        message = L["Verification email sent. Please check your email."];
     }
 
     private sealed class InputModel

@@ -12,7 +12,7 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Register - LearnStack</PageTitle>
+<PageTitle>@L["Register - LearnStack"]</PageTitle>
 
 <div class="register-container">
     <div class="register-card">
@@ -22,8 +22,8 @@
                     <path d="M21 5c-1.11-.35-2.33-.5-3.5-.5-1.95 0-4.05.4-5.5 1.5-1.45-1.1-3.55-1.5-5.5-1.5S2.45 4.9 1 6v14.65c0 .25.25.5.5.5.1 0 .15-.05.25-.05C3.1 20.45 5.05 20 6.5 20c1.95 0 4.05.4 5.5 1.5 1.35-.85 3.8-1.5 5.5-1.5 1.65 0 3.35.3 4.75 1.05.1.05.15.05.25.05.25 0 .5-.25.5-.5V6c-.6-.45-1.25-.75-2-1zm0 13.5c-1.1-.35-2.3-.5-3.5-.5-1.7 0-4.15.65-5.5 1.5V8c1.35-.85 3.8-1.5 5.5-1.5 1.2 0 2.4.15 3.5.5v11.5z"/>
                 </svg>
             </div>
-            <h1>LearnStack</h1>
-            <p>Create your account</p>
+            <h1>@L["LearnStack"]</h1>
+            <p>@L["Create your account"]</p>
         </div>
 
         @if (!string.IsNullOrEmpty(Message))
@@ -37,54 +37,54 @@
             <DataAnnotationsValidator />
             
             <div class="form-group">
-                <label for="email">Email</label>
+                <label for="email">@L["Email"]</label>
                 <InputText @bind-Value="Input.Email" 
                           id="email" 
                           class="form-input" 
-                          placeholder="name@example.com"
+                          placeholder="@L["name@example.com"]"
                           autocomplete="username" />
                 <ValidationMessage For="() => Input.Email" class="validation-message" />
             </div>
 
             <div class="form-group">
-                <label for="password">Password</label>
+                <label for="password">@L["Password"]</label>
                 <InputText @bind-Value="Input.Password" 
                           id="password" 
                           type="password" 
                           class="form-input" 
-                          placeholder="Create a password"
+                          placeholder="@L["Create a password"]"
                           autocomplete="new-password" />
                 <ValidationMessage For="() => Input.Password" class="validation-message" />
             </div>
 
             <div class="form-group">
-                <label for="confirm-password">Confirm Password</label>
+                <label for="confirm-password">@L["Confirm Password"]</label>
                 <InputText @bind-Value="Input.ConfirmPassword" 
                           id="confirm-password" 
                           type="password" 
                           class="form-input" 
-                          placeholder="Confirm your password"
+                          placeholder="@L["Confirm your password"]"
                           autocomplete="new-password" />
                 <ValidationMessage For="() => Input.ConfirmPassword" class="validation-message" />
             </div>
 
             <button type="submit" class="btn-primary">
-                Register
+                @L["Register"]
             </button>
         </EditForm>
 
         <div class="divider">
-            <span>or</span>
+            <span>@L["or"]</span>
         </div>
 
         <div class="register-links">
             <a href="@(NavigationManager.GetUriWithQueryParameters("Account/Login", new Dictionary<string, object?> { ["ReturnUrl"] = ReturnUrl }))">
-                Already have an account? Sign in here
+                @L["Already have an account? Sign in here"]
             </a>
         </div>
 
         @* <div class="divider">
-            <span>or register with</span>
+            <span>@L["or register with"]</span>
         </div>
 
         <ExternalLoginPicker /> *@
@@ -306,14 +306,14 @@
         public string Email { get; set; } = "";
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessageResourceName = "Validation_FieldLength", ErrorMessageResourceType = typeof(SharedResource), MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; } = "";
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessageResourceName = "Validation_PasswordMismatch", ErrorMessageResourceType = typeof(SharedResource))]
         public string ConfirmPassword { get; set; } = "";
     }
 

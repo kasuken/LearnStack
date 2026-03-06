@@ -1,0 +1,45 @@
+@inject NavigationManager NavigationManager
+@using LearnStack.Resources
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> L
+
+<MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+    <ActivatorContent>
+        <MudIconButton Icon="@Icons.Material.Filled.Language"
+                       Color="Color.Default"
+                       Size="Size.Medium"
+                       aria-label="@L["Lang_SelectLanguage"]" />
+    </ActivatorContent>
+    <ChildContent>
+        @foreach (var lang in _languages)
+        {
+            <MudMenuItem OnClick="@(() => ChangeLanguage(lang.Code))">
+                <div class="d-flex align-center gap-2">
+                    <span>@lang.Flag</span>
+                    <span>@lang.Name</span>
+                </div>
+            </MudMenuItem>
+        }
+    </ChildContent>
+</MudMenu>
+
+@code {
+    private record LanguageOption(string Code, string Flag, string Name);
+
+    private static readonly LanguageOption[] _languages =
+    [
+        new LanguageOption("en", "\U0001f1ec\U0001f1e7", "English"),
+        new LanguageOption("de", "\U0001f1e9\U0001f1ea", "Deutsch"),
+        new LanguageOption("es", "\U0001f1ea\U0001f1f8", "Español"),
+        new LanguageOption("fr", "\U0001f1eb\U0001f1f7", "Français"),
+        new LanguageOption("it", "\U0001f1ee\U0001f1f9", "Italiano"),
+    ];
+
+    private void ChangeLanguage(string culture)
+    {
+        var returnUrl = new Uri(NavigationManager.Uri).PathAndQuery;
+        NavigationManager.NavigateTo(
+            $"/Culture/Set?culture={Uri.EscapeDataString(culture)}&returnUrl={Uri.EscapeDataString(returnUrl)}",
+            forceLoad: true);
+    }
+}

@@ -8,24 +8,23 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<ResetAuthenticator> Logger
 
-<PageTitle>Reset authenticator key</PageTitle>
+<PageTitle>@L["Reset authenticator key"]</PageTitle>
 
 <div class="manage-section-header">
-    <h3>Reset authenticator key</h3>
-    <p>Reset your authenticator app configuration.</p>
+    <h3>@L["Reset authenticator key"]</h3>
+    <p>@L["Reset your authenticator app configuration."]</p>
 </div>
 
 <StatusMessage/>
 
 <div class="manage-card">
     <div class="alert-warning" role="alert">
-        <p style="margin: 0 0 8px 0;"><strong>If you reset your authenticator key your authenticator app will not work until you reconfigure it.</strong></p>
-        <p style="margin: 0;">This process disables 2FA until you verify your authenticator app.
-            If you do not complete your authenticator app configuration you may lose access to your account.</p>
+        <p style="margin: 0 0 8px 0;"><strong>@L["If you reset your authenticator key your authenticator app will not work until you reconfigure it."]</strong></p>
+        <p style="margin: 0;">@L["This process disables 2FA until you verify your authenticator app. If you do not complete your authenticator app configuration you may lose access to your account."]</p>
     </div>
     <form @formname="reset-authenticator" @onsubmit="OnSubmitAsync" method="post">
         <AntiforgeryToken/>
-        <button class="btn-danger" type="submit">Reset authenticator key</button>
+        <button class="btn-danger" type="submit">@L["Reset authenticator key"]</button>
     </form>
 </div>
 
@@ -50,7 +49,7 @@
 
         RedirectManager.RedirectToWithStatus(
             "Account/Manage/EnableAuthenticator",
-            "Your authenticator app key has been reset, you will need to configure your authenticator app using the new key.",
+            L["Your authenticator app key has been reset, you will need to configure your authenticator app using the new key."],
             HttpContext);
     }
 

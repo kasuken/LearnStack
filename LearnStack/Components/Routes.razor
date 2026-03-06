@@ -1,4 +1,8 @@
 ﻿@using LearnStack.Components.Account.Shared
+@using System.Globalization
+
+@inject PersistentComponentState ApplicationState
+
 <Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
@@ -22,4 +26,17 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // When the interactive circuit starts, restore the culture that was persisted during SSR pre-render
+        if (ApplicationState.TryTakeFromJson<string>("culture", out var cultureName) && !string.IsNullOrEmpty(cultureName))
+        {
+            var cultureInfo = new CultureInfo(cultureName);
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+        }
+    }
+}
 

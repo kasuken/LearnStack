@@ -6,24 +6,24 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Personal Data</PageTitle>
+<PageTitle>@L["Personal data"]</PageTitle>
 
 <div class="manage-section-header">
-    <h3>Personal Data</h3>
-    <p>Download or delete your personal data.</p>
+    <h3>@L["Personal data"]</h3>
+    <p>@L["Download or delete your personal data."]</p>
 </div>
 
 <StatusMessage/>
 
 <div class="manage-card">
-    <p style="color: #475569; line-height: 1.6; margin-bottom: 16px;">Your account contains personal data that you have given us. This page allows you to download or delete that data.</p>
-    <p style="color: #b91c1c; font-weight: 500; margin-bottom: 24px;">Deleting this data will permanently remove your account, and this cannot be recovered.</p>
+    <p style="color: #475569; line-height: 1.6; margin-bottom: 16px;">@L["Your account contains personal data that you have given us. This page allows you to download or delete that data."]</p>
+    <p style="color: #b91c1c; font-weight: 500; margin-bottom: 24px;">@L["Deleting this data will permanently remove your account, and this cannot be recovered."]</p>
     <div class="btn-group">
         <form action="Account/Manage/DownloadPersonalData" method="post">
             <AntiforgeryToken/>
-            <button class="btn-primary" type="submit">Download my data</button>
+            <button class="btn-primary" type="submit">@L["Download my data"]</button>
         </form>
-        <a href="Account/Manage/DeletePersonalData" class="btn-danger">Delete my account</a>
+        <a href="Account/Manage/DeletePersonalData" class="btn-danger">@L["Delete my account"]</a>
     </div>
 </div>
 
