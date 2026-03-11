@@ -86,9 +86,17 @@ Imagine looking back and seeing **everything you've learned**. Every completed r
 
 **Learning Resource Management**
 - Capture URLs, videos, podcasts, courses—everything
+- Auto-fetch title and description from Open Graph metadata
 - Track what's next, what's in progress, what's completed
 - Priority levels so you focus on what matters most
 - Tags, notes, and search to find anything instantly
+- Archive resources to keep your queue clean
+- Export your library as JSON or CSV
+
+**Shared Collections**
+- Group resources into shareable collections
+- Generate a unique share link to send to anyone
+- Let others browse your curated reading lists
 
 **Content Creation Planning**
 - Turn learning into content ideas effortlessly  
@@ -112,7 +120,7 @@ Ready to transform your learning and content creation?
 git clone https://github.com/kasuken/LearnStack.git
 cd LearnStack
 
-# Set up your database
+# Navigate to the project folder and set up your database
 cd LearnStack
 dotnet ef database update
 
@@ -120,7 +128,7 @@ dotnet ef database update
 dotnet run
 ```
 
-Open `https://localhost:5001` and start your journey!
+Your browser will open automatically. By default the app runs at `https://localhost:7265`.
 
 ### 🌐 Deploy to Azure
 
@@ -154,7 +162,7 @@ A movement of creators who believe that:
 
 ## 🌟 Join the Journey
 
-This is **version 1.0** of something bigger.
+This is **actively developed** and growing.
 
 Imagine:
 - 🔮 AI that suggests content ideas based on what you're learning
