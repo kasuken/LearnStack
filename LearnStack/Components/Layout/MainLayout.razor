@@ -1,10 +1,12 @@
 ﻿@using MudBlazor
+@using LearnStack.Components.Shared
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
 @* Theme Provider with Custom Theme *@
-<MudThemeProvider Theme="@_theme" />
+<MudThemeProvider @ref="_mudThemeProvider" Theme="@_theme" @bind-IsDarkMode="@_isDarkMode" />
 <MudPopoverProvider />
 
 @* Needed for dialogs *@
@@ -14,14 +16,15 @@
 <MudSnackbarProvider />
 
 <MudLayout>
-    <MudAppBar Elevation="0" Class="app-header" Style="background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0;">
+    <MudAppBar Elevation="0" Class="app-header" Style="background: var(--mud-palette-surface); border-bottom: 1px solid var(--mud-palette-lines-default);">
         <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Style="cursor: pointer;" @onclick="@(() => NavigationManager.NavigateTo("/resources"))">
             <img src="img/logoOnly.png" alt="LearnStack" height="36" style="border-radius: 8px;" />
-            <MudText Typo="Typo.h6" Style="font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">
+            <MudText Typo="Typo.h6" Style="font-weight: 700; color: var(--mud-palette-text-primary); letter-spacing: -0.5px;">
                 LearnStack
             </MudText>
         </MudStack>
         <MudSpacer />
+        <ThemeSelector CurrentTheme="@_themePreference" OnThemeChanged="SetThemePreferenceAsync" />
         <LanguageSelector />
         <AuthorizeView>
             <Authorized>
@@ -73,7 +76,7 @@
             </NotAuthorized>
         </AuthorizeView>
     </MudAppBar>
-    <MudMainContent Style="background: #f8fafc; min-height: 100vh; padding-top: 64px;">
+    <MudMainContent Style="background: var(--mud-palette-background); min-height: 100vh; padding-top: 64px;">
         @Body
     </MudMainContent>
 </MudLayout>
@@ -85,6 +88,67 @@
 </div>
 
 @code {
+    private MudThemeProvider _mudThemeProvider = null!;
+    private bool _isDarkMode;
+    private string _themePreference = "Auto";
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var savedPref = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "themePreference");
+            if (!string.IsNullOrEmpty(savedPref))
+            {
+                _themePreference = savedPref;
+            }
+
+            if (_themePreference == "Dark")
+            {
+                _isDarkMode = true;
+            }
+            else if (_themePreference == "Light")
+            {
+                _isDarkMode = false;
+            }
+            else
+            {
+                _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
+                await _mudThemeProvider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
+            }
+            StateHasChanged();
+        }
+    }
+
+    private Task OnSystemPreferenceChanged(bool newValue)
+    {
+        if (_themePreference == "Auto")
+        {
+            _isDarkMode = newValue;
+            StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+
+    public async Task SetThemePreferenceAsync(string preference)
+    {
+        _themePreference = preference;
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "themePreference", preference);
+
+        if (preference == "Dark")
+        {
+            _isDarkMode = true;
+        }
+        else if (preference == "Light")
+        {
+            _isDarkMode = false;
+        }
+        else
+        {
+                _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
+                await _mudThemeProvider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
+        StateHasChanged();
+    }
+
     private MudTheme _theme = new()
     {
         PaletteLight = new PaletteLight()
@@ -112,6 +176,27 @@
             TextPrimary = "#0f172a",
             TextSecondary = "#475569",
             DrawerBackground = "#ffffff"
+        },
+        PaletteDark = new PaletteDark()
+        {
+            Primary = "#818cf8",
+            PrimaryDarken = "#6366f1",
+            PrimaryLighten = "#a5b4fc",
+            Secondary = "#f8fafc",
+            SecondaryDarken = "#f1f5f9",
+            SecondaryLighten = "#ffffff",
+            Success = "#34d399",
+            Warning = "#fbbf24",
+            Error = "#f87171",
+            Info = "#60a5fa",
+            Background = "#0f172a",
+            Surface = "#1e293b",
+            AppbarBackground = "#1e293b",
+            AppbarText = "#f8fafc",
+            TextPrimary = "#f8fafc",
+            TextSecondary = "#94a3b8",
+            LinesDefault = "#334155",
+            DrawerBackground = "#1e293b"
         },
         Typography = new Typography()
         {
