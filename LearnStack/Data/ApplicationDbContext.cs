@@ -12,6 +12,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<ContentIdeaResource> ContentIdeaResources { get; set; }
     public DbSet<SharedResourceGroup> SharedResourceGroups { get; set; }
     public DbSet<SharedResourceGroupItem> SharedResourceGroupItems { get; set; }
+    public DbSet<LearnerFriendship> LearnerFriendships { get; set; }
+    public DbSet<FriendInvitation> FriendInvitations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -67,6 +69,38 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasOne(sgi => sgi.LearningResource)
             .WithMany()
             .HasForeignKey(sgi => sgi.LearningResourceId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<FriendInvitation>()
+            .HasIndex(fi => fi.Token)
+            .IsUnique();
+
+        builder.Entity<FriendInvitation>()
+            .HasOne(fi => fi.Inviter)
+            .WithMany()
+            .HasForeignKey(fi => fi.InviterId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<FriendInvitation>()
+            .HasOne(fi => fi.AcceptedBy)
+            .WithMany()
+            .HasForeignKey(fi => fi.AcceptedByUserId)
+            .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<LearnerFriendship>()
+            .HasIndex(lf => new { lf.RequesterId, lf.AddresseeId })
+            .IsUnique();
+
+        builder.Entity<LearnerFriendship>()
+            .HasOne(lf => lf.Requester)
+            .WithMany()
+            .HasForeignKey(lf => lf.RequesterId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<LearnerFriendship>()
+            .HasOne(lf => lf.Addressee)
+            .WithMany()
+            .HasForeignKey(lf => lf.AddresseeId)
             .OnDelete(DeleteBehavior.NoAction);
     }
 }

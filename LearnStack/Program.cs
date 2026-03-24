@@ -69,6 +69,7 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddScoped<ILearningResourceService, LearningResourceService>();
 builder.Services.AddScoped<IContentIdeaService, ContentIdeaService>();
 builder.Services.AddScoped<ISharedResourceGroupService, SharedResourceGroupService>();
+builder.Services.AddScoped<IFriendshipService, FriendshipService>();
 builder.Services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(30);

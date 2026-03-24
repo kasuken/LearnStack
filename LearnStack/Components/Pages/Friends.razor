@@ -1,0 +1,207 @@
+@page "/friends"
+@using LearnStack.Services
+@using System.Security.Claims
+@attribute [Authorize]
+@inject IFriendshipService FriendshipService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject IDialogService DialogService
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+
+<PageTitle>@L["Friends"] - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-4">
+    @* Page Header *@
+    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-6">
+        <MudStack Spacing="1">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                <div style="background: linear-gradient(135deg, #10b981, #34d399); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
+                    <MudIcon Icon="@Icons.Material.Filled.People" Style="color: white;" Size="Size.Medium" />
+                </div>
+                <MudText Typo="Typo.h5" Style="font-weight: 700; letter-spacing: -0.5px;">@L["Friends"]</MudText>
+            </MudStack>
+            <MudText Typo="Typo.body2" Style="color: #64748b;">@L["FriendsSubtitle"]</MudText>
+        </MudStack>
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.PersonAdd"
+                   OnClick="GenerateInviteLink"
+                   Style="border-radius: 10px; font-weight: 600;">
+            @L["GenerateInviteLink"]
+        </MudButton>
+    </MudStack>
+
+    @if (isLoading)
+    {
+        <MudStack AlignItems="AlignItems.Center" Class="py-8">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">@L["LoadingFriends"]</MudText>
+        </MudStack>
+    }
+    else if (!friends.Any())
+    {
+        <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc;">
+            <MudIcon Icon="@Icons.Material.Filled.PeopleOutline" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
+            <MudText Typo="Typo.h6" Class="mt-4" Style="color: #475569; font-weight: 600;">@L["NoFriendsYet"]</MudText>
+            <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b; max-width: 400px; margin: 0 auto;">@L["NoFriendsDescription"]</MudText>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.PersonAdd"
+                       OnClick="GenerateInviteLink"
+                       Class="mt-4"
+                       Style="border-radius: 10px; font-weight: 600;">
+                @L["GenerateInviteLink"]
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        <MudGrid Spacing="3">
+            @foreach (var friend in friends)
+            {
+                <MudItem xs="12" sm="6" md="4">
+                    <MudCard Elevation="0" Style="border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);">
+                        <MudCardContent>
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3" Class="mb-3">
+                                <MudAvatar Style="background: linear-gradient(135deg, #4f46e5, #818cf8); font-weight: 600; color: white; width: 48px; height: 48px; font-size: 1.2rem;">
+                                    @GetInitials(friend.UserName)
+                                </MudAvatar>
+                                <MudStack Spacing="0">
+                                    <MudText Typo="Typo.subtitle1" Style="font-weight: 600; color: #0f172a;">
+                                        @friend.UserName.Split('@')[0]
+                                    </MudText>
+                                    <MudText Typo="Typo.caption" Style="color: #94a3b8;">
+                                        @L["JoinedOn", friend.ConnectedSince.ToString("MMM dd, yyyy")]
+                                    </MudText>
+                                </MudStack>
+                            </MudStack>
+                        </MudCardContent>
+                        <MudCardActions Style="padding: 8px 16px 16px; gap: 8px;">
+                            <MudButton Variant="Variant.Outlined"
+                                       StartIcon="@Icons.Material.Filled.MenuBook"
+                                       OnClick="@(() => NavigationManager.NavigateTo($"/friends/{friend.UserId}/resources"))"
+                                       Style="border-radius: 8px; font-weight: 600; flex: 1; color: #4f46e5; border-color: #4f46e5;">
+                                @L["ViewPublicResources"]
+                            </MudButton>
+                            <MudIconButton Icon="@Icons.Material.Filled.PersonRemove"
+                                           Size="Size.Small"
+                                           Style="color: #ef4444;"
+                                           Title="@L["RemoveFriend"]"
+                                           OnClick="@(() => RemoveFriend(friend))" />
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem>
+            }
+        </MudGrid>
+    }
+</MudContainer>
+
+@if (showInvitePanel)
+{
+    <MudOverlay Visible="true" DarkBackground="true" ZIndex="1200" OnClick="CloseInvitePanel" />
+    <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1300; width: min(480px, 90vw);">
+        <MudPaper Elevation="8" Class="pa-6" Style="border-radius: 20px;">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+                <MudText Typo="Typo.h6" Style="font-weight: 700;">@L["GenerateInviteLink"]</MudText>
+                <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" OnClick="CloseInvitePanel" />
+            </MudStack>
+            <MudText Typo="Typo.body2" Style="color: #64748b;" Class="mb-4">@L["InviteLinkDescription"]</MudText>
+            @if (generatedInviteUrl != null)
+            {
+                <MudPaper Elevation="0" Class="pa-3 mb-3" Style="background: #f1f5f9; border-radius: 10px; word-break: break-all;">
+                    <MudText Typo="Typo.body2" Style="font-family: monospace; color: #334155; font-size: 0.8rem;">@generatedInviteUrl</MudText>
+                </MudPaper>
+                <MudText Typo="Typo.caption" Style="color: #94a3b8;" Class="mb-3">
+                    <MudIcon Icon="@Icons.Material.Filled.Timer" Size="Size.Small" Class="mr-1" />
+                    @L["InviteExpiry"]
+                </MudText>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           StartIcon="@Icons.Material.Filled.ContentCopy"
+                           FullWidth="true"
+                           OnClick="CopyInviteLink"
+                           Style="border-radius: 10px; font-weight: 600;">
+                    @L["CopyLink"]
+                </MudButton>
+            }
+            else
+            {
+                <MudStack AlignItems="AlignItems.Center">
+                    <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+                </MudStack>
+            }
+        </MudPaper>
+    </div>
+}
+
+@code {
+    private List<FriendViewModel> friends = [];
+    private bool isLoading = true;
+    private string userId = string.Empty;
+    private bool showInvitePanel = false;
+    private string? generatedInviteUrl = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        await LoadFriends();
+    }
+
+    private async Task LoadFriends()
+    {
+        isLoading = true;
+        friends = await FriendshipService.GetFriendsAsync(userId);
+        isLoading = false;
+    }
+
+    private async Task GenerateInviteLink()
+    {
+        showInvitePanel = true;
+        generatedInviteUrl = null;
+        StateHasChanged();
+
+        var invitation = await FriendshipService.CreateInvitationAsync(userId);
+        generatedInviteUrl = $"{NavigationManager.BaseUri}friends/accept/{invitation.Token}";
+    }
+
+    private async Task CopyInviteLink()
+    {
+        if (generatedInviteUrl != null)
+        {
+            await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", generatedInviteUrl);
+            Snackbar.Add(L["InviteLinkCopied"].Value, Severity.Success);
+        }
+    }
+
+    private void CloseInvitePanel()
+    {
+        showInvitePanel = false;
+        generatedInviteUrl = null;
+    }
+
+    private async Task RemoveFriend(FriendViewModel friend)
+    {
+        var confirmed = await DialogService.ShowMessageBox(
+            L["RemoveFriend"].Value,
+            L["RemoveFriendConfirm", friend.UserName.Split('@')[0]].Value,
+            yesText: L["RemoveFriend"].Value,
+            cancelText: L["Cancel"].Value);
+
+        if (confirmed != true) return;
+
+        await FriendshipService.RemoveFriendAsync(userId, friend.UserId);
+        Snackbar.Add(L["FriendRemoved"].Value, Severity.Success);
+        await LoadFriends();
+    }
+
+    private string GetInitials(string userName)
+    {
+        var name = userName.Split('@')[0];
+        var parts = name.Split('.');
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        return name.Length >= 2 ? name[..2].ToUpper() : name.ToUpper();
+    }
+}

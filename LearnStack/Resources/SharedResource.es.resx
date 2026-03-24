@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <resheader name="resmimetype">
     <value>text/microsoft-resx</value>
@@ -1274,5 +1274,107 @@
   </data>
   <data name="Decline" xml:space="preserve">
     <value>Rechazar</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
+    <value>Amigos</value>
+  </data>
+  <data name="FriendsSubtitle" xml:space="preserve">
+    <value>Conecta con otros estudiantes y comparte tu progreso de aprendizaje</value>
+  </data>
+  <data name="NoFriendsYet" xml:space="preserve">
+    <value>Aún no tienes amigos</value>
+  </data>
+  <data name="NoFriendsDescription" xml:space="preserve">
+    <value>Invita a otros usuarios de LearnStack para conectar y compartir recursos públicos</value>
+  </data>
+  <data name="GenerateInviteLink" xml:space="preserve">
+    <value>Generar enlace de invitación</value>
+  </data>
+  <data name="InviteLinkCopied" xml:space="preserve">
+    <value>¡Enlace de invitación copiado al portapapeles!</value>
+  </data>
+  <data name="InviteLinkDescription" xml:space="preserve">
+    <value>Comparte este enlace con otro usuario de LearnStack para conectaros</value>
+  </data>
+  <data name="InviteExpiry" xml:space="preserve">
+    <value>Este enlace caduca en 7 días y solo puede usarse una vez</value>
+  </data>
+  <data name="CopyLink" xml:space="preserve">
+    <value>Copiar enlace</value>
+  </data>
+  <data name="JoinedOn" xml:space="preserve">
+    <value>Conectados desde {0}</value>
+  </data>
+  <data name="ViewPublicResources" xml:space="preserve">
+    <value>Recursos públicos</value>
+  </data>
+  <data name="RemoveFriend" xml:space="preserve">
+    <value>Eliminar amigo</value>
+  </data>
+  <data name="RemoveFriendConfirm" xml:space="preserve">
+    <value>¿Seguro que quieres eliminar a {0} de tus amigos?</value>
+  </data>
+  <data name="FriendRemoved" xml:space="preserve">
+    <value>Amigo eliminado.</value>
+  </data>
+  <data name="LoadingFriends" xml:space="preserve">
+    <value>Cargando amigos...</value>
+  </data>
+  <data name="AcceptInvitation" xml:space="preserve">
+    <value>Aceptar invitación</value>
+  </data>
+  <data name="AcceptFriendRequest" xml:space="preserve">
+    <value>Aceptar solicitud de amistad</value>
+  </data>
+  <data name="YouAreInvitedBy" xml:space="preserve">
+    <value>{0} te ha invitado a conectar en LearnStack</value>
+  </data>
+  <data name="InvitationAccepted" xml:space="preserve">
+    <value>¡Ahora eres amigo de {0}!</value>
+  </data>
+  <data name="InvitationAlreadyUsed" xml:space="preserve">
+    <value>Esta invitación ya ha sido utilizada.</value>
+  </data>
+  <data name="InvitationExpired" xml:space="preserve">
+    <value>Esta invitación ha caducado.</value>
+  </data>
+  <data name="InvitationInvalid" xml:space="preserve">
+    <value>Enlace de invitación no válido.</value>
+  </data>
+  <data name="InvitationNotFound" xml:space="preserve">
+    <value>Invitación no encontrada.</value>
+  </data>
+  <data name="AlreadyFriends" xml:space="preserve">
+    <value>Ya estás conectado con esta persona.</value>
+  </data>
+  <data name="CannotInviteYourself" xml:space="preserve">
+    <value>No puedes aceptar tu propia invitación.</value>
+  </data>
+  <data name="BackToFriends" xml:space="preserve">
+    <value>Volver a Amigos</value>
+  </data>
+  <data name="MakePublic" xml:space="preserve">
+    <value>Hacer público</value>
+  </data>
+  <data name="MakePrivate" xml:space="preserve">
+    <value>Hacer privado</value>
+  </data>
+  <data name="MakePublicHelperText" xml:space="preserve">
+    <value>Los amigos podrán ver este recurso y su estado</value>
+  </data>
+  <data name="FriendPublicResources" xml:space="preserve">
+    <value>Recursos públicos de {0}</value>
+  </data>
+  <data name="NoPublicResources" xml:space="preserve">
+    <value>Sin recursos públicos</value>
+  </data>
+  <data name="NoPublicResourcesDescription" xml:space="preserve">
+    <value>Este estudiante todavía no ha hecho públicos sus recursos.</value>
+  </data>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Acceso denegado</value>
+  </data>
+  <data name="MustBeFriendsToViewResources" xml:space="preserve">
+    <value>Debes ser amigo de este estudiante para ver sus recursos públicos.</value>
   </data>
 </root>

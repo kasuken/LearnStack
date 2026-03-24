@@ -1,0 +1,218 @@
+@page "/friends/{FriendUserId}/resources"
+@using LearnStack.Services
+@using LearnStack.Data.Models
+@using System.Security.Claims
+@attribute [Authorize]
+@inject IFriendshipService FriendshipService
+@inject ILearningResourceService ResourceService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+
+<PageTitle>@(friendName != null ? $"{friendName} - {L["FriendPublicResources", friendName].Value}" : L["FriendPublicResources", ""].Value) - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="py-4">
+    @if (isLoading)
+    {
+        <MudStack AlignItems="AlignItems.Center" Class="py-8">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </MudStack>
+    }
+    else if (!isFriend)
+    {
+        <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc;">
+            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
+            <MudText Typo="Typo.h5" Class="mt-4" Style="color: #475569; font-weight: 600;">@L["AccessDenied"]</MudText>
+            <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">@L["MustBeFriendsToViewResources"]</MudText>
+            <MudButton Variant="Variant.Filled"
+                       Color="Color.Primary"
+                       Href="/friends"
+                       Class="mt-4"
+                       Style="border-radius: 10px; font-weight: 600;">
+                @L["BackToFriends"]
+            </MudButton>
+        </MudPaper>
+    }
+    else
+    {
+        @* Header *@
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mb-6">
+            <MudButton Variant="Variant.Text"
+                       StartIcon="@Icons.Material.Filled.ArrowBack"
+                       Href="/friends"
+                       Style="color: #64748b; font-weight: 600; border-radius: 8px;">
+                @L["BackToFriends"]
+            </MudButton>
+        </MudStack>
+
+        <MudPaper Elevation="0" Class="pa-6 mb-6" Style="border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+                <MudAvatar Style="background: linear-gradient(135deg, #4f46e5, #818cf8); font-weight: 600; color: white; width: 56px; height: 56px; font-size: 1.4rem;">
+                    @GetInitials(friendName ?? "?")
+                </MudAvatar>
+                <MudStack Spacing="0">
+                    <MudText Typo="Typo.h5" Style="font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">
+                        @L["FriendPublicResources", friendName?.Split('@')[0] ?? ""]
+                    </MudText>
+                    <MudChip T="string" Size="Size.Small" Style="background: #dcfce7; color: #059669; font-weight: 600; border-radius: 6px; margin-top: 4px;">
+                        <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Class="mr-1" />
+                        @L["ResourceCount", resources.Count]
+                    </MudChip>
+                </MudStack>
+            </MudStack>
+        </MudPaper>
+
+        @if (!resources.Any())
+        {
+            <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc;">
+                <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
+                <MudText Typo="Typo.h6" Class="mt-4" Style="color: #475569; font-weight: 600;">@L["NoPublicResources"]</MudText>
+                <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">@L["NoPublicResourcesDescription"]</MudText>
+            </MudPaper>
+        }
+        else
+        {
+            <MudGrid Spacing="3">
+                @foreach (var resource in resources)
+                {
+                    <MudItem xs="12" sm="6" md="4">
+                        <MudCard Elevation="0" Style="height: 100%; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); overflow: hidden;">
+                            @if (resource.ThumbnailImage != null)
+                            {
+                                <MudCardMedia Image="@GetThumbnailDataUrl(resource)" Height="160" Style="border-bottom: 1px solid #e2e8f0;" />
+                            }
+                            else
+                            {
+                                <div style="height: 160px; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e2e8f0;">
+                                    <MudIcon Icon="@GetContentTypeIcon(resource.ContentType)" Size="Size.Large" Style="font-size: 3rem; color: #cbd5e1;" />
+                                </div>
+                            }
+                            <MudCardContent>
+                                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mb-3" Style="flex-wrap: wrap;">
+                                    <MudChip T="string" Size="Size.Small" Style="@(GetContentTypeChipStyle(resource.ContentType) + "; font-weight: 600; border-radius: 6px;")">
+                                        @resource.ContentType
+                                    </MudChip>
+                                    <MudChip T="string" Size="Size.Small" Style="@(GetStatusChipStyle(resource.Status) + "; font-weight: 600; border-radius: 6px;")">
+                                        @L[resource.Status.ToString()]
+                                    </MudChip>
+                                    <MudChip T="string" Size="Size.Small" Style="@(GetPriorityChipStyle(resource.Priority) + "; font-weight: 600; border-radius: 6px;")">
+                                        @L[resource.Priority.ToString()]
+                                    </MudChip>
+                                </MudStack>
+                                <MudText Typo="Typo.h6" Style="font-weight: 700; font-size: 1.1rem; color: #0f172a; line-height: 1.4;" Class="mb-2">@resource.Title</MudText>
+                                @if (!string.IsNullOrEmpty(resource.Description))
+                                {
+                                    <MudText Typo="Typo.body2" Style="color: #475569; line-height: 1.6;" Class="mb-3">
+                                        @TruncateText(resource.Description, 120)
+                                    </MudText>
+                                }
+                                @if (!string.IsNullOrEmpty(resource.Tags))
+                                {
+                                    <MudStack Row="true" Spacing="1" Style="flex-wrap: wrap;">
+                                        @foreach (var tag in resource.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Take(3))
+                                        {
+                                            <MudChip T="string" Size="Size.Small" Style="background: #f1f5f9; color: #475569; font-size: 0.75rem; font-weight: 500; border-radius: 6px;">@tag</MudChip>
+                                        }
+                                    </MudStack>
+                                }
+                            </MudCardContent>
+                            <MudCardActions Style="padding: 12px 16px; border-top: 1px solid #f1f5f9; background: #f8fafc;">
+                                <MudButton Variant="Variant.Text"
+                                           StartIcon="@Icons.Material.Filled.OpenInNew"
+                                           Href="@resource.Url"
+                                           Target="_blank"
+                                           Style="color: #4f46e5; font-weight: 600; border-radius: 8px;">
+                                    @L["VisitResource"]
+                                </MudButton>
+                            </MudCardActions>
+                        </MudCard>
+                    </MudItem>
+                }
+            </MudGrid>
+        }
+    }
+</MudContainer>
+
+@code {
+    [Parameter]
+    public string FriendUserId { get; set; } = string.Empty;
+
+    private List<LearningResource> resources = [];
+    private bool isLoading = true;
+    private bool isFriend = false;
+    private string? friendName;
+    private string userId = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+        isFriend = await FriendshipService.IsFriendAsync(userId, FriendUserId);
+
+        if (isFriend)
+        {
+            var friends = await FriendshipService.GetFriendsAsync(userId);
+            var friend = friends.FirstOrDefault(f => f.UserId == FriendUserId);
+            friendName = friend?.UserName;
+            resources = await ResourceService.GetPublicResourcesByUserIdAsync(FriendUserId);
+        }
+
+        isLoading = false;
+    }
+
+    private string GetInitials(string userName)
+    {
+        var name = userName.Split('@')[0];
+        var parts = name.Split('.');
+        if (parts.Length >= 2)
+            return $"{parts[0][0]}{parts[1][0]}".ToUpper();
+        return name.Length >= 2 ? name[..2].ToUpper() : name.ToUpper();
+    }
+
+    private string GetThumbnailDataUrl(LearningResource resource)
+    {
+        if (resource.ThumbnailImage == null) return string.Empty;
+        return $"data:image/png;base64,{Convert.ToBase64String(resource.ThumbnailImage)}";
+    }
+
+    private string TruncateText(string text, int maxLength)
+        => text.Length <= maxLength ? text : text[..maxLength] + "...";
+
+    private string GetContentTypeIcon(ContentType type) => type switch
+    {
+        ContentType.BlogPost => Icons.Material.Filled.Article,
+        ContentType.Podcast => Icons.Material.Filled.Podcasts,
+        ContentType.Video => Icons.Material.Filled.OndemandVideo,
+        ContentType.Article => Icons.Material.Filled.Description,
+        ContentType.Course => Icons.Material.Filled.School,
+        ContentType.Documentation => Icons.Material.Filled.MenuBook,
+        _ => Icons.Material.Filled.Link
+    };
+
+    private string GetContentTypeChipStyle(ContentType type) => type switch
+    {
+        ContentType.BlogPost => "background: #eff6ff; color: #2563eb;",
+        ContentType.Podcast => "background: #faf5ff; color: #9333ea;",
+        ContentType.Video => "background: #fef2f2; color: #dc2626;",
+        ContentType.Article => "background: #eef2ff; color: #4f46e5;",
+        ContentType.Course => "background: #fff7ed; color: #ea580c;",
+        ContentType.Documentation => "background: #ecfdf5; color: #059669;",
+        _ => "background: #f1f5f9; color: #475569;"
+    };
+
+    private string GetStatusChipStyle(ContentStatus status) => status switch
+    {
+        ContentStatus.ToLearn => "background: #eff6ff; color: #2563eb;",
+        ContentStatus.InProgress => "background: #fffbeb; color: #d97706;",
+        ContentStatus.Completed => "background: #dcfce7; color: #059669;",
+        _ => "background: #f1f5f9; color: #475569;"
+    };
+
+    private string GetPriorityChipStyle(Priority priority) => priority switch
+    {
+        Priority.High => "background: #fef2f2; color: #dc2626;",
+        Priority.Medium => "background: #fffbeb; color: #d97706;",
+        Priority.Low => "background: #f1f5f9; color: #64748b;",
+        _ => "background: #f1f5f9; color: #64748b;"
+    };
+}
