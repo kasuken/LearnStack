@@ -215,8 +215,8 @@ When adding new GitHub Actions workflows:
 | DEPLOYMENT.md | ✅ Complete | 2026-02-21 |
 | RELEASES.md | ✅ Complete | 2026-02-21 |
 | PIPELINE.md | ✅ Complete | 2026-02-21 |
-| QUICK-REFERENCE.md | ✅ Complete | 2026-02-21 |
-| CHANGELOG.md | ✅ Complete | 2026-02-21 |
+| QUICK-REFERENCE.md | ✅ Complete | 2026-03-11 |
+| CHANGELOG.md | ✅ Complete | 2026-03-03 |
 
 ---
 
