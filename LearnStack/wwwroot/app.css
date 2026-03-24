@@ -242,6 +242,129 @@ html.dark .chip-priority-low {
     color: var(--text-secondary) !important;
 }
 
+/* Content type chips */
+.chip-type-video {
+    background: #ffebee !important;
+    color: #c62828 !important;
+    font-weight: 500;
+}
+
+.chip-type-article {
+    background: #e3f2fd !important;
+    color: #1565c0 !important;
+    font-weight: 500;
+}
+
+.chip-type-course {
+    background: #fff3e0 !important;
+    color: #e65100 !important;
+    font-weight: 500;
+}
+
+.chip-type-podcast {
+    background: #f3e8ff !important;
+    color: #7b1fa2 !important;
+    font-weight: 500;
+}
+
+.chip-type-documentation {
+    background: #e8f5e9 !important;
+    color: #2e7d32 !important;
+    font-weight: 500;
+}
+
+.chip-type-default {
+    background: #f5f5f5 !important;
+    color: #616161 !important;
+    font-weight: 500;
+}
+
+html.dark .chip-type-video {
+    background: rgba(198, 40, 40, 0.25) !important;
+    color: #ef9a9a !important;
+}
+
+html.dark .chip-type-article {
+    background: rgba(21, 101, 192, 0.25) !important;
+    color: #90caf9 !important;
+}
+
+html.dark .chip-type-course {
+    background: rgba(230, 81, 0, 0.25) !important;
+    color: #ffb74d !important;
+}
+
+html.dark .chip-type-podcast {
+    background: rgba(123, 31, 162, 0.25) !important;
+    color: #ce93d8 !important;
+}
+
+html.dark .chip-type-documentation {
+    background: rgba(46, 125, 50, 0.25) !important;
+    color: #81c784 !important;
+}
+
+html.dark .chip-type-default {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-secondary) !important;
+}
+
+/* Content idea type chips */
+.chip-idea-blogpost {
+    background: #e3f2fd !important;
+    color: #1565c0 !important;
+    font-weight: 500;
+}
+
+.chip-idea-video {
+    background: #ffebee !important;
+    color: #c62828 !important;
+    font-weight: 500;
+}
+
+.chip-idea-tweetthread {
+    background: #f3e8ff !important;
+    color: #7b1fa2 !important;
+    font-weight: 500;
+}
+
+.chip-idea-tutorial {
+    background: #fff3e0 !important;
+    color: #e65100 !important;
+    font-weight: 500;
+}
+
+.chip-idea-other {
+    background: #e8f5e9 !important;
+    color: #2e7d32 !important;
+    font-weight: 500;
+}
+
+html.dark .chip-idea-blogpost {
+    background: rgba(21, 101, 192, 0.25) !important;
+    color: #90caf9 !important;
+}
+
+html.dark .chip-idea-video {
+    background: rgba(198, 40, 40, 0.25) !important;
+    color: #ef9a9a !important;
+}
+
+html.dark .chip-idea-tweetthread {
+    background: rgba(123, 31, 162, 0.25) !important;
+    color: #ce93d8 !important;
+}
+
+html.dark .chip-idea-tutorial {
+    background: rgba(230, 81, 0, 0.25) !important;
+    color: #ffb74d !important;
+}
+
+html.dark .chip-idea-other {
+    background: rgba(46, 125, 50, 0.25) !important;
+    color: #81c784 !important;
+}
+
 /* ========================================
    Thumbnail Styles
    ======================================== */

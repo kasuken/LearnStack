@@ -4,17 +4,17 @@
 <MudCard Elevation="0" Class="resource-card d-flex flex-column" Style="height: 100%; border-radius: 16px; overflow: hidden;">
     @if (Resource.ThumbnailImage != null)
     {
-        <MudCardMedia Image="@GetThumbnailDataUrl()" Height="180" Style="border-bottom: 1px solid #e2e8f0;" />
+        <MudCardMedia Image="@GetThumbnailDataUrl()" Height="180" Style="border-bottom: 1px solid var(--mud-palette-lines-default);" />
     }
     else
     {
-        <MudCardMedia Height="180" Style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid #e2e8f0;">
-            <MudIcon Icon="@Icons.Material.Filled.Image" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
+        <MudCardMedia Height="180" Style="background: var(--mud-palette-background); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--mud-palette-lines-default);">
+            <MudIcon Icon="@Icons.Material.Filled.Image" Size="Size.Large" Style="font-size: 4rem; color: var(--mud-palette-text-disabled);" />
         </MudCardMedia>
     }
     <MudCardHeader>
         <CardHeaderContent>
-            <MudText Typo="Typo.h6" Style="font-weight: 700; line-height: 1.3; margin-bottom: 4px; color: #0f172a;">@Resource.Title</MudText>
+            <MudText Typo="Typo.h6" Style="font-weight: 700; line-height: 1.3; margin-bottom: 4px; color: var(--mud-palette-text-primary);">@Resource.Title</MudText>
             <MudChip T="string" Size="Size.Small" Color="GetContentTypeColor()" Class="mt-1" Style="font-weight: 600; border-radius: 6px;">
                 @Resource.ContentType.ToString()
             </MudChip>
@@ -33,7 +33,7 @@
     <MudCardContent Class="flex-grow-1" Style="padding-top: 0;">
         @if (!string.IsNullOrEmpty(Resource.Description))
         {
-            <MudText Typo="Typo.body2" Style="color: #475569; line-height: 1.6;" Class="mb-3">
+            <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary); line-height: 1.6;" Class="mb-3">
                 @(Resource.Description.Length > 120 ? Resource.Description.Substring(0, 120) + "..." : Resource.Description)
             </MudText>
         }
@@ -54,22 +54,22 @@
             <MudStack Row="true" Spacing="1" Class="flex-wrap mb-2">
                 @foreach (var tag in Resource.Tags.Split(',', StringSplitOptions.RemoveEmptyEntries))
                 {
-                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Style="border-radius: 6px; color: #64748b; border-color: #cbd5e1;">@tag.Trim()</MudChip>
+                    <MudChip T="string" Size="Size.Small" Variant="Variant.Outlined" Style="border-radius: 6px; color: var(--mud-palette-text-secondary); border-color: var(--mud-palette-lines-default);">@tag.Trim()</MudChip>
                 }
             </MudStack>
         }
 
         @if (!string.IsNullOrEmpty(Resource.Notes))
         {
-            <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid #f1f5f9;">
-                <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 600; display: block; margin-bottom: 4px;">@L["Notes"]</MudText>
-                <MudText Typo="Typo.body2" Style="color: #334155; font-style: italic;">
+            <div style="background: var(--mud-palette-background); padding: 12px; border-radius: 8px; margin-top: 12px; border: 1px solid var(--mud-palette-lines-default);">
+                <MudText Typo="Typo.caption" Style="color: var(--mud-palette-text-secondary); font-weight: 600; display: block; margin-bottom: 4px;">@L["Notes"]</MudText>
+                <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-primary); font-style: italic;">
                     @(Resource.Notes.Length > 80 ? Resource.Notes.Substring(0, 80) + "..." : Resource.Notes)
                 </MudText>
             </div>
         }
     </MudCardContent>
-    <MudCardActions Style="padding: 8px 16px 16px; border-top: 1px solid #f8fafc;">
+    <MudCardActions Style="padding: 8px 16px 16px; border-top: 1px solid var(--mud-palette-lines-default);">
         <MudButton Href="@Resource.Url" 
                   Target="_blank" 
                   StartIcon="@Icons.Material.Filled.OpenInNew"
