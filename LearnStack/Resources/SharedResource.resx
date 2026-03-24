@@ -1263,4 +1263,169 @@
   <data name="Enter a new name for your {0} passkey." xml:space="preserve">
     <value>Enter a new name for your {0} passkey.</value>
   </data>
+  <data name="Lang_SelectLanguage" xml:space="preserve">
+    <value>Select language</value>
+  </data>
+  <data name="Theme_SelectTheme" xml:space="preserve">
+    <value>Select theme</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Light</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Dark</value>
+  </data>
+  <data name="Theme_Auto" xml:space="preserve">
+    <value>Auto</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Archive</value>
+  </data>
+  <data name="Unarchive" xml:space="preserve">
+    <value>Unarchive</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
+  <data name="ShowingResourcesRange" xml:space="preserve">
+    <value>Showing {0} - {1} of {2} resources</value>
+  </data>
+  <data name="UrlLabel" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="UrlHelperText" xml:space="preserve">
+    <value>Enter the URL of the learning resource</value>
+  </data>
+  <data name="DescriptionLabel" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="TagsLabel" xml:space="preserve">
+    <value>Tags</value>
+  </data>
+  <data name="NotesLabel" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="DateCompleted" xml:space="preserve">
+    <value>Date Completed</value>
+  </data>
+  <data name="TagsHelperText" xml:space="preserve">
+    <value>Comma-separated tags</value>
+  </data>
+  <data name="NotesHelperText" xml:space="preserve">
+    <value>Add your notes, learnings, or thoughts</value>
+  </data>
+  <data name="PleaseEnterUrlFirst" xml:space="preserve">
+    <value>Please enter a URL first</value>
+  </data>
+  <data name="CouldNotFetchMetadata" xml:space="preserve">
+    <value>Could not fetch metadata from URL</value>
+  </data>
+  <data name="MetadataFetchedSuccessfully" xml:space="preserve">
+    <value>Metadata fetched successfully!</value>
+  </data>
+  <data name="ErrorFetchingMetadata" xml:space="preserve">
+    <value>Error fetching metadata:</value>
+  </data>
+  <data name="DuplicateUrlDetected" xml:space="preserve">
+    <value>Duplicate URL detected</value>
+  </data>
+  <data name="DuplicateUrlDetectedMessage" xml:space="preserve">
+    <value>This URL already exists in your resources. Do you want to add it anyway?</value>
+  </data>
+  <data name="AddAnyway" xml:space="preserve">
+    <value>Add anyway</value>
+  </data>
+  <data name="ThumbnailAlt" xml:space="preserve">
+    <value>Thumbnail</value>
+  </data>
+  <data name="Outline" xml:space="preserve">
+    <value>Outline</value>
+  </data>
+  <data name="OutlineHelperText" xml:space="preserve">
+    <value>Plan your content structure</value>
+  </data>
+  <data name="NoResourcesFoundMatching" xml:space="preserve">
+    <value>No resources found matching "{0}"</value>
+  </data>
+  <data name="ContentIdeaNotesHelperText" xml:space="preserve">
+    <value>Add your thoughts and ideas</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>Group Name</value>
+  </data>
+  <data name="GroupNameHelperText" xml:space="preserve">
+    <value>Give your shared collection a name</value>
+  </data>
+  <data name="GroupDescriptionHelperText" xml:space="preserve">
+    <value>Describe what this collection is about</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="ClearFilters" xml:space="preserve">
+    <value>Clear filters</value>
+  </data>
+  <data name="MarketingFooterDescription" xml:space="preserve">
+    <value>Organize your AI learning journey. Track resources, take notes, and create content.</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="Resources" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Support</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Privacy Policy</value>
+  </data>
+  <data name="TermsOfService" xml:space="preserve">
+    <value>Terms of Service</value>
+  </data>
+  <data name="CopyrightFooter" xml:space="preserve">
+    <value>© {0} LearnStack. All rights reserved.</value>
+  </data>
+  <data name="Testimonial1Quote" xml:space="preserve">
+    <value>"Finally, a tool that understands how developers learn. I've saved hundreds of resources and can actually find them when I need them."</value>
+  </data>
+  <data name="Testimonial1Role" xml:space="preserve">
+    <value>ML Engineer at TechCorp</value>
+  </data>
+  <data name="Testimonial2Quote" xml:space="preserve">
+    <value>"The content ideas feature is a game-changer. I can trace exactly which resources inspired each blog post I write."</value>
+  </data>
+  <data name="Testimonial2Role" xml:space="preserve">
+    <value>Tech Blogger &amp; Developer</value>
+  </data>
+  <data name="Testimonial3Quote" xml:space="preserve">
+    <value>"I went from 50+ open tabs to zero. LearnStack keeps everything organized so I can focus on actually learning."</value>
+  </data>
+  <data name="Testimonial3Role" xml:space="preserve">
+    <value>AI Researcher</value>
+  </data>
+  <data name="HeroSampleTitle1" xml:space="preserve">
+    <value>GPT-4 Deep Dive Tutorial</value>
+  </data>
+  <data name="HeroSampleTitle2" xml:space="preserve">
+    <value>Understanding Transformers</value>
+  </data>
+  <data name="HeroSampleTitle3" xml:space="preserve">
+    <value>Machine Learning Fundamentals</value>
+  </data>
+  <data name="HeroSampleTitle4" xml:space="preserve">
+    <value>Web Development Tutorial</value>
+  </data>
+  <data name="HeroSampleTitle5" xml:space="preserve">
+    <value>Cloud Architecture Patterns</value>
+  </data>
+  <data name="HeroSampleTitle6" xml:space="preserve">
+    <value>Data Structures &amp; Algorithms</value>
+  </data>
 </root>

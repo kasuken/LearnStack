@@ -9,25 +9,25 @@
         <MudIconButton Icon="@GetThemeIcon()"
                        Color="Color.Default"
                        Size="Size.Medium"
-                       aria-label="Select Theme" />
+                       aria-label="@L["Theme_SelectTheme"]" />
     </ActivatorContent>
     <ChildContent>
         <MudMenuItem OnClick="@(() => OnThemeChanged.InvokeAsync("Light"))">
             <div class="d-flex align-center gap-2">
                 <MudIcon Icon="@Icons.Material.Filled.LightMode" Size="Size.Small" />
-                <span>Light</span>
+                <span>@L["Theme_Light"]</span>
             </div>
         </MudMenuItem>
         <MudMenuItem OnClick="@(() => OnThemeChanged.InvokeAsync("Dark"))">
             <div class="d-flex align-center gap-2">
                 <MudIcon Icon="@Icons.Material.Filled.DarkMode" Size="Size.Small" />
-                <span>Dark</span>
+                <span>@L["Theme_Dark"]</span>
             </div>
         </MudMenuItem>
         <MudMenuItem OnClick="@(() => OnThemeChanged.InvokeAsync("Auto"))">
             <div class="d-flex align-center gap-2">
                 <MudIcon Icon="@Icons.Material.Filled.SettingsBrightness" Size="Size.Small" />
-                <span>Auto</span>
+                <span>@L["Theme_Auto"]</span>
             </div>
         </MudMenuItem>
     </ChildContent>

@@ -16,7 +16,7 @@
             <MudMenuItem OnClick="@(() => ChangeLanguage(lang.Code))">
                 <div class="d-flex align-center gap-2">
                     <span>@lang.Flag</span>
-                    <span>@lang.Name</span>
+                    <span>@L[lang.NameKey]</span>
                 </div>
             </MudMenuItem>
         }
@@ -24,15 +24,15 @@
 </MudMenu>
 
 @code {
-    private record LanguageOption(string Code, string Flag, string Name);
+    private record LanguageOption(string Code, string Flag, string NameKey);
 
     private static readonly LanguageOption[] _languages =
     [
-        new LanguageOption("en", "\U0001f1ec\U0001f1e7", "English"),
-        new LanguageOption("de", "\U0001f1e9\U0001f1ea", "Deutsch"),
-        new LanguageOption("es", "\U0001f1ea\U0001f1f8", "Español"),
-        new LanguageOption("fr", "\U0001f1eb\U0001f1f7", "Français"),
-        new LanguageOption("it", "\U0001f1ee\U0001f1f9", "Italiano"),
+        new LanguageOption("en", "\U0001f1ec\U0001f1e7", "LanguageEnglish"),
+        new LanguageOption("de", "\U0001f1e9\U0001f1ea", "LanguageGerman"),
+        new LanguageOption("es", "\U0001f1ea\U0001f1f8", "LanguageSpanish"),
+        new LanguageOption("fr", "\U0001f1eb\U0001f1f7", "LanguageFrench"),
+        new LanguageOption("it", "\U0001f1ee\U0001f1f9", "LanguageItalian"),
     ];
 
     private void ChangeLanguage(string culture)

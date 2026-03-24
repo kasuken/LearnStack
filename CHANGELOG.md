@@ -4,6 +4,36 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [0.1.0] - 2026-03-18
+
+### Added
+- `ThemeSelector` component for user-controlled theme switching
+- Dark mode support in `MainLayout` with theme preference persisted to local storage
+
+### Changed
+- `MainLayout` refactored to handle dynamic theme changes at runtime
+
+---
+
+## [0.0.9] - 2026-03-06
+
+### Added
+- Full multi-language (i18n) support for English, German (de), Spanish (es), French (fr), and Italian (it)
+- `SharedResource` resource files with translations for all supported languages
+- `CultureMiddleware` and `CultureController` for culture detection and switching
+- `LanguageSelector` component for in-app language selection
+- Localized all authentication and account management pages (Login, Register, Manage, Passkeys, 2FA, etc.)
+- Localized marketing pages (`Home`, `LandingPage`)
+- Localized application pages: Resources, ContentIdeas, SharedGroups, SharedView, Error, NotFound
+- Localized shared components: `ResourceCard`, `ResourceForm`, `ContentIdeaCard`, `ContentIdeaForm`, `SharedGroupForm`
+
+### Changed
+- `App.razor` and `Routes.razor` updated to support culture-aware routing
+- `Program.cs` updated to register localization services and middleware
+- Removed invisible characters from `using` directives in `ContentIdeaForm` and `ResourceForm`
+
+---
+
 ## [0.0.8] - 2026-03-03
 
 ### Added

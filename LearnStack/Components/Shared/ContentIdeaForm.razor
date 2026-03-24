@@ -34,11 +34,11 @@
                          MaxLength="2000" />
 
             <MudTextField @bind-Value="model.Outline"
-                         Label="Outline"
+                         Label="@(L["Outline"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="5"
-                         HelperText="Plan your content structure" />
+                         HelperText="@(L["OutlineHelperText"])" />
 
             <MudSelect @bind-Value="model.Status"
                       Label="@(L["Status"])"
@@ -94,7 +94,7 @@
                 }
                 else if (!string.IsNullOrWhiteSpace(resourceSearchTerm))
                 {
-                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">No resources found matching "@resourceSearchTerm"</MudText>
+                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">@L["NoResourcesFoundMatching", resourceSearchTerm]</MudText>
                 }
                 else
                 {
@@ -114,7 +114,7 @@
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="5"
-                         HelperText="Add your thoughts and ideas" />
+                         HelperText="@(L["ContentIdeaNotesHelperText"])" />
         </MudForm>
     </DialogContent>
     <DialogActions>

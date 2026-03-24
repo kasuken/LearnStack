@@ -7,13 +7,13 @@
     <DialogContent>
         <MudForm @ref="form" @bind-IsValid="@isValid">
             <MudTextField @bind-Value="model.Name"
-                         Label="Group Name"
+                         Label="@(L["GroupName"])"
                          Required="true"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Counter="500"
                          MaxLength="500"
-                         HelperText="Give your shared collection a name" />
+                         HelperText="@(L["GroupNameHelperText"])" />
 
             <MudTextField @bind-Value="model.Description"
                          Label="@(L["Description"])"
@@ -22,7 +22,7 @@
                          Lines="3"
                          Counter="2000"
                          MaxLength="2000"
-                         HelperText="Describe what this collection is about" />
+                         HelperText="@(L["GroupDescriptionHelperText"])" />
 
             <MudSwitch @bind-Value="model.IsActive" 
                       Color="Color.Primary"
@@ -37,7 +37,7 @@
                     <MudGrid Spacing="2">
                         <MudItem xs="12">
                             <MudTextField @bind-Value="searchText"
-                                        Label="Search"
+                                        Label="@(L["Search"])"
                                         Variant="Variant.Outlined"
                                         Margin="Margin.Dense"
                                         Adornment="Adornment.Start"
@@ -56,7 +56,7 @@
                                 <MudSelectItem T="ContentType?" Value="@((ContentType?)null)">@L["AllResources"]</MudSelectItem>
                                 @foreach (ContentType type in Enum.GetValues(typeof(ContentType)))
                                 {
-                                    <MudSelectItem T="ContentType?" Value="@type">@type.ToString()</MudSelectItem>
+                                    <MudSelectItem T="ContentType?" Value="@type">@GetContentTypeText(type)</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -70,7 +70,7 @@
                                 <MudSelectItem T="ContentStatus?" Value="@((ContentStatus?)null)">@L["AllResources"]</MudSelectItem>
                                 @foreach (ContentStatus status in Enum.GetValues(typeof(ContentStatus)))
                                 {
-                                    <MudSelectItem T="ContentStatus?" Value="@status">@status.ToString()</MudSelectItem>
+                                    <MudSelectItem T="ContentStatus?" Value="@status">@GetStatusText(status)</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -84,7 +84,7 @@
                                 <MudSelectItem T="Priority?" Value="@((Priority?)null)">@L["AllResources"]</MudSelectItem>
                                 @foreach (Priority priority in Enum.GetValues(typeof(Priority)))
                                 {
-                                    <MudSelectItem T="Priority?" Value="@priority">@priority.ToString()</MudSelectItem>
+                                    <MudSelectItem T="Priority?" Value="@priority">@GetPriorityText(priority)</MudSelectItem>
                                 }
                             </MudSelect>
                         </MudItem>
@@ -96,7 +96,7 @@
                                   StartIcon="@Icons.Material.Filled.Clear" 
                                   Class="mt-2"
                                   Style="text-transform: none; color: #64748b; font-weight: 500;">
-                            @L["Filters"]
+                            @L["ClearFilters"]
                         </MudButton>
                     }
                 </MudPaper>
@@ -118,7 +118,7 @@
                                         Color="Color.Primary">
                                 <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
                                     <MudText Typo="Typo.body2" Style="color: #0f172a; font-weight: 500;">@resource.Title</MudText>
-                                    <MudChip T="string" Size="Size.Small" Style="height: 20px; background: #f1f5f9; color: #475569; font-size: 0.7rem; font-weight: 600; border-radius: 4px;">@resource.ContentType</MudChip>
+                                    <MudChip T="string" Size="Size.Small" Style="height: 20px; background: #f1f5f9; color: #475569; font-size: 0.7rem; font-weight: 600; border-radius: 4px;">@GetContentTypeText(resource.ContentType)</MudChip>
                                 </MudStack>
                             </MudCheckBox>
                         }
@@ -260,6 +260,33 @@
     {
         MudDialog.Cancel();
     }
+
+    private string GetContentTypeText(ContentType type) => type switch
+    {
+        ContentType.BlogPost => L["BlogPost"].Value,
+        ContentType.Podcast => L["Podcast"].Value,
+        ContentType.Video => L["Video"].Value,
+        ContentType.Article => L["Article"].Value,
+        ContentType.Course => L["Course"].Value,
+        ContentType.Documentation => L["Documentation"].Value,
+        _ => L["Other"].Value
+    };
+
+    private string GetStatusText(ContentStatus status) => status switch
+    {
+        ContentStatus.ToLearn => L["ToLearn"].Value,
+        ContentStatus.InProgress => L["InProgress"].Value,
+        ContentStatus.Completed => L["Completed"].Value,
+        _ => L["Unknown"].Value
+    };
+
+    private string GetPriorityText(Priority priority) => priority switch
+    {
+        Priority.High => L["High"].Value,
+        Priority.Medium => L["Medium"].Value,
+        Priority.Low => L["Low"].Value,
+        _ => L["Unknown"].Value
+    };
 
     private async Task Submit()
     {

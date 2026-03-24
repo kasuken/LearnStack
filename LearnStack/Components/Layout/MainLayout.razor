@@ -82,8 +82,8 @@
 </MudLayout>
 
 <div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
+    @L["UnhandledError"]
+    <a href="." class="reload">@L["Reload"]</a>
     <span class="dismiss">🗙</span>
 </div>
 
@@ -144,8 +144,10 @@
         }
         else
         {
-                _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
-                await _mudThemeProvider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
+            _isDarkMode = await _mudThemeProvider.GetSystemDarkModeAsync();
+            await _mudThemeProvider.WatchSystemDarkModeAsync(OnSystemPreferenceChanged);
+        }
+
         StateHasChanged();
     }
 
@@ -242,6 +244,6 @@
     {
         return user.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value 
                ?? user.Identity?.Name 
-               ?? "User";
+               ?? L["UserFallback"].Value;
     }
 }
