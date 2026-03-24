@@ -6,7 +6,7 @@
     <DialogContent>
         <MudForm @ref="form" @bind-IsValid="@isValid">
             <MudTextField @bind-Value="model.Title"
-                         Label="Title"
+                         Label="@(L["Title"])"
                          Required="true"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
@@ -14,19 +14,19 @@
                          MaxLength="500" />
 
             <MudSelect @bind-Value="model.ContentType"
-                      Label="Content Type"
+                      Label="@(L["ContentType"])"
                       Required="true"
                       Variant="Variant.Outlined"
                       Margin="Margin.Dense">
-                <MudSelectItem Value="@ContentIdeaType.BlogPost">Blog Post</MudSelectItem>
-                <MudSelectItem Value="@ContentIdeaType.Video">Video</MudSelectItem>
-                <MudSelectItem Value="@ContentIdeaType.TweetThread">Tweet Thread</MudSelectItem>
-                <MudSelectItem Value="@ContentIdeaType.Tutorial">Tutorial</MudSelectItem>
-                <MudSelectItem Value="@ContentIdeaType.Other">Other</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.BlogPost">@L["BlogPost"]</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.Video">@L["Video"]</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.TweetThread">@L["TweetThread"]</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.Tutorial">@L["Tutorial"]</MudSelectItem>
+                <MudSelectItem Value="@ContentIdeaType.Other">@L["Other"]</MudSelectItem>
             </MudSelect>
 
             <MudTextField @bind-Value="model.Description"
-                         Label="Description"
+                         Label="@(L["Description"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="3"
@@ -34,35 +34,35 @@
                          MaxLength="2000" />
 
             <MudTextField @bind-Value="model.Outline"
-                         Label="Outline"
+                         Label="@(L["Outline"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="5"
-                         HelperText="Plan your content structure" />
+                         HelperText="@(L["OutlineHelperText"])" />
 
             <MudSelect @bind-Value="model.Status"
-                      Label="Status"
+                      Label="@(L["Status"])"
                       Required="true"
                       Variant="Variant.Outlined"
                       Margin="Margin.Dense">
-                <MudSelectItem Value="@IdeaStatus.Idea">Idea</MudSelectItem>
-                <MudSelectItem Value="@IdeaStatus.InProgress">In Progress</MudSelectItem>
-                <MudSelectItem Value="@IdeaStatus.Published">Published</MudSelectItem>
+                <MudSelectItem Value="@IdeaStatus.Idea">@L["Idea"]</MudSelectItem>
+                <MudSelectItem Value="@IdeaStatus.InProgress">@L["InProgress"]</MudSelectItem>
+                <MudSelectItem Value="@IdeaStatus.Published">@L["Published"]</MudSelectItem>
             </MudSelect>
 
             <MudSelect @bind-Value="model.Priority"
-                      Label="Priority"
+                      Label="@(L["Priority"])"
                       Required="true"
                       Variant="Variant.Outlined"
                       Margin="Margin.Dense">
-                <MudSelectItem Value="@Priority.Low">Low</MudSelectItem>
-                <MudSelectItem Value="@Priority.Medium">Medium</MudSelectItem>
-                <MudSelectItem Value="@Priority.High">High</MudSelectItem>
+                <MudSelectItem Value="@Priority.Low">@L["Low"]</MudSelectItem>
+                <MudSelectItem Value="@Priority.Medium">@L["Medium"]</MudSelectItem>
+                <MudSelectItem Value="@Priority.High">@L["High"]</MudSelectItem>
             </MudSelect>
 
-            <MudText Typo="Typo.subtitle2" Class="mt-3 mb-1" Style="font-weight: 600; color: #475569;">Source Resources</MudText>
+            <MudText Typo="Typo.subtitle2" Class="mt-3 mb-1" Style="font-weight: 600; color: #475569;">@L["Sources"]</MudText>
             <MudTextField @bind-Value="resourceSearchTerm"
-                         Label="Search Resources"
+                         Label="@(L["SearchResourcesPlaceholder"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Adornment="Adornment.Start"
@@ -94,36 +94,36 @@
                 }
                 else if (!string.IsNullOrWhiteSpace(resourceSearchTerm))
                 {
-                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">No resources found matching "@resourceSearchTerm"</MudText>
+                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">@L["NoResourcesFoundMatching", resourceSearchTerm]</MudText>
                 }
                 else
                 {
-                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">No resources available. Add resources first.</MudText>
+                    <MudText Typo="Typo.body2" Style="color: #64748b; text-align: center; padding: 16px;">@L["NoResourcesFoundDescription"]</MudText>
                 }
             </MudPaper>
 
             @if (model.SelectedResourceIds.Any())
             {
                 <MudText Typo="Typo.caption" Color="Color.Success">
-                    @model.SelectedResourceIds.Count resource(s) selected
+                    @L["ResourceCount", model.SelectedResourceIds.Count]
                 </MudText>
             }
 
             <MudTextField @bind-Value="model.Notes"
-                         Label="Notes"
+                         Label="@(L["Notes"])"
                          Variant="Variant.Outlined"
                          Margin="Margin.Dense"
                          Lines="5"
-                         HelperText="Add your thoughts and ideas" />
+                         HelperText="@(L["ContentIdeaNotesHelperText"])" />
         </MudForm>
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton OnClick="Cancel">@L["Cancel"]</MudButton>
         <MudButton Color="Color.Primary" 
                   Variant="Variant.Filled" 
                   OnClick="Submit"
                   Disabled="@(!isValid)">
-            @(IsEditMode ? "Update" : "Add")
+            @(IsEditMode ? L["Edit"] : L["AddContentIdeaDialog"])
         </MudButton>
     </DialogActions>
 </MudDialog>
@@ -299,6 +299,7 @@
         public HashSet<int> SelectedResourceIds { get; set; } = new();
     }
 }
+
 
 
 

@@ -1,0 +1,52 @@
+@using LearnStack.Resources
+@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<SharedResource> L
+
+@using MudBlazor
+
+<MudMenu AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
+    <ActivatorContent>
+        <MudIconButton Icon="@GetThemeIcon()"
+                       Color="Color.Default"
+                       Size="Size.Medium"
+                       aria-label="@L["Theme_SelectTheme"]" />
+    </ActivatorContent>
+    <ChildContent>
+        <MudMenuItem OnClick="@(() => OnThemeChanged.InvokeAsync("Light"))">
+            <div class="d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.LightMode" Size="Size.Small" />
+                <span>@L["Theme_Light"]</span>
+            </div>
+        </MudMenuItem>
+        <MudMenuItem OnClick="@(() => OnThemeChanged.InvokeAsync("Dark"))">
+            <div class="d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.DarkMode" Size="Size.Small" />
+                <span>@L["Theme_Dark"]</span>
+            </div>
+        </MudMenuItem>
+        <MudMenuItem OnClick="@(() => OnThemeChanged.InvokeAsync("Auto"))">
+            <div class="d-flex align-center gap-2">
+                <MudIcon Icon="@Icons.Material.Filled.SettingsBrightness" Size="Size.Small" />
+                <span>@L["Theme_Auto"]</span>
+            </div>
+        </MudMenuItem>
+    </ChildContent>
+</MudMenu>
+
+@code {
+    [Parameter]
+    public string CurrentTheme { get; set; } = "Auto";
+
+    [Parameter]
+    public EventCallback<string> OnThemeChanged { get; set; }
+
+    private string GetThemeIcon()
+    {
+        return CurrentTheme switch
+        {
+            "Light" => Icons.Material.Filled.LightMode,
+            "Dark" => Icons.Material.Filled.DarkMode,
+            _ => Icons.Material.Filled.SettingsBrightness
+        };
+    }
+}

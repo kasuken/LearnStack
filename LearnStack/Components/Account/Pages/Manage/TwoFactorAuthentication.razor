@@ -8,11 +8,11 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Two-factor authentication (2FA)</PageTitle>
+<PageTitle>@L["Two-factor authentication (2FA)"]</PageTitle>
 
 <div class="manage-section-header">
-    <h3>Two-factor authentication</h3>
-    <p>Add an extra layer of security to your account.</p>
+    <h3>@L["Two-factor authentication"]</h3>
+    <p>@L["Add an extra layer of security to your account."]</p>
 </div>
 
 <StatusMessage/>
@@ -25,22 +25,22 @@
             if (recoveryCodesLeft == 0)
             {
                 <div class="alert-danger">
-                    <strong>You have no recovery codes left.</strong>
-                    <p style="margin: 8px 0 0 0;">You must <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a> before you can log in with a recovery code.</p>
+                    <strong>@L["You have no recovery codes left."]</strong>
+                    <p style="margin: 8px 0 0 0;">@L["You must"] <a href="Account/Manage/GenerateRecoveryCodes">@L["generate a new set of recovery codes"]</a> @L["before you can log in with a recovery code."]</p>
                 </div>
             }
             else if (recoveryCodesLeft == 1)
             {
                 <div class="alert-danger">
-                    <strong>You have 1 recovery code left.</strong>
-                    <p style="margin: 8px 0 0 0;">You can <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
+                    <strong>@L["You have 1 recovery code left."]</strong>
+                    <p style="margin: 8px 0 0 0;">@L["You can"] <a href="Account/Manage/GenerateRecoveryCodes">@L["generate a new set of recovery codes"]</a>.</p>
                 </div>
             }
             else if (recoveryCodesLeft <= 3)
             {
                 <div class="alert-warning">
-                    <strong>You have @recoveryCodesLeft recovery codes left.</strong>
-                    <p style="margin: 8px 0 0 0;">You should <a href="Account/Manage/GenerateRecoveryCodes">generate a new set of recovery codes</a>.</p>
+                    <strong>@L["You have {0} recovery codes left.", recoveryCodesLeft]</strong>
+                    <p style="margin: 8px 0 0 0;">@L["You should"] <a href="Account/Manage/GenerateRecoveryCodes">@L["generate a new set of recovery codes"]</a>.</p>
                 </div>
             }
 
@@ -49,25 +49,25 @@
                 {
                     <form style="display: inline-flex;" @formname="forget-browser" @onsubmit="OnSubmitForgetBrowserAsync" method="post">
                         <AntiforgeryToken/>
-                        <button type="submit" class="btn-secondary">Forget this browser</button>
+                        <button type="submit" class="btn-secondary">@L["Forget this browser"]</button>
                     </form>
                 }
-                <a href="Account/Manage/Disable2fa" class="btn-secondary">Disable 2FA</a>
-                <a href="Account/Manage/GenerateRecoveryCodes" class="btn-secondary">Reset recovery codes</a>
+                <a href="Account/Manage/Disable2fa" class="btn-secondary">@L["Disable 2FA"]</a>
+                <a href="Account/Manage/GenerateRecoveryCodes" class="btn-secondary">@L["Reset recovery codes"]</a>
             </div>
         }
 
         <div style="border-top: 1px solid #e2e8f0; padding-top: 20px; margin-top: 4px;">
-            <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">Authenticator app</h4>
+            <h4 style="font-size: 1.1rem; font-weight: 600; color: #0f172a; margin-bottom: 16px;">@L["Authenticator app"]</h4>
             <div class="btn-group">
                 @if (!hasAuthenticator)
                 {
-                    <a href="Account/Manage/EnableAuthenticator" class="btn-primary">Add authenticator app</a>
+                    <a href="Account/Manage/EnableAuthenticator" class="btn-primary">@L["Add authenticator app"]</a>
                 }
                 else
                 {
-                    <a href="Account/Manage/EnableAuthenticator" class="btn-primary">Set up authenticator app</a>
-                    <a href="Account/Manage/ResetAuthenticator" class="btn-secondary">Reset authenticator app</a>
+                    <a href="Account/Manage/EnableAuthenticator" class="btn-primary">@L["Set up authenticator app"]</a>
+                    <a href="Account/Manage/ResetAuthenticator" class="btn-secondary">@L["Reset authenticator app"]</a>
                 }
             </div>
         </div>
@@ -75,8 +75,8 @@
     else
     {
         <div class="alert-danger">
-            <strong>Privacy and cookie policy have not been accepted.</strong>
-            <p style="margin: 8px 0 0 0;">You must accept the policy before you can enable two factor authentication.</p>
+            <strong>@L["Privacy and cookie policy have not been accepted."]</strong>
+            <p style="margin: 8px 0 0 0;">@L["You must accept the policy before you can enable two factor authentication."]</p>
         </div>
     }
 </div>
@@ -111,7 +111,7 @@
         await SignInManager.ForgetTwoFactorClientAsync();
 
         RedirectManager.RedirectToCurrentPageWithStatus(
-            "The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code.",
+            L["The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code."],
             HttpContext);
     }
 

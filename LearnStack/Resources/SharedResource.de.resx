@@ -1,0 +1,1266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Sprache</value>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>Englisch</value>
+  </data>
+  <data name="LanguageSpanish" xml:space="preserve">
+    <value>Spanisch</value>
+  </data>
+  <data name="LanguageGerman" xml:space="preserve">
+    <value>Deutsch</value>
+  </data>
+  <data name="LanguageItalian" xml:space="preserve">
+    <value>Italienisch</value>
+  </data>
+  <data name="LanguageFrench" xml:space="preserve">
+    <value>Französisch</value>
+  </data>
+  <data name="ManageAccount" xml:space="preserve">
+    <value>Konto verwalten</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Passwort ändern</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Abmelden</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Anmelden</value>
+  </data>
+  <data name="UnhandledError" xml:space="preserve">
+    <value>Ein unbehandelter Fehler ist aufgetreten.</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Neu laden</value>
+  </data>
+  <data name="UserFallback" xml:space="preserve">
+    <value>Benutzer</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="RouteNotFoundTitle" xml:space="preserve">
+    <value>Nicht gefunden</value>
+  </data>
+  <data name="ErrorHeadline" xml:space="preserve">
+    <value>Hoppla! Etwas ist schiefgelaufen.</value>
+  </data>
+  <data name="Tutorial" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+  <data name="ContentIdeasDescription" xml:space="preserve">
+    <value>Planen Sie Ihre eigenen Inhalte basierend auf dem, was Sie lernen. Verknüpfen Sie Ideen mit Quellressourcen und verfolgen Sie sie vom Konzept bis zur Veröffentlichung.</value>
+  </data>
+  <data name="CreateContent" xml:space="preserve">
+    <value>Inhalte erstellen</value>
+  </data>
+  <data name="ReturnToHome" xml:space="preserve">
+    <value>Zurück zur Startseite</value>
+  </data>
+  <data name="SharedCollections" xml:space="preserve">
+    <value>Geteilte Sammlungen</value>
+  </data>
+  <data name="BlogPost" xml:space="preserve">
+    <value>Blogbeitrag</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="LearnAndTakeNotesDescription" xml:space="preserve">
+    <value>Arbeiten Sie Ihre Warteschlange in Ihrem eigenen Tempo durch. Erfassen Sie Erkenntnisse, Fragen und wichtige Ergebnisse beim Lernen.</value>
+  </data>
+  <data name="VisitResource" xml:space="preserve">
+    <value>Ressource besuchen</value>
+  </data>
+  <data name="AddFirstIdea" xml:space="preserve">
+    <value>Erste Idee hinzufügen</value>
+  </data>
+  <data name="DeleteCollectionDialogMessage" xml:space="preserve">
+    <value>Sind Sie sicher, dass Sie diese geteilte Sammlung löschen möchten? Der Freigabelink funktioniert dann nicht mehr.</value>
+  </data>
+  <data name="Documentation" xml:space="preserve">
+    <value>Dokumentation</value>
+  </data>
+  <data name="CollectionDeleted" xml:space="preserve">
+    <value>Sammlung gelöscht.</value>
+  </data>
+  <data name="ByTitle" xml:space="preserve">
+    <value>Nach Titel</value>
+  </data>
+  <data name="TweetThread" xml:space="preserve">
+    <value>Tweet-Thread</value>
+  </data>
+  <data name="NewCollection" xml:space="preserve">
+    <value>Neue Sammlung</value>
+  </data>
+  <data name="RequestIdLabel" xml:space="preserve">
+    <value>Anfrage-ID:</value>
+  </data>
+  <data name="LoadingCollections" xml:space="preserve">
+    <value>Sammlungen werden geladen...</value>
+  </data>
+  <data name="ContentType" xml:space="preserve">
+    <value>Inhaltstyp</value>
+  </data>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>Seite nicht gefunden</value>
+  </data>
+  <data name="DateCreated" xml:space="preserve">
+    <value>Erstellt am</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>Vor {0} Tagen</value>
+  </data>
+  <data name="EditContentIdeaDialog" xml:space="preserve">
+    <value>Inhaltsidee bearbeiten</value>
+  </data>
+  <data name="HowItWorks" xml:space="preserve">
+    <value>So funktioniert es</value>
+  </data>
+  <data name="SharedCollectionsSubtitle" xml:space="preserve">
+    <value>Erstellen und verwalten Sie teilbare Ressourcengruppen</value>
+  </data>
+  <data name="ResourceLibrary" xml:space="preserve">
+    <value>Ressourcenbibliothek</value>
+  </data>
+  <data name="MonthsAgo" xml:space="preserve">
+    <value>Vor {0} Monaten</value>
+  </data>
+  <data name="Features" xml:space="preserve">
+    <value>Funktionen</value>
+  </data>
+  <data name="ReadyToOrganizeLearning" xml:space="preserve">
+    <value>Bereit, Ihr Lernen zu organisieren?</value>
+  </data>
+  <data name="NotFoundDescription" xml:space="preserve">
+    <value>Der gesuchte Inhalt existiert nicht oder wurde verschoben.</value>
+  </data>
+  <data name="DateAdded" xml:space="preserve">
+    <value>Hinzugefügt am</value>
+  </data>
+  <data name="CreateSharedCollectionDialog" xml:space="preserve">
+    <value>Geteilte Sammlung erstellen</value>
+  </data>
+  <data name="StartLearningThreeSteps" xml:space="preserve">
+    <value>In 3 einfachen Schritten mit dem Lernen beginnen</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Nicht gefunden</value>
+  </data>
+  <data name="NoCreditCardRequired" xml:space="preserve">
+    <value>Keine Kreditkarte erforderlich</value>
+  </data>
+  <data name="EditSharedCollectionDialog" xml:space="preserve">
+    <value>Geteilte Sammlung bearbeiten</value>
+  </data>
+  <data name="GetOrganizedMinutes" xml:space="preserve">
+    <value>In Minuten organisiert, nicht in Stunden.</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="AddContentIdeaDialog" xml:space="preserve">
+    <value>Inhaltsidee hinzufügen</value>
+  </data>
+  <data name="LoadingIdeas" xml:space="preserve">
+    <value>Ihre Ideen werden geladen...</value>
+  </data>
+  <data name="PageNotFoundDescription" xml:space="preserve">
+    <value>Die gesuchte Seite existiert nicht.</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>In Bearbeitung</value>
+  </data>
+  <data name="NoContentIdeasDescription" xml:space="preserve">
+    <value>Beginnen Sie mit der Planung Ihrer Inhaltserstellung</value>
+  </data>
+  <data name="MultipleViews" xml:space="preserve">
+    <value>Mehrere Ansichten</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Abgeschlossen</value>
+  </data>
+  <data name="SearchResourcesPlaceholder" xml:space="preserve">
+    <value>Ressourcen nach Titel, Beschreibung, Notizen oder Tags suchen...</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="GoHome" xml:space="preserve">
+    <value>Zur Startseite</value>
+  </data>
+  <data name="FeaturesTitle" xml:space="preserve">
+    <value>Alles, was Sie zum effizienten Lernen brauchen</value>
+  </data>
+  <data name="LearningResources" xml:space="preserve">
+    <value>Lernressourcen</value>
+  </data>
+  <data name="ContentIdeas" xml:space="preserve">
+    <value>Inhaltsideen</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Sonstige</value>
+  </data>
+  <data name="SeeFeatures" xml:space="preserve">
+    <value>Funktionen ansehen</value>
+  </data>
+  <data name="GoToHome" xml:space="preserve">
+    <value>Zur Startseite</value>
+  </data>
+  <data name="GetStartedFree" xml:space="preserve">
+    <value>Kostenlos starten</value>
+  </data>
+  <data name="HeroDescription" xml:space="preserve">
+    <value>Schluss mit dem Ertrinken in Browser-Tabs. LearnStack hilft Ihnen, Ihre KI-Lernressourcen zu organisieren, priorisieren und verfolgen – von Blogbeiträgen und Podcasts bis hin zu Videos und Kursen. Schnelles Lernen mit geteilten Lernlinks. Alles an einem Ort.</value>
+  </data>
+  <data name="OldestFirst" xml:space="preserve">
+    <value>Älteste zuerst</value>
+  </data>
+  <data name="NoResourcesFoundDescription" xml:space="preserve">
+    <value>Beginnen Sie mit dem Aufbau Ihrer Lernbibliothek</value>
+  </data>
+  <data name="SmartOrganizationDescription" xml:space="preserve">
+    <value>Filtern Sie nach Inhaltstyp, Status oder Priorität. Verwenden Sie Tags und Suche, um alles sofort zu finden. Drag &amp; Drop zum Neuanordnen.</value>
+  </data>
+  <data name="ExportAsCsv" xml:space="preserve">
+    <value>Als CSV exportieren</value>
+  </data>
+  <data name="ErrorSubtitle" xml:space="preserve">
+    <value>Bei der Verarbeitung Ihrer Anfrage ist ein Fehler aufgetreten.</value>
+  </data>
+  <data name="EditLearningResourceDialog" xml:space="preserve">
+    <value>Lernressource bearbeiten</value>
+  </data>
+  <data name="HeroTitle" xml:space="preserve">
+    <value>KI meistern – eine Ressource nach der anderen</value>
+  </data>
+  <data name="ResourceLibraryDescription" xml:space="preserve">
+    <value>Speichern und organisieren Sie Blogbeiträge, Videos, Podcasts, Kurse und Dokumentation. Automatisches Abrufen von Metadaten aus URLs für schnelle Einrichtung.</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Niedrig</value>
+  </data>
+  <data name="SharedBy" xml:space="preserve">
+    <value>Geteilt von {0}</value>
+  </data>
+  <data name="SelectResourceToLearn" xml:space="preserve">
+    <value>Wählen Sie eine Ressource zum Lernen</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="OpenLink" xml:space="preserve">
+    <value>Link öffnen</value>
+  </data>
+  <data name="SmartOrganization" xml:space="preserve">
+    <value>Intelligente Organisation</value>
+  </data>
+  <data name="AllResources" xml:space="preserve">
+    <value>Alle Ressourcen</value>
+  </data>
+  <data name="ByPriority" xml:space="preserve">
+    <value>Nach Priorität</value>
+  </data>
+  <data name="SearchIdeasPlaceholder" xml:space="preserve">
+    <value>Ideen suchen...</value>
+  </data>
+  <data name="AddLearningResourceDialog" xml:space="preserve">
+    <value>Lernressource hinzufügen</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Aktionen</value>
+  </data>
+  <data name="NewIdea" xml:space="preserve">
+    <value>Neue Idee</value>
+  </data>
+  <data name="DeleteCollectionDialogTitle" xml:space="preserve">
+    <value>Sammlung löschen</value>
+  </data>
+  <data name="YearsAgo" xml:space="preserve">
+    <value>Vor {0} Jahren</value>
+  </data>
+  <data name="NoSharedCollectionsYet" xml:space="preserve">
+    <value>Noch keine geteilten Sammlungen</value>
+  </data>
+  <data name="SharedCollectionMissingDescription" xml:space="preserve">
+    <value>Diese geteilte Sammlung existiert nicht oder wurde deaktiviert.</value>
+  </data>
+  <data name="ExportAsJson" xml:space="preserve">
+    <value>Als JSON exportieren</value>
+  </data>
+  <data name="NoSharedCollectionsDescription" xml:space="preserve">
+    <value>Erstellen Sie eine Sammlung, um Ihre kuratierten Ressourcen mit anderen zu teilen.</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="MarkAsPublished" xml:space="preserve">
+    <value>Als veröffentlicht markieren</value>
+  </data>
+  <data name="NoResourcesInCollection" xml:space="preserve">
+    <value>Diese Sammlung hat noch keine Ressourcen.</value>
+  </data>
+  <data name="CopyLink" xml:space="preserve">
+    <value>Link kopieren</value>
+  </data>
+  <data name="Ideas" xml:space="preserve">
+    <value>Ideen</value>
+  </data>
+  <data name="AddFirstResource" xml:space="preserve">
+    <value>Erste Ressource hinzufügen</value>
+  </data>
+  <data name="Idea" xml:space="preserve">
+    <value>Idea</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Artikel</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inaktiv</value>
+  </data>
+  <data name="NoResourcesToLearn" xml:space="preserve">
+    <value>Keine Ressourcen zum Lernen</value>
+  </data>
+  <data name="RichNoteTaking" xml:space="preserve">
+    <value>Umfangreiche Notizen</value>
+  </data>
+  <data name="NoResourcesToLearnDescription" xml:space="preserve">
+    <value>Wählen Sie eine Ressource aus Alle Ressourcen, um mit dem Lernen zu beginnen</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Mittel</value>
+  </data>
+  <data name="Sources" xml:space="preserve">
+    <value>Quellen</value>
+  </data>
+  <data name="ProgressTrackingDescription" xml:space="preserve">
+    <value>Verfolgen Sie Ihren Lernstatus – Zu lernen, In Bearbeitung oder Abgeschlossen. Sehen Sie Ihren Fortschritt auf einen Blick mit visuellen Statistiken.</value>
+  </data>
+  <data name="CreateContentDescription" xml:space="preserve">
+    <value>Verwandeln Sie Ihr Wissen in Inhalte. Verknüpfen Sie Ihre Ideen mit dem Gelernten und teilen Sie es mit der Welt.</value>
+  </data>
+  <data name="Course" xml:space="preserve">
+    <value>Kurs</value>
+  </data>
+  <data name="ProgressTracking" xml:space="preserve">
+    <value>Fortschrittsverfolgung</value>
+  </data>
+  <data name="TotalCollections" xml:space="preserve">
+    <value>Sammlungen gesamt</value>
+  </data>
+  <data name="NoContentIdeasYet" xml:space="preserve">
+    <value>Noch keine Inhaltsideen</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="Learning" xml:space="preserve">
+    <value>Lernen</value>
+  </data>
+  <data name="Yesterday" xml:space="preserve">
+    <value>Gestern</value>
+  </data>
+  <data name="TestimonialsSubtitle" xml:space="preserve">
+    <value>Sehen Sie, was andere über LearnStack sagen.</value>
+  </data>
+  <data name="StartLearningFree" xml:space="preserve">
+    <value>Kostenlos mit dem Lernen beginnen</value>
+  </data>
+  <data name="HeroBadge" xml:space="preserve">
+    <value>Ihr KI-Lernbegleiter</value>
+  </data>
+  <data name="NoCreditCardFreeForever" xml:space="preserve">
+    <value>Keine Kreditkarte erforderlich • Für Einzelpersonen dauerhaft kostenlos</value>
+  </data>
+  <data name="ShareLinkCopied" xml:space="preserve">
+    <value>Freigabelink in die Zwischenablage kopiert!</value>
+  </data>
+  <data name="ResourceCount" xml:space="preserve">
+    <value>{0} Ressource(n)</value>
+  </data>
+  <data name="SaveResources" xml:space="preserve">
+    <value>Ressourcen speichern</value>
+  </data>
+  <data name="MultipleViewsDescription" xml:space="preserve">
+    <value>Wechseln Sie zwischen Kartenansicht und Datentabelle. Passen Sie Ihren Arbeitsbereich an Ihre Arbeitsweise an.</value>
+  </data>
+  <data name="FeaturesSubtitle" xml:space="preserve">
+    <value>Entwickelt für Entwickler, Forscher und KI-Enthusiasten, die beim Lernen am Ball bleiben möchten.</value>
+  </data>
+  <data name="AddResource" xml:space="preserve">
+    <value>Ressource hinzufügen</value>
+  </data>
+  <data name="NoResourcesFound" xml:space="preserve">
+    <value>Keine Ressourcen gefunden</value>
+  </data>
+  <data name="CollectionNotFound" xml:space="preserve">
+    <value>Sammlung nicht gefunden</value>
+  </data>
+  <data name="ShowArchived" xml:space="preserve">
+    <value>Archivierte anzeigen</value>
+  </data>
+  <data name="LovedByLearners" xml:space="preserve">
+    <value>Beliebt bei Lernenden</value>
+  </data>
+  <data name="MoreCount" xml:space="preserve">
+    <value>+{0} weitere</value>
+  </data>
+  <data name="JoinThousandsLearners" xml:space="preserve">
+    <value>Schließen Sie sich Tausenden von Lernenden an, die LearnStack nutzen, um KI zu meistern – eine Ressource nach der anderen.</value>
+  </data>
+  <data name="PoweredByLearnStack" xml:space="preserve">
+    <value>POWERED BY LEARNSTACK</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Hoch</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filter</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="CreateFirstCollection" xml:space="preserve">
+    <value>Erste Sammlung erstellen</value>
+  </data>
+  <data name="ListView" xml:space="preserve">
+    <value>Listenansicht</value>
+  </data>
+  <data name="GridView" xml:space="preserve">
+    <value>Rasteransicht</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="TableView" xml:space="preserve">
+    <value>Tabellenansicht</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Priorität</value>
+  </data>
+  <data name="NewestFirst" xml:space="preserve">
+    <value>Neueste zuerst</value>
+  </data>
+  <data name="CustomOrder" xml:space="preserve">
+    <value>Benutzerdefinierte Reihenfolge</value>
+  </data>
+  <data name="LoadingSharedCollection" xml:space="preserve">
+    <value>Geteilte Sammlung wird geladen...</value>
+  </data>
+  <data name="LoadingResources" xml:space="preserve">
+    <value>Ihre Ressourcen werden geladen...</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Heute</value>
+  </data>
+  <data name="ErrorPageTitle" xml:space="preserve">
+    <value>Fehler</value>
+  </data>
+  <data name="ToLearn" xml:space="preserve">
+    <value>Zu lernen</value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>Veröffentlicht</value>
+  </data>
+  <data name="RichNoteTakingDescription" xml:space="preserve">
+    <value>Erfassen Sie wichtige Erkenntnisse, bedeutende Zitate und Folgefragen. Ihre Notizen sind durchsuchbar und jederzeit zugänglich.</value>
+  </data>
+  <data name="Testimonials" xml:space="preserve">
+    <value>Erfahrungsberichte</value>
+  </data>
+  <data name="TrackOrganizeLearningMaterials" xml:space="preserve">
+    <value>Verfolgen und organisieren Sie Ihre Lernmaterialien</value>
+  </data>
+  <data name="ContentIdeasSubtitle" xml:space="preserve">
+    <value>Verwalten Sie Ihre Inhaltserstellungs-Pipeline</value>
+  </data>
+  <data name="LearnAndTakeNotes" xml:space="preserve">
+    <value>Lernen &amp; Notizen machen</value>
+  </data>
+  <data name="MarkAsComplete" xml:space="preserve">
+    <value>Als abgeschlossen markieren</value>
+  </data>
+  <data name="SaveResourcesDescription" xml:space="preserve">
+    <value>Fügen Sie eine URL ein und LearnStack ruft automatisch Titel, Beschreibung und Miniaturbild ab. Fügen Sie Tags hinzu und setzen Sie die Priorität.</value>
+  </data>
+  <data name="Podcast" xml:space="preserve">
+    <value>Podcast</value>
+  </data>
+  <data name="SharedCollection" xml:space="preserve">
+    <value>Geteilte Sammlung</value>
+  </data>
+  <data name="WeeksAgo" xml:space="preserve">
+    <value>Vor {0} Wochen</value>
+  </data>
+  <data name="Access denied - LearnStack" xml:space="preserve">
+    <value>Zugriff verweigert - LearnStack</value>
+  </data>
+  <data name="Access Denied" xml:space="preserve">
+    <value>Zugriff verweigert</value>
+  </data>
+  <data name="You do not have access to this resource." xml:space="preserve">
+    <value>Sie haben keinen Zugriff auf diese Ressource.</value>
+  </data>
+  <data name="Return to Home" xml:space="preserve">
+    <value>Zurück zur Startseite</value>
+  </data>
+  <data name="Confirm email - LearnStack" xml:space="preserve">
+    <value>E-Mail bestätigen - LearnStack</value>
+  </data>
+  <data name="Confirm email" xml:space="preserve">
+    <value>E-Mail bestätigen</value>
+  </data>
+  <data name="Go to login" xml:space="preserve">
+    <value>Zur Anmeldung</value>
+  </data>
+  <data name="Error loading user with ID {0}" xml:space="preserve">
+    <value>Fehler beim Laden des Benutzers mit ID {0}</value>
+  </data>
+  <data name="Thank you for confirming your email." xml:space="preserve">
+    <value>Vielen Dank für die Bestätigung Ihrer E-Mail.</value>
+  </data>
+  <data name="Error confirming your email." xml:space="preserve">
+    <value>Fehler bei der Bestätigung Ihrer E-Mail.</value>
+  </data>
+  <data name="Confirm email change" xml:space="preserve">
+    <value>E-Mail-Änderung bestätigen</value>
+  </data>
+  <data name="Error: Invalid email change confirmation link." xml:space="preserve">
+    <value>Fehler: Ungültiger Bestätigungslink für E-Mail-Änderung.</value>
+  </data>
+  <data name="Unable to find user with Id '{0}'" xml:space="preserve">
+    <value>Benutzer mit ID '{0}' konnte nicht gefunden werden</value>
+  </data>
+  <data name="Error changing email." xml:space="preserve">
+    <value>Fehler beim Ändern der E-Mail.</value>
+  </data>
+  <data name="Error changing user name." xml:space="preserve">
+    <value>Fehler beim Ändern des Benutzernamens.</value>
+  </data>
+  <data name="Thank you for confirming your email change." xml:space="preserve">
+    <value>Vielen Dank für die Bestätigung Ihrer E-Mail-Änderung.</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registrieren</value>
+  </data>
+  <data name="Associate your {0} account." xml:space="preserve">
+    <value>Verknüpfen Sie Ihr {0}-Konto.</value>
+  </data>
+  <data name="You've successfully authenticated with" xml:space="preserve">
+    <value>Sie haben sich erfolgreich authentifiziert mit</value>
+  </data>
+  <data name="Please enter an email address for this site below and click the Register button to finish" xml:space="preserve">
+    <value>Bitte geben Sie unten eine E-Mail-Adresse für diese Website ein und klicken Sie auf Registrieren</value>
+  </data>
+  <data name="logging in." xml:space="preserve">
+    <value>Anmeldung.</value>
+  </data>
+  <data name="Please enter your email." xml:space="preserve">
+    <value>Bitte geben Sie Ihre E-Mail ein.</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Error from external provider: {0}" xml:space="preserve">
+    <value>Fehler vom externen Anbieter: {0}</value>
+  </data>
+  <data name="Error loading external login information." xml:space="preserve">
+    <value>Fehler beim Laden externer Anmeldeinformationen.</value>
+  </data>
+  <data name="Error loading external login information during confirmation." xml:space="preserve">
+    <value>Fehler beim Laden externer Anmeldeinformationen während der Bestätigung.</value>
+  </data>
+  <data name="Error: {0}" xml:space="preserve">
+    <value>Fehler: {0}</value>
+  </data>
+  <data name="Forgot your password? - LearnStack" xml:space="preserve">
+    <value>Passwort vergessen? - LearnStack</value>
+  </data>
+  <data name="Forgot your password?" xml:space="preserve">
+    <value>Passwort vergessen?</value>
+  </data>
+  <data name="Enter your email to reset it." xml:space="preserve">
+    <value>Geben Sie Ihre E-Mail ein, um es zurückzusetzen.</value>
+  </data>
+  <data name="name@example.com" xml:space="preserve">
+    <value>name@example.com</value>
+  </data>
+  <data name="Back to login" xml:space="preserve">
+    <value>Zurück zur Anmeldung</value>
+  </data>
+  <data name="Forgot password confirmation - LearnStack" xml:space="preserve">
+    <value>Passwort vergessen Bestätigung - LearnStack</value>
+  </data>
+  <data name="Check your email" xml:space="preserve">
+    <value>E-Mail überprüfen</value>
+  </data>
+  <data name="Please check your email to reset your password." xml:space="preserve">
+    <value>Bitte überprüfen Sie Ihre E-Mail, um Ihr Passwort zurückzusetzen.</value>
+  </data>
+  <data name="Invalid password reset - LearnStack" xml:space="preserve">
+    <value>Ungültiges Passwort zurücksetzen - LearnStack</value>
+  </data>
+  <data name="Invalid Link" xml:space="preserve">
+    <value>Ungültiger Link</value>
+  </data>
+  <data name="The password reset link is invalid or has expired." xml:space="preserve">
+    <value>Der Link zum Zurücksetzen des Passworts ist ungültig oder abgelaufen.</value>
+  </data>
+  <data name="Request a new link" xml:space="preserve">
+    <value>Neuen Link anfordern</value>
+  </data>
+  <data name="Invalid user" xml:space="preserve">
+    <value>Ungültiger Benutzer</value>
+  </data>
+  <data name="Locked out - LearnStack" xml:space="preserve">
+    <value>Gesperrt - LearnStack</value>
+  </data>
+  <data name="Account Locked" xml:space="preserve">
+    <value>Konto gesperrt</value>
+  </data>
+  <data name="This account has been locked out due to multiple failed login attempts. Please try again later." xml:space="preserve">
+    <value>Dieses Konto wurde aufgrund mehrerer fehlgeschlagener Anmeldeversuche gesperrt. Bitte versuchen Sie es später erneut.</value>
+  </data>
+  <data name="Log in - LearnStack" xml:space="preserve">
+    <value>Anmelden - LearnStack</value>
+  </data>
+  <data name="Sign in to your account" xml:space="preserve">
+    <value>Bei Ihrem Konto anmelden</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Enter your password" xml:space="preserve">
+    <value>Passwort eingeben</value>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Angemeldet bleiben</value>
+  </data>
+  <data name="Sign In" xml:space="preserve">
+    <value>Anmelden</value>
+  </data>
+  <data name="or" xml:space="preserve">
+    <value>oder</value>
+  </data>
+  <data name="🔑 Sign in with a passkey" xml:space="preserve">
+    <value>🔑 Mit Passkey anmelden</value>
+  </data>
+  <data name="Don't have an account? Register here" xml:space="preserve">
+    <value>Noch kein Konto? Hier registrieren</value>
+  </data>
+  <data name="Resend email confirmation" xml:space="preserve">
+    <value>E-Mail-Bestätigung erneut senden</value>
+  </data>
+  <data name="or sign in with" xml:space="preserve">
+    <value>oder anmelden mit</value>
+  </data>
+  <data name="Invalid email or password. Please try again." xml:space="preserve">
+    <value>Ungültige E-Mail oder Passwort. Bitte versuchen Sie es erneut.</value>
+  </data>
+  <data name="Two-factor authentication" xml:space="preserve">
+    <value>Zwei-Faktor-Authentifizierung</value>
+  </data>
+  <data name="Your login is protected with an authenticator app. Enter your authenticator code below." xml:space="preserve">
+    <value>Ihre Anmeldung ist mit einer Authenticator-App geschützt. Geben Sie Ihren Authenticator-Code unten ein.</value>
+  </data>
+  <data name="Authenticator code" xml:space="preserve">
+    <value>Authenticator-Code</value>
+  </data>
+  <data name="Remember this machine" xml:space="preserve">
+    <value>Dieses Gerät merken</value>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Anmelden</value>
+  </data>
+  <data name="Don't have access to your authenticator device? You can" xml:space="preserve">
+    <value>Kein Zugriff auf Ihr Authenticator-Gerät? Sie können</value>
+  </data>
+  <data name="log in with a recovery code" xml:space="preserve">
+    <value>sich mit einem Wiederherstellungscode anmelden</value>
+  </data>
+  <data name="Error: Invalid authenticator code." xml:space="preserve">
+    <value>Fehler: Ungültiger Authenticator-Code.</value>
+  </data>
+  <data name="Recovery code verification" xml:space="preserve">
+    <value>Wiederherstellungscode-Überprüfung</value>
+  </data>
+  <data name="You have requested to log in with a recovery code. This login will not be remembered until you provide" xml:space="preserve">
+    <value>Sie haben angefordert, sich mit einem Wiederherstellungscode anzumelden. Diese Anmeldung wird nicht gespeichert, bis Sie</value>
+  </data>
+  <data name="an authenticator app code at log in or disable 2FA and log in again." xml:space="preserve">
+    <value>einen Authenticator-App-Code bei der Anmeldung eingeben oder 2FA deaktivieren und sich erneut anmelden.</value>
+  </data>
+  <data name="RecoveryCode" xml:space="preserve">
+    <value>RecoveryCode</value>
+  </data>
+  <data name="Recovery Code" xml:space="preserve">
+    <value>Wiederherstellungscode</value>
+  </data>
+  <data name="Error: Invalid recovery code entered." xml:space="preserve">
+    <value>Fehler: Ungültiger Wiederherstellungscode eingegeben.</value>
+  </data>
+  <data name="Register - LearnStack" xml:space="preserve">
+    <value>Registrieren - LearnStack</value>
+  </data>
+  <data name="Create your account" xml:space="preserve">
+    <value>Erstellen Sie Ihr Konto</value>
+  </data>
+  <data name="Create a password" xml:space="preserve">
+    <value>Passwort erstellen</value>
+  </data>
+  <data name="Confirm Password" xml:space="preserve">
+    <value>Passwort bestätigen</value>
+  </data>
+  <data name="Confirm your password" xml:space="preserve">
+    <value>Bestätigen Sie Ihr Passwort</value>
+  </data>
+  <data name="Already have an account? Sign in here" xml:space="preserve">
+    <value>Bereits ein Konto? Hier anmelden</value>
+  </data>
+  <data name="Register confirmation" xml:space="preserve">
+    <value>Registrierungsbestätigung</value>
+  </data>
+  <data name="This app does not currently have a real email sender registered, see" xml:space="preserve">
+    <value>Diese App hat derzeit keinen echten E-Mail-Versender registriert, siehe</value>
+  </data>
+  <data name="for how to configure a real email sender." xml:space="preserve">
+    <value>wie Sie einen echten E-Mail-Versender konfigurieren.</value>
+  </data>
+  <data name="Normally this would be emailed:" xml:space="preserve">
+    <value>Normalerweise würde dies per E-Mail gesendet:</value>
+  </data>
+  <data name="Click here to confirm your account" xml:space="preserve">
+    <value>Klicken Sie hier, um Ihr Konto zu bestätigen</value>
+  </data>
+  <data name="Please check your email to confirm your account." xml:space="preserve">
+    <value>Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu bestätigen.</value>
+  </data>
+  <data name="Error finding user for unspecified email" xml:space="preserve">
+    <value>Fehler beim Suchen des Benutzers für nicht angegebene E-Mail</value>
+  </data>
+  <data name="Resend email confirmation - LearnStack" xml:space="preserve">
+    <value>E-Mail-Bestätigung erneut senden - LearnStack</value>
+  </data>
+  <data name="Resend confirmation" xml:space="preserve">
+    <value>Bestätigung erneut senden</value>
+  </data>
+  <data name="Enter your email to receive a new link." xml:space="preserve">
+    <value>Geben Sie Ihre E-Mail ein, um einen neuen Link zu erhalten.</value>
+  </data>
+  <data name="Resend" xml:space="preserve">
+    <value>Erneut senden</value>
+  </data>
+  <data name="Verification email sent. Please check your email." xml:space="preserve">
+    <value>Bestätigungs-E-Mail gesendet. Bitte überprüfen Sie Ihre E-Mail.</value>
+  </data>
+  <data name="Reset password - LearnStack" xml:space="preserve">
+    <value>Passwort zurücksetzen - LearnStack</value>
+  </data>
+  <data name="Create a new password for your account." xml:space="preserve">
+    <value>Erstellen Sie ein neues Passwort für Ihr Konto.</value>
+  </data>
+  <data name="New Password" xml:space="preserve">
+    <value>Neues Passwort</value>
+  </data>
+  <data name="Enter new password" xml:space="preserve">
+    <value>Neues Passwort eingeben</value>
+  </data>
+  <data name="Confirm new password" xml:space="preserve">
+    <value>Neues Passwort bestätigen</value>
+  </data>
+  <data name="Reset password confirmation - LearnStack" xml:space="preserve">
+    <value>Passwort zurücksetzen Bestätigung - LearnStack</value>
+  </data>
+  <data name="Password Reset" xml:space="preserve">
+    <value>Passwort zurückgesetzt</value>
+  </data>
+  <data name="Your password has been successfully reset." xml:space="preserve">
+    <value>Ihr Passwort wurde erfolgreich zurückgesetzt.</value>
+  </data>
+  <data name="There are no external authentication services configured." xml:space="preserve">
+    <value>Es sind keine externen Authentifizierungsdienste konfiguriert.</value>
+  </data>
+  <data name="Log in using your {0} account" xml:space="preserve">
+    <value>Mit Ihrem {0}-Konto anmelden</value>
+  </data>
+  <data name="Continue with {0}" xml:space="preserve">
+    <value>Weiter mit {0}</value>
+  </data>
+  <data name="LearnStack" xml:space="preserve">
+    <value>LearnStack</value>
+  </data>
+  <data name="Back to app" xml:space="preserve">
+    <value>Zurück zur App</value>
+  </data>
+  <data name="Account Settings" xml:space="preserve">
+    <value>Kontoeinstellungen</value>
+  </data>
+  <data name="Manage your account preferences and security." xml:space="preserve">
+    <value>Verwalten Sie Ihre Kontoeinstellungen und Sicherheit.</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="External logins" xml:space="preserve">
+    <value>Externe Anmeldungen</value>
+  </data>
+  <data name="Two-factor auth" xml:space="preserve">
+    <value>Zwei-Faktor-Auth.</value>
+  </data>
+  <data name="Passkeys" xml:space="preserve">
+    <value>Passkeys</value>
+  </data>
+  <data name="Personal data" xml:space="preserve">
+    <value>Persönliche Daten</value>
+  </data>
+  <data name="Recovery codes" xml:space="preserve">
+    <value>Wiederherstellungscodes</value>
+  </data>
+  <data name="Put these codes in a safe place." xml:space="preserve">
+    <value>Bewahren Sie diese Codes an einem sicheren Ort auf.</value>
+  </data>
+  <data name="If you lose your device and don't have the recovery codes you will lose access to your account." xml:space="preserve">
+    <value>Wenn Sie Ihr Gerät verlieren und die Wiederherstellungscodes nicht haben, verlieren Sie den Zugriff auf Ihr Konto.</value>
+  </data>
+  <data name="Reset password" xml:space="preserve">
+    <value>Passwort zurücksetzen</value>
+  </data>
+  <data name="Change password" xml:space="preserve">
+    <value>Passwort ändern</value>
+  </data>
+  <data name="Update your account password." xml:space="preserve">
+    <value>Aktualisieren Sie Ihr Kontopasswort.</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Aktuelles Passwort</value>
+  </data>
+  <data name="Enter your current password" xml:space="preserve">
+    <value>Aktuelles Passwort eingeben</value>
+  </data>
+  <data name="Enter a new password" xml:space="preserve">
+    <value>Neues Passwort eingeben</value>
+  </data>
+  <data name="Confirm your new password" xml:space="preserve">
+    <value>Neues Passwort bestätigen</value>
+  </data>
+  <data name="Update password" xml:space="preserve">
+    <value>Passwort aktualisieren</value>
+  </data>
+  <data name="Your password has been changed" xml:space="preserve">
+    <value>Ihr Passwort wurde geändert</value>
+  </data>
+  <data name="Manage email" xml:space="preserve">
+    <value>E-Mail verwalten</value>
+  </data>
+  <data name="Update your email address and verification status." xml:space="preserve">
+    <value>Aktualisieren Sie Ihre E-Mail-Adresse und den Verifizierungsstatus.</value>
+  </data>
+  <data name="Enter your email" xml:space="preserve">
+    <value>E-Mail eingeben</value>
+  </data>
+  <data name="Send verification email" xml:space="preserve">
+    <value>Bestätigungs-E-Mail senden</value>
+  </data>
+  <data name="New email" xml:space="preserve">
+    <value>Neue E-Mail</value>
+  </data>
+  <data name="Enter a new email" xml:space="preserve">
+    <value>Neue E-Mail eingeben</value>
+  </data>
+  <data name="Change email" xml:space="preserve">
+    <value>E-Mail ändern</value>
+  </data>
+  <data name="Your email is unchanged." xml:space="preserve">
+    <value>Ihre E-Mail ist unverändert.</value>
+  </data>
+  <data name="Confirmation link to change email sent. Please check your email." xml:space="preserve">
+    <value>Bestätigungslink zum Ändern der E-Mail gesendet. Bitte überprüfen Sie Ihre E-Mail.</value>
+  </data>
+  <data name="Manage your external logins" xml:space="preserve">
+    <value>Externe Anmeldungen verwalten</value>
+  </data>
+  <data name="Manage your linked external login providers." xml:space="preserve">
+    <value>Verwalten Sie Ihre verknüpften externen Anmeldeanbieter.</value>
+  </data>
+  <data name="Registered Logins" xml:space="preserve">
+    <value>Registrierte Anmeldungen</value>
+  </data>
+  <data name="Remove this {0} login from your account" xml:space="preserve">
+    <value>Diese {0}-Anmeldung von Ihrem Konto entfernen</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="Add another service" xml:space="preserve">
+    <value>Weiteren Dienst hinzufügen</value>
+  </data>
+  <data name="No external login providers are available." xml:space="preserve">
+    <value>Keine externen Anmeldeanbieter verfügbar.</value>
+  </data>
+  <data name="Error: The external login was not removed." xml:space="preserve">
+    <value>Fehler: Die externe Anmeldung wurde nicht entfernt.</value>
+  </data>
+  <data name="The external login was removed." xml:space="preserve">
+    <value>Die externe Anmeldung wurde entfernt.</value>
+  </data>
+  <data name="Error: Could not load external login info." xml:space="preserve">
+    <value>Fehler: Externe Anmeldeinformationen konnten nicht geladen werden.</value>
+  </data>
+  <data name="The external login was added." xml:space="preserve">
+    <value>Die externe Anmeldung wurde hinzugefügt.</value>
+  </data>
+  <data name="Error: The external login was not added. External logins can only be associated with one account." xml:space="preserve">
+    <value>Fehler: Die externe Anmeldung wurde nicht hinzugefügt. Externe Anmeldungen können nur mit einem Konto verknüpft werden.</value>
+  </data>
+  <data name="Manage your account profile details." xml:space="preserve">
+    <value>Verwalten Sie Ihre Kontoprofildetails.</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Benutzername</value>
+  </data>
+  <data name="Choose your username." xml:space="preserve">
+    <value>Wählen Sie Ihren Benutzernamen.</value>
+  </data>
+  <data name="Phone number" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
+  <data name="Enter your phone number" xml:space="preserve">
+    <value>Telefonnummer eingeben</value>
+  </data>
+  <data name="Save Profile" xml:space="preserve">
+    <value>Profil speichern</value>
+  </data>
+  <data name="Error: Failed to set phone number." xml:space="preserve">
+    <value>Fehler: Telefonnummer konnte nicht gesetzt werden.</value>
+  </data>
+  <data name="Your profile has been updated" xml:space="preserve">
+    <value>Ihr Profil wurde aktualisiert</value>
+  </data>
+  <data name="Manage your passkeys" xml:space="preserve">
+    <value>Passkeys verwalten</value>
+  </data>
+  <data name="Manage your passkeys for passwordless sign-in." xml:space="preserve">
+    <value>Verwalten Sie Ihre Passkeys für die passwortlose Anmeldung.</value>
+  </data>
+  <data name="Unnamed passkey" xml:space="preserve">
+    <value>Unbenannter Passkey</value>
+  </data>
+  <data name="Rename this passkey" xml:space="preserve">
+    <value>Diesen Passkey umbenennen</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Umbenennen</value>
+  </data>
+  <data name="Remove this passkey from your account" xml:space="preserve">
+    <value>Diesen Passkey von Ihrem Konto entfernen</value>
+  </data>
+  <data name="No passkeys are registered yet." xml:space="preserve">
+    <value>Noch keine Passkeys registriert.</value>
+  </data>
+  <data name="You have reached the maximum number of allowed passkeys. Please delete one before adding a new one." xml:space="preserve">
+    <value>Sie haben die maximale Anzahl erlaubter Passkeys erreicht. Bitte löschen Sie einen, bevor Sie einen neuen hinzufügen.</value>
+  </data>
+  <data name="Add a new passkey" xml:space="preserve">
+    <value>Neuen Passkey hinzufügen</value>
+  </data>
+  <data name="Error: The browser did not provide a passkey." xml:space="preserve">
+    <value>Fehler: Der Browser hat keinen Passkey bereitgestellt.</value>
+  </data>
+  <data name="Error: You have reached the maximum number of allowed passkeys." xml:space="preserve">
+    <value>Fehler: Sie haben die maximale Anzahl erlaubter Passkeys erreicht.</value>
+  </data>
+  <data name="Error: Could not add the passkey: {0}" xml:space="preserve">
+    <value>Fehler: Passkey konnte nicht hinzugefügt werden: {0}</value>
+  </data>
+  <data name="Error: The passkey could not be added to your account." xml:space="preserve">
+    <value>Fehler: Der Passkey konnte Ihrem Konto nicht hinzugefügt werden.</value>
+  </data>
+  <data name="Error: Unknown action '{0}'." xml:space="preserve">
+    <value>Fehler: Unbekannte Aktion '{0}'.</value>
+  </data>
+  <data name="Error: The specified passkey ID had an invalid format." xml:space="preserve">
+    <value>Fehler: Die angegebene Passkey-ID hatte ein ungültiges Format.</value>
+  </data>
+  <data name="Error: The passkey could not be deleted." xml:space="preserve">
+    <value>Fehler: Der Passkey konnte nicht gelöscht werden.</value>
+  </data>
+  <data name="Passkey deleted successfully." xml:space="preserve">
+    <value>Passkey erfolgreich gelöscht.</value>
+  </data>
+  <data name="Set password" xml:space="preserve">
+    <value>Passwort festlegen</value>
+  </data>
+  <data name="Set your password" xml:space="preserve">
+    <value>Passwort festlegen</value>
+  </data>
+  <data name="Add a local password so you can log in without an external login." xml:space="preserve">
+    <value>Fügen Sie ein lokales Passwort hinzu, damit Sie sich ohne externe Anmeldung anmelden können.</value>
+  </data>
+  <data name="You do not have a local username/password for this site. Add a local account so you can log in without an external login." xml:space="preserve">
+    <value>Sie haben keinen lokalen Benutzernamen/Passwort für diese Website. Fügen Sie ein lokales Konto hinzu, damit Sie sich ohne externe Anmeldung anmelden können.</value>
+  </data>
+  <data name="Your password has been set." xml:space="preserve">
+    <value>Ihr Passwort wurde festgelegt.</value>
+  </data>
+  <data name="Two-factor authentication (2FA)" xml:space="preserve">
+    <value>Zwei-Faktor-Authentifizierung (2FA)</value>
+  </data>
+  <data name="Add an extra layer of security to your account." xml:space="preserve">
+    <value>Fügen Sie Ihrem Konto eine zusätzliche Sicherheitsebene hinzu.</value>
+  </data>
+  <data name="You have no recovery codes left." xml:space="preserve">
+    <value>Sie haben keine Wiederherstellungscodes mehr.</value>
+  </data>
+  <data name="You must" xml:space="preserve">
+    <value>Sie müssen</value>
+  </data>
+  <data name="generate a new set of recovery codes" xml:space="preserve">
+    <value>einen neuen Satz Wiederherstellungscodes generieren</value>
+  </data>
+  <data name="before you can log in with a recovery code." xml:space="preserve">
+    <value>bevor Sie sich mit einem Wiederherstellungscode anmelden können.</value>
+  </data>
+  <data name="You have 1 recovery code left." xml:space="preserve">
+    <value>Sie haben noch 1 Wiederherstellungscode übrig.</value>
+  </data>
+  <data name="You can" xml:space="preserve">
+    <value>Sie können</value>
+  </data>
+  <data name="You have {0} recovery codes left." xml:space="preserve">
+    <value>Sie haben noch {0} Wiederherstellungscodes übrig.</value>
+  </data>
+  <data name="You should" xml:space="preserve">
+    <value>Sie sollten</value>
+  </data>
+  <data name="Forget this browser" xml:space="preserve">
+    <value>Diesen Browser vergessen</value>
+  </data>
+  <data name="Disable 2FA" xml:space="preserve">
+    <value>2FA deaktivieren</value>
+  </data>
+  <data name="Reset recovery codes" xml:space="preserve">
+    <value>Wiederherstellungscodes zurücksetzen</value>
+  </data>
+  <data name="Authenticator app" xml:space="preserve">
+    <value>Authenticator-App</value>
+  </data>
+  <data name="Add authenticator app" xml:space="preserve">
+    <value>Authenticator-App hinzufügen</value>
+  </data>
+  <data name="Set up authenticator app" xml:space="preserve">
+    <value>Authenticator-App einrichten</value>
+  </data>
+  <data name="Reset authenticator app" xml:space="preserve">
+    <value>Authenticator-App zurücksetzen</value>
+  </data>
+  <data name="Privacy and cookie policy have not been accepted." xml:space="preserve">
+    <value>Datenschutz- und Cookie-Richtlinie wurden nicht akzeptiert.</value>
+  </data>
+  <data name="You must accept the policy before you can enable two factor authentication." xml:space="preserve">
+    <value>Sie müssen die Richtlinie akzeptieren, bevor Sie die Zwei-Faktor-Authentifizierung aktivieren können.</value>
+  </data>
+  <data name="The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code." xml:space="preserve">
+    <value>Der aktuelle Browser wurde vergessen. Wenn Sie sich erneut über diesen Browser anmelden, werden Sie nach Ihrem 2FA-Code gefragt.</value>
+  </data>
+  <data name="these docs" xml:space="preserve">
+    <value>diese Dokumentation</value>
+  </data>
+  <data name="Delete Personal Data" xml:space="preserve">
+    <value>Persönliche Daten löschen</value>
+  </data>
+  <data name="Permanently remove your account and all associated data." xml:space="preserve">
+    <value>Entfernen Sie dauerhaft Ihr Konto und alle zugehörigen Daten.</value>
+  </data>
+  <data name="Deleting this data will permanently remove your account, and this cannot be recovered." xml:space="preserve">
+    <value>Das Löschen dieser Daten entfernt dauerhaft Ihr Konto und kann nicht rückgängig gemacht werden.</value>
+  </data>
+  <data name="Enter your password to confirm" xml:space="preserve">
+    <value>Geben Sie Ihr Passwort zur Bestätigung ein</value>
+  </data>
+  <data name="Delete data and close my account" xml:space="preserve">
+    <value>Daten löschen und mein Konto schließen</value>
+  </data>
+  <data name="Error: Incorrect password." xml:space="preserve">
+    <value>Fehler: Falsches Passwort.</value>
+  </data>
+  <data name="Disable two-factor authentication (2FA)" xml:space="preserve">
+    <value>Zwei-Faktor-Authentifizierung (2FA) deaktivieren</value>
+  </data>
+  <data name="Disable two-factor authentication" xml:space="preserve">
+    <value>Zwei-Faktor-Authentifizierung deaktivieren</value>
+  </data>
+  <data name="Remove the extra security layer from your account." xml:space="preserve">
+    <value>Entfernen Sie die zusätzliche Sicherheitsebene von Ihrem Konto.</value>
+  </data>
+  <data name="This action only disables 2FA." xml:space="preserve">
+    <value>Diese Aktion deaktiviert nur 2FA.</value>
+  </data>
+  <data name="Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should" xml:space="preserve">
+    <value>Das Deaktivieren von 2FA ändert nicht die in Authenticator-Apps verwendeten Schlüssel. Wenn Sie den in einer Authenticator-App verwendeten Schlüssel ändern möchten, sollten Sie</value>
+  </data>
+  <data name="reset your authenticator keys." xml:space="preserve">
+    <value>Ihre Authenticator-Schlüssel zurücksetzen.</value>
+  </data>
+  <data name="2fa has been disabled. You can reenable 2fa when you setup an authenticator app" xml:space="preserve">
+    <value>2FA wurde deaktiviert. Sie können 2FA wieder aktivieren, wenn Sie eine Authenticator-App einrichten</value>
+  </data>
+  <data name="Configure authenticator app" xml:space="preserve">
+    <value>Authenticator-App konfigurieren</value>
+  </data>
+  <data name="Set up two-factor authentication with an authenticator app." xml:space="preserve">
+    <value>Richten Sie die Zwei-Faktor-Authentifizierung mit einer Authenticator-App ein.</value>
+  </data>
+  <data name="To use an authenticator app go through the following steps:" xml:space="preserve">
+    <value>Um eine Authenticator-App zu verwenden, führen Sie die folgenden Schritte durch:</value>
+  </data>
+  <data name="Download a two-factor authenticator app like Microsoft Authenticator for" xml:space="preserve">
+    <value>Laden Sie eine Zwei-Faktor-Authenticator-App wie Microsoft Authenticator herunter für</value>
+  </data>
+  <data name="Android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value>und</value>
+  </data>
+  <data name="iOS" xml:space="preserve">
+    <value>iOS</value>
+  </data>
+  <data name="Google Authenticator for" xml:space="preserve">
+    <value>Google Authenticator für</value>
+  </data>
+  <data name="Scan the QR Code or enter this key into your two factor authenticator app:" xml:space="preserve">
+    <value>Scannen Sie den QR-Code oder geben Sie diesen Schlüssel in Ihre Zwei-Faktor-Authenticator-App ein:</value>
+  </data>
+  <data name="Spaces and casing do not matter." xml:space="preserve">
+    <value>Leerzeichen und Groß-/Kleinschreibung spielen keine Rolle.</value>
+  </data>
+  <data name="Learn how to" xml:space="preserve">
+    <value>Erfahren Sie, wie Sie</value>
+  </data>
+  <data name="enable QR code generation" xml:space="preserve">
+    <value>QR-Code-Generierung aktivieren</value>
+  </data>
+  <data name="Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below." xml:space="preserve">
+    <value>Nachdem Sie den QR-Code gescannt oder den obigen Schlüssel eingegeben haben, stellt Ihre Zwei-Faktor-Authentifizierungs-App Ihnen einen einmaligen Code bereit. Geben Sie den Code im Bestätigungsfeld unten ein.</value>
+  </data>
+  <data name="Verification Code" xml:space="preserve">
+    <value>Bestätigungscode</value>
+  </data>
+  <data name="Enter the 6-digit code" xml:space="preserve">
+    <value>6-stelligen Code eingeben</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Überprüfen</value>
+  </data>
+  <data name="Error: Verification code is invalid." xml:space="preserve">
+    <value>Fehler: Bestätigungscode ist ungültig.</value>
+  </data>
+  <data name="Your authenticator app has been verified." xml:space="preserve">
+    <value>Ihre Authenticator-App wurde verifiziert.</value>
+  </data>
+  <data name="Generate two-factor authentication (2FA) recovery codes" xml:space="preserve">
+    <value>Wiederherstellungscodes für Zwei-Faktor-Authentifizierung (2FA) generieren</value>
+  </data>
+  <data name="Generate recovery codes" xml:space="preserve">
+    <value>Wiederherstellungscodes generieren</value>
+  </data>
+  <data name="Create new backup codes for two-factor authentication." xml:space="preserve">
+    <value>Neue Sicherungscodes für Zwei-Faktor-Authentifizierung erstellen.</value>
+  </data>
+  <data name="Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should" xml:space="preserve">
+    <value>Das Generieren neuer Wiederherstellungscodes ändert nicht die in Authenticator-Apps verwendeten Schlüssel. Wenn Sie den in einer Authenticator-App verwendeten Schlüssel ändern möchten, sollten Sie</value>
+  </data>
+  <data name="You have generated new recovery codes." xml:space="preserve">
+    <value>Sie haben neue Wiederherstellungscodes generiert.</value>
+  </data>
+  <data name="Download or delete your personal data." xml:space="preserve">
+    <value>Persönliche Daten herunterladen oder löschen.</value>
+  </data>
+  <data name="Your account contains personal data that you have given us. This page allows you to download or delete that data." xml:space="preserve">
+    <value>Ihr Konto enthält persönliche Daten, die Sie uns gegeben haben. Auf dieser Seite können Sie diese Daten herunterladen oder löschen.</value>
+  </data>
+  <data name="Download my data" xml:space="preserve">
+    <value>Meine Daten herunterladen</value>
+  </data>
+  <data name="Delete my account" xml:space="preserve">
+    <value>Mein Konto löschen</value>
+  </data>
+  <data name="Rename passkey" xml:space="preserve">
+    <value>Passkey umbenennen</value>
+  </data>
+  <data name="Enter a new name for your &quot;{0}&quot; passkey." xml:space="preserve">
+    <value>Geben Sie einen neuen Namen für Ihren "{0}"-Passkey ein.</value>
+  </data>
+  <data name="Name your passkey" xml:space="preserve">
+    <value>Passkey benennen</value>
+  </data>
+  <data name="Give your passkey a recognizable name." xml:space="preserve">
+    <value>Geben Sie Ihrem Passkey einen erkennbaren Namen.</value>
+  </data>
+  <data name="Passkey name" xml:space="preserve">
+    <value>Passkey-Name</value>
+  </data>
+  <data name="e.g. My laptop, Work phone" xml:space="preserve">
+    <value>z.B. Mein Laptop, Arbeitstelefon</value>
+  </data>
+  <data name="Save name" xml:space="preserve">
+    <value>Name speichern</value>
+  </data>
+  <data name="Error: The specified passkey could not be found." xml:space="preserve">
+    <value>Fehler: Der angegebene Passkey konnte nicht gefunden werden.</value>
+  </data>
+  <data name="Error: The passkey could not be updated." xml:space="preserve">
+    <value>Fehler: Der Passkey konnte nicht aktualisiert werden.</value>
+  </data>
+  <data name="Passkey updated successfully." xml:space="preserve">
+    <value>Passkey erfolgreich aktualisiert.</value>
+  </data>
+  <data name="Reset authenticator key" xml:space="preserve">
+    <value>Authenticator-Schlüssel zurücksetzen</value>
+  </data>
+  <data name="Reset your authenticator app configuration." xml:space="preserve">
+    <value>Setzen Sie Ihre Authenticator-App-Konfiguration zurück.</value>
+  </data>
+  <data name="If you reset your authenticator key your authenticator app will not work until you reconfigure it." xml:space="preserve">
+    <value>Wenn Sie Ihren Authenticator-Schlüssel zurücksetzen, funktioniert Ihre Authenticator-App nicht, bis Sie sie neu konfigurieren.</value>
+  </data>
+  <data name="This process disables 2FA until you verify your authenticator app. If you do not complete your authenticator app configuration you may lose access to your account." xml:space="preserve">
+    <value>Dieser Vorgang deaktiviert 2FA, bis Sie Ihre Authenticator-App verifizieren. Wenn Sie die Konfiguration Ihrer Authenticator-App nicht abschließen, verlieren Sie möglicherweise den Zugriff auf Ihr Konto.</value>
+  </data>
+  <data name="Your authenticator app key has been reset, you will need to configure your authenticator app using the new key." xml:space="preserve">
+    <value>Ihr Authenticator-App-Schlüssel wurde zurückgesetzt, Sie müssen Ihre Authenticator-App mit dem neuen Schlüssel konfigurieren.</value>
+  </data>
+  <data name="Validation_FieldLength" xml:space="preserve">
+    <value>{0} muss mindestens {2} und maximal {1} Zeichen lang sein.</value>
+  </data>
+  <data name="Validation_NewPasswordMismatch" xml:space="preserve">
+    <value>Das neue Passwort und das Bestätigungspasswort stimmen nicht überein.</value>
+  </data>
+  <data name="Validation_PasswordMismatch" xml:space="preserve">
+    <value>Das Passwort und das Bestätigungspasswort stimmen nicht überein.</value>
+  </data>
+  <data name="Validation_PasskeyNameMaxLength" xml:space="preserve">
+    <value>Passkey-Namen dürfen nicht länger als {1} Zeichen sein.</value>
+  </data>
+  <data name="Enter a new name for your {0} passkey." xml:space="preserve">
+    <value>Geben Sie einen neuen Namen für Ihren {0}-Passkey ein.</value>
+  </data>
+</root>

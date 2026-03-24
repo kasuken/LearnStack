@@ -7,7 +7,7 @@
 @inject IdentityRedirectManager RedirectManager
 @inject ILogger<GenerateRecoveryCodes> Logger
 
-<PageTitle>Generate two-factor authentication (2FA) recovery codes</PageTitle>
+<PageTitle>@L["Generate two-factor authentication (2FA) recovery codes"]</PageTitle>
 
 @if (recoveryCodes is not null)
 {
@@ -16,20 +16,19 @@
 else
 {
     <div class="manage-section-header">
-        <h3>Generate recovery codes</h3>
-        <p>Create new backup codes for two-factor authentication.</p>
+        <h3>@L["Generate recovery codes"]</h3>
+        <p>@L["Create new backup codes for two-factor authentication."]</p>
     </div>
 
     <div class="manage-card">
         <div class="alert-warning" role="alert">
-            <p style="margin: 0 0 8px 0;"><strong>Put these codes in a safe place.</strong></p>
-            <p style="margin: 0 0 8px 0;">If you lose your device and don't have the recovery codes you will lose access to your account.</p>
-            <p style="margin: 0;">Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key
-                used in an authenticator app you should <a href="Account/Manage/ResetAuthenticator">reset your authenticator keys.</a></p>
+            <p style="margin: 0 0 8px 0;"><strong>@L["Put these codes in a safe place."]</strong></p>
+            <p style="margin: 0 0 8px 0;">@L["If you lose your device and don't have the recovery codes you will lose access to your account."]</p>
+            <p style="margin: 0;">@L["Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should"] <a href="Account/Manage/ResetAuthenticator">@L["reset your authenticator keys."]</a></p>
         </div>
         <form @formname="generate-recovery-codes" @onsubmit="OnSubmitAsync" method="post">
             <AntiforgeryToken/>
-            <button class="btn-danger" type="submit">Generate Recovery Codes</button>
+            <button class="btn-danger" type="submit">@L["Generate Recovery Codes"]</button>
         </form>
     </div>
 }
@@ -67,7 +66,7 @@ else
 
         var userId = await UserManager.GetUserIdAsync(user);
         recoveryCodes = await UserManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
-        message = "You have generated new recovery codes.";
+        message = L["You have generated new recovery codes."];
 
         Logger.LogInformation("User with ID '{UserId}' has generated new 2FA recovery codes.", userId);
     }

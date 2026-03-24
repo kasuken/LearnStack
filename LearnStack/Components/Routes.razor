@@ -1,4 +1,8 @@
 ﻿@using LearnStack.Components.Account.Shared
+@using System.Globalization
+
+@inject PersistentComponentState ApplicationState
+
 <Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
         <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)">
@@ -9,17 +13,30 @@
         <FocusOnNavigate RouteData="routeData" Selector="h1"/>
     </Found>
     <NotFound>
-        <PageTitle>Not found</PageTitle>
+        <PageTitle>@L["NotFoundTitle"]</PageTitle>
         <LayoutView Layout="typeof(Layout.MainLayout)">
             <div class="d-flex flex-column align-center justify-center" style="min-height: 80vh;">
                 <MudIcon Icon="@Icons.Material.Filled.SearchOff" Size="Size.Large" Color="Color.Secondary" Style="font-size: 5rem;" />
-                <MudText Typo="Typo.h4" Class="mt-4">Page Not Found</MudText>
-                <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-2">Sorry, the page you are looking for does not exist.</MudText>
+                <MudText Typo="Typo.h4" Class="mt-4">@L["PageNotFound"]</MudText>
+                <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mt-2">@L["PageNotFoundDescription"]</MudText>
                 <MudButton Href="/" Variant="Variant.Filled" Color="Color.Primary" Class="mt-4">
-                    Go to Home
+                    @L["GoToHome"]
                 </MudButton>
             </div>
         </LayoutView>
     </NotFound>
 </Router>
+
+@code {
+    protected override void OnInitialized()
+    {
+        // When the interactive circuit starts, restore the culture that was persisted during SSR pre-render
+        if (ApplicationState.TryTakeFromJson<string>("culture", out var cultureName) && !string.IsNullOrEmpty(cultureName))
+        {
+            var cultureInfo = new CultureInfo(cultureName);
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+        }
+    }
+}
 

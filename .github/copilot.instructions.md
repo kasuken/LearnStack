@@ -1,3 +1,8 @@
+---
+applyTo: '**'
+description: This file contains instructions for the Copilot AI to understand the LearnStack project
+---
+
 # LearnStack - Copilot Instructions
 
 ## Project Overview

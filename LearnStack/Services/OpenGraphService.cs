@@ -149,14 +149,14 @@ public class OpenGraphService : IOpenGraphService
         var node = doc.DocumentNode.SelectSingleNode($"//meta[@property='{property}']");
         if (node != null)
         {
-            return node.GetAttributeValue("content", null)?.Trim();
+            return node.GetAttributeValue("content", "")?.Trim();
         }
 
         // Try name attribute
         node = doc.DocumentNode.SelectSingleNode($"//meta[@name='{property}']");
         if (node != null)
         {
-            return node.GetAttributeValue("content", null)?.Trim();
+            return node.GetAttributeValue("content", "")?.Trim();
         }
 
         return null;

@@ -8,11 +8,11 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Profile</PageTitle>
+<PageTitle>@L["Profile"]</PageTitle>
 
 <div class="manage-section-header">
-    <h3>Profile</h3>
-    <p>Manage your account profile details.</p>
+    <h3>@L["Profile"]</h3>
+    <p>@L["Manage your account profile details."]</p>
 </div>
 
 <StatusMessage/>
@@ -23,17 +23,17 @@
         <ValidationSummary class="alert-error" role="alert"/>
         
         <div class="form-group">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" value="@username" id="username" class="form-input" placeholder="Choose your username." disabled/>
+            <label for="username" class="form-label">@L["Username"]</label>
+            <input type="text" value="@username" id="username" class="form-input" placeholder="@L["Choose your username."]" disabled/>
         </div>
         
         <div class="form-group">
-            <label for="Input.PhoneNumber" class="form-label">Phone number</label>
-            <InputText @bind-Value="Input.PhoneNumber" id="Input.PhoneNumber" class="form-input" placeholder="Enter your phone number"/>
+            <label for="Input.PhoneNumber" class="form-label">@L["Phone number"]</label>
+            <InputText @bind-Value="Input.PhoneNumber" id="Input.PhoneNumber" class="form-input" placeholder="@L["Enter your phone number"]"/>
             <ValidationMessage For="() => Input.PhoneNumber" class="validation-message"/>
         </div>
         
-        <button type="submit" class="btn-primary w-100">Save Profile</button>
+        <button type="submit" class="btn-primary w-100">@L["Save Profile"]</button>
     </EditForm>
 </div>
 
@@ -76,13 +76,13 @@
             var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
             if (!setPhoneResult.Succeeded)
             {
-                RedirectManager.RedirectToCurrentPageWithStatus("Error: Failed to set phone number.", HttpContext);
+                RedirectManager.RedirectToCurrentPageWithStatus(L["Error: Failed to set phone number."], HttpContext);
                 return;
             }
         }
 
         await SignInManager.RefreshSignInAsync(user);
-        RedirectManager.RedirectToCurrentPageWithStatus("Your profile has been updated", HttpContext);
+        RedirectManager.RedirectToCurrentPageWithStatus(L["Your profile has been updated"], HttpContext);
     }
 
     private sealed class InputModel

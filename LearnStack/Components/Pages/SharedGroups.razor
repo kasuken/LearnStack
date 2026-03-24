@@ -8,7 +8,7 @@
 @inject IJSRuntime JSRuntime
 @inject ISnackbar Snackbar
 
-<PageTitle>Shared Collections - LearnStack</PageTitle>
+<PageTitle>@L["SharedCollections"] - LearnStack</PageTitle>
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-4">
     @* Page Header *@
@@ -18,23 +18,23 @@
                 <div style="background: linear-gradient(135deg, #10b981, #34d399); border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
                     <MudIcon Icon="@Icons.Material.Filled.Share" Style="color: white;" Size="Size.Medium" />
                 </div>
-                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">Shared Collections</MudText>
+                <MudText Typo="Typo.h5" Class="page-title" Style="font-weight: 700; letter-spacing: -0.5px;">@L["SharedCollections"]</MudText>
             </MudStack>
-            <MudText Typo="Typo.body2" Class="page-subtitle">Create and manage shareable groups of resources</MudText>
+            <MudText Typo="Typo.body2" Class="page-subtitle">@L["SharedCollectionsSubtitle"]</MudText>
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.MenuBook" 
                       OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
                       Style="border-radius: 10px; font-weight: 600;">
-                Learning Resources
+                @L["LearningResources"]
             </MudButton>
             <MudButton Variant="Variant.Filled" 
                       Color="Color.Primary"
                       StartIcon="@Icons.Material.Filled.Add" 
                       OnClick="OpenAddDialog"
                       Style="border-radius: 10px; font-weight: 600; background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);">
-                New Collection
+                @L["NewCollection"]
             </MudButton>
         </MudStack>
     </MudStack>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@groups.Count</span>
-                    <span class="stat-label">Total Collections</span>
+                    <span class="stat-label">@L["TotalCollections"]</span>
                 </div>
             </div>
         </MudItem>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@groups.Count(g => g.IsActive)</span>
-                    <span class="stat-label">Active</span>
+                    <span class="stat-label">@L["Active"]</span>
                 </div>
             </div>
         </MudItem>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="stat-content">
                     <span class="stat-value">@groups.Count(g => !g.IsActive)</span>
-                    <span class="stat-label">Inactive</span>
+                    <span class="stat-label">@L["Inactive"]</span>
                 </div>
             </div>
         </MudItem>
@@ -80,21 +80,21 @@
     {
         <MudStack AlignItems="AlignItems.Center" Class="py-8">
             <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
-            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">Loading collections...</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mt-2">@L["LoadingCollections"]</MudText>
         </MudStack>
     }
     else if (!groups.Any())
     {
         <MudPaper Elevation="0" Class="pa-8" Style="text-align: center; border: 2px dashed #e2e8f0; border-radius: 16px; background: #f8fafc;">
             <MudIcon Icon="@Icons.Material.Filled.FolderShared" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
-            <MudText Typo="Typo.h6" Class="mt-4" Style="color: #475569; font-weight: 600;">No shared collections yet</MudText>
-            <MudText Typo="Typo.body2" Class="mt-2" Style="color: #64748b;">Create a collection to share your curated resources with others.</MudText>
+            <MudText Typo="Typo.h6" Class="mt-4" Style="color: #475569; font-weight: 600;">@L["NoSharedCollectionsYet"]</MudText>
+            <MudText Typo="Typo.body2" Class="mt-2" Style="color: #64748b;">@L["NoSharedCollectionsDescription"]</MudText>
             <MudButton Variant="Variant.Filled" 
                       StartIcon="@Icons.Material.Filled.Add" 
                       OnClick="OpenAddDialog" 
                       Class="mt-4"
                       Style="background: linear-gradient(135deg, #10b981, #059669); color: white; border-radius: 10px; font-weight: 600;">
-                Create Your First Collection
+                @L["CreateFirstCollection"]
             </MudButton>
         </MudPaper>
     }
@@ -111,17 +111,17 @@
                                     <MudText Typo="Typo.h6" Style="font-weight: 600;">@group.Name</MudText>
                                     <MudChip T="string" Size="Size.Small" 
                                             Style="@(group.IsActive ? "background: #e8f5e9; color: #2e7d32;" : "background: #fce4ec; color: #c62828;")">
-                                        @(group.IsActive ? "Active" : "Inactive")
+                                        @(group.IsActive ? L["Active"] : L["Inactive"])
                                     </MudChip>
                                 </MudStack>
                             </CardHeaderContent>
                             <CardHeaderActions>
                                 <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" AnchorOrigin="Origin.BottomRight" TransformOrigin="Origin.TopRight">
-                                    <MudMenuItem Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialog(group))">Edit</MudMenuItem>
-                                    <MudMenuItem Icon="@Icons.Material.Filled.ContentCopy" OnClick="@(() => CopyShareLink(group))">Copy Link</MudMenuItem>
-                                    <MudMenuItem Icon="@Icons.Material.Filled.OpenInNew" OnClick="@(() => OpenShareLink(group))">Open Link</MudMenuItem>
+                                    <MudMenuItem Icon="@Icons.Material.Filled.Edit" OnClick="@(() => OpenEditDialog(group))">@L["Edit"]</MudMenuItem>
+                                    <MudMenuItem Icon="@Icons.Material.Filled.ContentCopy" OnClick="@(() => CopyShareLink(group))">@L["CopyLink"]</MudMenuItem>
+                                    <MudMenuItem Icon="@Icons.Material.Filled.OpenInNew" OnClick="@(() => OpenShareLink(group))">@L["OpenLink"]</MudMenuItem>
                                     <MudDivider />
-                                    <MudMenuItem Icon="@Icons.Material.Filled.Delete" Style="color: #e53935;" OnClick="@(() => DeleteGroup(group.Id))">Delete</MudMenuItem>
+                                    <MudMenuItem Icon="@Icons.Material.Filled.Delete" Style="color: #e53935;" OnClick="@(() => DeleteGroup(group.Id))">@L["Delete"]</MudMenuItem>
                                 </MudMenu>
                             </CardHeaderActions>
                         </MudCardHeader>
@@ -140,7 +140,7 @@
                             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
                                 <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="1">
                                     <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Style="color: #5c6bc0;" />
-                                    <MudText Typo="Typo.body2" Style="font-weight: 500;">@group.Items.Count resource(s)</MudText>
+                                    <MudText Typo="Typo.body2" Style="font-weight: 500;">@L["ResourceCount", group.Items.Count]</MudText>
                                 </MudStack>
                                 <MudText Typo="Typo.caption" Style="color: #9e9e9e;">@group.DateCreated.ToString("MMM dd, yyyy")</MudText>
                             </MudStack>
@@ -158,7 +158,7 @@
                                     }
                                     @if (group.Items.Count > 3)
                                     {
-                                        <MudText Typo="Typo.caption" Style="color: #9e9e9e;">+@(group.Items.Count - 3) more</MudText>
+                                        <MudText Typo="Typo.caption" Style="color: #9e9e9e;">@L["MoreCount", group.Items.Count - 3]</MudText>
                                     }
                                 </MudStack>
                             }
@@ -169,7 +169,7 @@
                                       Size="Size.Small"
                                       OnClick="@(() => CopyShareLink(group))"
                                       Style="color: #26a69a;">
-                                Copy Link
+                                @L["CopyLink"]
                             </MudButton>
                         </MudCardActions>
                     </MudCard>
@@ -215,7 +215,7 @@
     {
         var url = GetShareUrl(group);
         await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", url);
-        Snackbar.Add("Share link copied to clipboard!", Severity.Success);
+        Snackbar.Add(L["ShareLinkCopied"], Severity.Success);
     }
 
     private void OpenShareLink(SharedResourceGroup group)
@@ -231,7 +231,7 @@
         };
 
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = await DialogService.ShowAsync<SharedGroupForm>("Create Shared Collection", parameters, options);
+        var dialog = await DialogService.ShowAsync<SharedGroupForm>(L["CreateSharedCollectionDialog"], parameters, options);
         var result = await dialog.Result;
 
         if (result is not null && !result.Canceled)
@@ -253,7 +253,7 @@
         };
 
         var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Medium, FullWidth = true };
-        var dialog = await DialogService.ShowAsync<SharedGroupForm>("Edit Shared Collection", parameters, options);
+        var dialog = await DialogService.ShowAsync<SharedGroupForm>(L["EditSharedCollectionDialog"], parameters, options);
         var result = await dialog.Result;
 
         if (result is not null && !result.Canceled)
@@ -265,16 +265,16 @@
     private async Task DeleteGroup(int groupId)
     {
         var result = await DialogService.ShowMessageBox(
-            "Delete Collection",
-            "Are you sure you want to delete this shared collection? The share link will stop working.",
-            yesText: "Delete",
-            cancelText: "Cancel");
+            L["DeleteCollectionDialogTitle"],
+            L["DeleteCollectionDialogMessage"],
+            yesText: L["Delete"],
+            cancelText: L["Cancel"]);
 
         if (result == true)
         {
             await SharedGroupService.DeleteAsync(groupId, userId);
             await LoadGroups();
-            Snackbar.Add("Collection deleted.", Severity.Info);
+            Snackbar.Add(L["CollectionDeleted"], Severity.Info);
         }
     }
 }

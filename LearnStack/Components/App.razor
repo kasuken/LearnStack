@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Components.Web
+@using System.Globalization
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@CultureInfo.CurrentCulture.TwoLetterISOLanguageName">
 
 <head>
     <meta charset="utf-8"/>
@@ -34,9 +35,25 @@
     [CascadingParameter]
     private HttpContext? HttpContext { get; set; }
 
+    [Inject]
+    private PersistentComponentState ApplicationState { get; set; } = default!;
+
     private IComponentRenderMode? RenderModeForPage => 
         HttpContext?.GetEndpoint()?.Metadata.GetMetadata<ExcludeFromInteractiveRoutingAttribute>() is not null 
             ? null 
             : InteractiveServer;
+
+    protected override void OnInitialized()
+    {
+        // App.razor is always static SSR. Persist the culture so the interactive circuit can pick it up.
+        if (HttpContext is not null)
+        {
+            ApplicationState.RegisterOnPersisting(() =>
+            {
+                ApplicationState.PersistAsJson("culture", CultureInfo.CurrentUICulture.Name);
+                return Task.CompletedTask;
+            });
+        }
+    }
 }
 

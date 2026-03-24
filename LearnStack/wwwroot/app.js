@@ -6,3 +6,9 @@ window.downloadFile = function (fileName, base64Content, contentType) {
     downloadLink.download = fileName;
     downloadLink.click();
 };
+
+// Force a full browser navigation (bypasses Blazor enhanced navigation)
+window.forceNavigate = function (url) {
+    window.location.href = url;
+};
+

@@ -1,7 +1,7 @@
 ﻿@page "/Error"
 @using System.Diagnostics
 
-<PageTitle>Error - LearnStack</PageTitle>
+<PageTitle>@L["ErrorPageTitle"] - LearnStack</PageTitle>
 
 <div class="error-container">
     <div class="error-card">
@@ -10,18 +10,18 @@
                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
             </svg>
         </div>
-        <h1>Oops! Something went wrong.</h1>
-        <p class="error-subtitle">An error occurred while processing your request.</p>
+        <h1>@L["ErrorHeadline"]</h1>
+        <p class="error-subtitle">@L["ErrorSubtitle"]</p>
 
         @if (ShowRequestId)
         {
             <div class="request-id-box">
-                <strong>Request ID:</strong> <code>@RequestId</code>
+                <strong>@L["RequestIdLabel"]</strong> <code>@RequestId</code>
             </div>
         }
 
         <div class="error-actions">
-            <a href="/" class="btn-primary">Return to Home</a>
+            <a href="/" class="btn-primary">@L["ReturnToHome"]</a>
         </div>
     </div>
 </div>
