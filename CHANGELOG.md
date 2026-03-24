@@ -4,6 +4,22 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [0.1.1] - 2026-03-24
+
+### Added
+- Localized `NotFound` page content in `Routes.razor` (replaced static text with localization strings)
+- Localized all form labels and helper texts in `ContentIdeaForm`, `ResourceForm`, and `SharedGroupForm`
+- Localized language names in `LanguageSelector`
+- Localized theme option names in `ThemeSelector`
+- Added new localization strings to `SharedResource.resx` for all UI elements introduced in this release
+- GitHub Copilot agent and skill files (`.github/agents/`, `.github/skills/`) for development tooling
+
+### Changed
+- `CultureController` now normalizes culture input and defaults to English when an unsupported culture is provided
+- `Program.cs` updated to configure request localization options with explicit default and supported cultures
+
+---
+
 ## [0.1.0] - 2026-03-18
 
 ### Added
