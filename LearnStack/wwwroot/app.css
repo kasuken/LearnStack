@@ -13,12 +13,12 @@
     --warning: #f59e0b;
     --error: #ef4444;
     --info: #3b82f6;
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
+    --text-primary: var(--mud-palette-text-primary, #0f172a);
+    --text-secondary: var(--mud-palette-text-secondary, #475569);
     --text-disabled: #94a3b8;
-    --divider: #e2e8f0;
-    --background: #f8fafc;
-    --surface: #ffffff;
+    --divider: var(--mud-palette-lines-default, #e2e8f0);
+    --background: var(--mud-palette-background, #f8fafc);
+    --surface: var(--mud-palette-surface, #ffffff);
     --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
     --card-shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
     --border-radius: 16px;
@@ -99,7 +99,7 @@ h1:focus {
 
 .resource-card:hover {
     box-shadow: var(--card-shadow-hover);
-    border-color: #bdbdbd;
+    border-color: var(--divider);
 }
 
 .stat-card {
@@ -120,7 +120,7 @@ h1:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #f5f5f5;
+    background: rgba(0, 0, 0, 0.06);
 }
 
 .stat-card .stat-content {
@@ -207,9 +207,39 @@ h1:focus {
 }
 
 .chip-priority-low {
-    background: #f5f5f5 !important;
-    color: #616161 !important;
+    background: rgba(0, 0, 0, 0.08) !important;
+    color: var(--text-secondary) !important;
     font-weight: 500;
+}
+
+html.dark .chip-status-idea {
+    background: rgba(21, 101, 192, 0.25) !important;
+    color: #90caf9 !important;
+}
+
+html.dark .chip-status-progress {
+    background: rgba(230, 81, 0, 0.25) !important;
+    color: #ffb74d !important;
+}
+
+html.dark .chip-status-complete {
+    background: rgba(46, 125, 50, 0.25) !important;
+    color: #81c784 !important;
+}
+
+html.dark .chip-priority-high {
+    background: rgba(198, 40, 40, 0.25) !important;
+    color: #ef9a9a !important;
+}
+
+html.dark .chip-priority-medium {
+    background: rgba(230, 81, 0, 0.25) !important;
+    color: #ffb74d !important;
+}
+
+html.dark .chip-priority-low {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--text-secondary) !important;
 }
 
 /* ========================================
@@ -224,7 +254,7 @@ h1:focus {
     min-height: 80px;
     border-radius: var(--border-radius);
     overflow: hidden;
-    background: #f5f5f5;
+    background: var(--surface);
 }
 
 .thumbnail-container img {
@@ -245,7 +275,7 @@ h1:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #eeeeee;
+    background: var(--surface);
 }
 
 /* ========================================
@@ -285,7 +315,7 @@ h1:focus {
 
 .empty-state {
     background: var(--surface);
-    border: 1px dashed #bdbdbd;
+    border: 1px dashed var(--divider);
     border-radius: var(--border-radius);
     padding: 3rem 2rem;
     text-align: center;
@@ -294,7 +324,7 @@ h1:focus {
 .empty-state-icon {
     width: 64px;
     height: 64px;
-    background: #f5f5f5;
+    background: rgba(0, 0, 0, 0.06);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -352,16 +382,16 @@ h1:focus {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f5f5f5;
+    background: var(--background);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #bdbdbd;
+    background: var(--divider);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #9e9e9e;
+    background: var(--text-disabled);
 }
 
 /* ========================================
@@ -398,4 +428,13 @@ h1:focus {
 /* Tabs */
 .mud-tabs .mud-tab.mud-tab-active {
     font-weight: 600;
+}
+
+/* ========================================
+   Dark Mode Overrides
+   ======================================== */
+
+html.dark .stat-card .stat-icon,
+html.dark .empty-state-icon {
+    background: rgba(255, 255, 255, 0.08);
 }
