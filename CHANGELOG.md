@@ -4,6 +4,19 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [0.1.2] - 2026-03-24
+
+### Added
+- `TosDialog` component for displaying and accepting the Terms of Service
+- `TosAcceptedAt` property on `ApplicationUser` to track when each user accepted the ToS
+- Database migration (`AddTosAcceptedAt`) to add the new column to the identity schema
+- `tos.html` static page with full Terms of Service content
+- Localized Terms of Service strings added to all supported language resource files (en, de, es, fr, it)
+- `MainLayout` updated to show the ToS dialog on first login until acceptance is recorded
+- GitHub Copilot agent file (`CSharpExpert.agent.md`) and frontend-design skill for development tooling
+
+---
+
 ## [0.1.1] - 2026-03-24
 
 ### Added
