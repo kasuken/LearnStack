@@ -1263,4 +1263,16 @@
   <data name="Enter a new name for your {0} passkey." xml:space="preserve">
     <value>Inserisci un nuovo nome per la tua passkey {0}.</value>
   </data>
+  <data name="TermsOfService" xml:space="preserve">
+    <value>Termini di servizio</value>
+  </data>
+  <data name="IAcceptTermsOfService" xml:space="preserve">
+    <value>Ho letto e accetto i Termini di servizio</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accetta</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Rifiuta</value>
+  </data>
 </root>
