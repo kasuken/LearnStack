@@ -119,6 +119,7 @@ public class LearningResourceService : ILearningResourceService
         existing.CustomOrder = resource.CustomOrder;
         existing.DateCompleted = resource.DateCompleted;
         existing.IsArchived = resource.IsArchived;
+        existing.IsPublic = resource.IsPublic;
         
         await _context.SaveChangesAsync();
         return existing;
@@ -162,8 +163,27 @@ public class LearningResourceService : ILearningResourceService
         await _context.SaveChangesAsync();
     }
 
-    private static string NormalizeUrl(string url)
+    public async Task<bool> TogglePublicAsync(int id, string userId)
     {
+        var resource = await GetByIdAsync(id, userId);
+        if (resource == null) return false;
+
+        resource.IsPublic = !resource.IsPublic;
+        await _context.SaveChangesAsync();
+        return resource.IsPublic;
+    }
+
+    public async Task<List<LearningResource>> GetPublicResourcesByUserIdAsync(string ownerUserId)
+    {
+        return await _context.LearningResources
+            .Where(lr => lr.UserId == ownerUserId && lr.IsPublic && !lr.IsArchived)
+            .OrderByDescending(lr => lr.Priority)
+            .ThenBy(lr => lr.CustomOrder)
+            .ThenByDescending(lr => lr.DateAdded)
+            .ToListAsync();
+    }
+
+    private static string NormalizeUrl(string url)    {
         if (string.IsNullOrWhiteSpace(url))
         {
             return string.Empty;

@@ -16,5 +16,7 @@ public interface ILearningResourceService
     Task UpdateOrderAsync(string userId, List<int> orderedIds);
     Task<bool> ToggleArchiveAsync(int id, string userId);
     Task ArchiveStaleResourcesAsync(string userId);
+    Task<bool> TogglePublicAsync(int id, string userId);
+    Task<List<LearningResource>> GetPublicResourcesByUserIdAsync(string ownerUserId);
 }
 
