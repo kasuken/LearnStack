@@ -1,9 +1,13 @@
 ﻿@using MudBlazor
 @using LearnStack.Components.Shared
+@using Microsoft.AspNetCore.Identity
+@using LearnStack.Data
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@inject IDialogService DialogService
+@inject UserManager<ApplicationUser> UserManager
 
 @* Theme Provider with Custom Theme *@
 <MudThemeProvider @ref="_mudThemeProvider" Theme="@_theme" @bind-IsDarkMode="@_isDarkMode" />
@@ -117,6 +121,39 @@
             }
             await JSRuntime.InvokeVoidAsync("setDarkMode", _isDarkMode);
             StateHasChanged();
+
+            await CheckTosAcceptanceAsync();
+        }
+    }
+
+    private async Task CheckTosAcceptanceAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var claimsPrincipal = authState.User;
+
+        if (claimsPrincipal.Identity?.IsAuthenticated != true)
+            return;
+
+        var user = await UserManager.GetUserAsync(claimsPrincipal);
+        if (user is null || user.TosAcceptedAt.HasValue)
+            return;
+
+        var dialog = await DialogService.ShowAsync<TosDialog>(
+            L["TermsOfService"],
+            new DialogOptions
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                CloseButton = false,
+                BackdropClick = false,
+                CloseOnEscapeKey = false
+            });
+
+        var result = await dialog.Result;
+
+        if (result is { Canceled: true })
+        {
+            NavigationManager.NavigateTo("/welcome", forceLoad: true);
         }
     }
 

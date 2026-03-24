@@ -1,0 +1,79 @@
+@using MudBlazor
+@using Microsoft.AspNetCore.Identity
+@using LearnStack.Data
+@using Microsoft.AspNetCore.Components.Authorization
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject HttpClient? Http
+@inject NavigationManager NavigationManager
+
+<MudDialog Options="@_dialogOptions">
+    <TitleContent>
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.Gavel" Color="Color.Primary" />
+            <MudText Typo="Typo.h6" Style="font-weight: 700;">@L["TermsOfService"]</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudPaper Elevation="0" Class="pa-4" Style="max-height: 400px; overflow-y: auto; border: 1px solid var(--mud-palette-lines-default); border-radius: 12px;">
+            @((MarkupString)_tosContent)
+        </MudPaper>
+        <MudCheckBox @bind-Value="_accepted" Color="Color.Primary" Class="mt-4"
+                     Label="@L["IAcceptTermsOfService"]" />
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Decline" Variant="Variant.Text" Color="Color.Default">
+            @L["Decline"]
+        </MudButton>
+        <MudButton OnClick="Accept" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_accepted)">
+            @L["Accept"]
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private bool _accepted;
+    private string _tosContent = "";
+
+    private static readonly DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Medium,
+        FullWidth = true,
+        CloseButton = false,
+        BackdropClick = false,
+        CloseOnEscapeKey = false
+    };
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            using var httpClient = new HttpClient { BaseAddress = new Uri(NavigationManager.BaseUri) };
+            _tosContent = await httpClient.GetStringAsync("tos.html");
+        }
+        catch
+        {
+            _tosContent = "<p>Unable to load Terms of Service. Please try again later.</p>";
+        }
+    }
+
+    private async Task Accept()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = await UserManager.GetUserAsync(authState.User);
+        if (user is not null)
+        {
+            user.TosAcceptedAt = DateTime.UtcNow;
+            await UserManager.UpdateAsync(user);
+        }
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+
+    private void Decline()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+}

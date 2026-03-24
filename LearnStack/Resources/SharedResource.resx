@@ -1428,4 +1428,13 @@
   <data name="HeroSampleTitle6" xml:space="preserve">
     <value>Data Structures &amp; Algorithms</value>
   </data>
+  <data name="IAcceptTermsOfService" xml:space="preserve">
+    <value>I have read and accept the Terms of Service</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accept</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Decline</value>
+  </data>
 </root>

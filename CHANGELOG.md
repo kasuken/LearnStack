@@ -4,6 +4,35 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [0.1.2] - 2026-03-24
+
+### Added
+- `TosDialog` component for displaying and accepting the Terms of Service
+- `TosAcceptedAt` property on `ApplicationUser` to track when each user accepted the ToS
+- Database migration (`AddTosAcceptedAt`) to add the new column to the identity schema
+- `tos.html` static page with full Terms of Service content
+- Localized Terms of Service strings added to all supported language resource files (en, de, es, fr, it)
+- `MainLayout` updated to show the ToS dialog on first login until acceptance is recorded
+- GitHub Copilot agent file (`CSharpExpert.agent.md`) and frontend-design skill for development tooling
+
+---
+
+## [0.1.1] - 2026-03-24
+
+### Added
+- Localized `NotFound` page content in `Routes.razor` (replaced static text with localization strings)
+- Localized all form labels and helper texts in `ContentIdeaForm`, `ResourceForm`, and `SharedGroupForm`
+- Localized language names in `LanguageSelector`
+- Localized theme option names in `ThemeSelector`
+- Added new localization strings to `SharedResource.resx` for all UI elements introduced in this release
+- GitHub Copilot agent and skill files (`.github/agents/`, `.github/skills/`) for development tooling
+
+### Changed
+- `CultureController` now normalizes culture input and defaults to English when an unsupported culture is provided
+- `Program.cs` updated to configure request localization options with explicit default and supported cultures
+
+---
+
 ## [0.1.0] - 2026-03-18
 
 ### Added
