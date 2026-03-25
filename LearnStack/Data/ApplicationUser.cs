@@ -6,4 +6,5 @@ namespace LearnStack.Data;
 public class ApplicationUser : IdentityUser
 {
     public DateTime? TosAcceptedAt { get; set; }
+    public DateTime? OnboardingCompletedAt { get; set; }
 }

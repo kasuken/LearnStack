@@ -1539,4 +1539,61 @@
   <data name="MustBeFriendsToViewResources" xml:space="preserve">
     <value>You must be friends with this learner to view their public resources.</value>
   </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>Welcome to LearnStack</value>
+  </data>
+  <data name="OnboardingWelcomeStep" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>Welcome to LearnStack!</value>
+  </data>
+  <data name="OnboardingWelcomeDescription" xml:space="preserve">
+    <value>Your personal learning hub to save, organize, and track all your learning resources in one place. Let us show you around!</value>
+  </data>
+  <data name="OnboardingResourcesStep" xml:space="preserve">
+    <value>Resources</value>
+  </data>
+  <data name="OnboardingResourcesTitle" xml:space="preserve">
+    <value>Your Resource Library</value>
+  </data>
+  <data name="OnboardingResourcesDescription" xml:space="preserve">
+    <value>Save articles, videos, courses, and more. Track your progress from "To Learn" to "Completed" and keep your learning organized.</value>
+  </data>
+  <data name="OnboardingFriendsStep" xml:space="preserve">
+    <value>Friends</value>
+  </data>
+  <data name="OnboardingFriendsTitle" xml:space="preserve">
+    <value>Connect with Friends</value>
+  </data>
+  <data name="OnboardingFriendsDescription" xml:space="preserve">
+    <value>Invite friends to LearnStack, share your public resources, and discover what others are learning.</value>
+  </data>
+  <data name="OnboardingSharedStep" xml:space="preserve">
+    <value>Collections</value>
+  </data>
+  <data name="OnboardingSharedTitle" xml:space="preserve">
+    <value>Shared Collections</value>
+  </data>
+  <data name="OnboardingSharedDescription" xml:space="preserve">
+    <value>Curate and share themed collections of resources with your friends or the community via a simple link.</value>
+  </data>
+  <data name="OnboardingContentStep" xml:space="preserve">
+    <value>Content Ideas</value>
+  </data>
+  <data name="OnboardingContentTitle" xml:space="preserve">
+    <value>Turn Learning into Content</value>
+  </data>
+  <data name="OnboardingContentDescription" xml:space="preserve">
+    <value>Transform what you learn into blog posts, videos, tutorials, and more. Track your content ideas and link them to your resources.</value>
+  </data>
+  <data name="OnboardingCompleteTitle" xml:space="preserve">
+    <value>You're All Set!</value>
+  </data>
+  <data name="OnboardingCompleteDescription" xml:space="preserve">
+    <value>You're ready to start your learning journey. Add your first resource and begin organizing your knowledge!</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>Get Started</value>
+  </data>
 </root>

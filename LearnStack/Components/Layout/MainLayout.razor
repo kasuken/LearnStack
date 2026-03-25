@@ -129,6 +129,7 @@
             StateHasChanged();
 
             await CheckTosAcceptanceAsync();
+            await CheckOnboardingAsync();
         }
     }
 
@@ -272,6 +273,32 @@
             DefaultBorderRadius = "16px"
         }
     };
+
+    private async Task CheckOnboardingAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var claimsPrincipal = authState.User;
+
+        if (claimsPrincipal.Identity?.IsAuthenticated != true)
+            return;
+
+        var user = await UserManager.GetUserAsync(claimsPrincipal);
+        if (user is null || user.OnboardingCompletedAt.HasValue)
+            return;
+
+        var dialog = await DialogService.ShowAsync<OnboardingDialog>(
+            L["OnboardingTitle"],
+            new DialogOptions
+            {
+                MaxWidth = MaxWidth.Medium,
+                FullWidth = true,
+                CloseButton = false,
+                BackdropClick = false,
+                CloseOnEscapeKey = false
+            });
+
+        await dialog.Result;
+    }
 
     private string GetUserInitials(string? name)
     {

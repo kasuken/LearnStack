@@ -4,6 +4,19 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.1.0] - 2026-03-25
+
+### Added
+- Onboarding experience for first-time users
+  - `OnboardingDialog` component built with the MudBlazor `MudStepper` horizontal stepper
+  - 5-step tour covering: Welcome, Resource Library, Friends, Shared Collections, and Content Ideas
+  - `OnboardingCompletedAt` property on `ApplicationUser` to track whether onboarding has been completed
+  - Database migration (`AddOnboardingCompletedAt`) to add the new column to the identity schema
+  - `MainLayout` updated to show the onboarding dialog after the ToS check on first login
+  - Localized onboarding strings added to all supported language resource files (en, de, es, fr, it)
+
+---
+
 ## [1.0.0] - 2026-03-25
 
 ### Added
