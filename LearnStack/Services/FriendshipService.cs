@@ -6,15 +6,16 @@ namespace LearnStack.Services;
 
 public class FriendshipService : IFriendshipService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-    public FriendshipService(ApplicationDbContext context)
+    public FriendshipService(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<FriendInvitation> CreateInvitationAsync(string inviterId)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         var invitation = new FriendInvitation
         {
             Token = Guid.NewGuid().ToString("N"),
@@ -23,21 +24,23 @@ public class FriendshipService : IFriendshipService
             ExpiresAt = DateTime.UtcNow.AddDays(7)
         };
 
-        _context.FriendInvitations.Add(invitation);
-        await _context.SaveChangesAsync();
+        context.FriendInvitations.Add(invitation);
+        await context.SaveChangesAsync();
         return invitation;
     }
 
     public async Task<FriendInvitation?> GetInvitationByTokenAsync(string token)
     {
-        return await _context.FriendInvitations
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.FriendInvitations
             .Include(fi => fi.Inviter)
             .FirstOrDefaultAsync(fi => fi.Token == token);
     }
 
     public async Task<FriendInvitation?> AcceptInvitationAsync(string token, string acceptingUserId)
     {
-        var invitation = await _context.FriendInvitations
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var invitation = await context.FriendInvitations
             .Include(fi => fi.Inviter)
             .FirstOrDefaultAsync(fi => fi.Token == token);
 
@@ -49,7 +52,9 @@ public class FriendshipService : IFriendshipService
             return null;
 
         // Skip if already friends
-        if (await IsFriendAsync(invitation.InviterId, acceptingUserId))
+        if (await context.LearnerFriendships.AnyAsync(lf =>
+            (lf.RequesterId == invitation.InviterId && lf.AddresseeId == acceptingUserId) ||
+            (lf.RequesterId == acceptingUserId && lf.AddresseeId == invitation.InviterId)))
             return null;
 
         var friendship = new LearnerFriendship
@@ -63,14 +68,15 @@ public class FriendshipService : IFriendshipService
         invitation.AcceptedByUserId = acceptingUserId;
         invitation.AcceptedAt = DateTime.UtcNow;
 
-        _context.LearnerFriendships.Add(friendship);
-        await _context.SaveChangesAsync();
+        context.LearnerFriendships.Add(friendship);
+        await context.SaveChangesAsync();
         return invitation;
     }
 
     public async Task<List<FriendViewModel>> GetFriendsAsync(string userId)
     {
-        var asRequester = await _context.LearnerFriendships
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var asRequester = await context.LearnerFriendships
             .Where(lf => lf.RequesterId == userId)
             .Include(lf => lf.Addressee)
             .Select(lf => new FriendViewModel(
@@ -79,7 +85,7 @@ public class FriendshipService : IFriendshipService
                 lf.DateCreated))
             .ToListAsync();
 
-        var asAddressee = await _context.LearnerFriendships
+        var asAddressee = await context.LearnerFriendships
             .Where(lf => lf.AddresseeId == userId)
             .Include(lf => lf.Requester)
             .Select(lf => new FriendViewModel(
@@ -96,21 +102,23 @@ public class FriendshipService : IFriendshipService
 
     public async Task<bool> IsFriendAsync(string userId, string otherUserId)
     {
-        return await _context.LearnerFriendships.AnyAsync(lf =>
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.LearnerFriendships.AnyAsync(lf =>
             (lf.RequesterId == userId && lf.AddresseeId == otherUserId) ||
             (lf.RequesterId == otherUserId && lf.AddresseeId == userId));
     }
 
     public async Task RemoveFriendAsync(string userId, string friendUserId)
     {
-        var friendship = await _context.LearnerFriendships.FirstOrDefaultAsync(lf =>
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var friendship = await context.LearnerFriendships.FirstOrDefaultAsync(lf =>
             (lf.RequesterId == userId && lf.AddresseeId == friendUserId) ||
             (lf.RequesterId == friendUserId && lf.AddresseeId == userId));
 
         if (friendship != null)
         {
-            _context.LearnerFriendships.Remove(friendship);
-            await _context.SaveChangesAsync();
+            context.LearnerFriendships.Remove(friendship);
+            await context.SaveChangesAsync();
         }
     }
 }

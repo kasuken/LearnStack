@@ -6,16 +6,17 @@ namespace LearnStack.Services;
 
 public class SharedResourceGroupService : ISharedResourceGroupService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-    public SharedResourceGroupService(ApplicationDbContext context)
+    public SharedResourceGroupService(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<List<SharedResourceGroup>> GetAllAsync(string userId)
     {
-        return await _context.SharedResourceGroups
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.SharedResourceGroups
             .Include(sg => sg.Items)
                 .ThenInclude(sgi => sgi.LearningResource)
             .Where(sg => sg.UserId == userId)
@@ -25,7 +26,8 @@ public class SharedResourceGroupService : ISharedResourceGroupService
 
     public async Task<SharedResourceGroup?> GetByIdAsync(int id, string userId)
     {
-        return await _context.SharedResourceGroups
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.SharedResourceGroups
             .Include(sg => sg.Items)
                 .ThenInclude(sgi => sgi.LearningResource)
             .FirstOrDefaultAsync(sg => sg.Id == id && sg.UserId == userId);
@@ -33,7 +35,8 @@ public class SharedResourceGroupService : ISharedResourceGroupService
 
     public async Task<SharedResourceGroup?> GetByShareTokenAsync(string shareToken)
     {
-        return await _context.SharedResourceGroups
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.SharedResourceGroups
             .Include(sg => sg.Items)
                 .ThenInclude(sgi => sgi.LearningResource)
             .Include(sg => sg.User)
@@ -42,14 +45,16 @@ public class SharedResourceGroupService : ISharedResourceGroupService
 
     public async Task<SharedResourceGroup> CreateAsync(SharedResourceGroup group)
     {
-        _context.SharedResourceGroups.Add(group);
-        await _context.SaveChangesAsync();
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        context.SharedResourceGroups.Add(group);
+        await context.SaveChangesAsync();
         return group;
     }
 
     public async Task<SharedResourceGroup?> UpdateAsync(SharedResourceGroup group, string userId)
     {
-        var existing = await _context.SharedResourceGroups
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var existing = await context.SharedResourceGroups
             .FirstOrDefaultAsync(sg => sg.Id == group.Id && sg.UserId == userId);
         if (existing == null) return null;
 
@@ -57,35 +62,37 @@ public class SharedResourceGroupService : ISharedResourceGroupService
         existing.Description = group.Description;
         existing.IsActive = group.IsActive;
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return existing;
     }
 
     public async Task DeleteAsync(int id, string userId)
     {
-        var group = await _context.SharedResourceGroups
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var group = await context.SharedResourceGroups
             .FirstOrDefaultAsync(sg => sg.Id == id && sg.UserId == userId);
         if (group != null)
         {
-            _context.SharedResourceGroups.Remove(group);
-            await _context.SaveChangesAsync();
+            context.SharedResourceGroups.Remove(group);
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task AddResourceAsync(int groupId, int resourceId, string userId)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         // Verify group belongs to user
-        var group = await _context.SharedResourceGroups
+        var group = await context.SharedResourceGroups
             .FirstOrDefaultAsync(sg => sg.Id == groupId && sg.UserId == userId);
         if (group == null) return;
 
         // Verify resource belongs to user
-        var resource = await _context.LearningResources
+        var resource = await context.LearningResources
             .FirstOrDefaultAsync(lr => lr.Id == resourceId && lr.UserId == userId);
         if (resource == null) return;
 
         // Check if link already exists
-        var existingLink = await _context.SharedResourceGroupItems
+        var existingLink = await context.SharedResourceGroupItems
             .FirstOrDefaultAsync(sgi => sgi.SharedResourceGroupId == groupId && sgi.LearningResourceId == resourceId);
         if (existingLink != null) return;
 
@@ -94,24 +101,25 @@ public class SharedResourceGroupService : ISharedResourceGroupService
             SharedResourceGroupId = groupId,
             LearningResourceId = resourceId
         };
-        _context.SharedResourceGroupItems.Add(link);
-        await _context.SaveChangesAsync();
+        context.SharedResourceGroupItems.Add(link);
+        await context.SaveChangesAsync();
     }
 
     public async Task RemoveResourceAsync(int groupId, int resourceId, string userId)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         // Verify group belongs to user
-        var group = await _context.SharedResourceGroups
+        var group = await context.SharedResourceGroups
             .FirstOrDefaultAsync(sg => sg.Id == groupId && sg.UserId == userId);
         if (group == null) return;
 
-        var link = await _context.SharedResourceGroupItems
+        var link = await context.SharedResourceGroupItems
             .FirstOrDefaultAsync(sgi => sgi.SharedResourceGroupId == groupId && sgi.LearningResourceId == resourceId);
 
         if (link != null)
         {
-            _context.SharedResourceGroupItems.Remove(link);
-            await _context.SaveChangesAsync();
+            context.SharedResourceGroupItems.Remove(link);
+            await context.SaveChangesAsync();
         }
     }
 }
