@@ -1377,4 +1377,61 @@
   <data name="MustBeFriendsToViewResources" xml:space="preserve">
     <value>Vous devez être ami avec cet apprenant pour voir ses ressources publiques.</value>
   </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>Bienvenue sur LearnStack</value>
+  </data>
+  <data name="OnboardingWelcomeStep" xml:space="preserve">
+    <value>Bienvenue</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>Bienvenue sur LearnStack !</value>
+  </data>
+  <data name="OnboardingWelcomeDescription" xml:space="preserve">
+    <value>Votre hub d'apprentissage personnel pour sauvegarder, organiser et suivre toutes vos ressources d'apprentissage en un seul endroit. Laissez-nous vous faire visiter !</value>
+  </data>
+  <data name="OnboardingResourcesStep" xml:space="preserve">
+    <value>Ressources</value>
+  </data>
+  <data name="OnboardingResourcesTitle" xml:space="preserve">
+    <value>Votre Bibliothèque de Ressources</value>
+  </data>
+  <data name="OnboardingResourcesDescription" xml:space="preserve">
+    <value>Sauvegardez des articles, vidéos, cours et plus encore. Suivez votre progression de "À Apprendre" à "Terminé" et gardez votre apprentissage organisé.</value>
+  </data>
+  <data name="OnboardingFriendsStep" xml:space="preserve">
+    <value>Amis</value>
+  </data>
+  <data name="OnboardingFriendsTitle" xml:space="preserve">
+    <value>Connectez-vous avec des Amis</value>
+  </data>
+  <data name="OnboardingFriendsDescription" xml:space="preserve">
+    <value>Invitez des amis sur LearnStack, partagez vos ressources publiques et découvrez ce que les autres apprennent.</value>
+  </data>
+  <data name="OnboardingSharedStep" xml:space="preserve">
+    <value>Collections</value>
+  </data>
+  <data name="OnboardingSharedTitle" xml:space="preserve">
+    <value>Collections Partagées</value>
+  </data>
+  <data name="OnboardingSharedDescription" xml:space="preserve">
+    <value>Créez et partagez des collections thématiques de ressources avec vos amis ou la communauté via un simple lien.</value>
+  </data>
+  <data name="OnboardingContentStep" xml:space="preserve">
+    <value>Idées de Contenu</value>
+  </data>
+  <data name="OnboardingContentTitle" xml:space="preserve">
+    <value>Transformez l'Apprentissage en Contenu</value>
+  </data>
+  <data name="OnboardingContentDescription" xml:space="preserve">
+    <value>Transformez ce que vous apprenez en articles de blog, vidéos, tutoriels et plus encore. Suivez vos idées de contenu et liez-les à vos ressources.</value>
+  </data>
+  <data name="OnboardingCompleteTitle" xml:space="preserve">
+    <value>Vous êtes prêt !</value>
+  </data>
+  <data name="OnboardingCompleteDescription" xml:space="preserve">
+    <value>Vous êtes prêt à commencer votre parcours d'apprentissage. Ajoutez votre première ressource et commencez à organiser vos connaissances !</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>Commencer</value>
+  </data>
 </root>

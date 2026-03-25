@@ -1,0 +1,142 @@
+@using MudBlazor
+@using Microsoft.AspNetCore.Identity
+@using LearnStack.Data
+@using Microsoft.AspNetCore.Components.Authorization
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<MudDialog Options="@_dialogOptions">
+    <TitleContent>
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.RocketLaunch" Color="Color.Primary" />
+            <MudText Typo="Typo.h6" Style="font-weight: 700;">@L["OnboardingTitle"]</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudStepper @bind-ActiveIndex="_activeIndex" CompletedStepColor="Color.Success" CurrentStepColor="Color.Primary" CenterLabels="true">
+            <ChildContent>
+                @* Step 1: Welcome *@
+                <MudStep Title="@L["OnboardingWelcomeStep"]">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="4" Class="pa-4">
+                        <MudIcon Icon="@Icons.Material.Filled.Celebration" Style="font-size: 4rem; color: var(--mud-palette-primary);" />
+                        <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700;">
+                            @L["OnboardingWelcomeTitle"]
+                        </MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center" Style="color: var(--mud-palette-text-secondary); max-width: 480px;">
+                            @L["OnboardingWelcomeDescription"]
+                        </MudText>
+                    </MudStack>
+                </MudStep>
+
+                @* Step 2: Resource Library *@
+                <MudStep Title="@L["OnboardingResourcesStep"]">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="4" Class="pa-4">
+                        <div style="background: linear-gradient(135deg, #4f46e5, #818cf8); border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: center;">
+                            <MudIcon Icon="@Icons.Material.Filled.AutoStories" Style="font-size: 3rem; color: white;" />
+                        </div>
+                        <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700;">
+                            @L["OnboardingResourcesTitle"]
+                        </MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center" Style="color: var(--mud-palette-text-secondary); max-width: 480px;">
+                            @L["OnboardingResourcesDescription"]
+                        </MudText>
+                        <MudStack Row="true" Spacing="3" Justify="Justify.Center" Class="mt-2">
+                            <MudChip T="string" Icon="@Icons.Material.Filled.MenuBook" Color="Color.Primary" Variant="Variant.Text">@L["ToLearn"]</MudChip>
+                            <MudChip T="string" Icon="@Icons.Material.Filled.PlayCircle" Color="Color.Warning" Variant="Variant.Text">@L["InProgress"]</MudChip>
+                            <MudChip T="string" Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Variant="Variant.Text">@L["Completed"]</MudChip>
+                        </MudStack>
+                    </MudStack>
+                </MudStep>
+
+                @* Step 3: Friends *@
+                <MudStep Title="@L["OnboardingFriendsStep"]">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="4" Class="pa-4">
+                        <div style="background: linear-gradient(135deg, #10b981, #34d399); border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: center;">
+                            <MudIcon Icon="@Icons.Material.Filled.People" Style="font-size: 3rem; color: white;" />
+                        </div>
+                        <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700;">
+                            @L["OnboardingFriendsTitle"]
+                        </MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center" Style="color: var(--mud-palette-text-secondary); max-width: 480px;">
+                            @L["OnboardingFriendsDescription"]
+                        </MudText>
+                    </MudStack>
+                </MudStep>
+
+                @* Step 4: Shared Collections *@
+                <MudStep Title="@L["OnboardingSharedStep"]">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="4" Class="pa-4">
+                        <div style="background: linear-gradient(135deg, #3b82f6, #60a5fa); border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: center;">
+                            <MudIcon Icon="@Icons.Material.Filled.Share" Style="font-size: 3rem; color: white;" />
+                        </div>
+                        <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700;">
+                            @L["OnboardingSharedTitle"]
+                        </MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center" Style="color: var(--mud-palette-text-secondary); max-width: 480px;">
+                            @L["OnboardingSharedDescription"]
+                        </MudText>
+                    </MudStack>
+                </MudStep>
+
+                @* Step 5: Content Ideas *@
+                <MudStep Title="@L["OnboardingContentStep"]">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="4" Class="pa-4">
+                        <div style="background: linear-gradient(135deg, #f59e0b, #fbbf24); border-radius: 16px; padding: 16px; display: flex; align-items: center; justify-content: center;">
+                            <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="font-size: 3rem; color: white;" />
+                        </div>
+                        <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700;">
+                            @L["OnboardingContentTitle"]
+                        </MudText>
+                        <MudText Typo="Typo.body1" Align="Align.Center" Style="color: var(--mud-palette-text-secondary); max-width: 480px;">
+                            @L["OnboardingContentDescription"]
+                        </MudText>
+                    </MudStack>
+                </MudStep>
+            </ChildContent>
+            <CompletedContent>
+                <MudStack AlignItems="AlignItems.Center" Spacing="4" Class="pa-6">
+                    <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Color="Color.Success" Style="font-size: 4rem;" />
+                    <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700;">
+                        @L["OnboardingCompleteTitle"]
+                    </MudText>
+                    <MudText Typo="Typo.body1" Align="Align.Center" Style="color: var(--mud-palette-text-secondary); max-width: 480px;">
+                        @L["OnboardingCompleteDescription"]
+                    </MudText>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CompleteOnboarding"
+                              Size="Size.Large" Style="border-radius: 10px; font-weight: 600; padding: 12px 32px; text-transform: none;">
+                        @L["OnboardingGetStarted"]
+                    </MudButton>
+                </MudStack>
+            </CompletedContent>
+        </MudStepper>
+    </DialogContent>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private int _activeIndex;
+
+    private static readonly DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Medium,
+        FullWidth = true,
+        CloseButton = false,
+        BackdropClick = false,
+        CloseOnEscapeKey = false
+    };
+
+    private async Task CompleteOnboarding()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = await UserManager.GetUserAsync(authState.User);
+        if (user is not null)
+        {
+            user.OnboardingCompletedAt = DateTime.UtcNow;
+            await UserManager.UpdateAsync(user);
+        }
+
+        MudDialog.Close(DialogResult.Ok(true));
+    }
+}
