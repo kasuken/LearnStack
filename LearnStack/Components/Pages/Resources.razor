@@ -26,6 +26,12 @@
         </MudStack>
         <MudStack Row="true" Spacing="2">
             <MudButton Variant="Variant.Outlined" 
+                      StartIcon="@Icons.Material.Filled.People" 
+                      OnClick="@(() => NavigationManager.NavigateTo("/friends"))" 
+                      Style="border-radius: 10px; font-weight: 600;">
+                @L["Friends"]
+            </MudButton>
+            <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.Share" 
                       OnClick="@(() => NavigationManager.NavigateTo("/shared-groups"))" 
                       Style="border-radius: 10px; font-weight: 600;">
@@ -336,6 +342,11 @@
                                                   Style="color: #94a3b8;" 
                                                   Title="@(context.IsArchived ? L["Unarchive"].Value : L["Archive"].Value)" 
                                                   OnClick="@(() => ToggleArchive(context))" />
+                                    <MudIconButton Icon="@(context.IsPublic ? Icons.Material.Filled.Public : Icons.Material.Filled.PublicOff)"
+                                                  Size="Size.Small"
+                                                  Style="@(context.IsPublic ? "color: #10b981;" : "color: #94a3b8;")"
+                                                  Title="@(context.IsPublic ? L["MakePrivate"].Value : L["MakePublic"].Value)"
+                                                  OnClick="@(() => TogglePublic(context))" />
                                 </MudStack>
                             </MudStack>
                         </div>
@@ -412,6 +423,11 @@
                                           Size="Size.Small" Style="color: #94a3b8;" 
                                           Title="@(context.Item.IsArchived ? L["Unarchive"].Value : L["Archive"].Value)" 
                                           OnClick="@(() => ToggleArchive(context.Item))" />
+                            <MudIconButton Icon="@(context.Item.IsPublic ? Icons.Material.Filled.Public : Icons.Material.Filled.PublicOff)"
+                                          Size="Size.Small"
+                                          Style="@(context.Item.IsPublic ? "color: #10b981;" : "color: #94a3b8;")"
+                                          Title="@(context.Item.IsPublic ? L["MakePrivate"].Value : L["MakePublic"].Value)"
+                                          OnClick="@(() => TogglePublic(context.Item))" />
                         </MudStack>
                     </CellTemplate>
                 </TemplateColumn>
@@ -727,6 +743,13 @@
         resource.IsArchived = !resource.IsArchived;
         await LoadStatistics();
         ApplyFilters();
+    }
+
+    private async Task TogglePublic(LearningResource resource)
+    {
+        var isNowPublic = await ResourceService.TogglePublicAsync(resource.Id, userId);
+        resource.IsPublic = isNowPublic;
+        StateHasChanged();
     }
 
     private string GetDomainFromUrl(string url)

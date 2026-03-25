@@ -1,213 +1,174 @@
 ﻿<div align="center">
 
-# 🚀 LearnStack
+<img src="./LearnStack/wwwroot/img/logoRect.png" alt="LearnStack logo" width="400" />
 
-### *Transform Your Learning Journey Into Content Gold*
+Blazor Server application for organizing learning resources, turning them into content ideas, and sharing curated knowledge with other learners.
 
-**Stop drowning in browser tabs. Start creating content that matters.**
+[![Deploy to Azure App Service](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml/badge.svg)](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml)
+![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square)
+![Blazor Server](https://img.shields.io/badge/Blazor-Server-5C2D91?style=flat-square)
+![MudBlazor](https://img.shields.io/badge/UI-MudBlazor-594AE2?style=flat-square)
 
-[![Deploy to Azure](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml/badge.svg)](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml)
-[![Made with Love](https://img.shields.io/badge/Made%20with-❤️-red.svg)](https://github.com/kasuken/LearnStack)
-[![Built with Blazor](https://img.shields.io/badge/Built%20with-Blazor-512BD4?logo=blazor)](https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/kasuken/LearnStack/pulls)
+[Overview](#overview) • [Features](#features) • [Getting started](#getting-started) • [Configuration](#configuration) • [Deployment](#deployment) • [Project structure](#project-structure)
 
 </div>
 
----
+## Overview
 
-## 💡 The Story
+LearnStack helps learners and creators manage the full path from discovery to publishing:
 
-Ever had **127 tabs open** of articles you "definitely need to read"?
+- Save articles, videos, podcasts, courses, and documentation in one place.
+- Track progress, priorities, notes, and archived items.
+- Turn saved material into structured content ideas.
+- Share public collections and selected resources with other users.
+- Use the app in multiple languages with light and dark themes.
 
-Ever saved a brilliant podcast episode and... never found it again?
+The application is built with ASP.NET Core, Blazor Server, Entity Framework Core, SQL Server, MudBlazor, and ASP.NET Identity.
 
-Ever wanted to create content but got **lost in the chaos** of scattered notes, bookmarks, and half-formed ideas?
+## Features
 
-**We've all been there.** And that's exactly why LearnStack exists.
+### Learning resource management
 
----
+- Capture resources by URL with automatic metadata enrichment.
+- Organize items by type, status, priority, tags, and notes.
+- Switch between list and table views, search, filter, archive, and export your library.
+- Track progress across to-learn, in-progress, completed, and archived states.
 
-## 🎯 What If You Could...
+### Content idea workflow
 
-✨ **Capture** every learning resource that inspires you—instantly, beautifully organized
+- Create content ideas from your learning backlog.
+- Link ideas back to the source resources that inspired them.
+- Track ideas from draft to published.
 
-🔥 **Track** your learning journey from "someday" to "done"—with visual progress that motivates
+### Sharing and collaboration
 
-💎 **Transform** everything you learn into content ideas that write themselves
+- Create public shared collections with unique share links.
+- Manage friendships with invitation links.
+- Share selected public resources with connected friends.
 
-🌟 **See** the connection between what you consume and what you create
+### Product experience
 
-🚀 **Build** your content empire on a foundation of real, deep learning
+- Localized UI in English, German, Spanish, French, and Italian.
+- Light and dark theme support.
+- ASP.NET Identity authentication with passkey support.
+- Terms of Service acceptance flow for signed-in users.
 
----
+### Platform and deployment
 
-## 🌈 This Is For You If...
+- SQL Server persistence through Entity Framework Core.
+- Automatic database migration on application startup.
+- Azure App Service deployment workflow with semantic version tagging and GitHub releases.
 
-You're a **content creator** who wants to learn smarter, not harder
+## Tech stack
 
-You're a **lifelong learner** drowning in bookmarks and saved links
+- .NET 10 / ASP.NET Core / Blazor Server
+- Entity Framework Core 10 with SQL Server
+- ASP.NET Core Identity
+- MudBlazor
+- HtmlAgilityPack for metadata scraping
+- GitHub Actions for CI/CD and release automation
 
-You're **tired** of browser chaos and sticky notes everywhere
+## Getting Started
 
-You **believe** that great content comes from great learning
+### Prerequisites
 
-You're ready to **turn knowledge into impact**
+- .NET 10 SDK
+- SQL Server or SQL Server LocalDB
+- Git
 
----
+> [!NOTE]
+> The default development configuration uses SQL Server LocalDB on Windows. If you prefer SQL Server, Azure SQL, or a containerized database, override `ConnectionStrings__DefaultConnection` before starting the app.
 
-## ✨ The Magic
-
-### 📚 Your Learning Hub
-Keep every blog post, video, podcast, and course in **one beautiful place**. No more hunting through bookmarks or wondering "where did I save that?"
-
-### 🎨 From Consumer to Creator
-Every resource you save becomes a **potential content idea**. Track the journey from inspiration to publication. Connect the dots between what you learn and what you create.
-
-### 🔮 Your Future Self Will Thank You
-Imagine looking back and seeing **everything you've learned**. Every completed resource. Every published piece. Your own personal hall of fame.
-
----
-
-## 🎪 How It Works
-
-1. **📥 Capture** - Found something amazing? Save it in seconds.
-
-2. **📖 Learn** - Track your progress. Take notes. Mark what resonates.
-
-3. **💡 Ideate** - Turn insights into content ideas automatically linked to your sources.
-
-4. **✍️ Create** - Transform ideas into content with all your research at your fingertips.
-
-5. **🎉 Celebrate** - Watch your learning and content libraries grow!
-
----
-
-## 🎁 What You Get
-
-**Learning Resource Management**
-- Capture URLs, videos, podcasts, courses—everything
-- Track what's next, what's in progress, what's completed
-- Priority levels so you focus on what matters most
-- Tags, notes, and search to find anything instantly
-
-**Content Creation Planning**
-- Turn learning into content ideas effortlessly  
-- Link ideas back to your source materials
-- Track from brainstorm to published masterpiece
-- Never lose a brilliant idea again
-
-**Your Personal Dashboard**
-- See your learning progress at a glance
-- Track your content creation pipeline
-- Celebrate your wins, big and small
-
----
-
-## 🚀 Getting Started
-
-Ready to transform your learning and content creation?
+### Run locally
 
 ```bash
-# Clone your new superpower
 git clone https://github.com/kasuken/LearnStack.git
 cd LearnStack
-
-# Set up your database
-cd LearnStack
-dotnet ef database update
-
-# Launch your command center
-dotnet run
+dotnet restore LearnStack.sln
+dotnet run --project LearnStack/LearnStack.csproj
 ```
 
-Open `https://localhost:5001` and start your journey!
+Open the HTTPS URL printed in the console and register a new account.
 
-### 🌐 Deploy to Azure
+> [!IMPORTANT]
+> The application applies pending Entity Framework migrations automatically on startup. Point the connection string at a database you are comfortable initializing before first run.
 
-Want to host it in the cloud? We've got you covered!
+### Build the solution
 
 ```bash
-# One-time setup: Configure your Azure App Service and GitHub secrets
-# See .github/DEPLOYMENT.md for detailed instructions
-
-# Then just push to main branch - automatic deployment! 🚀
-git push origin main
+dotnet build LearnStack.sln
 ```
 
-Every deployment automatically creates a **GitHub release** with semantic versioning!
+## Configuration
 
-[📖 Full deployment guide](.github/DEPLOYMENT.md) · [🏷️ Release & versioning guide](.github/RELEASES.md)
+The main application settings live in `LearnStack/appsettings.json` and `LearnStack/appsettings.Development.json`.
 
----
+### Required settings
 
-## 💪 The Vision
+- `ConnectionStrings:DefaultConnection`: SQL Server connection string used by Entity Framework Core and ASP.NET Identity.
 
-LearnStack isn't just an app—it's a **movement**.
+Example environment variable override:
 
-A movement of creators who believe that:
-- 📚 **Learning should fuel creation**
-- 🌟 **Knowledge without action is just trivia**  
-- 🚀 **Great content comes from curious minds**
-- 💎 **Your learning journey deserves to be organized beautifully**
+```powershell
+$env:ConnectionStrings__DefaultConnection="Server=tcp:your-server.database.windows.net,1433;Initial Catalog=LearnStackDb;Persist Security Info=False;User ID=your-user;Password=your-password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+```
 
----
+### Runtime behavior
 
-## 🌟 Join the Journey
+- Database access is created through `IDbContextFactory<ApplicationDbContext>`.
+- Supported UI cultures are `en`, `de`, `es`, `fr`, and `it`.
+- Request localization uses cookie selection first, then the `Accept-Language` header.
+- Open Graph metadata fetching uses a dedicated HTTP client and includes YouTube oEmbed support.
 
-This is **version 1.0** of something bigger.
+## Deployment
 
-Imagine:
-- 🔮 AI that suggests content ideas based on what you're learning
-- 🤝 Collaboration features to learn and create with others
-- 📱 Mobile apps to capture inspiration anywhere
-- 📊 Analytics that show your learning and creation patterns
-- 🌐 Browser extensions for one-click saving
+LearnStack includes a GitHub Actions workflow that deploys the app to Azure App Service whenever changes are pushed to `main`.
 
-**The future is bright. And we're building it together.**
+The workflow:
 
----
+- builds and publishes the Blazor application,
+- deploys it to Azure App Service,
+- calculates the next semantic version,
+- creates a Git tag,
+- publishes a GitHub release.
 
-## 🤝 Contributing
+Useful docs:
 
-Have an idea? Found a bug? Want to make LearnStack even more awesome?
+- [Azure deployment guide](./.github/DEPLOYMENT.md)
+- [Release and versioning guide](./.github/RELEASES.md)
 
-**We'd love your help!**
+> [!TIP]
+> The workflow is configured for the `learnstack-prod-001` Azure Web App name by default. If you fork the repository, update `.github/workflows/azure-app-service.yml` and the `AZURE_WEBAPP_PUBLISH_PROFILE` secret for your own environment.
 
-Every PR, every issue, every suggestion makes this better for everyone. Let's build something amazing together.
+## Project structure
 
-### 🚀 Developer Resources
-- [📖 Deployment Guide](.github/DEPLOYMENT.md) - Deploy to Azure
-- [🏷️ Release Guide](.github/RELEASES.md) - Versioning & releases
-- [⚡ Quick Reference](.github/QUICK-REFERENCE.md) - Common commands
-- [📝 Changelog](CHANGELOG.md) - Version history
+```text
+.
+|- LearnStack.sln
+|- LearnStack/
+|  |- Components/
+|  |  |- Marketing/       # Public landing pages
+|  |  |- Pages/           # Authenticated application pages
+|  |  |- Shared/          # Reusable forms, cards, dialogs, selectors
+|  |- Controllers/        # MVC endpoints such as culture switching
+|  |- Data/               # DbContext, identity user, models, migrations
+|  |- Resources/          # Localization resource files
+|  |- Services/           # Application services and metadata fetching
+|  |- wwwroot/            # Static assets, styles, scripts, logos, ToS page
+|- .github/
+|  |- workflows/          # Azure deployment and release automation
+|  |- DEPLOYMENT.md
+|  |- RELEASES.md
+```
 
----
+## What the app covers today
 
-## 💌 A Message From the Creator
+- Personal learning resource library
+- Content idea planning pipeline
+- Shared collections by link
+- Friend invitations and public resource sharing
+- Localization and theme support
+- Azure deployment automation
 
-I built LearnStack because I was tired of chaos. Tired of lost learning. Tired of great ideas slipping away.
-
-If this resonates with you—if you've ever felt overwhelmed by all the content you want to consume and create—then this is for you.
-
-Let's turn learning into creation. Together.
-
-**— Emanuele Bartolesi (@kasuken)**
-
----
-
-<div align="center">
-
-### ⭐ If LearnStack helps you, give it a star!
-
-**Your star tells others this is worth their time.**  
-**Your contribution makes it better for everyone.**  
-**Your story inspires the next person.**
-
-[⭐ Star this repo](https://github.com/kasuken/LearnStack) • [🐛 Report a bug](https://github.com/kasuken/LearnStack/issues) • [💡 Request a feature](https://github.com/kasuken/LearnStack/issues)
-
----
-
-*Built with Blazor & .NET 10 | Made with ❤️ for creators and learners everywhere*
-
-</div>
+If you want to extend the project, the most natural next areas are richer collaboration, analytics, and smarter idea generation from saved resources.
 

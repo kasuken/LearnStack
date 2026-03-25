@@ -45,6 +45,8 @@ public class LearningResource
 
     public bool IsArchived { get; set; }
 
+    public bool IsPublic { get; set; }
+
     [Required]
     public string UserId { get; set; } = string.Empty;
 

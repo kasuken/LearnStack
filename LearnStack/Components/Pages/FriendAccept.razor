@@ -1,0 +1,147 @@
+@page "/friends/accept/{Token}"
+@using LearnStack.Services
+@using System.Security.Claims
+@attribute [Authorize]
+@inject IFriendshipService FriendshipService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+@inject ISnackbar Snackbar
+
+<PageTitle>@L["AcceptInvitation"] - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="py-8">
+    @if (isLoading)
+    {
+        <MudStack AlignItems="AlignItems.Center" Class="py-8">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" />
+        </MudStack>
+    }
+    else
+    {
+        <MudPaper Elevation="0" Class="pa-8" Style="border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05); text-align: center;">
+            @if (invitation == null)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.LinkOff" Size="Size.Large" Style="font-size: 4rem; color: #cbd5e1;" />
+                <MudText Typo="Typo.h5" Class="mt-4" Style="font-weight: 700; color: #0f172a;">@L["InvitationInvalid"]</MudText>
+                <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">@errorMessage</MudText>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Href="/friends"
+                           Class="mt-6"
+                           Style="border-radius: 10px; font-weight: 600;">
+                    @L["BackToFriends"]
+                </MudButton>
+            }
+            else if (accepted)
+            {
+                <MudIcon Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Large" Style="font-size: 4rem; color: #10b981;" />
+                <MudText Typo="Typo.h5" Class="mt-4" Style="font-weight: 700; color: #0f172a;">@L["AcceptInvitation"]</MudText>
+                <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">
+                    @L["InvitationAccepted", invitation.Inviter?.UserName?.Split('@')[0] ?? L["UserFallback"].Value]
+                </MudText>
+                <MudButton Variant="Variant.Filled"
+                           Color="Color.Primary"
+                           Href="/friends"
+                           Class="mt-6"
+                           Style="border-radius: 10px; font-weight: 600;">
+                    @L["BackToFriends"]
+                </MudButton>
+            }
+            else
+            {
+                <div style="background: linear-gradient(135deg, #4f46e5, #818cf8); border-radius: 50%; width: 72px; height: 72px; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <MudIcon Icon="@Icons.Material.Filled.People" Style="color: white; font-size: 2rem;" />
+                </div>
+                <MudText Typo="Typo.h5" Class="mt-4" Style="font-weight: 700; color: #0f172a;">@L["AcceptFriendRequest"]</MudText>
+                <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">
+                    @L["YouAreInvitedBy", invitation.Inviter?.UserName?.Split('@')[0] ?? L["UserFallback"].Value]
+                </MudText>
+                <MudStack Row="true" Justify="Justify.Center" Spacing="3" Class="mt-6">
+                    <MudButton Variant="Variant.Outlined"
+                               Href="/friends"
+                               Style="border-radius: 10px; font-weight: 600;">
+                        @L["Cancel"]
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Material.Filled.PersonAdd"
+                               OnClick="AcceptAsync"
+                               Disabled="@isAccepting"
+                               Style="border-radius: 10px; font-weight: 600;">
+                        @if (isAccepting)
+                        {
+                            <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+                        }
+                        @L["AcceptInvitation"]
+                    </MudButton>
+                </MudStack>
+            }
+        </MudPaper>
+    }
+</MudContainer>
+
+@code {
+    [Parameter]
+    public string Token { get; set; } = string.Empty;
+
+    private LearnStack.Data.Models.FriendInvitation? invitation;
+    private bool isLoading = true;
+    private bool isAccepting = false;
+    private bool accepted = false;
+    private string userId = string.Empty;
+    private string errorMessage = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+
+        invitation = await FriendshipService.GetInvitationByTokenAsync(Token);
+
+        if (invitation == null)
+        {
+            errorMessage = L["InvitationNotFound"].Value;
+        }
+        else if (invitation.IsUsed)
+        {
+            errorMessage = L["InvitationAlreadyUsed"].Value;
+            invitation = null;
+        }
+        else if (invitation.ExpiresAt < DateTime.UtcNow)
+        {
+            errorMessage = L["InvitationExpired"].Value;
+            invitation = null;
+        }
+        else if (invitation.InviterId == userId)
+        {
+            errorMessage = L["CannotInviteYourself"].Value;
+            invitation = null;
+        }
+        else if (await FriendshipService.IsFriendAsync(userId, invitation.InviterId))
+        {
+            errorMessage = L["AlreadyFriends"].Value;
+            invitation = null;
+        }
+
+        isLoading = false;
+    }
+
+    private async Task AcceptAsync()
+    {
+        isAccepting = true;
+
+        var result = await FriendshipService.AcceptInvitationAsync(Token, userId);
+        if (result != null)
+        {
+            accepted = true;
+            // Re-load invitation for displaying inviter name in success message
+            invitation = result;
+        }
+        else
+        {
+            Snackbar.Add(L["InvitationInvalid"].Value, Severity.Error);
+        }
+
+        isAccepting = false;
+    }
+}

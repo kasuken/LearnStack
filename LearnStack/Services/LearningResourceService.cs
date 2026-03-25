@@ -6,16 +6,17 @@ namespace LearnStack.Services;
 
 public class LearningResourceService : ILearningResourceService
 {
-    private readonly ApplicationDbContext _context;
+    private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
 
-    public LearningResourceService(ApplicationDbContext context)
+    public LearningResourceService(IDbContextFactory<ApplicationDbContext> contextFactory)
     {
-        _context = context;
+        _contextFactory = contextFactory;
     }
 
     public async Task<List<LearningResource>> GetAllAsync(string userId)
     {
-        return await _context.LearningResources
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.LearningResources
             .Where(lr => lr.UserId == userId)
             .OrderByDescending(lr => lr.Priority)
             .ThenBy(lr => lr.CustomOrder)
@@ -25,18 +26,21 @@ public class LearningResourceService : ILearningResourceService
 
     public async Task<bool> ToggleArchiveAsync(int id, string userId)
     {
-        var resource = await GetByIdAsync(id, userId);
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var resource = await context.LearningResources
+            .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
         if (resource == null) return false;
 
         resource.IsArchived = !resource.IsArchived;
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return resource.IsArchived;
     }
 
     public async Task ArchiveStaleResourcesAsync(string userId)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         var cutoff = DateTime.UtcNow.AddDays(-180);
-        var staleResources = await _context.LearningResources
+        var staleResources = await context.LearningResources
             .Where(lr => lr.UserId == userId
                       && lr.Status == ContentStatus.ToLearn
                       && !lr.IsArchived
@@ -50,12 +54,13 @@ public class LearningResourceService : ILearningResourceService
             resource.IsArchived = true;
         }
 
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
     public async Task<List<LearningResource>> GetByStatusAsync(string userId, ContentStatus status)
     {
-        return await _context.LearningResources
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.LearningResources
             .Where(lr => lr.UserId == userId && lr.Status == status)
             .OrderByDescending(lr => lr.Priority)
             .ThenBy(lr => lr.CustomOrder)
@@ -65,19 +70,21 @@ public class LearningResourceService : ILearningResourceService
 
     public async Task<LearningResource?> GetByIdAsync(int id, string userId)
     {
-        return await _context.LearningResources
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.LearningResources
             .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
     }
 
     public async Task<bool> UrlExistsAsync(string userId, string url, int? excludeResourceId = null)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         var normalizedUrl = NormalizeUrl(url);
         if (string.IsNullOrWhiteSpace(normalizedUrl))
         {
             return false;
         }
 
-        var query = _context.LearningResources
+        var query = context.LearningResources
             .Where(lr => lr.UserId == userId);
 
         if (excludeResourceId.HasValue)
@@ -95,15 +102,18 @@ public class LearningResourceService : ILearningResourceService
 
     public async Task<LearningResource> CreateAsync(LearningResource resource)
     {
-        _context.LearningResources.Add(resource);
-        await _context.SaveChangesAsync();
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        context.LearningResources.Add(resource);
+        await context.SaveChangesAsync();
         return resource;
     }
 
     public async Task<LearningResource?> UpdateAsync(LearningResource resource, string userId)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         // Verify ownership before updating
-        var existing = await GetByIdAsync(resource.Id, userId);
+        var existing = await context.LearningResources
+            .FirstOrDefaultAsync(lr => lr.Id == resource.Id && lr.UserId == userId);
         if (existing == null) return null;
         
         existing.Url = resource.Url;
@@ -119,25 +129,29 @@ public class LearningResourceService : ILearningResourceService
         existing.CustomOrder = resource.CustomOrder;
         existing.DateCompleted = resource.DateCompleted;
         existing.IsArchived = resource.IsArchived;
+        existing.IsPublic = resource.IsPublic;
         
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
         return existing;
     }
 
     public async Task DeleteAsync(int id, string userId)
     {
-        var resource = await GetByIdAsync(id, userId);
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var resource = await context.LearningResources
+            .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
         if (resource != null)
         {
-            _context.LearningResources.Remove(resource);
-            await _context.SaveChangesAsync();
+            context.LearningResources.Remove(resource);
+            await context.SaveChangesAsync();
         }
     }
 
     public async Task<List<LearningResource>> SearchAsync(string userId, string searchTerm)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         var term = searchTerm.ToLower();
-        return await _context.LearningResources
+        return await context.LearningResources
             .Where(lr => lr.UserId == userId &&
                         (lr.Title.ToLower().Contains(term) ||
                          (lr.Description != null && lr.Description.ToLower().Contains(term)) ||
@@ -151,19 +165,43 @@ public class LearningResourceService : ILearningResourceService
 
     public async Task UpdateOrderAsync(string userId, List<int> orderedIds)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
         for (int i = 0; i < orderedIds.Count; i++)
         {
-            var resource = await GetByIdAsync(orderedIds[i], userId);
+            var resource = await context.LearningResources
+                .FirstOrDefaultAsync(lr => lr.Id == orderedIds[i] && lr.UserId == userId);
             if (resource != null)
             {
                 resource.CustomOrder = i;
             }
         }
-        await _context.SaveChangesAsync();
+        await context.SaveChangesAsync();
     }
 
-    private static string NormalizeUrl(string url)
+    public async Task<bool> TogglePublicAsync(int id, string userId)
     {
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        var resource = await context.LearningResources
+            .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
+        if (resource == null) return false;
+
+        resource.IsPublic = !resource.IsPublic;
+        await context.SaveChangesAsync();
+        return resource.IsPublic;
+    }
+
+    public async Task<List<LearningResource>> GetPublicResourcesByUserIdAsync(string ownerUserId)
+    {
+        await using var context = await _contextFactory.CreateDbContextAsync();
+        return await context.LearningResources
+            .Where(lr => lr.UserId == ownerUserId && lr.IsPublic && !lr.IsArchived)
+            .OrderByDescending(lr => lr.Priority)
+            .ThenBy(lr => lr.CustomOrder)
+            .ThenByDescending(lr => lr.DateAdded)
+            .ToListAsync();
+    }
+
+    private static string NormalizeUrl(string url)    {
         if (string.IsNullOrWhiteSpace(url))
         {
             return string.Empty;

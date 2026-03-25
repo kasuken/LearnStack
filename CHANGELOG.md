@@ -4,6 +4,32 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.0.0] - 2026-03-25
+
+### Added
+- Friends management system
+  - `FriendInvitation` and `LearnerFriendship` data models
+  - `Friends` page with UI for viewing and managing friend connections
+  - Invite link generation and acceptance flow via the new `FriendAccept` page
+  - `FriendResources` page for browsing a friend's public learning resources
+  - `IsPublic` property on `LearningResource` to optionally share resources with friends
+  - Database migration (`AddFriendsAndPublicResources`) to support friend invitations and friendships
+  - `FriendshipService` and `IFriendshipService` for all friendship operations registered in DI
+  - Localized friendship strings added to all supported language resource files (en, de, es, fr, it)
+
+### Changed
+- All data services (`ContentIdeaService`, `FriendshipService`, `LearningResourceService`, `SharedResourceGroupService`) refactored to use `IDbContextFactory<ApplicationDbContext>` for better database connection lifecycle management and resource disposal
+
+---
+
+## [0.1.3] - 2026-03-24
+
+### Fixed
+- Unreadable text in data grids and dropdowns in dark mode (`ContentIdeas`, `Resources` pages, `ResourceCard`, `ResourceForm`)
+- Dark mode CSS variables properly mapped to MudBlazor palette tokens; dark class toggling corrected; hardcoded colors replaced with theme-aware values
+
+---
+
 ## [0.1.2] - 2026-03-24
 
 ### Added

@@ -106,6 +106,14 @@
                          Margin="Margin.Dense"
                          Lines="5"
                          HelperText="@(L["NotesHelperText"])" />
+
+            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="mt-1">
+                <MudSwitch @bind-Value="model.IsPublic" Color="Color.Primary" />
+                <MudStack Spacing="0">
+                    <MudText Typo="Typo.body2" Style="font-weight: 600; color: #0f172a;">@L["MakePublic"]</MudText>
+                    <MudText Typo="Typo.caption" Style="color: #64748b;">@L["MakePublicHelperText"]</MudText>
+                </MudStack>
+            </MudStack>
         </MudForm>
     </DialogContent>
     <DialogActions>
@@ -149,7 +157,8 @@
                 Priority = Resource.Priority,
                 Tags = Resource.Tags,
                 Notes = Resource.Notes,
-                ThumbnailImageData = Resource.ThumbnailImage
+                ThumbnailImageData = Resource.ThumbnailImage,
+                IsPublic = Resource.IsPublic
             };
             
             // Create preview if image exists
@@ -263,8 +272,9 @@
             Resource.Tags = model.Tags;
             Resource.Notes = model.Notes;
             Resource.ThumbnailImage = model.ThumbnailImageData;
+            Resource.IsPublic = model.IsPublic;
 
-            if (model.Status == ContentStatus.Completed && Resource.DateCompleted == null)
+            if (model.Status == ContentStatus.Completed&& Resource.DateCompleted == null)
             {
                 Resource.DateCompleted = DateTime.UtcNow;
             }
@@ -303,6 +313,7 @@
                 Tags = model.Tags,
                 Notes = model.Notes,
                 ThumbnailImage = model.ThumbnailImageData,
+                IsPublic = model.IsPublic,
                 UserId = UserId,
                 DateAdded = DateTime.UtcNow,
                 DateCompleted = model.Status == ContentStatus.Completed ? DateTime.UtcNow : null
@@ -326,6 +337,7 @@
         public string? Notes { get; set; }
         public byte[]? ThumbnailImageData { get; set; }
         public string? ThumbnailPreview { get; set; }
+        public bool IsPublic { get; set; }
     }
 }
 
