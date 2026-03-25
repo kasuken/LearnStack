@@ -33,10 +33,10 @@
 
             @if (!string.IsNullOrEmpty(model.ThumbnailPreview))
             {
-                <MudPaper Class="pa-2 mb-2" Elevation="0" Style="border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;">
+                <MudPaper Class="pa-2 mb-2" Elevation="0" Style="border: 1px solid var(--mud-palette-lines-default); border-radius: 12px; background: var(--mud-palette-background);">
                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
                         <MudImage Src="@model.ThumbnailPreview" Alt="@L["ThumbnailAlt"]" Height="60" ObjectFit="ObjectFit.Cover" Style="border-radius: 8px; width: 100px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);" />
-                        <MudText Typo="Typo.caption" Style="color: #059669; font-weight: 600;">@L["SaveResources"]</MudText>
+                        <MudText Typo="Typo.caption" Style="color: var(--mud-palette-success); font-weight: 600;">@L["SaveResources"]</MudText>
                         <MudSpacer />
                         <MudIconButton Icon="@Icons.Material.Filled.Close" Size="Size.Small" OnClick="ClearThumbnail" Style="color: #94a3b8;" />
                     </MudStack>
