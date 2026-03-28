@@ -78,6 +78,9 @@ Thumbs.db
 ehthumbs.db
 Desktop.ini
 
+# Admin application (local management tool)
+LearnStack.Admin/
+
 # Publish folder
 publish/
 *.pubxml.user

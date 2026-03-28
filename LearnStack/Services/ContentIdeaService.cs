@@ -1,4 +1,4 @@
-﻿﻿using LearnStack.Data;
+﻿using LearnStack.Data;
 using LearnStack.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -127,16 +127,21 @@ public class ContentIdeaService : IContentIdeaService
     public async Task UpdateOrderAsync(string userId, List<int> orderedIds)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
+
+        var ideasById = await context.ContentIdeas
+            .Where(ci => ci.UserId == userId && orderedIds.Contains(ci.Id))
+            .ToDictionaryAsync(ci => ci.Id);
+
         for (int i = 0; i < orderedIds.Count; i++)
         {
-            var idea = await context.ContentIdeas
-                .FirstOrDefaultAsync(ci => ci.Id == orderedIds[i] && ci.UserId == userId);
-            if (idea != null)
+            if (ideasById.TryGetValue(orderedIds[i], out var idea))
             {
                 idea.CustomOrder = i;
             }
         }
+
         await context.SaveChangesAsync();
     }
 }
+
 

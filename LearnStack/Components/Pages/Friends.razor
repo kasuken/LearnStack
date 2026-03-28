@@ -87,7 +87,7 @@
                             <MudIconButton Icon="@Icons.Material.Filled.PersonRemove"
                                            Size="Size.Small"
                                            Style="color: #ef4444;"
-                                           Title="@L["RemoveFriend"]"
+                                           aria-label="@L["RemoveFriend"]"
                                            OnClick="@(() => RemoveFriend(friend))" />
                         </MudCardActions>
                     </MudCard>
@@ -205,3 +205,4 @@
         return name.Length >= 2 ? name[..2].ToUpper() : name.ToUpper();
     }
 }
+

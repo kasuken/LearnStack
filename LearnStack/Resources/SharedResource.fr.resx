@@ -1298,11 +1298,7 @@
   </data>
   <data name="InviteExpiry" xml:space="preserve">
     <value>Ce lien expire dans 7 jours et ne peut être utilisé qu'une seule fois</value>
-  </data>
-  <data name="CopyLink" xml:space="preserve">
-    <value>Copier le lien</value>
-  </data>
-  <data name="JoinedOn" xml:space="preserve">
+  </data><data name="JoinedOn" xml:space="preserve">
     <value>Connectés depuis le {0}</value>
   </data>
   <data name="ViewPublicResources" xml:space="preserve">

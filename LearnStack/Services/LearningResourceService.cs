@@ -1,4 +1,4 @@
-﻿﻿using LearnStack.Data;
+﻿using LearnStack.Data;
 using LearnStack.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -166,15 +166,19 @@ public class LearningResourceService : ILearningResourceService
     public async Task UpdateOrderAsync(string userId, List<int> orderedIds)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
+
+        var resourcesById = await context.LearningResources
+            .Where(lr => lr.UserId == userId && orderedIds.Contains(lr.Id))
+            .ToDictionaryAsync(lr => lr.Id);
+
         for (int i = 0; i < orderedIds.Count; i++)
         {
-            var resource = await context.LearningResources
-                .FirstOrDefaultAsync(lr => lr.Id == orderedIds[i] && lr.UserId == userId);
-            if (resource != null)
+            if (resourcesById.TryGetValue(orderedIds[i], out var resource))
             {
                 resource.CustomOrder = i;
             }
         }
+
         await context.SaveChangesAsync();
     }
 
@@ -223,4 +227,5 @@ public class LearningResourceService : ILearningResourceService
         return trimmedUrl.TrimEnd('/').ToLowerInvariant();
     }
 }
+
 

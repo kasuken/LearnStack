@@ -1,4 +1,4 @@
-﻿@using LearnStack.Services
+@using LearnStack.Services
 @inject ILearningResourceService ResourceService
 
 <MudCard Elevation="0" Class="resource-card d-flex flex-column" Style="height: 100%; border-radius: 16px; overflow: hidden;">
@@ -8,9 +8,7 @@
     }
     else
     {
-        <MudCardMedia Height="180" Style="background: var(--mud-palette-background); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--mud-palette-lines-default);">
-            <MudIcon Icon="@Icons.Material.Filled.Image" Size="Size.Large" Style="font-size: 4rem; color: var(--mud-palette-text-disabled);" />
-        </MudCardMedia>
+        <div style="height: 180px; background: var(--mud-palette-background); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--mud-palette-lines-default);">`r`n            <MudIcon Icon="@Icons.Material.Filled.Image" Size="Size.Large" Style="font-size: 4rem; color: var(--mud-palette-text-disabled);" />`r`n        </div>
     }
     <MudCardHeader>
         <CardHeaderContent>
@@ -82,7 +80,7 @@
         <MudSpacer />
         <MudIconButton Icon="@(Resource.IsArchived ? Icons.Material.Filled.Unarchive : Icons.Material.Filled.Archive)" 
                       Size="Size.Small" 
-                      Title="@(Resource.IsArchived ? L["Inactive"] : L["Active"])" 
+                      aria-label="@(Resource.IsArchived ? L["Inactive"] : L["Active"])" 
                       Style="color: #94a3b8;" 
                       OnClick="ToggleArchive" />
         <MudMenu Icon="@Icons.Material.Filled.MoreVert" Size="Size.Small" Style="color: #64748b;" PopoverClass="rounded-xl shadow-lg border border-slate-100">
@@ -190,6 +188,9 @@
         await OnArchiveToggle.InvokeAsync();
     }
 }
+
+
+
 
 
 

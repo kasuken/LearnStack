@@ -1,4 +1,6 @@
-﻿using HtmlAgilityPack;
+using HtmlAgilityPack;
+using System.Net;
+using System.Net.Sockets;
 using System.Text.Json;
 
 namespace LearnStack.Services;
@@ -12,9 +14,9 @@ public class OpenGraphService : IOpenGraphService
     {
         _httpClient = httpClient;
         _logger = logger;
-        
+
         // Set a user agent to avoid being blocked by some websites
-        _httpClient.DefaultRequestHeaders.Add("User-Agent", 
+        _httpClient.DefaultRequestHeaders.Add("User-Agent",
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
     }
 
@@ -25,6 +27,12 @@ public class OpenGraphService : IOpenGraphService
             if (string.IsNullOrWhiteSpace(url) || !Uri.TryCreate(url, UriKind.Absolute, out var uri))
             {
                 _logger.LogWarning("Invalid URL provided: {Url}", url);
+                return null;
+            }
+
+            if (!IsAllowedScheme(uri) || await IsPrivateOrLoopbackAddressAsync(uri))
+            {
+                _logger.LogWarning("Blocked metadata URL: {Url}", url);
                 return null;
             }
 
@@ -39,8 +47,8 @@ public class OpenGraphService : IOpenGraphService
                 }
             }
 
-            var response = await _httpClient.GetAsync(url);
-            
+            var response = await _httpClient.GetAsync(uri);
+
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning("Failed to fetch URL: {Url}, Status: {Status}", url, response.StatusCode);
@@ -51,25 +59,21 @@ public class OpenGraphService : IOpenGraphService
             var htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(html);
 
-            var ogData = new OpenGraphData();
+            var ogData = new OpenGraphData
+            {
+                Title = GetMetaContent(htmlDoc, "og:title")
+                        ?? GetMetaContent(htmlDoc, "twitter:title")
+                        ?? htmlDoc.DocumentNode.SelectSingleNode("//title")?.InnerText?.Trim(),
+                Description = GetMetaContent(htmlDoc, "og:description")
+                              ?? GetMetaContent(htmlDoc, "twitter:description")
+                              ?? GetMetaContent(htmlDoc, "description"),
+                ImageUrl = GetMetaContent(htmlDoc, "og:image")
+                           ?? GetMetaContent(htmlDoc, "twitter:image")
+                           ?? GetMetaContent(htmlDoc, "twitter:image:src"),
+                SiteName = GetMetaContent(htmlDoc, "og:site_name"),
+                Type = GetMetaContent(htmlDoc, "og:type")
+            };
 
-            // Extract OpenGraph meta tags
-            ogData.Title = GetMetaContent(htmlDoc, "og:title") 
-                          ?? GetMetaContent(htmlDoc, "twitter:title")
-                          ?? htmlDoc.DocumentNode.SelectSingleNode("//title")?.InnerText?.Trim();
-
-            ogData.Description = GetMetaContent(htmlDoc, "og:description") 
-                                ?? GetMetaContent(htmlDoc, "twitter:description")
-                                ?? GetMetaContent(htmlDoc, "description");
-
-            ogData.ImageUrl = GetMetaContent(htmlDoc, "og:image") 
-                             ?? GetMetaContent(htmlDoc, "twitter:image")
-                             ?? GetMetaContent(htmlDoc, "twitter:image:src");
-
-            ogData.SiteName = GetMetaContent(htmlDoc, "og:site_name");
-            ogData.Type = GetMetaContent(htmlDoc, "og:type");
-
-            // Try to download the image if an image URL is found
             if (!string.IsNullOrWhiteSpace(ogData.ImageUrl))
             {
                 ogData.ImageData = await DownloadImageAsync(ogData.ImageUrl);
@@ -143,16 +147,68 @@ public class OpenGraphService : IOpenGraphService
                || host == "youtu.be";
     }
 
+    private async Task<bool> IsPrivateOrLoopbackAddressAsync(Uri uri)
+    {
+        if (uri.IsLoopback)
+        {
+            return true;
+        }
+
+        try
+        {
+            var addresses = await Dns.GetHostAddressesAsync(uri.DnsSafeHost);
+            return addresses.Any(IsPrivateOrLoopbackIpAddress);
+        }
+        catch (SocketException ex)
+        {
+            _logger.LogWarning(ex, "Failed to resolve host for URL: {Host}", uri.DnsSafeHost);
+            return true;
+        }
+    }
+
+    private static bool IsAllowedScheme(Uri uri)
+        => uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps;
+
+    private static bool IsPrivateOrLoopbackIpAddress(IPAddress address)
+    {
+        if (IPAddress.IsLoopback(address))
+        {
+            return true;
+        }
+
+        if (address.IsIPv4MappedToIPv6)
+        {
+            return IsPrivateOrLoopbackIpAddress(address.MapToIPv4());
+        }
+
+        if (address.AddressFamily == AddressFamily.InterNetwork)
+        {
+            var bytes = address.GetAddressBytes();
+            return bytes[0] == 10
+                || (bytes[0] == 172 && bytes[1] >= 16 && bytes[1] <= 31)
+                || (bytes[0] == 192 && bytes[1] == 168)
+                || (bytes[0] == 169 && bytes[1] == 254);
+        }
+
+        if (address.AddressFamily == AddressFamily.InterNetworkV6)
+        {
+            return address.IsIPv6LinkLocal
+                || address.IsIPv6SiteLocal
+                || address.IsIPv6Multicast
+                || address.IsIPv6UniqueLocal;
+        }
+
+        return false;
+    }
+
     private string? GetMetaContent(HtmlDocument doc, string property)
     {
-        // Try og: property attribute
         var node = doc.DocumentNode.SelectSingleNode($"//meta[@property='{property}']");
         if (node != null)
         {
             return node.GetAttributeValue("content", "")?.Trim();
         }
 
-        // Try name attribute
         node = doc.DocumentNode.SelectSingleNode($"//meta[@name='{property}']");
         if (node != null)
         {
@@ -166,18 +222,23 @@ public class OpenGraphService : IOpenGraphService
     {
         try
         {
-            // Make sure the image URL is absolute
             if (!Uri.TryCreate(imageUrl, UriKind.Absolute, out var uri))
             {
                 _logger.LogWarning("Invalid image URL: {ImageUrl}", imageUrl);
                 return null;
             }
 
+            if (!IsAllowedScheme(uri) || await IsPrivateOrLoopbackAddressAsync(uri))
+            {
+                _logger.LogWarning("Blocked image URL: {ImageUrl}", imageUrl);
+                return null;
+            }
+
             var response = await _httpClient.GetAsync(uri);
-            
+
             if (!response.IsSuccessStatusCode)
             {
-                _logger.LogWarning("Failed to download image: {ImageUrl}, Status: {Status}", 
+                _logger.LogWarning("Failed to download image: {ImageUrl}, Status: {Status}",
                     imageUrl, response.StatusCode);
                 return null;
             }
@@ -185,14 +246,13 @@ public class OpenGraphService : IOpenGraphService
             var contentType = response.Content.Headers.ContentType?.MediaType;
             if (contentType == null || !contentType.StartsWith("image/", StringComparison.OrdinalIgnoreCase))
             {
-                _logger.LogWarning("Downloaded content is not an image: {ImageUrl}, Content-Type: {ContentType}", 
+                _logger.LogWarning("Downloaded content is not an image: {ImageUrl}, Content-Type: {ContentType}",
                     imageUrl, contentType);
                 return null;
             }
 
             var imageData = await response.Content.ReadAsByteArrayAsync();
-            
-            // Limit image size to 5MB
+
             if (imageData.Length > 5 * 1024 * 1024)
             {
                 _logger.LogWarning("Image too large: {ImageUrl}, Size: {Size}", imageUrl, imageData.Length);
@@ -208,4 +268,3 @@ public class OpenGraphService : IOpenGraphService
         }
     }
 }
-
