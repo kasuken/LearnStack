@@ -4,6 +4,23 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.2.0] - 2026-03-28
+
+### Added
+- Aria-labels on interactive buttons across `Login`, `Register`, `ContentIdeas`, `Friends`, `Resources`, and `ResourceCard` components for improved screen-reader accessibility
+- Authentication middleware registered in `Program.cs`
+
+### Changed
+- `OpenGraphService` refactored with stricter URL validation and structured logging
+- `ContentIdeaService` and `LearningResourceService` cleaned up for consistency
+- Resource files (`SharedResource.*.resx`) updated and reorganized
+- `.gitignore` cleaned up
+
+### Fixed
+- `InputModel` properties in `Login` and `Register` pages now initialized to avoid potential null-reference exceptions
+
+---
+
 ## [1.1.0] - 2026-03-25
 
 ### Added
