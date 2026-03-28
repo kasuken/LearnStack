@@ -1,4 +1,4 @@
-﻿@page "/Account/Login"
+@page "/Account/Login"
 @layout LearnStack.Components.Account.Shared.AccountLayout
 
 @using System.ComponentModel.DataAnnotations
@@ -301,7 +301,7 @@
 
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    [SupplyParameterFromForm] private InputModel Input { get; set; } = new();
+    [SupplyParameterFromForm] private InputModel Input { get; set; } = default!;
 
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
 
@@ -383,3 +383,4 @@
     }
 
 }
+

@@ -1,4 +1,4 @@
-﻿@page "/resources"
+@page "/resources"
 @using LearnStack.Services
 @using System.Text
 @using System.Text.Json
@@ -127,11 +127,11 @@
                         <MudIconButton Icon="@Icons.Material.Filled.ViewList" 
                                       Color="@(viewMode == ViewMode.List ? Color.Primary : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.List; StateHasChanged(); })"
-                                      Title="@L["ListView"]" />
+                                      aria-label="@L["ListView"]" />
                         <MudIconButton Icon="@Icons.Material.Filled.TableChart" 
                                       Color="@(viewMode == ViewMode.DataGrid ? Color.Primary : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.DataGrid; StateHasChanged(); })"
-                                      Title="@L["TableView"]" />
+                                      aria-label="@L["TableView"]" />
                     </MudButtonGroup>
                     <MudButton Variant="Variant.Outlined"
                               EndIcon="@(showFilters ? Icons.Material.Filled.ExpandLess : Icons.Material.Filled.ExpandMore)"
@@ -340,12 +340,12 @@
                                     <MudIconButton Icon="@(context.IsArchived ? Icons.Material.Filled.Unarchive : Icons.Material.Filled.Archive)" 
                                                   Size="Size.Small" 
                                                   Style="color: #94a3b8;" 
-                                                  Title="@(context.IsArchived ? L["Unarchive"].Value : L["Archive"].Value)" 
+                                                  aria-label="@(context.IsArchived ? L["Unarchive"].Value : L["Archive"].Value)" 
                                                   OnClick="@(() => ToggleArchive(context))" />
                                     <MudIconButton Icon="@(context.IsPublic ? Icons.Material.Filled.Public : Icons.Material.Filled.PublicOff)"
                                                   Size="Size.Small"
                                                   Style="@(context.IsPublic ? "color: #10b981;" : "color: #94a3b8;")"
-                                                  Title="@(context.IsPublic ? L["MakePrivate"].Value : L["MakePublic"].Value)"
+                                                  aria-label="@(context.IsPublic ? L["MakePrivate"].Value : L["MakePublic"].Value)"
                                                   OnClick="@(() => TogglePublic(context))" />
                                 </MudStack>
                             </MudStack>
@@ -372,7 +372,7 @@
         <MudDataGrid T="LearningResource" Items="@pagedResources" Striped="true" Dense="false" Hover="true" ReadOnly="false"
                      HeaderClass="mud-theme-primary">
             <Columns>
-                <PropertyColumn Property="x => x.Title" Title="@L["Title"]">
+                <PropertyColumn Property="x => x.Title" aria-label="@L["Title"]">
                     <CellTemplate>
                         <MudStack Spacing="0">
                             <MudText Typo="Typo.body2" Style="font-weight: 600; color: var(--mud-palette-text-primary);">@context.Item.Title</MudText>
@@ -382,28 +382,28 @@
                         </MudStack>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.ContentType" Title="@L["Type"]">
+                <PropertyColumn Property="x => x.ContentType" aria-label="@L["Type"]">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Class="@GetContentTypeChipClass(context.Item.ContentType)">
                             @GetContentTypeText(context.Item.ContentType)
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.Status" Title="@L["Status"]">
+                <PropertyColumn Property="x => x.Status" aria-label="@L["Status"]">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Class="@GetStatusChipClass(context.Item.Status)">
                             @GetStatusText(context.Item.Status)
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.Priority" Title="@L["Priority"]">
+                <PropertyColumn Property="x => x.Priority" aria-label="@L["Priority"]">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Class="@GetPriorityChipClass(context.Item.Priority)">
                             @GetPriorityText(context.Item.Priority)
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.DateAdded" Title="@L["DateAdded"]">
+                <PropertyColumn Property="x => x.DateAdded" aria-label="@L["DateAdded"]">
                     <CellTemplate>
                         <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@GetRelativeDate(context.Item.DateAdded)</MudText>
                     </CellTemplate>
@@ -417,16 +417,16 @@
                             {
                                 <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color: #10b981;" 
                                               OnClick="@(() => UpdateStatus(context.Item, ContentStatus.Completed))" 
-                                              Title="@L["MarkAsComplete"]" />
+                                              aria-label="@L["MarkAsComplete"]" />
                             }
                             <MudIconButton Icon="@(context.Item.IsArchived ? Icons.Material.Filled.Unarchive : Icons.Material.Filled.Archive)" 
                                           Size="Size.Small" Style="color: #94a3b8;" 
-                                          Title="@(context.Item.IsArchived ? L["Unarchive"].Value : L["Archive"].Value)" 
+                                          aria-label="@(context.Item.IsArchived ? L["Unarchive"].Value : L["Archive"].Value)" 
                                           OnClick="@(() => ToggleArchive(context.Item))" />
                             <MudIconButton Icon="@(context.Item.IsPublic ? Icons.Material.Filled.Public : Icons.Material.Filled.PublicOff)"
                                           Size="Size.Small"
                                           Style="@(context.Item.IsPublic ? "color: #10b981;" : "color: #94a3b8;")"
-                                          Title="@(context.Item.IsPublic ? L["MakePrivate"].Value : L["MakePublic"].Value)"
+                                          aria-label="@(context.Item.IsPublic ? L["MakePrivate"].Value : L["MakePublic"].Value)"
                                           OnClick="@(() => TogglePublic(context.Item))" />
                         </MudStack>
                     </CellTemplate>
@@ -964,3 +964,8 @@
         await JSRuntime.InvokeVoidAsync("downloadFile", fileName, base64, contentType);
     }
 }
+
+
+
+
+

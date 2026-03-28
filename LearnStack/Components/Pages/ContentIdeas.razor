@@ -102,11 +102,11 @@
                         <MudIconButton Icon="@Icons.Material.Filled.GridView" 
                                       Color="@(viewMode == ViewMode.Grid ? Color.Warning : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.Grid; StateHasChanged(); })"
-                                      Title="@(L["GridView"])" />
+                                      aria-label="@(L["GridView"])" />
                         <MudIconButton Icon="@Icons.Material.Filled.TableChart" 
                                       Color="@(viewMode == ViewMode.DataGrid ? Color.Warning : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.DataGrid; StateHasChanged(); })"
-                                      Title="@(L["TableView"])" />
+                                      aria-label="@(L["TableView"])" />
                     </MudButtonGroup>
                     <MudSelect @bind-Value="filterStatus"
                               @bind-Value:after="OnFilterChanged"
@@ -283,33 +283,33 @@
         <MudPaper Elevation="0" Style="border-radius: 16px; overflow: hidden; border: 1px solid rgba(245, 158, 11, 0.1);">
         <MudDataGrid T="ContentIdea" Items="@pagedIdeas" Striped="true" Dense="false" Hover="true" ReadOnly="false">
             <Columns>
-                <PropertyColumn Property="x => x.Title" Title="@(L["Title"])">
+                <PropertyColumn Property="x => x.Title" aria-label="@(L["Title"])">
                     <CellTemplate>
                         <MudText Typo="Typo.body2" Style="font-weight: 600; color: var(--mud-palette-text-primary);">@context.Item.Title</MudText>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.ContentType" Title="@(L["Type"])">
+                <PropertyColumn Property="x => x.ContentType" aria-label="@(L["Type"])">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Class="@GetContentTypeChipClass(context.Item.ContentType)">
                             @context.Item.ContentType
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.Status" Title="@(L["Status"])">
+                <PropertyColumn Property="x => x.Status" aria-label="@(L["Status"])">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Class="@GetStatusChipClass(context.Item.Status)">
                             @context.Item.Status
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.Priority" Title="@(L["Priority"])">
+                <PropertyColumn Property="x => x.Priority" aria-label="@(L["Priority"])">
                     <CellTemplate>
                         <MudChip T="string" Size="Size.Small" Class="@GetPriorityChipClass(context.Item.Priority)">
                             @context.Item.Priority
                         </MudChip>
                     </CellTemplate>
                 </PropertyColumn>
-                <PropertyColumn Property="x => x.DateCreated" Title="@(L["DateCreated"])">
+                <PropertyColumn Property="x => x.DateCreated" aria-label="@(L["DateCreated"])">
                     <CellTemplate>
                         <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@GetRelativeDate(context.Item.DateCreated)</MudText>
                     </CellTemplate>
@@ -328,7 +328,7 @@
                             {
                                 <MudIconButton Icon="@Icons.Material.Filled.CheckCircle" Size="Size.Small" Style="color: #10b981;" 
                                               OnClick="@(() => UpdateStatus(context.Item, IdeaStatus.Published))" 
-                                              Title="@(L["MarkAsPublished"])" />
+                                              aria-label="@(L["MarkAsPublished"])" />
                             }
                         </MudStack>
                     </CellTemplate>
@@ -673,4 +673,9 @@
         _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
     };
 }
+
+
+
+
+
 

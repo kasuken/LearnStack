@@ -113,6 +113,7 @@ app.UseHttpsRedirection();
 app.UseRequestLocalization();
 
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 
