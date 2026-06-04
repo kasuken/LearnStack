@@ -15,7 +15,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="10.0.3" />
         <PackageReference Include="MudBlazor" Version="8.15.0" />
-        <PackageReference Include="Stripe.net" Version="49.3.0" />
+        <PackageReference Include="Stripe.net" Version="50.0.0" />
     </ItemGroup>
 
 </Project>
