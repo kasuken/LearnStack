@@ -2,12 +2,15 @@
 @using LearnStack.Components.Shared
 @using Microsoft.AspNetCore.Identity
 @using LearnStack.Data
+@using LearnStack.Options
+@using Microsoft.Extensions.Options
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject IDialogService DialogService
 @inject UserManager<ApplicationUser> UserManager
+@inject IOptions<StripeOptions> StripeOptions
 
 @* Theme Provider with Custom Theme *@
 <MudThemeProvider @ref="_mudThemeProvider" Theme="@_theme" @bind-IsDarkMode="@_isDarkMode" />
@@ -101,6 +104,7 @@
     private MudThemeProvider _mudThemeProvider = null!;
     private bool _isDarkMode;
     private string _themePreference = "Auto";
+    private static readonly TimeSpan DonationPromptInterval = TimeSpan.FromDays(7);
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -130,6 +134,7 @@
 
             await CheckTosAcceptanceAsync();
             await CheckOnboardingAsync();
+            await CheckDonationPromptAsync();
         }
     }
 
@@ -295,6 +300,53 @@
                 CloseButton = false,
                 BackdropClick = false,
                 CloseOnEscapeKey = false
+            });
+
+        await dialog.Result;
+    }
+
+    private async Task CheckDonationPromptAsync()
+    {
+        if (!StripeOptions.Value.IsConfigured)
+            return;
+
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var claimsPrincipal = authState.User;
+        if (claimsPrincipal.Identity?.IsAuthenticated != true)
+            return;
+
+        var user = await UserManager.GetUserAsync(claimsPrincipal);
+        if (user is null || user.DonatedAtUtc.HasValue)
+            return;
+
+        if (user.LastDonationPromptAtUtc.HasValue &&
+            DateTime.UtcNow - user.LastDonationPromptAtUtc.Value < DonationPromptInterval)
+            return;
+
+        user.LastDonationPromptAtUtc = DateTime.UtcNow;
+        var updateResult = await UserManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+            return;
+
+        var donationMessages = new[]
+        {
+            L["DonationFunnyMessage1"].Value,
+            L["DonationFunnyMessage2"].Value,
+            L["DonationFunnyMessage3"].Value
+        };
+
+        var parameters = new DialogParameters<DonationDialog>
+        {
+            { x => x.Message, donationMessages[Random.Shared.Next(donationMessages.Length)] }
+        };
+
+        var dialog = await DialogService.ShowAsync<DonationDialog>(
+            L["DonationDialogTitle"],
+            parameters,
+            new DialogOptions
+            {
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true
             });
 
         await dialog.Result;

@@ -1,0 +1,53 @@
+@using MudBlazor
+@inject NavigationManager NavigationManager
+
+<MudDialog Options="@_dialogOptions">
+    <TitleContent>
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.VolunteerActivism" Color="Color.Primary" />
+            <MudText Typo="Typo.h6" Style="font-weight: 700;">@L["DonationDialogTitle"]</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="2">
+            <MudText Typo="Typo.h6">@Message</MudText>
+            <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">
+                @L["DonationDialogDescription"]
+            </MudText>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="NotNow" Variant="Variant.Text" Color="Color.Default">
+            @L["DonationMaybeLater"]
+        </MudButton>
+        <MudButton OnClick="DonateNow" Variant="Variant.Filled" Color="Color.Primary">
+            @L["DonationDonateNow"]
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+
+    private static readonly DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Small,
+        FullWidth = true,
+        CloseButton = true
+    };
+
+    private void DonateNow()
+    {
+        MudDialog.Close(DialogResult.Ok(true));
+        NavigationManager.NavigateTo("/donation/checkout", forceLoad: true);
+    }
+
+    private void NotNow()
+    {
+        MudDialog.Close(DialogResult.Cancel());
+    }
+}

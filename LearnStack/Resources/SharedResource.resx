@@ -1592,4 +1592,25 @@
   <data name="OnboardingGetStarted" xml:space="preserve">
     <value>Get Started</value>
   </data>
+  <data name="DonationDialogTitle" xml:space="preserve">
+    <value>Support LearnStack</value>
+  </data>
+  <data name="DonationDialogDescription" xml:space="preserve">
+    <value>LearnStack is free forever. If it helps you, you can support its development with a small Stripe donation.</value>
+  </data>
+  <data name="DonationDonateNow" xml:space="preserve">
+    <value>Donate now</value>
+  </data>
+  <data name="DonationMaybeLater" xml:space="preserve">
+    <value>Maybe later</value>
+  </data>
+  <data name="DonationFunnyMessage1" xml:space="preserve">
+    <value>Do you like LearnStack? Help us keep the coffee machine running ☕</value>
+  </data>
+  <data name="DonationFunnyMessage2" xml:space="preserve">
+    <value>Your brain gets smarter every day. Our servers get hungrier too 😄</value>
+  </data>
+  <data name="DonationFunnyMessage3" xml:space="preserve">
+    <value>If LearnStack saved you from tab chaos, you can throw us a tiny high-five 🚀</value>
+  </data>
 </root>

@@ -7,4 +7,6 @@ public class ApplicationUser : IdentityUser
 {
     public DateTime? TosAcceptedAt { get; set; }
     public DateTime? OnboardingCompletedAt { get; set; }
+    public DateTime? DonatedAtUtc { get; set; }
+    public DateTime? LastDonationPromptAtUtc { get; set; }
 }

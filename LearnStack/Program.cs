@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using LearnStack.Components;
 using LearnStack.Components.Account;
 using LearnStack.Data;
+using LearnStack.Options;
 using LearnStack.Services;
 using MudBlazor.Services;
 using System.Globalization;
@@ -36,6 +37,8 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 
 builder.Services.AddMudServices();
+builder.Services.AddOptions<StripeOptions>()
+    .BindConfiguration(StripeOptions.SectionName);
 
 builder.Services.AddCascadingAuthenticationState();
 builder.Services.AddScoped<IdentityRedirectManager>();
@@ -70,6 +73,7 @@ builder.Services.AddScoped<ILearningResourceService, LearningResourceService>();
 builder.Services.AddScoped<IContentIdeaService, ContentIdeaService>();
 builder.Services.AddScoped<ISharedResourceGroupService, SharedResourceGroupService>();
 builder.Services.AddScoped<IFriendshipService, FriendshipService>();
+builder.Services.AddScoped<StripeDonationService>();
 builder.Services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(30);
