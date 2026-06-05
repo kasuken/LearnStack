@@ -18,7 +18,7 @@ builder.Services.AddRazorComponents()
 builder.Services.AddLocalization();
 builder.Services.AddControllers();
 
-var supportedCultures = new[] { "en", "de", "es", "fr", "it" }
+var supportedCultures = new[] { "en", "de", "es", "fr", "it", "ro" }
     .Select(c => new CultureInfo(c))
     .ToList();
 

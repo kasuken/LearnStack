@@ -30,6 +30,9 @@
   <data name="LanguageFrench" xml:space="preserve">
     <value>Français</value>
   </data>
+  <data name="LanguageRomanian" xml:space="preserve">
+    <value>Roumain</value>
+  </data>
   <data name="ManageAccount" xml:space="preserve">
     <value>Gérer le compte</value>
   </data>

@@ -128,22 +128,24 @@
             await JSRuntime.InvokeVoidAsync("setDarkMode", _isDarkMode);
             StateHasChanged();
 
-            await CheckTosAcceptanceAsync();
-            await CheckOnboardingAsync();
+            if (await CheckTosAcceptanceAsync())
+            {
+                await CheckOnboardingAsync();
+            }
         }
     }
 
-    private async Task CheckTosAcceptanceAsync()
+    private async Task<bool> CheckTosAcceptanceAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var claimsPrincipal = authState.User;
 
         if (claimsPrincipal.Identity?.IsAuthenticated != true)
-            return;
+            return true;
 
         var user = await UserManager.GetUserAsync(claimsPrincipal);
         if (user is null || user.TosAcceptedAt.HasValue)
-            return;
+            return true;
 
         var dialog = await DialogService.ShowAsync<TosDialog>(
             L["TermsOfService"],
@@ -161,7 +163,10 @@
         if (result is { Canceled: true })
         {
             NavigationManager.NavigateTo("/welcome", forceLoad: true);
+            return false;
         }
+
+        return true;
     }
 
     private async Task OnSystemPreferenceChanged(bool newValue)

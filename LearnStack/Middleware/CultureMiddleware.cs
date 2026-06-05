@@ -9,7 +9,7 @@ public class CultureMiddleware
 
     private static readonly HashSet<string> SupportedCultures = new(StringComparer.OrdinalIgnoreCase)
     {
-        "en", "de", "es", "fr", "it"
+        "en", "de", "es", "fr", "it", "ro"
     };
 
     public CultureMiddleware(RequestDelegate next)

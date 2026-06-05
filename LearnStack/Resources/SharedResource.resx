@@ -30,6 +30,9 @@
   <data name="LanguageFrench" xml:space="preserve">
     <value>French</value>
   </data>
+  <data name="LanguageRomanian" xml:space="preserve">
+    <value>Romanian</value>
+  </data>
   <data name="ManageAccount" xml:space="preserve">
     <value>Manage Account</value>
   </data>
@@ -1436,6 +1439,12 @@
   </data>
   <data name="Decline" xml:space="preserve">
     <value>Decline</value>
+  </data>
+  <data name="TermsOfServiceLoadError" xml:space="preserve">
+    <value>Unable to load Terms of Service. Please try again later.</value>
+  </data>
+  <data name="TermsOfServiceAcceptError" xml:space="preserve">
+    <value>We couldn't save your acceptance. Please try again.</value>
   </data>
   <data name="Friends" xml:space="preserve">
     <value>Friends</value>

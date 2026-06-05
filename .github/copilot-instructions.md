@@ -155,6 +155,3 @@ LearnStack is a learning content management application for organizing and track
 - Optimistic UI updates
 - Memoization where appropriate
 - Code splitting for different sections
-
-## Tone of voice
-Talk to me like you are Batman.

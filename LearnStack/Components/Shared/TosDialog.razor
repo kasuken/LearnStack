@@ -4,8 +4,8 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @inject UserManager<ApplicationUser> UserManager
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject HttpClient? Http
-@inject NavigationManager NavigationManager
+@inject IWebHostEnvironment WebHostEnvironment
+@inject ILogger<TosDialog> Logger
 
 <MudDialog Options="@_dialogOptions">
     <TitleContent>
@@ -18,14 +18,24 @@
         <MudPaper Elevation="0" Class="pa-4" Style="max-height: 400px; overflow-y: auto; border: 1px solid var(--mud-palette-lines-default); border-radius: 12px;">
             @((MarkupString)_tosContent)
         </MudPaper>
+        @if (!string.IsNullOrWhiteSpace(_errorMessage))
+        {
+            <MudAlert Severity="Severity.Error" Dense="true" Class="mt-4">
+                @_errorMessage
+            </MudAlert>
+        }
         <MudCheckBox @bind-Value="_accepted" Color="Color.Primary" Class="mt-4"
                      Label="@L["IAcceptTermsOfService"]" />
     </DialogContent>
     <DialogActions>
-        <MudButton OnClick="Decline" Variant="Variant.Text" Color="Color.Default">
+        <MudButton OnClick="Decline" Variant="Variant.Text" Color="Color.Default" Disabled="@_isSaving">
             @L["Decline"]
         </MudButton>
-        <MudButton OnClick="Accept" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_accepted)">
+        <MudButton OnClick="Accept" Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!_accepted || _isSaving)">
+            @if (_isSaving)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+            }
             @L["Accept"]
         </MudButton>
     </DialogActions>
@@ -36,7 +46,9 @@
     private IMudDialogInstance MudDialog { get; set; } = default!;
 
     private bool _accepted;
+    private bool _isSaving;
     private string _tosContent = "";
+    private string? _errorMessage;
 
     private static readonly DialogOptions _dialogOptions = new()
     {
@@ -49,26 +61,64 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _tosContent = await LoadTermsOfServiceAsync();
+    }
+
+    private async Task<string> LoadTermsOfServiceAsync()
+    {
+        var fileInfo = WebHostEnvironment.WebRootFileProvider.GetFileInfo("tos.html");
+        if (!fileInfo.Exists)
+        {
+            Logger.LogWarning("Terms of Service file was not found in wwwroot.");
+            return $"<p>{L["TermsOfServiceLoadError"]}</p>";
+        }
+
         try
         {
-            using var httpClient = new HttpClient { BaseAddress = new Uri(NavigationManager.BaseUri) };
-            _tosContent = await httpClient.GetStringAsync("tos.html");
+            await using var stream = fileInfo.CreateReadStream();
+            using var reader = new StreamReader(stream);
+            return await reader.ReadToEndAsync();
         }
-        catch
+        catch (IOException ex)
         {
-            _tosContent = "<p>Unable to load Terms of Service. Please try again later.</p>";
+            Logger.LogError(ex, "Terms of Service file could not be read.");
+            return $"<p>{L["TermsOfServiceLoadError"]}</p>";
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.LogError(ex, "Terms of Service file could not be accessed.");
+            return $"<p>{L["TermsOfServiceLoadError"]}</p>";
         }
     }
 
     private async Task Accept()
     {
+        _errorMessage = null;
+        _isSaving = true;
+
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = await UserManager.GetUserAsync(authState.User);
-        if (user is not null)
+        if (user is null)
         {
-            user.TosAcceptedAt = DateTime.UtcNow;
-            await UserManager.UpdateAsync(user);
+            Logger.LogWarning("Could not accept Terms of Service because the current user was not found.");
+            _errorMessage = L["TermsOfServiceAcceptError"];
+            _isSaving = false;
+            return;
         }
+
+        user.TosAcceptedAt = DateTime.UtcNow;
+        var result = await UserManager.UpdateAsync(user);
+        if (!result.Succeeded)
+        {
+            Logger.LogWarning(
+                "Failed to save Terms of Service acceptance for user '{UserId}'. Errors: {Errors}",
+                user.Id,
+                string.Join(", ", result.Errors.Select(error => error.Description)));
+            _errorMessage = L["TermsOfServiceAcceptError"];
+            _isSaving = false;
+            return;
+        }
+
         MudDialog.Close(DialogResult.Ok(true));
     }
 
