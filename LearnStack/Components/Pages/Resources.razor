@@ -310,7 +310,7 @@
                                     </MudChip>
                                 </MudStack>
                                 <MudText Typo="Typo.caption" Style="color: var(--mud-palette-text-secondary); margin-top: 6px;">
-                                    @L["DateAdded"]: @GetRelativeDate(context.DateAdded) @GetAgeEmoji(context.DateAdded)
+                                    @L["DateAdded"]: @DateTimeHelper.GetRelativeDate(context.DateAdded, L) @GetAgeEmoji(context.DateAdded)
                                 </MudText>
                             </MudStack>
                         </div>
@@ -407,7 +407,7 @@
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.DateAdded" aria-label="@L["DateAdded"]">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@GetRelativeDate(context.Item.DateAdded) @GetAgeEmoji(context.Item.DateAdded)</MudText>
+                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@DateTimeHelper.GetRelativeDate(context.Item.DateAdded, L) @GetAgeEmoji(context.Item.DateAdded)</MudText>
                     </CellTemplate>
                 </PropertyColumn>
                 <TemplateColumn Title="@L["Actions"]" Sortable="false">
@@ -818,16 +818,7 @@
         }
     }
 
-    private string GetRelativeDate(DateTime date)
-    {
-        var diff = DateTime.UtcNow - date;
-        if (diff.TotalDays < 1) return L["Today"].Value;
-        if (diff.TotalDays < 2) return L["Yesterday"].Value;
-        if (diff.TotalDays < 7) return L["DaysAgo", (int)diff.TotalDays].Value;
-        if (diff.TotalDays < 30) return L["WeeksAgo", (int)(diff.TotalDays / 7)].Value;
-        if (diff.TotalDays < 365) return L["MonthsAgo", (int)(diff.TotalDays / 30)].Value;
-        return L["YearsAgo", (int)(diff.TotalDays / 365)].Value;
-    }
+
 
     private string GetAgeEmoji(DateTime date)
     {
@@ -987,7 +978,7 @@
             WriteIndented = true 
         });
         
-        var fileName = $"learning-resources-{DateTime.Now:yyyyMMdd-HHmmss}.json";
+        var fileName = $"learning-resources-{DateTime.UtcNow:yyyyMMdd-HHmmss}.json";
         await DownloadFileAsync(fileName, json, "application/json");
     }
 
@@ -1010,7 +1001,7 @@
                           $"\"{(resource.DateCompleted.HasValue ? resource.DateCompleted.Value.ToString("yyyy-MM-dd") : "")}\"");
         }
 
-        var fileName = $"learning-resources-{DateTime.Now:yyyyMMdd-HHmmss}.csv";
+        var fileName = $"learning-resources-{DateTime.UtcNow:yyyyMMdd-HHmmss}.csv";
         await DownloadFileAsync(fileName, csv.ToString(), "text/csv");
     }
 

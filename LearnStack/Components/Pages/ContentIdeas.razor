@@ -242,7 +242,7 @@
                             
                             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
                                 <MudText Typo="Typo.caption" Style="color: #94a3b8;">
-                                    @GetRelativeDate(context.DateCreated)
+                                    @DateTimeHelper.GetRelativeDate(context.DateCreated, L)
                                 </MudText>
                                 <MudStack Row="true" Spacing="1">
                                     @if (context.Status != IdeaStatus.InProgress)
@@ -311,7 +311,7 @@
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.DateCreated" aria-label="@(L["DateCreated"])">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@GetRelativeDate(context.Item.DateCreated)</MudText>
+                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@DateTimeHelper.GetRelativeDate(context.Item.DateCreated, L)</MudText>
                     </CellTemplate>
                 </PropertyColumn>
                 <TemplateColumn Title="@(L["Sources"])" Sortable="false">
@@ -576,16 +576,7 @@
         ApplyFilters();
     }
 
-    private string GetRelativeDate(DateTime date)
-    {
-        var diff = DateTime.UtcNow - date;
-        if (diff.TotalDays < 1) return L["Today"];
-        if (diff.TotalDays < 2) return L["Yesterday"];
-        if (diff.TotalDays < 7) return L["DaysAgo", (int)diff.TotalDays];
-        if (diff.TotalDays < 30) return L["WeeksAgo", (int)(diff.TotalDays / 7)];
-        if (diff.TotalDays < 365) return L["MonthsAgo", (int)(diff.TotalDays / 30)];
-        return L["YearsAgo", (int)(diff.TotalDays / 365)];
-    }
+
 
     private Color GetContentTypeColor(ContentIdeaType type) => type switch
     {
