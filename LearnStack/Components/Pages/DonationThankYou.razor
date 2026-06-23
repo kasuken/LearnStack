@@ -1,0 +1,20 @@
+@page "/donation/thank-you"
+@using MudBlazor
+
+<PageTitle>@L["DonationThankYouTitle"] - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
+    <MudStack AlignItems="AlignItems.Center" Spacing="4">
+        <MudIcon Icon="@Icons.Material.Filled.Favorite" Color="Color.Error" Style="font-size: 5rem;" />
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight: 700;">
+            @L["DonationThankYouTitle"]
+        </MudText>
+        <MudText Typo="Typo.body1" Align="Align.Center" Style="color: var(--mud-palette-text-secondary); max-width: 400px;">
+            @L["DonationThankYouMessage"]
+        </MudText>
+        <MudButton Href="/resources" Variant="Variant.Filled" Color="Color.Primary"
+                   Size="Size.Large" Style="border-radius: 10px; font-weight: 600; text-transform: none; padding: 12px 32px;">
+            @L["ReturnToHome"]
+        </MudButton>
+    </MudStack>
+</MudContainer>

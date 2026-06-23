@@ -1,0 +1,115 @@
+@using MudBlazor
+@using Microsoft.AspNetCore.Identity
+@using LearnStack.Data
+@using LearnStack.Services
+@using Microsoft.AspNetCore.Components.Authorization
+@inject UserManager<ApplicationUser> UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IDonationService DonationService
+@inject NavigationManager NavigationManager
+
+<MudDialog Options="@_dialogOptions" aria-label="@L["DonationDialogAriaLabel"]">
+    <TitleContent>
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+            <MudIcon Icon="@Icons.Material.Filled.VolunteerActivism" Color="Color.Error" />
+            <MudText Typo="Typo.h6" Style="font-weight: 700;">@L["DonationTitle"]</MudText>
+        </MudStack>
+    </TitleContent>
+    <DialogContent>
+        <MudStack Spacing="4">
+            <MudText Typo="Typo.body1">@L["DonationMessage"]</MudText>
+            <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@L["DonationSubMessage"]</MudText>
+            <MudStack Row="true" Spacing="2" Justify="Justify.Center" Class="mt-2" Wrap="Wrap.Wrap">
+                @foreach (var amount in _amounts)
+                {
+                    <MudButton Variant="@(_selectedAmount == amount ? Variant.Filled : Variant.Outlined)"
+                               Color="Color.Primary"
+                               OnClick="@(() => _selectedAmount = amount)"
+                               aria-pressed="@(_selectedAmount == amount ? "true" : "false")"
+                               Style="min-width: 80px; border-radius: 10px; font-weight: 600;">
+                        $@(amount / 100)
+                    </MudButton>
+                }
+            </MudStack>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Later"
+                   Variant="Variant.Text"
+                   Color="Color.Default"
+                   aria-label="@L["DonationMaybeLater"]">
+            @L["DonationMaybeLater"]
+        </MudButton>
+        <MudButton OnClick="Donate"
+                   Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   Disabled="@_isBusy"
+                   StartIcon="@Icons.Material.Filled.Favorite"
+                   aria-label="@L["DonationButton"]"
+                   Style="border-radius: 10px; font-weight: 600; text-transform: none;">
+            @if (_isBusy)
+            {
+                <MudProgressCircular Size="Size.Small" Indeterminate="true" Class="mr-2" />
+            }
+            @L["DonationButton"]
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private static readonly long[] _amounts = [300L, 500L, 1000L];
+    private long _selectedAmount = 500L;
+    private bool _isBusy;
+
+    private static readonly DialogOptions _dialogOptions = new()
+    {
+        MaxWidth = MaxWidth.Small,
+        FullWidth = true,
+        CloseButton = true,
+        BackdropClick = true,
+        CloseOnEscapeKey = true
+    };
+
+    private async Task Donate()
+    {
+        _isBusy = true;
+        try
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            var user = await UserManager.GetUserAsync(authState.User);
+            if (user is null)
+            {
+                MudDialog.Close(DialogResult.Cancel());
+                return;
+            }
+
+            await DonationService.RecordPromptShownAsync(user.Id);
+
+            var checkoutUrl = await DonationService.CreateCheckoutSessionAsync(
+                user.Id,
+                _selectedAmount,
+                NavigationManager.BaseUri);
+
+            MudDialog.Close(DialogResult.Ok(true));
+            NavigationManager.NavigateTo(checkoutUrl, forceLoad: true);
+        }
+        finally
+        {
+            _isBusy = false;
+        }
+    }
+
+    private async Task Later()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = await UserManager.GetUserAsync(authState.User);
+        if (user is not null)
+        {
+            await DonationService.RecordPromptShownAsync(user.Id);
+        }
+        MudDialog.Close(DialogResult.Cancel());
+    }
+}

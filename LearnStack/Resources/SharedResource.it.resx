@@ -1430,4 +1430,28 @@
   <data name="OnboardingGetStarted" xml:space="preserve">
     <value>Inizia</value>
   </data>
+  <data name="DonationTitle" xml:space="preserve">
+    <value>Ti piace LearnStack? ☕</value>
+  </data>
+  <data name="DonationMessage" xml:space="preserve">
+    <value>LearnStack è e sarà sempre gratuito. Ma se ti fa risparmiare tempo o stimola la tua curiosità, puoi offrirmi un caffè per tenere tutto in funzione!</value>
+  </data>
+  <data name="DonationSubMessage" xml:space="preserve">
+    <value>Nessuna pressione – anche una parola gentile va bene 😊</value>
+  </data>
+  <data name="DonationButton" xml:space="preserve">
+    <value>Dona ❤️</value>
+  </data>
+  <data name="DonationMaybeLater" xml:space="preserve">
+    <value>Forse più tardi</value>
+  </data>
+  <data name="DonationDialogAriaLabel" xml:space="preserve">
+    <value>Supporta LearnStack con una donazione</value>
+  </data>
+  <data name="DonationThankYouTitle" xml:space="preserve">
+    <value>Grazie! 🎉</value>
+  </data>
+  <data name="DonationThankYouMessage" xml:space="preserve">
+    <value>La tua generosità mantiene LearnStack attivo. Sei fantastico!</value>
+  </data>
 </root>

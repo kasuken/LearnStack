@@ -14,6 +14,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<SharedResourceGroupItem> SharedResourceGroupItems { get; set; }
     public DbSet<LearnerFriendship> LearnerFriendships { get; set; }
     public DbSet<FriendInvitation> FriendInvitations { get; set; }
+    public DbSet<Donation> Donations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -102,5 +103,15 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany()
             .HasForeignKey(lf => lf.AddresseeId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<Donation>()
+            .HasOne(d => d.User)
+            .WithMany()
+            .HasForeignKey(d => d.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<Donation>()
+            .HasIndex(d => d.StripeSessionId)
+            .IsUnique();
     }
 }

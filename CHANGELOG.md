@@ -4,6 +4,25 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.2.0] - 2026-06-23
+
+### Added
+- Donations feature
+  - `HasDonated` (bool) and `LastDonationPromptUtc` (DateTime?) properties on `ApplicationUser`
+  - `Donation` entity (`Id`, `UserId`, `AmountInCents`, `Currency`, `StripeSessionId`, `StripePaymentIntentId`, `CreatedUtc`, `Status`) in `LearnStack/Data/Models`
+  - Database migration (`AddDonations`) adding the `Donations` table and the two new user columns
+  - `StripeOptions` class for Stripe SDK configuration via the options pattern
+  - `Stripe.net` NuGet package for Stripe Checkout integration
+  - `IDonationService` / `DonationService` under `LearnStack/Services` for creating Checkout sessions and confirming payments
+  - `DonationController` with `/api/donation/webhook` (signature-verified Stripe webhook) and `/api/donation/success` / `/api/donation/cancel` return endpoints
+  - `DonationPrompt.razor` MudBlazor dialog component shown to authenticated users who have not yet donated (throttled to once per day via `LastDonationPromptUtc`)
+  - `DonationThankYou.razor` page shown after a successful Stripe Checkout
+  - `MainLayout` updated to show the donation prompt after the onboarding check
+  - Localized donation strings added to all supported language resource files (en, de, es, fr, it)
+  - Stripe configuration placeholders added to `appsettings.json` and `appsettings.Development.json`
+
+---
+
 ## [1.1.0] - 2026-03-25
 
 ### Added
