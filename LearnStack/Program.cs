@@ -74,6 +74,8 @@ builder.Services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
 {
     client.Timeout = TimeSpan.FromSeconds(30);
 });
+builder.Services.Configure<StripeOptions>(builder.Configuration.GetSection(StripeOptions.SectionName));
+builder.Services.AddScoped<IDonationService, DonationService>();
 
 var app = builder.Build();
 

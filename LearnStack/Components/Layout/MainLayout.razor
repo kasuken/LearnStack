@@ -2,12 +2,14 @@
 @using LearnStack.Components.Shared
 @using Microsoft.AspNetCore.Identity
 @using LearnStack.Data
+@using LearnStack.Services
 @inherits LayoutComponentBase
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject IDialogService DialogService
 @inject UserManager<ApplicationUser> UserManager
+@inject IDonationService DonationService
 
 @* Theme Provider with Custom Theme *@
 <MudThemeProvider @ref="_mudThemeProvider" Theme="@_theme" @bind-IsDarkMode="@_isDarkMode" />
@@ -130,6 +132,7 @@
 
             await CheckTosAcceptanceAsync();
             await CheckOnboardingAsync();
+            await CheckDonationPromptAsync();
         }
     }
 
@@ -298,6 +301,35 @@
             });
 
         await dialog.Result;
+    }
+
+    private async Task CheckDonationPromptAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var claimsPrincipal = authState.User;
+
+        if (claimsPrincipal.Identity?.IsAuthenticated != true)
+            return;
+
+        var user = await UserManager.GetUserAsync(claimsPrincipal);
+        if (user is null)
+            return;
+
+        if (!await DonationService.ShouldShowPromptAsync(user.Id))
+            return;
+
+        await DonationService.RecordPromptShownAsync(user.Id);
+
+        await DialogService.ShowAsync<DonationPrompt>(
+            string.Empty,
+            new DialogOptions
+            {
+                MaxWidth = MaxWidth.Small,
+                FullWidth = true,
+                CloseButton = true,
+                BackdropClick = true,
+                CloseOnEscapeKey = true
+            });
     }
 
     private string GetUserInitials(string? name)
