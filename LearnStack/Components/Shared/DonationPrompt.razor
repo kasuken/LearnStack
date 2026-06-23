@@ -86,6 +86,8 @@
                 return;
             }
 
+            await DonationService.RecordPromptShownAsync(user.Id);
+
             var checkoutUrl = await DonationService.CreateCheckoutSessionAsync(
                 user.Id,
                 _selectedAmount,

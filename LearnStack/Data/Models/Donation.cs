@@ -9,7 +9,7 @@ public class Donation
     public string StripeSessionId { get; set; } = string.Empty;
     public string? StripePaymentIntentId { get; set; }
     public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
-    public string Status { get; set; } = "pending";
+    public string Status { get; set; } = DonationStatus.Pending;
 
     public ApplicationUser User { get; set; } = null!;
 }

@@ -31,7 +31,7 @@ public sealed class DonationService : IDonationService
         string baseUrl,
         CancellationToken cancellationToken = default)
     {
-        StripeConfiguration.ApiKey = _stripeOptions.SecretKey;
+        var client = new StripeClient(_stripeOptions.SecretKey);
 
         var successUrl = $"{baseUrl.TrimEnd('/')}/api/donation/success?session_id={{CHECKOUT_SESSION_ID}}";
         var cancelUrl = $"{baseUrl.TrimEnd('/')}/api/donation/cancel";
@@ -65,7 +65,7 @@ public sealed class DonationService : IDonationService
             }
         };
 
-        var service = new SessionService();
+        var service = new SessionService(client);
         var session = await service.CreateAsync(options, cancellationToken: cancellationToken);
 
         await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken);
@@ -75,7 +75,7 @@ public sealed class DonationService : IDonationService
             AmountInCents = amountInCents,
             Currency = "usd",
             StripeSessionId = session.Id,
-            Status = "pending",
+            Status = DonationStatus.Pending,
             CreatedUtc = DateTime.UtcNow
         });
         await context.SaveChangesAsync(cancellationToken);
@@ -94,18 +94,18 @@ public sealed class DonationService : IDonationService
 
         if (donation is null)
         {
-            _logger.LogWarning("Donation not found for session {SessionId}", stripeSessionId);
+            _logger.LogWarning("Donation not found for Stripe session");
             return;
         }
 
-        StripeConfiguration.ApiKey = _stripeOptions.SecretKey;
-        var service = new SessionService();
+        var client = new StripeClient(_stripeOptions.SecretKey);
+        var service = new SessionService(client);
         var session = await service.GetAsync(stripeSessionId, cancellationToken: cancellationToken);
 
-        donation.Status = session.PaymentStatus == "paid" ? "completed" : "failed";
+        donation.Status = session.PaymentStatus == "paid" ? DonationStatus.Completed : DonationStatus.Failed;
         donation.StripePaymentIntentId = session.PaymentIntentId;
 
-        if (donation.Status == "completed")
+        if (donation.Status == DonationStatus.Completed)
         {
             var user = await context.Users.FindAsync([donation.UserId], cancellationToken);
             if (user is not null)

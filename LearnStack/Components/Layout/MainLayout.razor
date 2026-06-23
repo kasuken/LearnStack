@@ -318,8 +318,6 @@
         if (!await DonationService.ShouldShowPromptAsync(user.Id))
             return;
 
-        await DonationService.RecordPromptShownAsync(user.Id);
-
         await DialogService.ShowAsync<DonationPrompt>(
             string.Empty,
             new DialogOptions
