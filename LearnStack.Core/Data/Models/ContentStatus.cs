@@ -1,4 +1,4 @@
-﻿namespace LearnStack.Data.Models;
+namespace LearnStack.Data.Models;
 
 public enum ContentStatus
 {
@@ -6,4 +6,3 @@ public enum ContentStatus
     InProgress,
     Completed
 }
-

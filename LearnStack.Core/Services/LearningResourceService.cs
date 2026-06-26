@@ -1,5 +1,6 @@
-﻿using LearnStack.Data;
+using LearnStack.Data;
 using LearnStack.Data.Models;
+using LearnStack.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearnStack.Services;
@@ -73,7 +74,7 @@ public class LearningResourceService(IDbContextFactory<ApplicationDbContext> con
     public async Task<bool> UrlExistsAsync(string userId, string url, int? excludeResourceId = null)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        var normalizedUrl = NormalizeUrl(url);
+        var normalizedUrl = UrlNormalizer.Normalize(url);
         if (string.IsNullOrWhiteSpace(normalizedUrl))
         {
             return false;
@@ -92,7 +93,7 @@ public class LearningResourceService(IDbContextFactory<ApplicationDbContext> con
             .ToListAsync();
 
         return existingUrls.Any(existingUrl =>
-            string.Equals(NormalizeUrl(existingUrl), normalizedUrl, StringComparison.OrdinalIgnoreCase));
+            string.Equals(UrlNormalizer.Normalize(existingUrl), normalizedUrl, StringComparison.OrdinalIgnoreCase));
     }
 
     public async Task<LearningResource> CreateAsync(LearningResource resource)
@@ -106,11 +107,10 @@ public class LearningResourceService(IDbContextFactory<ApplicationDbContext> con
     public async Task<LearningResource?> UpdateAsync(LearningResource resource, string userId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        // Verify ownership before updating
         var existing = await context.LearningResources
             .FirstOrDefaultAsync(lr => lr.Id == resource.Id && lr.UserId == userId);
         if (existing == null) return null;
-        
+
         existing.Url = resource.Url;
         existing.Title = resource.Title;
         existing.Description = resource.Description;
@@ -125,7 +125,7 @@ public class LearningResourceService(IDbContextFactory<ApplicationDbContext> con
         existing.DateCompleted = resource.DateCompleted;
         existing.IsArchived = resource.IsArchived;
         existing.IsPublic = resource.IsPublic;
-        
+
         await context.SaveChangesAsync();
         return existing;
     }
@@ -199,29 +199,4 @@ public class LearningResourceService(IDbContextFactory<ApplicationDbContext> con
             .ThenByDescending(lr => lr.DateAdded)
             .ToListAsync();
     }
-
-    private static string NormalizeUrl(string url)
-    {
-        if (string.IsNullOrWhiteSpace(url))
-        {
-            return string.Empty;
-        }
-
-        var trimmedUrl = url.Trim();
-
-        if (Uri.TryCreate(trimmedUrl, UriKind.Absolute, out var uri))
-        {
-            var builder = new UriBuilder(uri)
-            {
-                Host = uri.Host.ToLowerInvariant(),
-                Scheme = uri.Scheme.ToLowerInvariant()
-            };
-
-            return builder.Uri.AbsoluteUri.TrimEnd('/');
-        }
-
-        return trimmedUrl.TrimEnd('/').ToLowerInvariant();
-    }
 }
-
-

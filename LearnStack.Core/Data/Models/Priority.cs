@@ -1,4 +1,4 @@
-﻿namespace LearnStack.Data.Models;
+namespace LearnStack.Data.Models;
 
 public enum Priority
 {
@@ -6,4 +6,3 @@ public enum Priority
     Medium = 2,
     High = 3
 }
-

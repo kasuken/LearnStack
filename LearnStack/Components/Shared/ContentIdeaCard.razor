@@ -112,40 +112,9 @@
     [Parameter]
     public EventCallback OnStatusChange { get; set; }
 
-    private Color GetContentTypeColor()
-    {
-        return Idea.ContentType switch
-        {
-            ContentIdeaType.BlogPost => Color.Primary,
-            ContentIdeaType.Video => Color.Error,
-            ContentIdeaType.TweetThread => Color.Info,
-            ContentIdeaType.Tutorial => Color.Warning,
-            ContentIdeaType.Other => Color.Secondary,
-            _ => Color.Default
-        };
-    }
-
-    private Color GetStatusColor()
-    {
-        return Idea.Status switch
-        {
-            IdeaStatus.Idea => Color.Info,
-            IdeaStatus.InProgress => Color.Warning,
-            IdeaStatus.Published => Color.Success,
-            _ => Color.Default
-        };
-    }
-
-    private Color GetPriorityColor()
-    {
-        return Idea.Priority switch
-        {
-            Priority.High => Color.Error,
-            Priority.Medium => Color.Warning,
-            Priority.Low => Color.Default,
-            _ => Color.Default
-        };
-    }
+    private Color GetContentTypeColor() => EnumDisplayHelper.GetColor(Idea.ContentType);
+    private Color GetStatusColor() => EnumDisplayHelper.GetColor(Idea.Status);
+    private Color GetPriorityColor() => EnumDisplayHelper.GetColor(Idea.Priority);
 
     private async Task UpdateStatus(IdeaStatus newStatus)
     {

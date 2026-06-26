@@ -1,4 +1,4 @@
-﻿﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace LearnStack.Data.Models;
 
@@ -55,4 +55,3 @@ public class ContentIdea
 
     public ICollection<ContentIdeaResource> SourceResources { get; set; } = new List<ContentIdeaResource>();
 }
-

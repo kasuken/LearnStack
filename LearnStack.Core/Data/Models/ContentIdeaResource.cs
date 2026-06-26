@@ -1,4 +1,4 @@
-﻿namespace LearnStack.Data.Models;
+namespace LearnStack.Data.Models;
 
 public class ContentIdeaResource
 {
@@ -8,4 +8,3 @@ public class ContentIdeaResource
     public int LearningResourceId { get; set; }
     public LearningResource? LearningResource { get; set; }
 }
-

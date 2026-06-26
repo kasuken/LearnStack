@@ -17,4 +17,8 @@
         <PackageReference Include="MudBlazor" Version="8.15.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LearnStack.Core\LearnStack.Core.csproj" />
+    </ItemGroup>
+
 </Project>

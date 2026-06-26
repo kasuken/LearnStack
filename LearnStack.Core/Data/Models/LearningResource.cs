@@ -1,4 +1,4 @@
-﻿﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace LearnStack.Data.Models;
 
@@ -52,4 +52,3 @@ public class LearningResource
 
     public ApplicationUser? User { get; set; }
 }
-

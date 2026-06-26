@@ -1,4 +1,4 @@
-﻿namespace LearnStack.Services;
+namespace LearnStack.Services;
 
 public interface IOpenGraphService
 {
@@ -14,4 +14,3 @@ public class OpenGraphData
     public string? Type { get; set; }
     public byte[]? ImageData { get; set; }
 }
-

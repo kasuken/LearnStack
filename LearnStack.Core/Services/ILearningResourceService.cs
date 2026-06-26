@@ -1,4 +1,4 @@
-﻿using LearnStack.Data.Models;
+using LearnStack.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearnStack.Services;
@@ -19,4 +19,3 @@ public interface ILearningResourceService
     Task<bool> TogglePublicAsync(int id, string userId);
     Task<List<LearningResource>> GetPublicResourcesByUserIdAsync(string ownerUserId);
 }
-

@@ -1,4 +1,4 @@
-﻿namespace LearnStack.Data.Models;
+namespace LearnStack.Data.Models;
 
 public enum ContentType
 {
@@ -9,4 +9,3 @@ public enum ContentType
     Course,
     Documentation
 }
-

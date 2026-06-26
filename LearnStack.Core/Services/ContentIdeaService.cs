@@ -1,4 +1,4 @@
-﻿using LearnStack.Data;
+using LearnStack.Data;
 using LearnStack.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,13 +41,12 @@ public class ContentIdeaService(IDbContextFactory<ApplicationDbContext> contextF
     public async Task<ContentIdea?> UpdateAsync(ContentIdea idea, string userId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        // Verify ownership before updating
         var existing = await context.ContentIdeas
             .Include(ci => ci.SourceResources)
                 .ThenInclude(cir => cir.LearningResource)
             .FirstOrDefaultAsync(ci => ci.Id == idea.Id && ci.UserId == userId);
         if (existing == null) return null;
-        
+
         existing.Title = idea.Title;
         existing.ContentType = idea.ContentType;
         existing.Description = idea.Description;
@@ -57,7 +56,7 @@ public class ContentIdeaService(IDbContextFactory<ApplicationDbContext> contextF
         existing.Notes = idea.Notes;
         existing.DatePublished = idea.DatePublished;
         existing.CustomOrder = idea.CustomOrder;
-        
+
         await context.SaveChangesAsync();
         return existing;
     }
@@ -77,21 +76,18 @@ public class ContentIdeaService(IDbContextFactory<ApplicationDbContext> contextF
     public async Task AddSourceResourceAsync(int ideaId, int resourceId, string userId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        // Verify idea belongs to user
         var idea = await context.ContentIdeas
             .FirstOrDefaultAsync(ci => ci.Id == ideaId && ci.UserId == userId);
         if (idea == null) return;
-        
-        // Verify resource belongs to user
+
         var resource = await context.LearningResources
             .FirstOrDefaultAsync(lr => lr.Id == resourceId && lr.UserId == userId);
         if (resource == null) return;
-        
-        // Check if link already exists
+
         var existingLink = await context.ContentIdeaResources
             .FirstOrDefaultAsync(cir => cir.ContentIdeaId == ideaId && cir.LearningResourceId == resourceId);
         if (existingLink != null) return;
-        
+
         var link = new ContentIdeaResource
         {
             ContentIdeaId = ideaId,
@@ -104,14 +100,13 @@ public class ContentIdeaService(IDbContextFactory<ApplicationDbContext> contextF
     public async Task RemoveSourceResourceAsync(int ideaId, int resourceId, string userId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
-        // Verify idea belongs to user first
         var idea = await context.ContentIdeas
             .FirstOrDefaultAsync(ci => ci.Id == ideaId && ci.UserId == userId);
         if (idea == null) return;
-        
+
         var link = await context.ContentIdeaResources
             .FirstOrDefaultAsync(cir => cir.ContentIdeaId == ideaId && cir.LearningResourceId == resourceId);
-        
+
         if (link != null)
         {
             context.ContentIdeaResources.Remove(link);
@@ -138,5 +133,3 @@ public class ContentIdeaService(IDbContextFactory<ApplicationDbContext> contextF
         await context.SaveChangesAsync();
     }
 }
-
-

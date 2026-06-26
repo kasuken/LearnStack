@@ -1,4 +1,4 @@
-﻿﻿using LearnStack.Data.Models;
+using LearnStack.Data.Models;
 
 namespace LearnStack.Services;
 
@@ -13,4 +13,3 @@ public interface IContentIdeaService
     Task RemoveSourceResourceAsync(int ideaId, int resourceId, string userId);
     Task UpdateOrderAsync(string userId, List<int> orderedIds);
 }
-
