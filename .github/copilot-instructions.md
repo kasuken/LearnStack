@@ -120,7 +120,6 @@ LearnStack is a learning content management application for organizing and track
 - Type-safe with TypeScript throughout
 - Use custom hooks for data management (useLocalStorage, useResources, etc.)
 - Component composition for reusability
-- Follow React 19 best practices
 - Utilize TailwindCSS utilities, avoid custom CSS where possible
 - Implement proper error handling
 - Add loading states for async operations (URL metadata fetching)
