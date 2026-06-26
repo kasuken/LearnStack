@@ -130,16 +130,16 @@ public class LearningResourceService(IDbContextFactory<ApplicationDbContext> con
         return existing;
     }
 
-    public async Task DeleteAsync(int id, string userId)
+    public async Task<bool> DeleteAsync(int id, string userId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
         var resource = await context.LearningResources
             .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
-        if (resource != null)
-        {
-            context.LearningResources.Remove(resource);
-            await context.SaveChangesAsync();
-        }
+        if (resource == null) return false;
+
+        context.LearningResources.Remove(resource);
+        await context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<List<LearningResource>> SearchAsync(string userId, string searchTerm)

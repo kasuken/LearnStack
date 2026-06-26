@@ -61,16 +61,16 @@ public class ContentIdeaService(IDbContextFactory<ApplicationDbContext> contextF
         return existing;
     }
 
-    public async Task DeleteAsync(int id, string userId)
+    public async Task<bool> DeleteAsync(int id, string userId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
         var idea = await context.ContentIdeas
             .FirstOrDefaultAsync(ci => ci.Id == id && ci.UserId == userId);
-        if (idea != null)
-        {
-            context.ContentIdeas.Remove(idea);
-            await context.SaveChangesAsync();
-        }
+        if (idea == null) return false;
+
+        context.ContentIdeas.Remove(idea);
+        await context.SaveChangesAsync();
+        return true;
     }
 
     public async Task AddSourceResourceAsync(int ideaId, int resourceId, string userId)

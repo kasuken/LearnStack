@@ -5,6 +5,7 @@
 @inject ILearningResourceService ResourceService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 
 <PageTitle>@L["ContentIdeas"] - LearnStack</PageTitle>
@@ -562,9 +563,25 @@
 
     private async Task DeleteIdea(int id)
     {
-        await ContentIdeaService.DeleteAsync(id, userId);
-        await LoadIdeas();
-        await LoadStatistics();
+        var confirmed = await DialogService.ShowMessageBox(
+            L["DeleteIdeaDialogTitle"],
+            L["DeleteIdeaDialogMessage"],
+            yesText: L["Delete"],
+            cancelText: L["Cancel"]);
+
+        if (confirmed != true) return;
+
+        var deleted = await ContentIdeaService.DeleteAsync(id, userId);
+        if (deleted)
+        {
+            Snackbar.Add(L["IdeaDeleted"], Severity.Info);
+            await LoadIdeas();
+            await LoadStatistics();
+        }
+        else
+        {
+            Snackbar.Add(L["ErrorSubtitle"], Severity.Error);
+        }
     }
 
     private async Task UpdateStatus(ContentIdea idea, IdeaStatus newStatus)

@@ -61,16 +61,16 @@ public class SharedResourceGroupService(IDbContextFactory<ApplicationDbContext> 
         return existing;
     }
 
-    public async Task DeleteAsync(int id, string userId)
+    public async Task<bool> DeleteAsync(int id, string userId)
     {
         await using var context = await _contextFactory.CreateDbContextAsync();
         var group = await context.SharedResourceGroups
             .FirstOrDefaultAsync(sg => sg.Id == id && sg.UserId == userId);
-        if (group != null)
-        {
-            context.SharedResourceGroups.Remove(group);
-            await context.SaveChangesAsync();
-        }
+        if (group == null) return false;
+
+        context.SharedResourceGroups.Remove(group);
+        await context.SaveChangesAsync();
+        return true;
     }
 
     public async Task AddResourceAsync(int groupId, int resourceId, string userId)

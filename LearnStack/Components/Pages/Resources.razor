@@ -8,6 +8,7 @@
 @inject IContentIdeaService ContentIdeaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inject PersistentComponentState ApplicationState
@@ -776,9 +777,25 @@
 
     private async Task DeleteResource(int id)
     {
-        await ResourceService.DeleteAsync(id, userId);
-        await LoadResources();
-        await LoadStatistics();
+        var confirmed = await DialogService.ShowMessageBox(
+            L["DeleteResourceDialogTitle"],
+            L["DeleteResourceDialogMessage"],
+            yesText: L["Delete"],
+            cancelText: L["Cancel"]);
+
+        if (confirmed != true) return;
+
+        var deleted = await ResourceService.DeleteAsync(id, userId);
+        if (deleted)
+        {
+            Snackbar.Add(L["ResourceDeleted"], Severity.Info);
+            await LoadResources();
+            await LoadStatistics();
+        }
+        else
+        {
+            Snackbar.Add(L["ErrorSubtitle"], Severity.Error);
+        }
     }
 
     private async Task UpdateStatus(LearningResource resource, ContentStatus newStatus)

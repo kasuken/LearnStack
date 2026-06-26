@@ -294,6 +294,24 @@
   <data name="DeleteCollectionDialogTitle" xml:space="preserve">
     <value>Delete Collection</value>
   </data>
+  <data name="DeleteResourceDialogTitle" xml:space="preserve">
+    <value>Delete Resource</value>
+  </data>
+  <data name="DeleteResourceDialogMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this resource?</value>
+  </data>
+  <data name="ResourceDeleted" xml:space="preserve">
+    <value>Resource deleted.</value>
+  </data>
+  <data name="DeleteIdeaDialogTitle" xml:space="preserve">
+    <value>Delete Idea</value>
+  </data>
+  <data name="DeleteIdeaDialogMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this content idea?</value>
+  </data>
+  <data name="IdeaDeleted" xml:space="preserve">
+    <value>Idea deleted.</value>
+  </data>
   <data name="YearsAgo" xml:space="preserve">
     <value>{0} years ago</value>
   </data>

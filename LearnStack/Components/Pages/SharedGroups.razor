@@ -272,9 +272,16 @@
 
         if (result == true)
         {
-            await SharedGroupService.DeleteAsync(groupId, userId);
-            await LoadGroups();
-            Snackbar.Add(L["CollectionDeleted"], Severity.Info);
+            var deleted = await SharedGroupService.DeleteAsync(groupId, userId);
+            if (deleted)
+            {
+                await LoadGroups();
+                Snackbar.Add(L["CollectionDeleted"], Severity.Info);
+            }
+            else
+            {
+                Snackbar.Add(L["ErrorSubtitle"], Severity.Error);
+            }
         }
     }
 }

@@ -124,8 +124,9 @@ public class LearningResourceServiceTests
 
         var resource = await svc.CreateAsync(MakeResource(OtherUserId, "X"));
 
-        await svc.DeleteAsync(resource.Id, UserId); // wrong owner
+        var deleted = await svc.DeleteAsync(resource.Id, UserId); // wrong owner
 
+        Assert.False(deleted);
         var stillExists = await svc.GetByIdAsync(resource.Id, OtherUserId);
         Assert.NotNull(stillExists);
     }
@@ -137,8 +138,9 @@ public class LearningResourceServiceTests
         var svc = new LearningResourceService(factory);
 
         var resource = await svc.CreateAsync(MakeResource(UserId, "X"));
-        await svc.DeleteAsync(resource.Id, UserId);
+        var deleted = await svc.DeleteAsync(resource.Id, UserId);
 
+        Assert.True(deleted);
         Assert.Null(await svc.GetByIdAsync(resource.Id, UserId));
     }
 

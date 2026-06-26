@@ -11,7 +11,7 @@ public interface ILearningResourceService
     Task<bool> UrlExistsAsync(string userId, string url, int? excludeResourceId = null);
     Task<LearningResource> CreateAsync(LearningResource resource);
     Task<LearningResource?> UpdateAsync(LearningResource resource, string userId);
-    Task DeleteAsync(int id, string userId);
+    Task<bool> DeleteAsync(int id, string userId);
     Task<List<LearningResource>> SearchAsync(string userId, string searchTerm);
     Task UpdateOrderAsync(string userId, List<int> orderedIds);
     Task<bool> ToggleArchiveAsync(int id, string userId);
