@@ -1,0 +1,75 @@
+.pulse-panel {
+    height: 100%;
+    min-height: 310px;
+    padding: 24px;
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: 8px;
+    background: var(--mud-palette-surface);
+}
+
+.pulse-panel-heading ::deep .mud-typography-h6 {
+    color: var(--mud-palette-text-primary);
+    font-weight: 700;
+}
+
+.pulse-panel-heading ::deep .mud-typography-body2 {
+    color: var(--mud-palette-text-secondary);
+}
+
+.pulse-signal-list {
+    display: grid;
+    margin-top: 14px;
+}
+
+.pulse-signal {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.pulse-signal:last-child {
+    border-bottom: 0;
+}
+
+.pulse-signal-icon {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    border-radius: 8px;
+}
+
+.pulse-signal ::deep .mud-typography-subtitle2 {
+    color: var(--mud-palette-text-primary);
+    font-weight: 700;
+}
+
+.pulse-signal ::deep .mud-typography-body2 {
+    margin-top: 3px;
+    color: var(--mud-palette-text-secondary);
+}
+
+.signal-momentum .pulse-signal-icon {
+    color: #047857;
+    background: #d1fae5;
+}
+
+.signal-focus .pulse-signal-icon {
+    color: #c2410c;
+    background: #ffedd5;
+}
+
+.signal-notes .pulse-signal-icon {
+    color: #0369a1;
+    background: #e0f2fe;
+}
+
+@media (max-width: 600px) {
+    .pulse-panel {
+        min-height: auto;
+        padding: 18px;
+    }
+}

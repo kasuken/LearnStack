@@ -1,0 +1,50 @@
+<section class="pulse-panel">
+    <MudStack Spacing="1" Class="pulse-panel-heading">
+        <MudText Typo="Typo.h6">@L["CompletionRhythm"]</MudText>
+        <MudText Typo="Typo.body2">@L["CompletionRhythmDescription"]</MudText>
+    </MudStack>
+
+    @if (CompletionCounts.Count == 0 || CompletionCounts.All(count => count == 0))
+    {
+        <div class="pulse-chart-empty">
+            <MudIcon Icon="@Icons.Material.Filled.ShowChart" Size="Size.Large" />
+            <MudText Typo="Typo.body2">@L["NoCompletionsYet"]</MudText>
+        </div>
+    }
+    else
+    {
+        <div class="pulse-chart">
+            @for (var index = 0; index < Math.Min(CompletionCounts.Count, WeekLabels.Count); index++)
+            {
+                var count = CompletionCounts[index];
+                <div class="pulse-chart-column" @key="index">
+                    <span class="pulse-chart-count">@(count > 0 ? count : null)</span>
+                    <div class="pulse-chart-track">
+                        <div class="pulse-chart-fill @GetLevelClass(count)"></div>
+                    </div>
+                    <span class="pulse-chart-label">@WeekLabels[index]</span>
+                </div>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter]
+    public IReadOnlyList<int> CompletionCounts { get; set; } = [];
+
+    [Parameter]
+    public IReadOnlyList<string> WeekLabels { get; set; } = [];
+
+    private string GetLevelClass(int count)
+    {
+        var maximum = CompletionCounts.Count == 0 ? 0 : CompletionCounts.Max();
+        if (count == 0 || maximum == 0)
+        {
+            return "level-0";
+        }
+
+        var level = (int)Math.Ceiling(count * 10d / maximum);
+        return $"level-{Math.Clamp(level, 1, 10)}";
+    }
+}

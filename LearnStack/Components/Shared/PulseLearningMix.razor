@@ -1,0 +1,78 @@
+<section class="pulse-panel">
+    <MudStack Spacing="1" Class="pulse-panel-heading">
+        <MudText Typo="Typo.h6">@L["LearningMix"]</MudText>
+        <MudText Typo="Typo.body2">@L["LearningMixDescription"]</MudText>
+    </MudStack>
+
+    @if (ContentTypeCounts.Count == 0)
+    {
+        <div class="pulse-mix-empty">
+            <MudIcon Icon="@Icons.Material.Filled.Category" Size="Size.Large" />
+            <MudText Typo="Typo.body2">@L["NoMixData"]</MudText>
+        </div>
+    }
+    else
+    {
+        <div class="pulse-mix-list">
+            @foreach (var item in ContentTypeCounts.OrderByDescending(item => item.Value))
+            {
+                var percentage = (int)Math.Round(item.Value * 100d / ContentTypeCounts.Values.Sum());
+                <div class="pulse-mix-row" @key="item.Key">
+                    <div class="pulse-mix-label">
+                        <MudIcon Icon="@GetContentTypeIcon(item.Key)" Size="Size.Small" />
+                        <MudText Typo="Typo.body2">@GetContentTypeText(item.Key)</MudText>
+                        <span>@percentage%</span>
+                    </div>
+                    <div class="pulse-mix-track">
+                        <div class="pulse-mix-fill @GetContentTypeClass(item.Key) @GetLevelClass(percentage)"></div>
+                    </div>
+                    <MudText Typo="Typo.caption">@L["ResourceCount", item.Value]</MudText>
+                </div>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter]
+    public IReadOnlyDictionary<ContentType, int> ContentTypeCounts { get; set; } = new Dictionary<ContentType, int>();
+
+    private string GetContentTypeText(ContentType contentType) => contentType switch
+    {
+        ContentType.BlogPost => L["BlogPost"],
+        ContentType.Podcast => L["Podcast"],
+        ContentType.Video => L["Video"],
+        ContentType.Article => L["Article"],
+        ContentType.Course => L["Course"],
+        ContentType.Documentation => L["Documentation"],
+        _ => contentType.ToString()
+    };
+
+    private static string GetContentTypeIcon(ContentType contentType) => contentType switch
+    {
+        ContentType.BlogPost => Icons.Material.Filled.Article,
+        ContentType.Podcast => Icons.Material.Filled.Podcasts,
+        ContentType.Video => Icons.Material.Filled.PlayCircle,
+        ContentType.Article => Icons.Material.Filled.Description,
+        ContentType.Course => Icons.Material.Filled.School,
+        ContentType.Documentation => Icons.Material.Filled.MenuBook,
+        _ => Icons.Material.Filled.AutoStories
+    };
+
+    private static string GetContentTypeClass(ContentType contentType) => contentType switch
+    {
+        ContentType.BlogPost => "mix-blog",
+        ContentType.Podcast => "mix-podcast",
+        ContentType.Video => "mix-video",
+        ContentType.Article => "mix-article",
+        ContentType.Course => "mix-course",
+        ContentType.Documentation => "mix-documentation",
+        _ => "mix-other"
+    };
+
+    private static string GetLevelClass(int percentage)
+    {
+        var level = (int)Math.Ceiling(percentage / 10d);
+        return $"level-{Math.Clamp(level, 1, 10)}";
+    }
+}

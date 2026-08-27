@@ -1619,4 +1619,127 @@
   <data name="OnboardingGetStarted" xml:space="preserve">
     <value>Get Started</value>
   </data>
+  <data name="LearningPulse" xml:space="preserve">
+    <value>Learning Pulse</value>
+  </data>
+  <data name="LearningInsights" xml:space="preserve">
+    <value>Learning insights</value>
+  </data>
+  <data name="LearningPulseDescription" xml:space="preserve">
+    <value>See your momentum, learning mix, and the habits shaping your progress.</value>
+  </data>
+  <data name="BackToLibrary" xml:space="preserve">
+    <value>Back to library</value>
+  </data>
+  <data name="LoadingPulse" xml:space="preserve">
+    <value>Reading your learning pulse...</value>
+  </data>
+  <data name="PulseUnavailable" xml:space="preserve">
+    <value>Your pulse is unavailable</value>
+  </data>
+  <data name="PulseUnavailableDescription" xml:space="preserve">
+    <value>We could not load your learning data. Please try again.</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>Retry</value>
+  </data>
+  <data name="StartLearningPulse" xml:space="preserve">
+    <value>Start your learning pulse</value>
+  </data>
+  <data name="StartLearningPulseDescription" xml:space="preserve">
+    <value>Add your first resource and your learning patterns will appear here.</value>
+  </data>
+  <data name="CompletedResources" xml:space="preserve">
+    <value>Completed resources</value>
+  </data>
+  <data name="AllTime" xml:space="preserve">
+    <value>All time</value>
+  </data>
+  <data name="CompletionRate" xml:space="preserve">
+    <value>Completion rate</value>
+  </data>
+  <data name="OfAllResources" xml:space="preserve">
+    <value>Of active resources</value>
+  </data>
+  <data name="ActiveDays" xml:space="preserve">
+    <value>Active days</value>
+  </data>
+  <data name="Last30Days" xml:space="preserve">
+    <value>Last 30 days</value>
+  </data>
+  <data name="LearningQueue" xml:space="preserve">
+    <value>Learning queue</value>
+  </data>
+  <data name="AwaitingAttention" xml:space="preserve">
+    <value>Still in your queue</value>
+  </data>
+  <data name="CompletionRhythm" xml:space="preserve">
+    <value>Completion rhythm</value>
+  </data>
+  <data name="CompletionRhythmDescription" xml:space="preserve">
+    <value>Resources completed over the last 12 weeks</value>
+  </data>
+  <data name="NoCompletionsYet" xml:space="preserve">
+    <value>Complete a resource to start your rhythm.</value>
+  </data>
+  <data name="LearningMix" xml:space="preserve">
+    <value>Learning mix</value>
+  </data>
+  <data name="LearningMixDescription" xml:space="preserve">
+    <value>How your active library is distributed</value>
+  </data>
+  <data name="NoMixData" xml:space="preserve">
+    <value>Add resources to reveal your learning mix.</value>
+  </data>
+  <data name="LearningSignals" xml:space="preserve">
+    <value>Learning signals</value>
+  </data>
+  <data name="LearningSignalsDescription" xml:space="preserve">
+    <value>Patterns worth noticing right now</value>
+  </data>
+  <data name="Momentum" xml:space="preserve">
+    <value>Momentum</value>
+  </data>
+  <data name="Focus" xml:space="preserve">
+    <value>Focus</value>
+  </data>
+  <data name="KnowledgeCapture" xml:space="preserve">
+    <value>Knowledge capture</value>
+  </data>
+  <data name="MomentumAhead" xml:space="preserve">
+    <value>You completed {0} in the last 30 days, up from {1} in the previous period.</value>
+  </data>
+  <data name="MomentumSteady" xml:space="preserve">
+    <value>You completed {0} in the last 30 days. Keep the next win in sight.</value>
+  </data>
+  <data name="MomentumReset" xml:space="preserve">
+    <value>No completions in the last 30 days. One focused resource can restart the rhythm.</value>
+  </data>
+  <data name="FocusReady" xml:space="preserve">
+    <value>Nothing is in progress. Choose one queue item when you are ready.</value>
+  </data>
+  <data name="FocusClear" xml:space="preserve">
+    <value>You have {0} items in progress. Your focus is concentrated.</value>
+  </data>
+  <data name="FocusSpread" xml:space="preserve">
+    <value>You have {0} items in progress. Finishing one before starting another may help.</value>
+  </data>
+  <data name="NotesWaiting" xml:space="preserve">
+    <value>Your note-taking signal will appear after your first completion.</value>
+  </data>
+  <data name="NotesStrong" xml:space="preserve">
+    <value>{0}% of completed resources include notes. Your learning trail is well captured.</value>
+  </data>
+  <data name="NotesOpportunity" xml:space="preserve">
+    <value>{0}% of completed resources include notes. A short takeaway can make each win reusable.</value>
+  </data>
+  <data name="RecentWins" xml:space="preserve">
+    <value>Recent wins</value>
+  </data>
+  <data name="RecentWinsDescription" xml:space="preserve">
+    <value>Your latest completed resources</value>
+  </data>
+  <data name="NoRecentWins" xml:space="preserve">
+    <value>Your first completed resource will appear here.</value>
+  </data>
 </root>

@@ -1,0 +1,118 @@
+@page "/pulse"
+@using LearnStack.Services
+@attribute [Authorize]
+@implements IDisposable
+@inject ILearningResourceService ResourceService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject PersistentComponentState ApplicationState
+@inject ILogger<Pulse> Logger
+
+<PageTitle>@L["LearningPulse"] - LearnStack</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="pulse-page">
+    <header class="pulse-header animate-fade-in-up">
+        <div class="pulse-heading">
+            <div class="pulse-heading-icon">
+                <MudIcon Icon="@Icons.Material.Filled.MonitorHeart" Size="Size.Medium" />
+            </div>
+            <div>
+                <MudText Typo="Typo.overline" Class="pulse-eyebrow">@L["LearningInsights"]</MudText>
+                <MudText Typo="Typo.h4">@L["LearningPulse"]</MudText>
+                <MudText Typo="Typo.body1">@L["LearningPulseDescription"]</MudText>
+            </div>
+        </div>
+        <MudButton Href="/resources"
+                   Variant="Variant.Text"
+                   StartIcon="@Icons.Material.Filled.ArrowBack"
+                   Class="pulse-back-button">
+            @L["BackToLibrary"]
+        </MudButton>
+    </header>
+
+    @if (isLoading)
+    {
+        <div class="pulse-state">
+            <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Large" />
+            <MudText Typo="Typo.body2">@L["LoadingPulse"]</MudText>
+        </div>
+    }
+    else if (hasLoadError)
+    {
+        <div class="pulse-state pulse-state-bordered">
+            <MudIcon Icon="@Icons.Material.Filled.CloudOff" Size="Size.Large" />
+            <MudText Typo="Typo.h6">@L["PulseUnavailable"]</MudText>
+            <MudText Typo="Typo.body2">@L["PulseUnavailableDescription"]</MudText>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="LoadPulseAsync" Disabled="loadInProgress">
+                @L["Retry"]
+            </MudButton>
+        </div>
+    }
+    else if (resources.Count == 0)
+    {
+        <div class="pulse-state pulse-state-bordered">
+            <MudIcon Icon="@Icons.Material.Filled.Insights" Size="Size.Large" />
+            <MudText Typo="Typo.h6">@L["StartLearningPulse"]</MudText>
+            <MudText Typo="Typo.body2">@L["StartLearningPulseDescription"]</MudText>
+            <MudButton Href="/resources" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add">
+                @L["AddResource"]
+            </MudButton>
+        </div>
+    }
+    else
+    {
+        <div class="pulse-section animate-fade-in-up">
+            <PulseSummary CompletedCount="completedCount"
+                          CompletionRate="completionRate"
+                          ActiveDays="activeDays"
+                          QueueCount="queueCount" />
+        </div>
+
+        <div class="pulse-primary-grid pulse-section animate-fade-in-up">
+            <PulseActivityChart CompletionCounts="weeklyCompletionCounts" WeekLabels="weekLabels" />
+            <PulseLearningMix ContentTypeCounts="contentTypeCounts" />
+        </div>
+
+        <div class="pulse-secondary-grid pulse-section animate-fade-in-up">
+            <PulseSignals CurrentPeriodCompletions="currentPeriodCompletions"
+                          PreviousPeriodCompletions="previousPeriodCompletions"
+                          InProgressCount="inProgressCount"
+                          CompletedWithNotesCount="completedWithNotesCount"
+                          CompletedCount="completedCount" />
+
+            <section class="recent-wins-panel">
+                <MudStack Spacing="1" Class="recent-wins-heading">
+                    <MudText Typo="Typo.h6">@L["RecentWins"]</MudText>
+                    <MudText Typo="Typo.body2">@L["RecentWinsDescription"]</MudText>
+                </MudStack>
+
+                @if (recentCompletions.Count == 0)
+                {
+                    <div class="recent-wins-empty">
+                        <MudIcon Icon="@Icons.Material.Filled.OutlinedFlag" />
+                        <MudText Typo="Typo.body2">@L["NoRecentWins"]</MudText>
+                    </div>
+                }
+                else
+                {
+                    <div class="recent-wins-list">
+                        @foreach (var resource in recentCompletions)
+                        {
+                            <article class="recent-win" @key="resource.Id">
+                                <div class="recent-win-icon">
+                                    <MudIcon Icon="@Icons.Material.Filled.Check" Size="Size.Small" />
+                                </div>
+                                <div class="recent-win-copy">
+                                    <MudLink Href="@resource.Url" Target="_blank" Rel="noopener noreferrer" Typo="Typo.subtitle2">@resource.Title</MudLink>
+                                    <MudText Typo="Typo.caption">
+                                        @GetContentTypeText(resource.ContentType) · @FormatCompletionDate(resource.DateCompleted)
+                                    </MudText>
+                                </div>
+                                <MudIcon Icon="@Icons.Material.Filled.OpenInNew" Size="Size.Small" Class="recent-win-open" />
+                            </article>
+                        }
+                    </div>
+                }
+            </section>
+        </div>
+    }
+</MudContainer>

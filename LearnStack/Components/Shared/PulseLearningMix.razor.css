@@ -1,0 +1,108 @@
+.pulse-panel {
+    height: 100%;
+    min-height: 310px;
+    padding: 24px;
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: 8px;
+    background: var(--mud-palette-surface);
+}
+
+.pulse-panel-heading ::deep .mud-typography-h6 {
+    color: var(--mud-palette-text-primary);
+    font-weight: 700;
+}
+
+.pulse-panel-heading ::deep .mud-typography-body2 {
+    color: var(--mud-palette-text-secondary);
+}
+
+.pulse-mix-list {
+    display: grid;
+    gap: 15px;
+    margin-top: 22px;
+}
+
+.pulse-mix-row {
+    display: grid;
+    grid-template-columns: minmax(130px, 1.2fr) minmax(90px, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+}
+
+.pulse-mix-label {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+    color: var(--mud-palette-text-primary);
+}
+
+.pulse-mix-label ::deep .mud-typography-body2 {
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pulse-mix-label span {
+    margin-left: auto;
+    color: var(--mud-palette-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.pulse-mix-track {
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--mud-palette-lines-default) 70%, transparent);
+}
+
+.pulse-mix-fill {
+    height: 100%;
+    border-radius: 4px;
+}
+
+.pulse-mix-fill.level-1 { width: 10%; }
+.pulse-mix-fill.level-2 { width: 20%; }
+.pulse-mix-fill.level-3 { width: 30%; }
+.pulse-mix-fill.level-4 { width: 40%; }
+.pulse-mix-fill.level-5 { width: 50%; }
+.pulse-mix-fill.level-6 { width: 60%; }
+.pulse-mix-fill.level-7 { width: 70%; }
+.pulse-mix-fill.level-8 { width: 80%; }
+.pulse-mix-fill.level-9 { width: 90%; }
+.pulse-mix-fill.level-10 { width: 100%; }
+
+.mix-blog { background: #0284c7; }
+.mix-podcast { background: #c2410c; }
+.mix-video { background: #dc2626; }
+.mix-article { background: #0f766e; }
+.mix-course { background: #7c3aed; }
+.mix-documentation { background: #4d7c0f; }
+.mix-other { background: #64748b; }
+
+.pulse-mix-empty {
+    display: grid;
+    min-height: 220px;
+    place-content: center;
+    gap: 10px;
+    color: var(--mud-palette-text-secondary);
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .pulse-panel {
+        min-height: 270px;
+        padding: 18px;
+    }
+
+    .pulse-mix-row {
+        grid-template-columns: minmax(120px, 1fr) minmax(70px, 1fr);
+    }
+
+    .pulse-mix-row ::deep > .mud-typography-caption {
+        display: none;
+    }
+}

@@ -1,0 +1,90 @@
+<section class="pulse-panel">
+    <MudStack Spacing="1" Class="pulse-panel-heading">
+        <MudText Typo="Typo.h6">@L["LearningSignals"]</MudText>
+        <MudText Typo="Typo.body2">@L["LearningSignalsDescription"]</MudText>
+    </MudStack>
+
+    <div class="pulse-signal-list">
+        <article class="pulse-signal signal-momentum">
+            <div class="pulse-signal-icon">
+                <MudIcon Icon="@Icons.Material.Filled.TrendingUp" />
+            </div>
+            <div>
+                <MudText Typo="Typo.subtitle2">@L["Momentum"]</MudText>
+                <MudText Typo="Typo.body2">@GetMomentumMessage()</MudText>
+            </div>
+        </article>
+
+        <article class="pulse-signal signal-focus">
+            <div class="pulse-signal-icon">
+                <MudIcon Icon="@Icons.Material.Filled.CenterFocusStrong" />
+            </div>
+            <div>
+                <MudText Typo="Typo.subtitle2">@L["Focus"]</MudText>
+                <MudText Typo="Typo.body2">@GetFocusMessage()</MudText>
+            </div>
+        </article>
+
+        <article class="pulse-signal signal-notes">
+            <div class="pulse-signal-icon">
+                <MudIcon Icon="@Icons.Material.Filled.EditNote" />
+            </div>
+            <div>
+                <MudText Typo="Typo.subtitle2">@L["KnowledgeCapture"]</MudText>
+                <MudText Typo="Typo.body2">@GetNotesMessage()</MudText>
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    [Parameter]
+    public int CurrentPeriodCompletions { get; set; }
+
+    [Parameter]
+    public int PreviousPeriodCompletions { get; set; }
+
+    [Parameter]
+    public int InProgressCount { get; set; }
+
+    [Parameter]
+    public int CompletedWithNotesCount { get; set; }
+
+    [Parameter]
+    public int CompletedCount { get; set; }
+
+    private string GetMomentumMessage()
+    {
+        if (CurrentPeriodCompletions > PreviousPeriodCompletions)
+        {
+            return L["MomentumAhead", CurrentPeriodCompletions, PreviousPeriodCompletions];
+        }
+
+        if (CurrentPeriodCompletions > 0)
+        {
+            return L["MomentumSteady", CurrentPeriodCompletions];
+        }
+
+        return L["MomentumReset"];
+    }
+
+    private string GetFocusMessage() => InProgressCount switch
+    {
+        0 => L["FocusReady"],
+        <= 3 => L["FocusClear", InProgressCount],
+        _ => L["FocusSpread", InProgressCount]
+    };
+
+    private string GetNotesMessage()
+    {
+        if (CompletedCount == 0)
+        {
+            return L["NotesWaiting"];
+        }
+
+        var percentage = (int)Math.Round(CompletedWithNotesCount * 100d / CompletedCount);
+        return percentage >= 60
+            ? L["NotesStrong", percentage]
+            : L["NotesOpportunity", percentage];
+    }
+}
