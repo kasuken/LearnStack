@@ -50,6 +50,7 @@ The application is built with ASP.NET Core, Blazor Server, Entity Framework Core
 
 - Localized UI in English, German, Spanish, French, and Italian.
 - Light and dark theme support.
+- Installable as a Progressive Web App (home-screen icons only; no offline mode).
 - ASP.NET Identity authentication with passkey support.
 - Terms of Service acceptance flow for signed-in users.
 
@@ -154,7 +155,7 @@ Useful docs:
 |  |- Data/               # DbContext, identity user, models, migrations
 |  |- Resources/          # Localization resource files
 |  |- Services/           # Application services and metadata fetching
-|  |- wwwroot/            # Static assets, styles, scripts, logos, ToS page
+|  |- wwwroot/            # Static assets, PWA manifest/icons, styles, scripts, logos, ToS page
 |- .github/
 |  |- workflows/          # Azure deployment and release automation
 |  |- DEPLOYMENT.md
@@ -168,6 +169,7 @@ Useful docs:
 - Shared collections by link
 - Friend invitations and public resource sharing
 - Localization and theme support
+- Installable PWA (icons and Add to Home Screen)
 - Azure deployment automation
 
 If you want to extend the project, the most natural next areas are richer collaboration, analytics, and smarter idea generation from saved resources.
