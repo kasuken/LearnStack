@@ -44,6 +44,9 @@ namespace LearnStack.Migrations
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("LastAccessAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 

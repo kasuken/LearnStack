@@ -344,6 +344,7 @@
 
         if (result.Succeeded)
         {
+            await UpdateLastAccessAtAsync();
             Logger.LogInformation("User logged in.");
             RedirectManager.RedirectTo(ReturnUrl ?? "/");
         }
@@ -361,6 +362,29 @@
         else
         {
             errorMessage = L["Invalid email or password. Please try again."];
+        }
+    }
+
+    private async Task UpdateLastAccessAtAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Input.Email))
+        {
+            Logger.LogWarning("Could not update LastAccessAt because the email was not provided.");
+            return;
+        }
+
+        var user = await SignInManager.UserManager.FindByEmailAsync(Input.Email);
+        if (user is null)
+        {
+            Logger.LogWarning("Could not update LastAccessAt because user with email '{Email}' was not found.", Input.Email);
+            return;
+        }
+
+        user.LastAccessAt = DateTime.UtcNow;
+        var updateResult = await SignInManager.UserManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            Logger.LogWarning("Failed to update LastAccessAt for user '{UserId}'.", user.Id);
         }
     }
 

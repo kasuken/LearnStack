@@ -1,0 +1,214 @@
+.pulse-page {
+    padding-top: 34px;
+    padding-bottom: 56px;
+}
+
+.pulse-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.pulse-heading {
+    display: flex;
+    max-width: 760px;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.pulse-heading-icon {
+    display: grid;
+    width: 50px;
+    height: 50px;
+    flex: 0 0 50px;
+    place-items: center;
+    border: 1px solid #99f6e4;
+    border-radius: 8px;
+    color: #0f766e;
+    background: #ccfbf1;
+}
+
+.pulse-eyebrow {
+    color: #0f766e;
+    font-weight: 750;
+}
+
+.pulse-heading ::deep .mud-typography-h4 {
+    color: var(--mud-palette-text-primary);
+    font-weight: 750;
+    letter-spacing: 0;
+}
+
+.pulse-heading ::deep .mud-typography-body1 {
+    max-width: 680px;
+    margin-top: 5px;
+    color: var(--mud-palette-text-secondary);
+}
+
+.pulse-back-button {
+    flex: 0 0 auto;
+}
+
+.pulse-section {
+    margin-top: 18px;
+}
+
+.pulse-primary-grid,
+.pulse-secondary-grid {
+    display: grid;
+    gap: 18px;
+}
+
+.pulse-primary-grid {
+    grid-template-columns: minmax(0, 1.65fr) minmax(320px, 1fr);
+}
+
+.pulse-secondary-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pulse-state {
+    display: grid;
+    min-height: 420px;
+    place-content: center;
+    justify-items: center;
+    gap: 12px;
+    color: var(--mud-palette-text-secondary);
+    text-align: center;
+}
+
+.pulse-state-bordered {
+    min-height: 360px;
+    padding: 32px;
+    border: 1px dashed var(--mud-palette-lines-default);
+    border-radius: 8px;
+    background: var(--mud-palette-surface);
+}
+
+.pulse-state ::deep .mud-typography-h6 {
+    color: var(--mud-palette-text-primary);
+    font-weight: 700;
+}
+
+.pulse-state ::deep .mud-typography-body2 {
+    max-width: 460px;
+}
+
+.recent-wins-panel {
+    height: 100%;
+    min-height: 310px;
+    padding: 24px;
+    border: 1px solid var(--mud-palette-lines-default);
+    border-radius: 8px;
+    background: var(--mud-palette-surface);
+}
+
+.recent-wins-heading ::deep .mud-typography-h6 {
+    color: var(--mud-palette-text-primary);
+    font-weight: 700;
+}
+
+.recent-wins-heading ::deep .mud-typography-body2 {
+    color: var(--mud-palette-text-secondary);
+}
+
+.recent-wins-list {
+    display: grid;
+    margin-top: 14px;
+}
+
+.recent-win {
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr) 20px;
+    gap: 12px;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--mud-palette-lines-default);
+}
+
+.recent-win:last-child {
+    border-bottom: 0;
+}
+
+.recent-win-icon {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border-radius: 8px;
+    color: #047857;
+    background: #d1fae5;
+}
+
+.recent-win-copy {
+    min-width: 0;
+}
+
+.recent-win-copy ::deep .mud-link {
+    display: block;
+    overflow: hidden;
+    color: var(--mud-palette-text-primary);
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.recent-win-copy ::deep .mud-typography-caption,
+.recent-win-open {
+    color: var(--mud-palette-text-secondary);
+}
+
+.recent-wins-empty {
+    display: grid;
+    min-height: 210px;
+    place-content: center;
+    gap: 10px;
+    color: var(--mud-palette-text-secondary);
+    text-align: center;
+}
+
+@media (max-width: 1100px) {
+    .pulse-primary-grid,
+    .pulse-secondary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .pulse-page {
+        padding-top: 22px;
+        padding-bottom: 36px;
+    }
+
+    .pulse-header {
+        display: grid;
+        gap: 14px;
+    }
+
+    .pulse-heading {
+        gap: 12px;
+    }
+
+    .pulse-heading-icon {
+        width: 42px;
+        height: 42px;
+        flex-basis: 42px;
+    }
+
+    .pulse-heading ::deep .mud-typography-h4 {
+        font-size: 1.6rem;
+    }
+
+    .pulse-back-button {
+        justify-self: start;
+    }
+
+    .recent-wins-panel {
+        min-height: auto;
+        padding: 18px;
+    }
+}

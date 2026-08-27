@@ -142,7 +142,7 @@
                                     <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Style="color: #5c6bc0;" />
                                     <MudText Typo="Typo.body2" Style="font-weight: 500;">@L["ResourceCount", group.Items.Count]</MudText>
                                 </MudStack>
-                                <MudText Typo="Typo.caption" Style="color: #9e9e9e;">@group.DateCreated.ToString("MMM dd, yyyy")</MudText>
+                                <MudText Typo="Typo.caption" Style="color: #9e9e9e;">@group.DateCreated.ToString("d")</MudText>
                             </MudStack>
                             @if (group.Items.Any())
                             {
@@ -272,9 +272,16 @@
 
         if (result == true)
         {
-            await SharedGroupService.DeleteAsync(groupId, userId);
-            await LoadGroups();
-            Snackbar.Add(L["CollectionDeleted"], Severity.Info);
+            var deleted = await SharedGroupService.DeleteAsync(groupId, userId);
+            if (deleted)
+            {
+                await LoadGroups();
+                Snackbar.Add(L["CollectionDeleted"], Severity.Info);
+            }
+            else
+            {
+                Snackbar.Add(L["ErrorSubtitle"], Severity.Error);
+            }
         }
     }
 }

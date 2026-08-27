@@ -5,6 +5,7 @@
 @inject ILearningResourceService ResourceService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 
 <PageTitle>@L["ContentIdeas"] - LearnStack</PageTitle>
@@ -242,7 +243,7 @@
                             
                             <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
                                 <MudText Typo="Typo.caption" Style="color: #94a3b8;">
-                                    @GetRelativeDate(context.DateCreated)
+                                    @DateTimeHelper.GetRelativeDate(context.DateCreated, L)
                                 </MudText>
                                 <MudStack Row="true" Spacing="1">
                                     @if (context.Status != IdeaStatus.InProgress)
@@ -311,7 +312,7 @@
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.DateCreated" aria-label="@(L["DateCreated"])">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@GetRelativeDate(context.Item.DateCreated)</MudText>
+                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@DateTimeHelper.GetRelativeDate(context.Item.DateCreated, L)</MudText>
                     </CellTemplate>
                 </PropertyColumn>
                 <TemplateColumn Title="@(L["Sources"])" Sortable="false">
@@ -562,9 +563,25 @@
 
     private async Task DeleteIdea(int id)
     {
-        await ContentIdeaService.DeleteAsync(id, userId);
-        await LoadIdeas();
-        await LoadStatistics();
+        var confirmed = await DialogService.ShowMessageBox(
+            L["DeleteIdeaDialogTitle"],
+            L["DeleteIdeaDialogMessage"],
+            yesText: L["Delete"],
+            cancelText: L["Cancel"]);
+
+        if (confirmed != true) return;
+
+        var deleted = await ContentIdeaService.DeleteAsync(id, userId);
+        if (deleted)
+        {
+            Snackbar.Add(L["IdeaDeleted"], Severity.Info);
+            await LoadIdeas();
+            await LoadStatistics();
+        }
+        else
+        {
+            Snackbar.Add(L["ErrorSubtitle"], Severity.Error);
+        }
     }
 
     private async Task UpdateStatus(ContentIdea idea, IdeaStatus newStatus)
@@ -576,102 +593,27 @@
         ApplyFilters();
     }
 
-    private string GetRelativeDate(DateTime date)
-    {
-        var diff = DateTime.UtcNow - date;
-        if (diff.TotalDays < 1) return L["Today"];
-        if (diff.TotalDays < 2) return L["Yesterday"];
-        if (diff.TotalDays < 7) return L["DaysAgo", (int)diff.TotalDays];
-        if (diff.TotalDays < 30) return L["WeeksAgo", (int)(diff.TotalDays / 7)];
-        if (diff.TotalDays < 365) return L["MonthsAgo", (int)(diff.TotalDays / 30)];
-        return L["YearsAgo", (int)(diff.TotalDays / 365)];
-    }
 
-    private Color GetContentTypeColor(ContentIdeaType type) => type switch
-    {
-        ContentIdeaType.BlogPost => Color.Primary,
-        ContentIdeaType.Video => Color.Error,
-        ContentIdeaType.TweetThread => Color.Info,
-        ContentIdeaType.Tutorial => Color.Warning,
-        ContentIdeaType.Other => Color.Secondary,
-        _ => Color.Default
-    };
 
-    private Color GetStatusColor(IdeaStatus status) => status switch
-    {
-        IdeaStatus.Idea => Color.Info,
-        IdeaStatus.InProgress => Color.Warning,
-        IdeaStatus.Published => Color.Success,
-        _ => Color.Default
-    };
+    private Color GetContentTypeColor(ContentIdeaType type) => EnumDisplayHelper.GetColor(type);
 
-    private Color GetPriorityColor(Priority priority) => priority switch
-    {
-        Priority.High => Color.Error,
-        Priority.Medium => Color.Warning,
-        Priority.Low => Color.Default,
-        _ => Color.Default
-    };
+    private Color GetStatusColor(IdeaStatus status) => EnumDisplayHelper.GetColor(status);
 
-    private string GetPriorityStyle(Priority priority) => priority switch
-    {
-        Priority.High => "background-color: #ffebee; color: #c62828;",
-        Priority.Medium => "background-color: #fff8e1; color: #f57f17;",
-        Priority.Low => "background-color: #f5f5f5; color: #757575;",
-        _ => ""
-    };
+    private Color GetPriorityColor(Priority priority) => EnumDisplayHelper.GetColor(priority);
 
-    private string GetContentTypeChipClass(ContentIdeaType contentType) => contentType switch
-    {
-        ContentIdeaType.Video => "chip-idea-video",
-        ContentIdeaType.BlogPost => "chip-idea-blogpost",
-        ContentIdeaType.Tutorial => "chip-idea-tutorial",
-        ContentIdeaType.TweetThread => "chip-idea-tweetthread",
-        ContentIdeaType.Other => "chip-idea-other",
-        _ => "chip-type-default"
-    };
+    private string GetPriorityStyle(Priority priority) => EnumDisplayHelper.GetPriorityStyle(priority);
 
-    private string GetStatusChipClass(IdeaStatus status) => status switch
-    {
-        IdeaStatus.Idea => "chip-status-idea",
-        IdeaStatus.InProgress => "chip-status-progress",
-        IdeaStatus.Published => "chip-status-complete",
-        _ => "chip-type-default"
-    };
+    private string GetContentTypeChipClass(ContentIdeaType contentType) => EnumDisplayHelper.GetChipClass(contentType);
 
-    private string GetPriorityChipClass(Priority priority) => priority switch
-    {
-        Priority.High => "chip-priority-high",
-        Priority.Medium => "chip-priority-medium",
-        Priority.Low => "chip-priority-low",
-        _ => "chip-priority-low"
-    };
+    private string GetStatusChipClass(IdeaStatus status) => EnumDisplayHelper.GetChipClass(status);
 
-    private string GetContentTypeChipStyle(ContentIdeaType contentType) => contentType switch
-    {
-        ContentIdeaType.Video => "background: #ffebee; color: #c62828; font-weight: 500;",
-        ContentIdeaType.BlogPost => "background: #e3f2fd; color: #1565c0; font-weight: 500;",
-        ContentIdeaType.Tutorial => "background: #fff3e0; color: #e65100; font-weight: 500;",
-        ContentIdeaType.TweetThread => "background: #f3e8ff; color: #7b1fa2; font-weight: 500;",
-        ContentIdeaType.Other => "background: #e8f5e9; color: #2e7d32; font-weight: 500;",
-        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
-    };
+    private string GetPriorityChipClass(Priority priority) => EnumDisplayHelper.GetChipClass(priority);
 
-    private string GetStatusChipStyle(IdeaStatus status) => status switch
-    {
-        IdeaStatus.Idea => "background: #e3f2fd; color: #1565c0; font-weight: 500;",
-        IdeaStatus.InProgress => "background: #fff3e0; color: #e65100; font-weight: 500;",
-        IdeaStatus.Published => "background: #e8f5e9; color: #2e7d32; font-weight: 500;",
-        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
-    };
+    private string GetContentTypeChipStyle(ContentIdeaType contentType) => EnumDisplayHelper.GetChipStyle(contentType);
 
-    private string GetPriorityChipStyle(Priority priority) => priority switch
-    {
-        Priority.High => "background: #ffebee; color: #c62828; font-weight: 500;",
-        Priority.Medium => "background: #fff3e0; color: #e65100; font-weight: 500;",
-        Priority.Low => "background: #f5f5f5; color: #616161; font-weight: 500;",
-        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
-    };
+    private string GetStatusChipStyle(IdeaStatus status) => EnumDisplayHelper.GetChipStyle(status);
+
+    private string GetPriorityChipStyle(Priority priority) => EnumDisplayHelper.GetChipStyle(priority);
 }
 
 

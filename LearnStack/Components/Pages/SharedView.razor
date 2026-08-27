@@ -57,7 +57,7 @@
                     @L["ResourceCount", group.Items.Count]
                 </MudChip>
                 <MudChip T="string" Size="Size.Small" Style="background: #f1f5f9; color: #475569; font-weight: 600; border-radius: 6px;">
-                    @group.DateCreated.ToString("MMMM dd, yyyy")
+                    @group.DateCreated.ToString("D")
                 </MudChip>
             </MudStack>
         </MudPaper>
@@ -170,33 +170,12 @@
         return text.Length <= maxLength ? text : text.Substring(0, maxLength) + "...";
     }
 
-    private string GetContentTypeIcon(ContentType type) => type switch
-    {
-        ContentType.BlogPost => Icons.Material.Filled.Article,
-        ContentType.Podcast => Icons.Material.Filled.Podcasts,
-        ContentType.Video => Icons.Material.Filled.OndemandVideo,
-        ContentType.Article => Icons.Material.Filled.Description,
-        ContentType.Course => Icons.Material.Filled.School,
-        ContentType.Documentation => Icons.Material.Filled.MenuBook,
-        _ => Icons.Material.Filled.Link
-    };
+    private string GetContentTypeIcon(ContentType type)
+        => EnumDisplayHelper.GetIcon(type);
 
-    private string GetContentTypeChipStyle(ContentType type) => type switch
-    {
-        ContentType.BlogPost => "background: #eff6ff; color: #2563eb;",
-        ContentType.Podcast => "background: #faf5ff; color: #9333ea;",
-        ContentType.Video => "background: #fef2f2; color: #dc2626;",
-        ContentType.Article => "background: #eef2ff; color: #4f46e5;",
-        ContentType.Course => "background: #fff7ed; color: #ea580c;",
-        ContentType.Documentation => "background: #ecfdf5; color: #059669;",
-        _ => "background: #f1f5f9; color: #475569;"
-    };
+    private string GetContentTypeChipStyle(ContentType type)
+        => EnumDisplayHelper.GetChipStyle(type);
 
-    private string GetPriorityChipStyle(Priority priority) => priority switch
-    {
-        Priority.High => "background: #fef2f2; color: #dc2626;",
-        Priority.Medium => "background: #fffbeb; color: #d97706;",
-        Priority.Low => "background: #f1f5f9; color: #64748b;",
-        _ => "background: #f1f5f9; color: #64748b;"
-    };
+    private string GetPriorityChipStyle(Priority priority)
+        => EnumDisplayHelper.GetChipStyle(priority);
 }

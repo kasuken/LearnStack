@@ -110,41 +110,9 @@
     [Parameter]
     public EventCallback OnArchiveToggle { get; set; }
 
-    private Color GetContentTypeColor()
-    {
-        return Resource.ContentType switch
-        {
-            ContentType.BlogPost => Color.Primary,
-            ContentType.Podcast => Color.Secondary,
-            ContentType.Video => Color.Error,
-            ContentType.Article => Color.Info,
-            ContentType.Course => Color.Warning,
-            ContentType.Documentation => Color.Success,
-            _ => Color.Default
-        };
-    }
-
-    private Color GetStatusColor()
-    {
-        return Resource.Status switch
-        {
-            ContentStatus.ToLearn => Color.Info,
-            ContentStatus.InProgress => Color.Warning,
-            ContentStatus.Completed => Color.Success,
-            _ => Color.Default
-        };
-    }
-
-    private Color GetPriorityColor()
-    {
-        return Resource.Priority switch
-        {
-            Priority.High => Color.Error,
-            Priority.Medium => Color.Warning,
-            Priority.Low => Color.Default,
-            _ => Color.Default
-        };
-    }
+    private Color GetContentTypeColor() => EnumDisplayHelper.GetColor(Resource.ContentType);
+    private Color GetStatusColor() => EnumDisplayHelper.GetColor(Resource.Status);
+    private Color GetPriorityColor() => EnumDisplayHelper.GetColor(Resource.Priority);
 
     private string GetStatusText()
     {

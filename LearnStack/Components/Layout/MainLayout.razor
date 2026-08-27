@@ -50,6 +50,12 @@
                                 <MudText Style="color: var(--mud-palette-text-primary); font-weight: 500;">@L["ManageAccount"]</MudText>
                             </MudStack>
                         </MudMenuItem>
+                        <MudMenuItem Href="/pulse" Style="padding: 12px 16px; border-radius: 8px; margin: 4px;">
+                            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                <MudIcon Icon="@Icons.Material.Filled.MonitorHeart" Size="Size.Small" Style="color: #0f766e;" />
+                                <MudText Style="color: var(--mud-palette-text-primary); font-weight: 500;">@L["LearningPulse"]</MudText>
+                            </MudStack>
+                        </MudMenuItem>
                         <MudMenuItem Href="friends" Style="padding: 12px 16px; border-radius: 8px; margin: 4px;">
                             <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
                                 <MudIcon Icon="@Icons.Material.Filled.People" Size="Size.Small" Style="color: #475569;" />
@@ -128,22 +134,24 @@
             await JSRuntime.InvokeVoidAsync("setDarkMode", _isDarkMode);
             StateHasChanged();
 
-            await CheckTosAcceptanceAsync();
-            await CheckOnboardingAsync();
+            if (await CheckTosAcceptanceAsync())
+            {
+                await CheckOnboardingAsync();
+            }
         }
     }
 
-    private async Task CheckTosAcceptanceAsync()
+    private async Task<bool> CheckTosAcceptanceAsync()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var claimsPrincipal = authState.User;
 
         if (claimsPrincipal.Identity?.IsAuthenticated != true)
-            return;
+            return true;
 
         var user = await UserManager.GetUserAsync(claimsPrincipal);
         if (user is null || user.TosAcceptedAt.HasValue)
-            return;
+            return true;
 
         var dialog = await DialogService.ShowAsync<TosDialog>(
             L["TermsOfService"],
@@ -161,7 +169,10 @@
         if (result is { Canceled: true })
         {
             NavigationManager.NavigateTo("/welcome", forceLoad: true);
+            return false;
         }
+
+        return true;
     }
 
     private async Task OnSystemPreferenceChanged(bool newValue)

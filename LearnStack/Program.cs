@@ -1,13 +1,11 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using LearnStack.Components;
 using LearnStack.Components.Account;
 using LearnStack.Data;
-using LearnStack.Services;
+using LearnStack.Extensions;
 using MudBlazor.Services;
-using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,25 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-builder.Services.AddLocalization();
+builder.Services.AddLearnStackLocalization();
 builder.Services.AddControllers();
-
-var supportedCultures = new[] { "en", "de", "es", "fr", "it" }
-    .Select(c => new CultureInfo(c))
-    .ToList();
-
-builder.Services.Configure<RequestLocalizationOptions>(options =>
-{
-    options.DefaultRequestCulture = new RequestCulture("en");
-    options.SupportedCultures = supportedCultures;
-    options.SupportedUICultures = supportedCultures;
-
-    options.RequestCultureProviders =
-    [
-        new CookieRequestCultureProvider(),
-        new AcceptLanguageHeaderRequestCultureProvider()
-    ];
-});
 
 builder.Services.AddMudServices();
 
@@ -50,8 +31,7 @@ builder.Services.AddAuthentication(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+builder.Services.AddLearnStackData(connectionString, migrationsAssembly: "LearnStack");
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
@@ -66,14 +46,7 @@ builder.Services.AddIdentityCore<ApplicationUser>(options =>
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
 // Add application services
-builder.Services.AddScoped<ILearningResourceService, LearningResourceService>();
-builder.Services.AddScoped<IContentIdeaService, ContentIdeaService>();
-builder.Services.AddScoped<ISharedResourceGroupService, SharedResourceGroupService>();
-builder.Services.AddScoped<IFriendshipService, FriendshipService>();
-builder.Services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
-{
-    client.Timeout = TimeSpan.FromSeconds(30);
-});
+builder.Services.AddLearnStackApplicationServices();
 
 var app = builder.Build();
 

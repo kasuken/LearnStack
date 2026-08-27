@@ -1,5 +1,6 @@
 ---
 agent: 'agent'
+tools: [web/fetch]
 description: 'Create a README.md file for the project'
 ---
 

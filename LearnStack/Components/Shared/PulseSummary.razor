@@ -1,0 +1,59 @@
+<section class="pulse-metrics">
+    <article class="pulse-metric metric-completed">
+        <div class="pulse-metric-icon">
+            <MudIcon Icon="@Icons.Material.Filled.TaskAlt" />
+        </div>
+        <div>
+            <MudText Typo="Typo.h5">@CompletedCount</MudText>
+            <MudText Typo="Typo.body2">@L["CompletedResources"]</MudText>
+            <MudText Typo="Typo.caption">@L["AllTime"]</MudText>
+        </div>
+    </article>
+
+    <article class="pulse-metric metric-rate">
+        <div class="pulse-metric-icon">
+            <MudIcon Icon="@Icons.Material.Filled.DonutLarge" />
+        </div>
+        <div>
+            <MudText Typo="Typo.h5">@CompletionRate%</MudText>
+            <MudText Typo="Typo.body2">@L["CompletionRate"]</MudText>
+            <MudText Typo="Typo.caption">@L["OfAllResources"]</MudText>
+        </div>
+    </article>
+
+    <article class="pulse-metric metric-active">
+        <div class="pulse-metric-icon">
+            <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" />
+        </div>
+        <div>
+            <MudText Typo="Typo.h5">@ActiveDays</MudText>
+            <MudText Typo="Typo.body2">@L["ActiveDays"]</MudText>
+            <MudText Typo="Typo.caption">@L["Last30Days"]</MudText>
+        </div>
+    </article>
+
+    <article class="pulse-metric metric-queue">
+        <div class="pulse-metric-icon">
+            <MudIcon Icon="@Icons.Material.Filled.Bookmarks" />
+        </div>
+        <div>
+            <MudText Typo="Typo.h5">@QueueCount</MudText>
+            <MudText Typo="Typo.body2">@L["LearningQueue"]</MudText>
+            <MudText Typo="Typo.caption">@L["AwaitingAttention"]</MudText>
+        </div>
+    </article>
+</section>
+
+@code {
+    [Parameter]
+    public int CompletedCount { get; set; }
+
+    [Parameter]
+    public int CompletionRate { get; set; }
+
+    [Parameter]
+    public int ActiveDays { get; set; }
+
+    [Parameter]
+    public int QueueCount { get; set; }
+}

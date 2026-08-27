@@ -3,12 +3,15 @@
 @using System.Text
 @using System.Text.Json
 @attribute [Authorize]
+@implements IDisposable
 @inject ILearningResourceService ResourceService
 @inject IContentIdeaService ContentIdeaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IDialogService DialogService
+@inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@inject PersistentComponentState ApplicationState
 
 <PageTitle>@L["ResourceLibrary"] - LearnStack</PageTitle>
 
@@ -308,7 +311,7 @@
                                     </MudChip>
                                 </MudStack>
                                 <MudText Typo="Typo.caption" Style="color: var(--mud-palette-text-secondary); margin-top: 6px;">
-                                    @L["DateAdded"]: @GetRelativeDate(context.DateAdded)
+                                    @L["DateAdded"]: @DateTimeHelper.GetRelativeDate(context.DateAdded, L) @GetAgeEmoji(context.DateAdded)
                                 </MudText>
                             </MudStack>
                         </div>
@@ -405,7 +408,7 @@
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.DateAdded" aria-label="@L["DateAdded"]">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@GetRelativeDate(context.Item.DateAdded)</MudText>
+                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@DateTimeHelper.GetRelativeDate(context.Item.DateAdded, L) @GetAgeEmoji(context.Item.DateAdded)</MudText>
                     </CellTemplate>
                 </PropertyColumn>
                 <TemplateColumn Title="@L["Actions"]" Sortable="false">
@@ -449,6 +452,8 @@
 </MudContainer>
 
 @code {
+    private const string PageStateKey = "resources-page-state";
+
     private enum ViewMode
     {
         List,
@@ -481,15 +486,64 @@
     private int inProgressCount;
     private int completedCount;
     private int contentIdeasCount;
+    private PersistingComponentStateSubscription? persistingSubscription;
 
     protected override async Task OnInitializedAsync()
     {
+        persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPageState);
+
+        if (TryRestorePageState())
+        {
+            return;
+        }
+
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
         await ResourceService.ArchiveStaleResourcesAsync(userId);
         await LoadResources();
         await LoadStatistics();
+    }
+
+    private bool TryRestorePageState()
+    {
+        if (!ApplicationState.TryTakeFromJson<ResourcesPageState>(PageStateKey, out var pageState) || pageState is null)
+        {
+            return false;
+        }
+
+        userId = pageState.UserId;
+        resources = pageState.Resources;
+        toLearnCount = pageState.ToLearnCount;
+        inProgressCount = pageState.InProgressCount;
+        completedCount = pageState.CompletedCount;
+        contentIdeasCount = pageState.ContentIdeasCount;
+        activeTabIndex = pageState.ActiveTabIndex;
+        isLoading = false;
+
+        ApplyFilters(true);
+        return true;
+    }
+
+    private Task PersistPageState()
+    {
+        if (string.IsNullOrEmpty(userId))
+        {
+            return Task.CompletedTask;
+        }
+
+        ApplicationState.PersistAsJson(PageStateKey, new ResourcesPageState
+        {
+            UserId = userId,
+            Resources = resources,
+            ToLearnCount = toLearnCount,
+            InProgressCount = inProgressCount,
+            CompletedCount = completedCount,
+            ContentIdeasCount = contentIdeasCount,
+            ActiveTabIndex = activeTabIndex
+        });
+
+        return Task.CompletedTask;
     }
 
     private async Task LoadResources()
@@ -723,9 +777,25 @@
 
     private async Task DeleteResource(int id)
     {
-        await ResourceService.DeleteAsync(id, userId);
-        await LoadResources();
-        await LoadStatistics();
+        var confirmed = await DialogService.ShowMessageBox(
+            L["DeleteResourceDialogTitle"],
+            L["DeleteResourceDialogMessage"],
+            yesText: L["Delete"],
+            cancelText: L["Cancel"]);
+
+        if (confirmed != true) return;
+
+        var deleted = await ResourceService.DeleteAsync(id, userId);
+        if (deleted)
+        {
+            Snackbar.Add(L["ResourceDeleted"], Severity.Info);
+            await LoadResources();
+            await LoadStatistics();
+        }
+        else
+        {
+            Snackbar.Add(L["ErrorSubtitle"], Severity.Error);
+        }
     }
 
     private async Task UpdateStatus(LearningResource resource, ContentStatus newStatus)
@@ -765,46 +835,25 @@
         }
     }
 
-    private string GetRelativeDate(DateTime date)
+
+
+    private string GetAgeEmoji(DateTime date)
     {
         var diff = DateTime.UtcNow - date;
-        if (diff.TotalDays < 1) return L["Today"].Value;
-        if (diff.TotalDays < 2) return L["Yesterday"].Value;
-        if (diff.TotalDays < 7) return L["DaysAgo", (int)diff.TotalDays].Value;
-        if (diff.TotalDays < 30) return L["WeeksAgo", (int)(diff.TotalDays / 7)].Value;
-        if (diff.TotalDays < 365) return L["MonthsAgo", (int)(diff.TotalDays / 30)].Value;
-        return L["YearsAgo", (int)(diff.TotalDays / 365)].Value;
+
+        if (diff.TotalDays < 7) return "😀";
+        if (diff.TotalDays < 30) return "🙂";
+        if (diff.TotalDays < 90) return "😐";
+        if (diff.TotalDays < 180) return "😕";
+        if (diff.TotalDays < 365) return "☹️";
+        return "😢";
     }
 
-    private string GetContentTypeIcon(ContentType type) => type switch
-    {
-        ContentType.BlogPost => Icons.Material.Filled.Article,
-        ContentType.Podcast => Icons.Material.Filled.Podcasts,
-        ContentType.Video => Icons.Material.Filled.VideoLibrary,
-        ContentType.Article => Icons.Material.Filled.Description,
-        ContentType.Course => Icons.Material.Filled.School,
-        ContentType.Documentation => Icons.Material.Filled.MenuBook,
-        _ => Icons.Material.Filled.Link
-    };
+    private string GetContentTypeIcon(ContentType type) => EnumDisplayHelper.GetIcon(type);
 
-    private Color GetContentTypeColor(ContentType type) => type switch
-    {
-        ContentType.BlogPost => Color.Primary,
-        ContentType.Podcast => Color.Secondary,
-        ContentType.Video => Color.Error,
-        ContentType.Article => Color.Info,
-        ContentType.Course => Color.Warning,
-        ContentType.Documentation => Color.Success,
-        _ => Color.Default
-    };
+    private Color GetContentTypeColor(ContentType type) => EnumDisplayHelper.GetColor(type);
 
-    private Color GetStatusColor(ContentStatus status) => status switch
-    {
-        ContentStatus.ToLearn => Color.Info,
-        ContentStatus.InProgress => Color.Warning,
-        ContentStatus.Completed => Color.Success,
-        _ => Color.Default
-    };
+    private Color GetStatusColor(ContentStatus status) => EnumDisplayHelper.GetColor(status);
 
     private string GetStatusText(ContentStatus status) => status switch
     {
@@ -833,73 +882,21 @@
         _ => L["Unknown"].Value
     };
 
-    private Color GetPriorityColor(Priority priority) => priority switch
-    {
-        Priority.High => Color.Error,
-        Priority.Medium => Color.Warning,
-        Priority.Low => Color.Default,
-        _ => Color.Default
-    };
+    private Color GetPriorityColor(Priority priority) => EnumDisplayHelper.GetColor(priority);
 
-    private string GetPriorityStyle(Priority priority) => priority switch
-    {
-        Priority.High => "background-color: #ffebee; color: #c62828;",
-        Priority.Medium => "background-color: #fff8e1; color: #f57f17;",
-        Priority.Low => "background-color: #f5f5f5; color: #757575;",
-        _ => ""
-    };
+    private string GetPriorityStyle(Priority priority) => EnumDisplayHelper.GetPriorityStyle(priority);
 
-    private string GetContentTypeChipClass(ContentType contentType) => contentType switch
-    {
-        ContentType.Video => "chip-type-video",
-        ContentType.Article => "chip-type-article",
-        ContentType.Course => "chip-type-course",
-        ContentType.Podcast => "chip-type-podcast",
-        ContentType.Documentation => "chip-type-documentation",
-        _ => "chip-type-default"
-    };
+    private string GetContentTypeChipClass(ContentType contentType) => EnumDisplayHelper.GetChipClass(contentType);
 
-    private string GetStatusChipClass(ContentStatus status) => status switch
-    {
-        ContentStatus.ToLearn => "chip-status-idea",
-        ContentStatus.InProgress => "chip-status-progress",
-        ContentStatus.Completed => "chip-status-complete",
-        _ => "chip-type-default"
-    };
+    private string GetStatusChipClass(ContentStatus status) => EnumDisplayHelper.GetChipClass(status);
 
-    private string GetPriorityChipClass(Priority priority) => priority switch
-    {
-        Priority.High => "chip-priority-high",
-        Priority.Medium => "chip-priority-medium",
-        Priority.Low => "chip-priority-low",
-        _ => "chip-priority-low"
-    };
+    private string GetPriorityChipClass(Priority priority) => EnumDisplayHelper.GetChipClass(priority);
 
-    private string GetContentTypeChipStyle(ContentType contentType) => contentType switch
-    {
-        ContentType.Video => "background: #ffebee; color: #c62828; font-weight: 500;",
-        ContentType.Article => "background: #e3f2fd; color: #1565c0; font-weight: 500;",
-        ContentType.Course => "background: #fff3e0; color: #e65100; font-weight: 500;",
-        ContentType.Podcast => "background: #f3e8ff; color: #7b1fa2; font-weight: 500;",
-        ContentType.Documentation => "background: #e8f5e9; color: #2e7d32; font-weight: 500;",
-        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
-    };
+    private string GetContentTypeChipStyle(ContentType contentType) => EnumDisplayHelper.GetChipStyle(contentType);
 
-    private string GetStatusChipStyle(ContentStatus status) => status switch
-    {
-        ContentStatus.ToLearn => "background: #e3f2fd; color: #1565c0; font-weight: 500;",
-        ContentStatus.InProgress => "background: #fff3e0; color: #e65100; font-weight: 500;",
-        ContentStatus.Completed => "background: #e8f5e9; color: #2e7d32; font-weight: 500;",
-        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
-    };
+    private string GetStatusChipStyle(ContentStatus status) => EnumDisplayHelper.GetChipStyle(status);
 
-    private string GetPriorityChipStyle(Priority priority) => priority switch
-    {
-        Priority.High => "background: #ffebee; color: #c62828; font-weight: 500;",
-        Priority.Medium => "background: #fff3e0; color: #e65100; font-weight: 500;",
-        Priority.Low => "background: #f5f5f5; color: #616161; font-weight: 500;",
-        _ => "background: #f5f5f5; color: #616161; font-weight: 500;"
-    };
+    private string GetPriorityChipStyle(Priority priority) => EnumDisplayHelper.GetChipStyle(priority);
 
     private async Task ExportAsJson()
     {
@@ -922,7 +919,7 @@
             WriteIndented = true 
         });
         
-        var fileName = $"learning-resources-{DateTime.Now:yyyyMMdd-HHmmss}.json";
+        var fileName = $"learning-resources-{DateTime.UtcNow:yyyyMMdd-HHmmss}.json";
         await DownloadFileAsync(fileName, json, "application/json");
     }
 
@@ -945,7 +942,7 @@
                           $"\"{(resource.DateCompleted.HasValue ? resource.DateCompleted.Value.ToString("yyyy-MM-dd") : "")}\"");
         }
 
-        var fileName = $"learning-resources-{DateTime.Now:yyyyMMdd-HHmmss}.csv";
+        var fileName = $"learning-resources-{DateTime.UtcNow:yyyyMMdd-HHmmss}.csv";
         await DownloadFileAsync(fileName, csv.ToString(), "text/csv");
     }
 
@@ -963,9 +960,29 @@
         var base64 = Convert.ToBase64String(bytes);
         await JSRuntime.InvokeVoidAsync("downloadFile", fileName, base64, contentType);
     }
+
+    public void Dispose()
+    {
+        persistingSubscription?.Dispose();
+    }
+
+    private sealed class ResourcesPageState
+    {
+        public string UserId { get; set; } = string.Empty;
+
+        public List<LearningResource> Resources { get; set; } = new();
+
+        public int ToLearnCount { get; set; }
+
+        public int InProgressCount { get; set; }
+
+        public int CompletedCount { get; set; }
+
+        public int ContentIdeasCount { get; set; }
+
+        public int ActiveTabIndex { get; set; }
+    }
 }
-
-
 
 
 

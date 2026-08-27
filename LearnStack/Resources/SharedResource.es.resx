@@ -30,6 +30,9 @@
   <data name="LanguageFrench" xml:space="preserve">
     <value>Francés</value>
   </data>
+  <data name="LanguageRomanian" xml:space="preserve">
+    <value>Rumano</value>
+  </data>
   <data name="ManageAccount" xml:space="preserve">
     <value>Administrar cuenta</value>
   </data>
@@ -290,6 +293,24 @@
   </data>
   <data name="DeleteCollectionDialogTitle" xml:space="preserve">
     <value>Eliminar colección</value>
+  </data>
+  <data name="DeleteResourceDialogTitle" xml:space="preserve">
+    <value>Eliminar recurso</value>
+  </data>
+  <data name="DeleteResourceDialogMessage" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar este recurso?</value>
+  </data>
+  <data name="ResourceDeleted" xml:space="preserve">
+    <value>Recurso eliminado.</value>
+  </data>
+  <data name="DeleteIdeaDialogTitle" xml:space="preserve">
+    <value>Eliminar idea</value>
+  </data>
+  <data name="DeleteIdeaDialogMessage" xml:space="preserve">
+    <value>¿Está seguro de que desea eliminar esta idea de contenido?</value>
+  </data>
+  <data name="IdeaDeleted" xml:space="preserve">
+    <value>Idea eliminada.</value>
   </data>
   <data name="YearsAgo" xml:space="preserve">
     <value>hace {0} años</value>
@@ -1429,5 +1450,128 @@
   </data>
   <data name="OnboardingGetStarted" xml:space="preserve">
     <value>Comenzar</value>
+  </data>
+  <data name="LearningPulse" xml:space="preserve">
+    <value>Pulso de aprendizaje</value>
+  </data>
+  <data name="LearningInsights" xml:space="preserve">
+    <value>Perspectivas de aprendizaje</value>
+  </data>
+  <data name="LearningPulseDescription" xml:space="preserve">
+    <value>Descubre tu impulso, tu variedad de aprendizaje y los hábitos que dan forma a tu progreso.</value>
+  </data>
+  <data name="BackToLibrary" xml:space="preserve">
+    <value>Volver a la biblioteca</value>
+  </data>
+  <data name="LoadingPulse" xml:space="preserve">
+    <value>Analizando tu pulso de aprendizaje...</value>
+  </data>
+  <data name="PulseUnavailable" xml:space="preserve">
+    <value>Tu pulso no está disponible</value>
+  </data>
+  <data name="PulseUnavailableDescription" xml:space="preserve">
+    <value>No pudimos cargar tus datos de aprendizaje. Inténtalo de nuevo.</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>Reintentar</value>
+  </data>
+  <data name="StartLearningPulse" xml:space="preserve">
+    <value>Inicia tu pulso de aprendizaje</value>
+  </data>
+  <data name="StartLearningPulseDescription" xml:space="preserve">
+    <value>Añade tu primer recurso y aquí aparecerán tus patrones de aprendizaje.</value>
+  </data>
+  <data name="CompletedResources" xml:space="preserve">
+    <value>Recursos completados</value>
+  </data>
+  <data name="AllTime" xml:space="preserve">
+    <value>Todo el tiempo</value>
+  </data>
+  <data name="CompletionRate" xml:space="preserve">
+    <value>Tasa de finalización</value>
+  </data>
+  <data name="OfAllResources" xml:space="preserve">
+    <value>De los recursos activos</value>
+  </data>
+  <data name="ActiveDays" xml:space="preserve">
+    <value>Días activos</value>
+  </data>
+  <data name="Last30Days" xml:space="preserve">
+    <value>Últimos 30 días</value>
+  </data>
+  <data name="LearningQueue" xml:space="preserve">
+    <value>Cola de aprendizaje</value>
+  </data>
+  <data name="AwaitingAttention" xml:space="preserve">
+    <value>Aún en tu cola</value>
+  </data>
+  <data name="CompletionRhythm" xml:space="preserve">
+    <value>Ritmo de finalización</value>
+  </data>
+  <data name="CompletionRhythmDescription" xml:space="preserve">
+    <value>Recursos completados durante las últimas 12 semanas</value>
+  </data>
+  <data name="NoCompletionsYet" xml:space="preserve">
+    <value>Completa un recurso para iniciar tu ritmo.</value>
+  </data>
+  <data name="LearningMix" xml:space="preserve">
+    <value>Variedad de aprendizaje</value>
+  </data>
+  <data name="LearningMixDescription" xml:space="preserve">
+    <value>Cómo se distribuye tu biblioteca activa</value>
+  </data>
+  <data name="NoMixData" xml:space="preserve">
+    <value>Añade recursos para descubrir tu variedad de aprendizaje.</value>
+  </data>
+  <data name="LearningSignals" xml:space="preserve">
+    <value>Señales de aprendizaje</value>
+  </data>
+  <data name="LearningSignalsDescription" xml:space="preserve">
+    <value>Patrones que merece la pena observar ahora</value>
+  </data>
+  <data name="Momentum" xml:space="preserve">
+    <value>Impulso</value>
+  </data>
+  <data name="Focus" xml:space="preserve">
+    <value>Enfoque</value>
+  </data>
+  <data name="KnowledgeCapture" xml:space="preserve">
+    <value>Captura de conocimiento</value>
+  </data>
+  <data name="MomentumAhead" xml:space="preserve">
+    <value>Completaste {0} en los últimos 30 días, frente a {1} en el período anterior.</value>
+  </data>
+  <data name="MomentumSteady" xml:space="preserve">
+    <value>Completaste {0} en los últimos 30 días. Mantén el próximo logro a la vista.</value>
+  </data>
+  <data name="MomentumReset" xml:space="preserve">
+    <value>No hubo finalizaciones en los últimos 30 días. Un recurso concreto puede reactivar el ritmo.</value>
+  </data>
+  <data name="FocusReady" xml:space="preserve">
+    <value>No hay nada en curso. Elige un elemento de la cola cuando estés listo.</value>
+  </data>
+  <data name="FocusClear" xml:space="preserve">
+    <value>Tienes {0} elementos en curso. Tu enfoque está concentrado.</value>
+  </data>
+  <data name="FocusSpread" xml:space="preserve">
+    <value>Tienes {0} elementos en curso. Terminar uno antes de iniciar otro puede ayudarte.</value>
+  </data>
+  <data name="NotesWaiting" xml:space="preserve">
+    <value>La señal de tus notas aparecerá después de tu primera finalización.</value>
+  </data>
+  <data name="NotesStrong" xml:space="preserve">
+    <value>El {0}% de los recursos completados incluye notas. Tu recorrido está bien documentado.</value>
+  </data>
+  <data name="NotesOpportunity" xml:space="preserve">
+    <value>El {0}% de los recursos completados incluye notas. Una breve conclusión hace reutilizable cada logro.</value>
+  </data>
+  <data name="RecentWins" xml:space="preserve">
+    <value>Logros recientes</value>
+  </data>
+  <data name="RecentWinsDescription" xml:space="preserve">
+    <value>Tus últimos recursos completados</value>
+  </data>
+  <data name="NoRecentWins" xml:space="preserve">
+    <value>Tu primer recurso completado aparecerá aquí.</value>
   </data>
 </root>
