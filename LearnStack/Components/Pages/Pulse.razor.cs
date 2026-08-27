@@ -8,7 +8,6 @@ namespace LearnStack.Components.Pages;
 
 public partial class Pulse
 {
-    private const string PageStateKey = "learning-pulse-page-state";
     private const int WeekCount = 12;
 
     private List<PulseResourceState> resources = [];
@@ -16,7 +15,6 @@ public partial class Pulse
     private IReadOnlyList<int> weeklyCompletionCounts = [];
     private IReadOnlyList<string> weekLabels = [];
     private IReadOnlyDictionary<ContentType, int> contentTypeCounts = new Dictionary<ContentType, int>();
-    private PersistingComponentStateSubscription? persistingSubscription;
     private bool isLoading = true;
     private bool loadInProgress;
     private bool hasLoadError;
@@ -31,17 +29,6 @@ public partial class Pulse
 
     protected override async Task OnInitializedAsync()
     {
-        persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPageState);
-
-        if (ApplicationState.TryTakeFromJson<List<PulseResourceState>>(PageStateKey, out var restoredResources)
-            && restoredResources is not null)
-        {
-            resources = restoredResources;
-            BuildPulse(DateTime.UtcNow);
-            isLoading = false;
-            return;
-        }
-
         await LoadPulseAsync();
     }
 
@@ -187,17 +174,6 @@ public partial class Pulse
     private static string FormatCompletionDate(DateTime? dateCompleted)
     {
         return dateCompleted?.ToString("d", CultureInfo.CurrentCulture) ?? string.Empty;
-    }
-
-    private Task PersistPageState()
-    {
-        ApplicationState.PersistAsJson(PageStateKey, resources);
-        return Task.CompletedTask;
-    }
-
-    public void Dispose()
-    {
-        persistingSubscription?.Dispose();
     }
 
     private sealed record PulseResourceState(

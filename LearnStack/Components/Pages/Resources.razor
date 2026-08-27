@@ -3,7 +3,6 @@
 @using System.Text
 @using System.Text.Json
 @attribute [Authorize]
-@implements IDisposable
 @inject ILearningResourceService ResourceService
 @inject IContentIdeaService ContentIdeaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -11,7 +10,6 @@
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
-@inject PersistentComponentState ApplicationState
 
 <PageTitle>@L["ResourceLibrary"] - LearnStack</PageTitle>
 
@@ -452,8 +450,6 @@
 </MudContainer>
 
 @code {
-    private const string PageStateKey = "resources-page-state";
-
     private enum ViewMode
     {
         List,
@@ -486,64 +482,14 @@
     private int inProgressCount;
     private int completedCount;
     private int contentIdeasCount;
-    private PersistingComponentStateSubscription? persistingSubscription;
-
     protected override async Task OnInitializedAsync()
     {
-        persistingSubscription = ApplicationState.RegisterOnPersisting(PersistPageState);
-
-        if (TryRestorePageState())
-        {
-            return;
-        }
-
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
         await ResourceService.ArchiveStaleResourcesAsync(userId);
         await LoadResources();
         await LoadStatistics();
-    }
-
-    private bool TryRestorePageState()
-    {
-        if (!ApplicationState.TryTakeFromJson<ResourcesPageState>(PageStateKey, out var pageState) || pageState is null)
-        {
-            return false;
-        }
-
-        userId = pageState.UserId;
-        resources = pageState.Resources;
-        toLearnCount = pageState.ToLearnCount;
-        inProgressCount = pageState.InProgressCount;
-        completedCount = pageState.CompletedCount;
-        contentIdeasCount = pageState.ContentIdeasCount;
-        activeTabIndex = pageState.ActiveTabIndex;
-        isLoading = false;
-
-        ApplyFilters(true);
-        return true;
-    }
-
-    private Task PersistPageState()
-    {
-        if (string.IsNullOrEmpty(userId))
-        {
-            return Task.CompletedTask;
-        }
-
-        ApplicationState.PersistAsJson(PageStateKey, new ResourcesPageState
-        {
-            UserId = userId,
-            Resources = resources,
-            ToLearnCount = toLearnCount,
-            InProgressCount = inProgressCount,
-            CompletedCount = completedCount,
-            ContentIdeasCount = contentIdeasCount,
-            ActiveTabIndex = activeTabIndex
-        });
-
-        return Task.CompletedTask;
     }
 
     private async Task LoadResources()
@@ -960,29 +906,5 @@
         var base64 = Convert.ToBase64String(bytes);
         await JSRuntime.InvokeVoidAsync("downloadFile", fileName, base64, contentType);
     }
-
-    public void Dispose()
-    {
-        persistingSubscription?.Dispose();
-    }
-
-    private sealed class ResourcesPageState
-    {
-        public string UserId { get; set; } = string.Empty;
-
-        public List<LearningResource> Resources { get; set; } = new();
-
-        public int ToLearnCount { get; set; }
-
-        public int InProgressCount { get; set; }
-
-        public int CompletedCount { get; set; }
-
-        public int ContentIdeasCount { get; set; }
-
-        public int ActiveTabIndex { get; set; }
-    }
 }
-
-
 
