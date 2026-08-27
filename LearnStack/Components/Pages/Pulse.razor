@@ -1,10 +1,8 @@
 @page "/pulse"
 @using LearnStack.Services
 @attribute [Authorize]
-@implements IDisposable
 @inject ILearningResourceService ResourceService
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject PersistentComponentState ApplicationState
 @inject ILogger<Pulse> Logger
 
 <PageTitle>@L["LearningPulse"] - LearnStack</PageTitle>
