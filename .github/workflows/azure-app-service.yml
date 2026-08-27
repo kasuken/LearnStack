@@ -75,11 +75,17 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: 🛠️ Restore .NET tools
+        run: dotnet tool restore
+
       - name: 📦 Restore dependencies
         run: dotnet restore ./LearnStack/LearnStack.csproj
 
       - name: 🔨 Build application
         run: dotnet build ./LearnStack/LearnStack.csproj --configuration Release --no-restore
+
+      - name: 🗃️ Verify database migrations
+        run: dotnet ef migrations has-pending-model-changes --project ./LearnStack/LearnStack.csproj --startup-project ./LearnStack/LearnStack.csproj --configuration Release --no-build
 
       - name: 🧪 Run tests (if any)
         run: dotnet test --no-build --verbosity normal
