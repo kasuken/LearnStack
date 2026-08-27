@@ -4,6 +4,15 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Added
+- Installable PWA support (manifest and icons only; no offline/service worker)
+  - Web app manifest with standalone display, theme colors, and 192/512 any + maskable icons
+  - Favicons and Apple touch icon wired in the document head for Add to Home Screen
+
+---
+
 ## [1.1.0] - 2026-03-25
 
 ### Added
