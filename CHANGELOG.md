@@ -4,7 +4,7 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
-## [Unreleased]
+## [1.2.0]
 
 ### Added
 - Installable PWA support (manifest and icons only; no offline/service worker)
