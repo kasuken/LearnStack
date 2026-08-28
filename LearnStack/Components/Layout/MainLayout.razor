@@ -308,7 +308,36 @@
                 CloseOnEscapeKey = false
             });
 
-        await dialog.Result;
+        var result = await dialog.Result;
+        if (result is { Canceled: false, Data: true })
+        {
+            await OpenFirstResourceDialogAsync(user.Id);
+        }
+    }
+
+    private async Task OpenFirstResourceDialogAsync(string userId)
+    {
+        var parameters = new DialogParameters
+        {
+            { nameof(ResourceForm.UserId), userId }
+        };
+        var options = new DialogOptions
+        {
+            CloseButton = true,
+            MaxWidth = MaxWidth.Medium,
+            FullWidth = true
+        };
+
+        var dialog = await DialogService.ShowAsync<ResourceForm>(
+            L["AddLearningResourceDialog"],
+            parameters,
+            options);
+        var result = await dialog.Result;
+
+        if (result is { Canceled: false })
+        {
+            NavigationManager.NavigateTo("/resources", forceLoad: true);
+        }
     }
 
     private string GetUserInitials(string? name)
