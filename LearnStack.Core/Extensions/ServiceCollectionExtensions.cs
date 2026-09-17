@@ -2,6 +2,7 @@ using LearnStack.Data;
 using LearnStack.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 
 namespace LearnStack.Extensions;
 
@@ -30,6 +31,13 @@ public static class ServiceCollectionExtensions
         services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
         {
             client.Timeout = TimeSpan.FromSeconds(30);
+        })
+        .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+        {
+            // Redirects are followed manually by OpenGraphService so every hop can be
+            // re-validated against the private-IP/loopback/scheme/port guard.
+            AllowAutoRedirect = false,
+            ConnectCallback = SafeSocketConnectCallback.ConnectAsync
         });
         return services;
     }
