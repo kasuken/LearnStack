@@ -21,3 +21,13 @@ window.forceNavigate = function (url) {
     window.location.href = url;
 };
 
+// Detect the browser's IANA time zone (e.g. "America/Los_Angeles") so we can
+// store it against the user's profile for timezone-aware date display.
+window.getBrowserTimeZone = function () {
+    try {
+        return Intl.DateTimeFormat().resolvedOptions().timeZone;
+    } catch {
+        return null;
+    }
+};
+
