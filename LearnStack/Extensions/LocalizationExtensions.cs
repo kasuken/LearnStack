@@ -5,7 +5,7 @@ namespace LearnStack.Extensions;
 
 public static class LocalizationExtensions
 {
-    private static readonly string[] SupportedCultureNames = ["en", "de", "es", "fr", "it", "ro"];
+    private static readonly string[] SupportedCultureNames = ["en", "de", "es", "fr", "it"];
 
     public static IServiceCollection AddLearnStackLocalization(this IServiceCollection services)
     {

@@ -8,7 +8,7 @@ public class CultureController : Controller
 {
     private static readonly HashSet<string> SupportedCultures = new(StringComparer.OrdinalIgnoreCase)
     {
-        "en", "de", "es", "fr", "it", "ro"
+        "en", "de", "es", "fr", "it"
     };
 
     [IgnoreAntiforgeryToken]
