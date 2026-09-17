@@ -1,4 +1,5 @@
 @page "/shared/{ShareToken}"
+@using LearnStack.Data
 @using LearnStack.Services
 @using Microsoft.AspNetCore.Authorization
 @attribute [AllowAnonymous]
@@ -43,7 +44,7 @@
                     <MudText Typo="Typo.h5" Style="font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">@group.Name</MudText>
                     @if (group.User != null)
                     {
-                        <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;">@L["SharedBy", group.User.UserName?.Split('@')[0] ?? L["UserFallback"].Value]</MudText>
+                        <MudText Typo="Typo.caption" Style="color: #64748b; font-weight: 500;">@L["SharedBy", group.User.GetDisplayName()]</MudText>
                     }
                 </MudStack>
             </MudStack>
