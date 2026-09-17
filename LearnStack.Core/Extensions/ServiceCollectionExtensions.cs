@@ -1,6 +1,8 @@
 using LearnStack.Data;
 using LearnStack.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Net.Http;
 
@@ -39,6 +41,16 @@ public static class ServiceCollectionExtensions
             AllowAutoRedirect = false,
             ConnectCallback = SafeSocketConnectCallback.ConnectAsync
         });
+        return services;
+    }
+
+    public static IServiceCollection AddLearnStackEmailSender(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<EmailSenderOptions>(configuration.GetSection(EmailSenderOptions.SectionName));
+        services.AddSingleton<ISmtpClient, SmtpClientWrapper>();
+        services.AddSingleton<IEmailSender<ApplicationUser>, SmtpEmailSender>();
         return services;
     }
 }
