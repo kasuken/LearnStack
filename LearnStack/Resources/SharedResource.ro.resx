@@ -1,0 +1,1746 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="LanguageLabel" xml:space="preserve">
+    <value>Limbă</value>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>Engleză</value>
+  </data>
+  <data name="LanguageSpanish" xml:space="preserve">
+    <value>Spaniolă</value>
+  </data>
+  <data name="LanguageGerman" xml:space="preserve">
+    <value>Germană</value>
+  </data>
+  <data name="LanguageItalian" xml:space="preserve">
+    <value>Italiană</value>
+  </data>
+  <data name="LanguageFrench" xml:space="preserve">
+    <value>Franceză</value>
+  </data>
+  <data name="LanguageRomanian" xml:space="preserve">
+    <value>Română</value>
+  </data>
+  <data name="ManageAccount" xml:space="preserve">
+    <value>Gestionare cont</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Schimbă parola</value>
+  </data>
+  <data name="SignOut" xml:space="preserve">
+    <value>Deconectare</value>
+  </data>
+  <data name="SignIn" xml:space="preserve">
+    <value>Conectare</value>
+  </data>
+  <data name="UnhandledError" xml:space="preserve">
+    <value>A apărut o eroare neașteptată.</value>
+  </data>
+  <data name="Reload" xml:space="preserve">
+    <value>Reîncarcă</value>
+  </data>
+  <data name="UserFallback" xml:space="preserve">
+    <value>Utilizator</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Anulează</value>
+  </data>
+  <data name="RouteNotFoundTitle" xml:space="preserve">
+    <value>Nu a fost găsit</value>
+  </data>
+  <data name="ErrorHeadline" xml:space="preserve">
+    <value>Hopa! Ceva nu a mers bine.</value>
+  </data>
+  <data name="Tutorial" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+  <data name="ContentIdeasDescription" xml:space="preserve">
+    <value>Planifică-ți propriul conținut pe baza a ceea ce înveți. Leagă ideile de resursele sursă și urmărește-le de la concept până la publicare.</value>
+  </data>
+  <data name="CreateContent" xml:space="preserve">
+    <value>Creează conținut</value>
+  </data>
+  <data name="ReturnToHome" xml:space="preserve">
+    <value>Înapoi la pagina principală</value>
+  </data>
+  <data name="SharedCollections" xml:space="preserve">
+    <value>Colecții partajate</value>
+  </data>
+  <data name="BlogPost" xml:space="preserve">
+    <value>Articol de blog</value>
+  </data>
+  <data name="Blog" xml:space="preserve">
+    <value>Blog</value>
+  </data>
+  <data name="LearnAndTakeNotesDescription" xml:space="preserve">
+    <value>Parcurge-ți lista în ritmul tău. Notează observații, întrebări și concluzii esențiale pe măsură ce înveți.</value>
+  </data>
+  <data name="VisitResource" xml:space="preserve">
+    <value>Vizitează resursa</value>
+  </data>
+  <data name="AddFirstIdea" xml:space="preserve">
+    <value>Adaugă prima ta idee</value>
+  </data>
+  <data name="DeleteCollectionDialogMessage" xml:space="preserve">
+    <value>Sigur dorești să ștergi această colecție partajată? Linkul de partajare va înceta să funcționeze.</value>
+  </data>
+  <data name="Documentation" xml:space="preserve">
+    <value>Documentație</value>
+  </data>
+  <data name="CollectionDeleted" xml:space="preserve">
+    <value>Colecție ștearsă.</value>
+  </data>
+  <data name="ByTitle" xml:space="preserve">
+    <value>După titlu</value>
+  </data>
+  <data name="TweetThread" xml:space="preserve">
+    <value>Fir de tweet-uri</value>
+  </data>
+  <data name="NewCollection" xml:space="preserve">
+    <value>Colecție nouă</value>
+  </data>
+  <data name="RequestIdLabel" xml:space="preserve">
+    <value>ID cerere:</value>
+  </data>
+  <data name="LoadingCollections" xml:space="preserve">
+    <value>Se încarcă colecțiile...</value>
+  </data>
+  <data name="ContentType" xml:space="preserve">
+    <value>Tip de conținut</value>
+  </data>
+  <data name="PageNotFound" xml:space="preserve">
+    <value>Pagina nu a fost găsită</value>
+  </data>
+  <data name="DateCreated" xml:space="preserve">
+    <value>Data creării</value>
+  </data>
+  <data name="DaysAgo" xml:space="preserve">
+    <value>acum {0} zile</value>
+  </data>
+  <data name="EditContentIdeaDialog" xml:space="preserve">
+    <value>Editează ideea de conținut</value>
+  </data>
+  <data name="HowItWorks" xml:space="preserve">
+    <value>Cum funcționează</value>
+  </data>
+  <data name="SharedCollectionsSubtitle" xml:space="preserve">
+    <value>Creează și gestionează grupuri de resurse care pot fi partajate</value>
+  </data>
+  <data name="ResourceLibrary" xml:space="preserve">
+    <value>Bibliotecă de resurse</value>
+  </data>
+  <data name="MonthsAgo" xml:space="preserve">
+    <value>acum {0} luni</value>
+  </data>
+  <data name="Features" xml:space="preserve">
+    <value>Funcționalități</value>
+  </data>
+  <data name="ReadyToOrganizeLearning" xml:space="preserve">
+    <value>Ești gata să-ți organizezi învățarea?</value>
+  </data>
+  <data name="NotFoundDescription" xml:space="preserve">
+    <value>Ne pare rău, conținutul căutat nu există sau a fost mutat.</value>
+  </data>
+  <data name="DateAdded" xml:space="preserve">
+    <value>Data adăugării</value>
+  </data>
+  <data name="CreateSharedCollectionDialog" xml:space="preserve">
+    <value>Creează colecție partajată</value>
+  </data>
+  <data name="StartLearningThreeSteps" xml:space="preserve">
+    <value>Începe să înveți în 3 pași simpli</value>
+  </data>
+  <data name="NotFoundTitle" xml:space="preserve">
+    <value>Nu a fost găsit</value>
+  </data>
+  <data name="NoCreditCardRequired" xml:space="preserve">
+    <value>Nu este necesar cardul de credit</value>
+  </data>
+  <data name="EditSharedCollectionDialog" xml:space="preserve">
+    <value>Editează colecția partajată</value>
+  </data>
+  <data name="GetOrganizedMinutes" xml:space="preserve">
+    <value>Organizează-te în câteva minute, nu ore.</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Exportă</value>
+  </data>
+  <data name="AddContentIdeaDialog" xml:space="preserve">
+    <value>Adaugă idee de conținut</value>
+  </data>
+  <data name="LoadingIdeas" xml:space="preserve">
+    <value>Se încarcă ideile tale...</value>
+  </data>
+  <data name="PageNotFoundDescription" xml:space="preserve">
+    <value>Ne pare rău, pagina căutată nu există.</value>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>În desfășurare</value>
+  </data>
+  <data name="NoContentIdeasDescription" xml:space="preserve">
+    <value>Începe să-ți planifici parcursul de creare a conținutului</value>
+  </data>
+  <data name="MultipleViews" xml:space="preserve">
+    <value>Vizualizări multiple</value>
+  </data>
+  <data name="Completed" xml:space="preserve">
+    <value>Finalizat</value>
+  </data>
+  <data name="SearchResourcesPlaceholder" xml:space="preserve">
+    <value>Caută resurse după titlu, descriere, notițe sau etichete...</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Șterge</value>
+  </data>
+  <data name="GoHome" xml:space="preserve">
+    <value>Mergi acasă</value>
+  </data>
+  <data name="FeaturesTitle" xml:space="preserve">
+    <value>Tot ce ai nevoie pentru a învăța eficient</value>
+  </data>
+  <data name="LearningResources" xml:space="preserve">
+    <value>Resurse de învățare</value>
+  </data>
+  <data name="ContentIdeas" xml:space="preserve">
+    <value>Idei de conținut</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Altele</value>
+  </data>
+  <data name="SeeFeatures" xml:space="preserve">
+    <value>Vezi funcționalitățile</value>
+  </data>
+  <data name="GoToHome" xml:space="preserve">
+    <value>Mergi la pagina principală</value>
+  </data>
+  <data name="GetStartedFree" xml:space="preserve">
+    <value>Începe gratuit</value>
+  </data>
+  <data name="HeroDescription" xml:space="preserve">
+    <value>Nu te mai pierde printre zeci de file de browser. LearnStack te ajută să organizezi, prioritizezi și urmărești resursele tale de învățare despre AI - de la articole de blog și podcasturi, până la videoclipuri și cursuri. Învață rapid cu linkuri de învățare partajate. Totul într-un singur loc.</value>
+  </data>
+  <data name="OldestFirst" xml:space="preserve">
+    <value>Cele mai vechi primele</value>
+  </data>
+  <data name="NoResourcesFoundDescription" xml:space="preserve">
+    <value>Începe să-ți construiești biblioteca de învățare</value>
+  </data>
+  <data name="SmartOrganizationDescription" xml:space="preserve">
+    <value>Filtrează după tipul de conținut, stare sau prioritate. Folosește etichete și căutarea pentru a găsi instantaneu orice. Trage și plasează pentru a reordona.</value>
+  </data>
+  <data name="ExportAsCsv" xml:space="preserve">
+    <value>Exportă ca CSV</value>
+  </data>
+  <data name="ErrorSubtitle" xml:space="preserve">
+    <value>A apărut o eroare la procesarea cererii tale.</value>
+  </data>
+  <data name="EditLearningResourceDialog" xml:space="preserve">
+    <value>Editează resursa de învățare</value>
+  </data>
+  <data name="HeroTitle" xml:space="preserve">
+    <value>Stăpânește AI, o resursă pe rând</value>
+  </data>
+  <data name="ResourceLibraryDescription" xml:space="preserve">
+    <value>Salvează și organizează articole de blog, videoclipuri, podcasturi, cursuri și documentație. Preia automat metadatele din URL-uri pentru o configurare rapidă.</value>
+  </data>
+  <data name="Low" xml:space="preserve">
+    <value>Scăzută</value>
+  </data>
+  <data name="SharedBy" xml:space="preserve">
+    <value>Partajat de {0}</value>
+  </data>
+  <data name="SelectResourceToLearn" xml:space="preserve">
+    <value>Selectează o resursă pentru a învăța</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="OpenLink" xml:space="preserve">
+    <value>Deschide linkul</value>
+  </data>
+  <data name="SmartOrganization" xml:space="preserve">
+    <value>Organizare inteligentă</value>
+  </data>
+  <data name="AllResources" xml:space="preserve">
+    <value>Toate resursele</value>
+  </data>
+  <data name="ByPriority" xml:space="preserve">
+    <value>După prioritate</value>
+  </data>
+  <data name="SearchIdeasPlaceholder" xml:space="preserve">
+    <value>Caută idei...</value>
+  </data>
+  <data name="AddLearningResourceDialog" xml:space="preserve">
+    <value>Adaugă resursă de învățare</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Acțiuni</value>
+  </data>
+  <data name="NewIdea" xml:space="preserve">
+    <value>Idee nouă</value>
+  </data>
+  <data name="DeleteCollectionDialogTitle" xml:space="preserve">
+    <value>Șterge colecția</value>
+  </data>
+  <data name="DeleteResourceDialogTitle" xml:space="preserve">
+    <value>Șterge resursa</value>
+  </data>
+  <data name="DeleteResourceDialogMessage" xml:space="preserve">
+    <value>Sigur dorești să ștergi această resursă?</value>
+  </data>
+  <data name="ResourceDeleted" xml:space="preserve">
+    <value>Resursă ștearsă.</value>
+  </data>
+  <data name="DeleteIdeaDialogTitle" xml:space="preserve">
+    <value>Șterge ideea</value>
+  </data>
+  <data name="DeleteIdeaDialogMessage" xml:space="preserve">
+    <value>Sigur dorești să ștergi această idee de conținut?</value>
+  </data>
+  <data name="IdeaDeleted" xml:space="preserve">
+    <value>Idee ștearsă.</value>
+  </data>
+  <data name="YearsAgo" xml:space="preserve">
+    <value>acum {0} ani</value>
+  </data>
+  <data name="NoSharedCollectionsYet" xml:space="preserve">
+    <value>Nicio colecție partajată încă</value>
+  </data>
+  <data name="SharedCollectionMissingDescription" xml:space="preserve">
+    <value>Această colecție partajată nu există sau a fost dezactivată.</value>
+  </data>
+  <data name="ExportAsJson" xml:space="preserve">
+    <value>Exportă ca JSON</value>
+  </data>
+  <data name="NoSharedCollectionsDescription" xml:space="preserve">
+    <value>Creează o colecție pentru a partaja resursele tale selectate cu alții.</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Activ</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stare</value>
+  </data>
+  <data name="MarkAsPublished" xml:space="preserve">
+    <value>Marchează ca publicat</value>
+  </data>
+  <data name="NoResourcesInCollection" xml:space="preserve">
+    <value>Această colecție nu are încă resurse.</value>
+  </data>
+  <data name="CopyLink" xml:space="preserve">
+    <value>Copiază linkul</value>
+  </data>
+  <data name="Ideas" xml:space="preserve">
+    <value>Idei</value>
+  </data>
+  <data name="AddFirstResource" xml:space="preserve">
+    <value>Adaugă prima ta resursă</value>
+  </data>
+  <data name="Idea" xml:space="preserve">
+    <value>Idee</value>
+  </data>
+  <data name="Article" xml:space="preserve">
+    <value>Articol</value>
+  </data>
+  <data name="Inactive" xml:space="preserve">
+    <value>Inactiv</value>
+  </data>
+  <data name="NoResourcesToLearn" xml:space="preserve">
+    <value>Nicio resursă de învățat</value>
+  </data>
+  <data name="RichNoteTaking" xml:space="preserve">
+    <value>Notițe detaliate</value>
+  </data>
+  <data name="NoResourcesToLearnDescription" xml:space="preserve">
+    <value>Selectează o resursă din Toate resursele pentru a începe să înveți</value>
+  </data>
+  <data name="Medium" xml:space="preserve">
+    <value>Medie</value>
+  </data>
+  <data name="Sources" xml:space="preserve">
+    <value>Surse</value>
+  </data>
+  <data name="ProgressTrackingDescription" xml:space="preserve">
+    <value>Urmărește-ți stadiul învățării - De învățat, În desfășurare sau Finalizat. Vezi progresul dintr-o privire cu statistici vizuale.</value>
+  </data>
+  <data name="CreateContentDescription" xml:space="preserve">
+    <value>Transformă-ți cunoștințele în conținut. Leagă-ți ideile de ceea ce ai învățat și distribuie-le lumii.</value>
+  </data>
+  <data name="Course" xml:space="preserve">
+    <value>Curs</value>
+  </data>
+  <data name="ProgressTracking" xml:space="preserve">
+    <value>Urmărirea progresului</value>
+  </data>
+  <data name="TotalCollections" xml:space="preserve">
+    <value>Total colecții</value>
+  </data>
+  <data name="NoContentIdeasYet" xml:space="preserve">
+    <value>Nicio idee de conținut încă</value>
+  </data>
+  <data name="Video" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="Learning" xml:space="preserve">
+    <value>Învățare</value>
+  </data>
+  <data name="Yesterday" xml:space="preserve">
+    <value>Ieri</value>
+  </data>
+  <data name="TestimonialsSubtitle" xml:space="preserve">
+    <value>Vezi ce spun alții despre LearnStack.</value>
+  </data>
+  <data name="StartLearningFree" xml:space="preserve">
+    <value>Începe să înveți gratuit</value>
+  </data>
+  <data name="HeroBadge" xml:space="preserve">
+    <value>Partenerul tău de învățare AI</value>
+  </data>
+  <data name="NoCreditCardFreeForever" xml:space="preserve">
+    <value>Nu este necesar cardul de credit • Gratuit pentru totdeauna pentru persoane fizice</value>
+  </data>
+  <data name="ShareLinkCopied" xml:space="preserve">
+    <value>Linkul de partajare a fost copiat!</value>
+  </data>
+  <data name="ResourceCount" xml:space="preserve">
+    <value>{0} resursă(e)</value>
+  </data>
+  <data name="SaveResources" xml:space="preserve">
+    <value>Salvează resurse</value>
+  </data>
+  <data name="MultipleViewsDescription" xml:space="preserve">
+    <value>Comută între vizualizarea pe carduri și grila de date. Personalizează-ți spațiul de lucru după preferințele tale.</value>
+  </data>
+  <data name="FeaturesSubtitle" xml:space="preserve">
+    <value>Conceput pentru dezvoltatori, cercetători și pasionați de AI care vor să-și țină învățarea sub control.</value>
+  </data>
+  <data name="AddResource" xml:space="preserve">
+    <value>Adaugă resursă</value>
+  </data>
+  <data name="NoResourcesFound" xml:space="preserve">
+    <value>Nicio resursă găsită</value>
+  </data>
+  <data name="CollectionNotFound" xml:space="preserve">
+    <value>Colecția nu a fost găsită</value>
+  </data>
+  <data name="ShowArchived" xml:space="preserve">
+    <value>Afișează arhivate</value>
+  </data>
+  <data name="LovedByLearners" xml:space="preserve">
+    <value>Îndrăgit de cei care învață</value>
+  </data>
+  <data name="MoreCount" xml:space="preserve">
+    <value>+{0} în plus</value>
+  </data>
+  <data name="JoinThousandsLearners" xml:space="preserve">
+    <value>Alătură-te miilor de persoane care folosesc LearnStack pentru a stăpâni AI, o resursă pe rând.</value>
+  </data>
+  <data name="PoweredByLearnStack" xml:space="preserve">
+    <value>REALIZAT DE LEARNSTACK</value>
+  </data>
+  <data name="High" xml:space="preserve">
+    <value>Ridicată</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Filtre</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editează</value>
+  </data>
+  <data name="CreateFirstCollection" xml:space="preserve">
+    <value>Creează prima ta colecție</value>
+  </data>
+  <data name="ListView" xml:space="preserve">
+    <value>Vizualizare listă</value>
+  </data>
+  <data name="GridView" xml:space="preserve">
+    <value>Vizualizare grilă</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titlu</value>
+  </data>
+  <data name="TableView" xml:space="preserve">
+    <value>Vizualizare tabel</value>
+  </data>
+  <data name="Priority" xml:space="preserve">
+    <value>Prioritate</value>
+  </data>
+  <data name="NewestFirst" xml:space="preserve">
+    <value>Cele mai noi primele</value>
+  </data>
+  <data name="CustomOrder" xml:space="preserve">
+    <value>Ordine personalizată</value>
+  </data>
+  <data name="LoadingSharedCollection" xml:space="preserve">
+    <value>Se încarcă colecția partajată...</value>
+  </data>
+  <data name="LoadingResources" xml:space="preserve">
+    <value>Se încarcă resursele tale...</value>
+  </data>
+  <data name="Today" xml:space="preserve">
+    <value>Astăzi</value>
+  </data>
+  <data name="ErrorPageTitle" xml:space="preserve">
+    <value>Eroare</value>
+  </data>
+  <data name="ToLearn" xml:space="preserve">
+    <value>De învățat</value>
+  </data>
+  <data name="Published" xml:space="preserve">
+    <value>Publicat</value>
+  </data>
+  <data name="RichNoteTakingDescription" xml:space="preserve">
+    <value>Notează concluziile esențiale, citatele importante și întrebările ulterioare. Notițele tale pot fi căutate și sunt mereu accesibile.</value>
+  </data>
+  <data name="Testimonials" xml:space="preserve">
+    <value>Testimoniale</value>
+  </data>
+  <data name="TrackOrganizeLearningMaterials" xml:space="preserve">
+    <value>Urmărește și organizează materialele tale de învățare</value>
+  </data>
+  <data name="ContentIdeasSubtitle" xml:space="preserve">
+    <value>Gestionează fluxul de creare a conținutului</value>
+  </data>
+  <data name="LearnAndTakeNotes" xml:space="preserve">
+    <value>Învață și ia notițe</value>
+  </data>
+  <data name="MarkAsComplete" xml:space="preserve">
+    <value>Marchează ca finalizat</value>
+  </data>
+  <data name="SaveResourcesDescription" xml:space="preserve">
+    <value>Lipește un URL, iar LearnStack preia automat titlul, descrierea și miniatura. Adaugă etichete și stabilește prioritatea.</value>
+  </data>
+  <data name="Podcast" xml:space="preserve">
+    <value>Podcast</value>
+  </data>
+  <data name="SharedCollection" xml:space="preserve">
+    <value>Colecție partajată</value>
+  </data>
+  <data name="WeeksAgo" xml:space="preserve">
+    <value>acum {0} săptămâni</value>
+  </data>
+  <data name="Access denied - LearnStack" xml:space="preserve">
+    <value>Acces refuzat - LearnStack</value>
+  </data>
+  <data name="Access Denied" xml:space="preserve">
+    <value>Acces refuzat</value>
+  </data>
+  <data name="You do not have access to this resource." xml:space="preserve">
+    <value>Nu ai acces la această resursă.</value>
+  </data>
+  <data name="Return to Home" xml:space="preserve">
+    <value>Înapoi la pagina principală</value>
+  </data>
+  <data name="Confirm email - LearnStack" xml:space="preserve">
+    <value>Confirmă emailul - LearnStack</value>
+  </data>
+  <data name="Confirm email" xml:space="preserve">
+    <value>Confirmă emailul</value>
+  </data>
+  <data name="Go to login" xml:space="preserve">
+    <value>Mergi la autentificare</value>
+  </data>
+  <data name="Error loading user with ID {0}" xml:space="preserve">
+    <value>Eroare la încărcarea utilizatorului cu ID-ul {0}</value>
+  </data>
+  <data name="Thank you for confirming your email." xml:space="preserve">
+    <value>Îți mulțumim pentru confirmarea emailului.</value>
+  </data>
+  <data name="Error confirming your email." xml:space="preserve">
+    <value>Eroare la confirmarea emailului.</value>
+  </data>
+  <data name="Confirm email change" xml:space="preserve">
+    <value>Confirmă schimbarea emailului</value>
+  </data>
+  <data name="Error: Invalid email change confirmation link." xml:space="preserve">
+    <value>Eroare: Link de confirmare a schimbării emailului invalid.</value>
+  </data>
+  <data name="Unable to find user with Id '{0}'" xml:space="preserve">
+    <value>Nu s-a putut găsi utilizatorul cu Id-ul '{0}'</value>
+  </data>
+  <data name="Error changing email." xml:space="preserve">
+    <value>Eroare la schimbarea emailului.</value>
+  </data>
+  <data name="Error changing user name." xml:space="preserve">
+    <value>Eroare la schimbarea numelui de utilizator.</value>
+  </data>
+  <data name="Thank you for confirming your email change." xml:space="preserve">
+    <value>Îți mulțumim pentru confirmarea schimbării emailului.</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Înregistrare</value>
+  </data>
+  <data name="Associate your {0} account." xml:space="preserve">
+    <value>Asociază contul tău {0}.</value>
+  </data>
+  <data name="You've successfully authenticated with" xml:space="preserve">
+    <value>Te-ai autentificat cu succes cu</value>
+  </data>
+  <data name="Please enter an email address for this site below and click the Register button to finish" xml:space="preserve">
+    <value>Introdu mai jos o adresă de email pentru acest site și apasă butonul Înregistrare pentru a finaliza</value>
+  </data>
+  <data name="logging in." xml:space="preserve">
+    <value>autentificarea.</value>
+  </data>
+  <data name="Please enter your email." xml:space="preserve">
+    <value>Te rugăm să introduci adresa de email.</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Error from external provider: {0}" xml:space="preserve">
+    <value>Eroare de la furnizorul extern: {0}</value>
+  </data>
+  <data name="Error loading external login information." xml:space="preserve">
+    <value>Eroare la încărcarea informațiilor de autentificare externă.</value>
+  </data>
+  <data name="Error loading external login information during confirmation." xml:space="preserve">
+    <value>Eroare la încărcarea informațiilor de autentificare externă în timpul confirmării.</value>
+  </data>
+  <data name="Error: {0}" xml:space="preserve">
+    <value>Eroare: {0}</value>
+  </data>
+  <data name="Forgot your password? - LearnStack" xml:space="preserve">
+    <value>Ai uitat parola? - LearnStack</value>
+  </data>
+  <data name="Forgot your password?" xml:space="preserve">
+    <value>Ai uitat parola?</value>
+  </data>
+  <data name="Enter your email to reset it." xml:space="preserve">
+    <value>Introdu adresa de email pentru a o reseta.</value>
+  </data>
+  <data name="name@example.com" xml:space="preserve">
+    <value>nume@exemplu.com</value>
+  </data>
+  <data name="Back to login" xml:space="preserve">
+    <value>Înapoi la autentificare</value>
+  </data>
+  <data name="Forgot password confirmation - LearnStack" xml:space="preserve">
+    <value>Confirmare resetare parolă - LearnStack</value>
+  </data>
+  <data name="Check your email" xml:space="preserve">
+    <value>Verifică-ți emailul</value>
+  </data>
+  <data name="Please check your email to reset your password." xml:space="preserve">
+    <value>Verifică-ți emailul pentru a-ți reseta parola.</value>
+  </data>
+  <data name="Invalid password reset - LearnStack" xml:space="preserve">
+    <value>Resetare parolă invalidă - LearnStack</value>
+  </data>
+  <data name="Invalid Link" xml:space="preserve">
+    <value>Link invalid</value>
+  </data>
+  <data name="The password reset link is invalid or has expired." xml:space="preserve">
+    <value>Linkul de resetare a parolei este invalid sau a expirat.</value>
+  </data>
+  <data name="Request a new link" xml:space="preserve">
+    <value>Solicită un link nou</value>
+  </data>
+  <data name="Invalid user" xml:space="preserve">
+    <value>Utilizator invalid</value>
+  </data>
+  <data name="Locked out - LearnStack" xml:space="preserve">
+    <value>Cont blocat - LearnStack</value>
+  </data>
+  <data name="Account Locked" xml:space="preserve">
+    <value>Cont blocat</value>
+  </data>
+  <data name="This account has been locked out due to multiple failed login attempts. Please try again later." xml:space="preserve">
+    <value>Acest cont a fost blocat din cauza mai multor încercări eșuate de autentificare. Te rugăm să încerci din nou mai târziu.</value>
+  </data>
+  <data name="Log in - LearnStack" xml:space="preserve">
+    <value>Autentificare - LearnStack</value>
+  </data>
+  <data name="Sign in to your account" xml:space="preserve">
+    <value>Conectează-te la contul tău</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Parolă</value>
+  </data>
+  <data name="Enter your password" xml:space="preserve">
+    <value>Introdu parola</value>
+  </data>
+  <data name="Remember me" xml:space="preserve">
+    <value>Ține-mă minte</value>
+  </data>
+  <data name="Sign In" xml:space="preserve">
+    <value>Conectare</value>
+  </data>
+  <data name="or" xml:space="preserve">
+    <value>sau</value>
+  </data>
+  <data name="🔑 Sign in with a passkey" xml:space="preserve">
+    <value>🔑 Conectează-te cu o cheie de acces</value>
+  </data>
+  <data name="Don't have an account? Register here" xml:space="preserve">
+    <value>Nu ai cont? Înregistrează-te aici</value>
+  </data>
+  <data name="Resend email confirmation" xml:space="preserve">
+    <value>Retrimite confirmarea emailului</value>
+  </data>
+  <data name="or sign in with" xml:space="preserve">
+    <value>sau conectează-te cu</value>
+  </data>
+  <data name="Invalid email or password. Please try again." xml:space="preserve">
+    <value>Email sau parolă incorecte. Te rugăm să încerci din nou.</value>
+  </data>
+  <data name="Two-factor authentication" xml:space="preserve">
+    <value>Autentificare cu doi factori</value>
+  </data>
+  <data name="Your login is protected with an authenticator app. Enter your authenticator code below." xml:space="preserve">
+    <value>Autentificarea ta este protejată printr-o aplicație de autentificare. Introdu mai jos codul de autentificare.</value>
+  </data>
+  <data name="Authenticator code" xml:space="preserve">
+    <value>Cod de autentificare</value>
+  </data>
+  <data name="Remember this machine" xml:space="preserve">
+    <value>Ține minte acest dispozitiv</value>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Autentificare</value>
+  </data>
+  <data name="Don't have access to your authenticator device? You can" xml:space="preserve">
+    <value>Nu ai acces la dispozitivul de autentificare? Poți</value>
+  </data>
+  <data name="log in with a recovery code" xml:space="preserve">
+    <value>să te autentifici cu un cod de recuperare</value>
+  </data>
+  <data name="Error: Invalid authenticator code." xml:space="preserve">
+    <value>Eroare: Cod de autentificare invalid.</value>
+  </data>
+  <data name="Recovery code verification" xml:space="preserve">
+    <value>Verificarea codului de recuperare</value>
+  </data>
+  <data name="You have requested to log in with a recovery code. This login will not be remembered until you provide" xml:space="preserve">
+    <value>Ai solicitat autentificarea cu un cod de recuperare. Această autentificare nu va fi reținută până când nu furnizezi</value>
+  </data>
+  <data name="an authenticator app code at log in or disable 2FA and log in again." xml:space="preserve">
+    <value>un cod din aplicația de autentificare la conectare sau dezactivezi 2FA și te autentifici din nou.</value>
+  </data>
+  <data name="RecoveryCode" xml:space="preserve">
+    <value>RecoveryCode</value>
+  </data>
+  <data name="Recovery Code" xml:space="preserve">
+    <value>Cod de recuperare</value>
+  </data>
+  <data name="Error: Invalid recovery code entered." xml:space="preserve">
+    <value>Eroare: Codul de recuperare introdus este invalid.</value>
+  </data>
+  <data name="Register - LearnStack" xml:space="preserve">
+    <value>Înregistrare - LearnStack</value>
+  </data>
+  <data name="Create your account" xml:space="preserve">
+    <value>Creează-ți contul</value>
+  </data>
+  <data name="Create a password" xml:space="preserve">
+    <value>Creează o parolă</value>
+  </data>
+  <data name="Confirm Password" xml:space="preserve">
+    <value>Confirmă parola</value>
+  </data>
+  <data name="Confirm your password" xml:space="preserve">
+    <value>Confirmă-ți parola</value>
+  </data>
+  <data name="Already have an account? Sign in here" xml:space="preserve">
+    <value>Ai deja un cont? Conectează-te aici</value>
+  </data>
+  <data name="Register confirmation" xml:space="preserve">
+    <value>Confirmare înregistrare</value>
+  </data>
+  <data name="This app does not currently have a real email sender registered, see" xml:space="preserve">
+    <value>Această aplicație nu are momentan un expeditor real de email configurat, vezi</value>
+  </data>
+  <data name="for how to configure a real email sender." xml:space="preserve">
+    <value>pentru a afla cum să configurezi un expeditor real de email.</value>
+  </data>
+  <data name="Normally this would be emailed:" xml:space="preserve">
+    <value>În mod normal, acest lucru ar fi trimis prin email:</value>
+  </data>
+  <data name="Click here to confirm your account" xml:space="preserve">
+    <value>Apasă aici pentru a-ți confirma contul</value>
+  </data>
+  <data name="Please check your email to confirm your account." xml:space="preserve">
+    <value>Verifică-ți emailul pentru a-ți confirma contul.</value>
+  </data>
+  <data name="Error finding user for unspecified email" xml:space="preserve">
+    <value>Eroare la găsirea utilizatorului pentru emailul nespecificat</value>
+  </data>
+  <data name="Resend email confirmation - LearnStack" xml:space="preserve">
+    <value>Retrimite confirmarea emailului - LearnStack</value>
+  </data>
+  <data name="Resend confirmation" xml:space="preserve">
+    <value>Retrimite confirmarea</value>
+  </data>
+  <data name="Enter your email to receive a new link." xml:space="preserve">
+    <value>Introdu adresa de email pentru a primi un link nou.</value>
+  </data>
+  <data name="Resend" xml:space="preserve">
+    <value>Retrimite</value>
+  </data>
+  <data name="Verification email sent. Please check your email." xml:space="preserve">
+    <value>Emailul de verificare a fost trimis. Te rugăm să-ți verifici emailul.</value>
+  </data>
+  <data name="Reset password - LearnStack" xml:space="preserve">
+    <value>Resetează parola - LearnStack</value>
+  </data>
+  <data name="Create a new password for your account." xml:space="preserve">
+    <value>Creează o parolă nouă pentru contul tău.</value>
+  </data>
+  <data name="New Password" xml:space="preserve">
+    <value>Parolă nouă</value>
+  </data>
+  <data name="Enter new password" xml:space="preserve">
+    <value>Introdu parola nouă</value>
+  </data>
+  <data name="Confirm new password" xml:space="preserve">
+    <value>Confirmă parola nouă</value>
+  </data>
+  <data name="Reset password confirmation - LearnStack" xml:space="preserve">
+    <value>Confirmare resetare parolă - LearnStack</value>
+  </data>
+  <data name="Password Reset" xml:space="preserve">
+    <value>Resetare parolă</value>
+  </data>
+  <data name="Your password has been successfully reset." xml:space="preserve">
+    <value>Parola ta a fost resetată cu succes.</value>
+  </data>
+  <data name="There are no external authentication services configured." xml:space="preserve">
+    <value>Nu sunt configurate servicii de autentificare externă.</value>
+  </data>
+  <data name="Log in using your {0} account" xml:space="preserve">
+    <value>Autentifică-te folosind contul tău {0}</value>
+  </data>
+  <data name="Continue with {0}" xml:space="preserve">
+    <value>Continuă cu {0}</value>
+  </data>
+  <data name="LearnStack" xml:space="preserve">
+    <value>LearnStack</value>
+  </data>
+  <data name="Back to app" xml:space="preserve">
+    <value>Înapoi la aplicație</value>
+  </data>
+  <data name="Account Settings" xml:space="preserve">
+    <value>Setări cont</value>
+  </data>
+  <data name="Manage your account preferences and security." xml:space="preserve">
+    <value>Gestionează preferințele și securitatea contului tău.</value>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profil</value>
+  </data>
+  <data name="External logins" xml:space="preserve">
+    <value>Autentificări externe</value>
+  </data>
+  <data name="Two-factor auth" xml:space="preserve">
+    <value>Autentificare cu doi factori</value>
+  </data>
+  <data name="Passkeys" xml:space="preserve">
+    <value>Chei de acces</value>
+  </data>
+  <data name="Personal data" xml:space="preserve">
+    <value>Date personale</value>
+  </data>
+  <data name="Recovery codes" xml:space="preserve">
+    <value>Coduri de recuperare</value>
+  </data>
+  <data name="Put these codes in a safe place." xml:space="preserve">
+    <value>Păstrează aceste coduri într-un loc sigur.</value>
+  </data>
+  <data name="If you lose your device and don't have the recovery codes you will lose access to your account." xml:space="preserve">
+    <value>Dacă îți pierzi dispozitivul și nu ai codurile de recuperare, vei pierde accesul la contul tău.</value>
+  </data>
+  <data name="Reset password" xml:space="preserve">
+    <value>Resetează parola</value>
+  </data>
+  <data name="Change password" xml:space="preserve">
+    <value>Schimbă parola</value>
+  </data>
+  <data name="Update your account password." xml:space="preserve">
+    <value>Actualizează parola contului tău.</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Parola curentă</value>
+  </data>
+  <data name="Enter your current password" xml:space="preserve">
+    <value>Introdu parola curentă</value>
+  </data>
+  <data name="Enter a new password" xml:space="preserve">
+    <value>Introdu o parolă nouă</value>
+  </data>
+  <data name="Confirm your new password" xml:space="preserve">
+    <value>Confirmă parola nouă</value>
+  </data>
+  <data name="Update password" xml:space="preserve">
+    <value>Actualizează parola</value>
+  </data>
+  <data name="Your password has been changed" xml:space="preserve">
+    <value>Parola ta a fost schimbată</value>
+  </data>
+  <data name="Manage email" xml:space="preserve">
+    <value>Gestionează emailul</value>
+  </data>
+  <data name="Update your email address and verification status." xml:space="preserve">
+    <value>Actualizează adresa de email și starea de verificare.</value>
+  </data>
+  <data name="Enter your email" xml:space="preserve">
+    <value>Introdu adresa de email</value>
+  </data>
+  <data name="Send verification email" xml:space="preserve">
+    <value>Trimite email de verificare</value>
+  </data>
+  <data name="New email" xml:space="preserve">
+    <value>Email nou</value>
+  </data>
+  <data name="Enter a new email" xml:space="preserve">
+    <value>Introdu un email nou</value>
+  </data>
+  <data name="Change email" xml:space="preserve">
+    <value>Schimbă emailul</value>
+  </data>
+  <data name="Your email is unchanged." xml:space="preserve">
+    <value>Adresa ta de email este neschimbată.</value>
+  </data>
+  <data name="Confirmation link to change email sent. Please check your email." xml:space="preserve">
+    <value>Linkul de confirmare pentru schimbarea emailului a fost trimis. Te rugăm să-ți verifici emailul.</value>
+  </data>
+  <data name="Manage your external logins" xml:space="preserve">
+    <value>Gestionează-ți autentificările externe</value>
+  </data>
+  <data name="Manage your linked external login providers." xml:space="preserve">
+    <value>Gestionează furnizorii de autentificare externă conectați.</value>
+  </data>
+  <data name="Registered Logins" xml:space="preserve">
+    <value>Autentificări înregistrate</value>
+  </data>
+  <data name="Remove this {0} login from your account" xml:space="preserve">
+    <value>Elimină această autentificare {0} din contul tău</value>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Elimină</value>
+  </data>
+  <data name="Add another service" xml:space="preserve">
+    <value>Adaugă un alt serviciu</value>
+  </data>
+  <data name="No external login providers are available." xml:space="preserve">
+    <value>Niciun furnizor de autentificare externă disponibil.</value>
+  </data>
+  <data name="Error: The external login was not removed." xml:space="preserve">
+    <value>Eroare: Autentificarea externă nu a fost eliminată.</value>
+  </data>
+  <data name="The external login was removed." xml:space="preserve">
+    <value>Autentificarea externă a fost eliminată.</value>
+  </data>
+  <data name="Error: Could not load external login info." xml:space="preserve">
+    <value>Eroare: Nu s-au putut încărca informațiile de autentificare externă.</value>
+  </data>
+  <data name="The external login was added." xml:space="preserve">
+    <value>Autentificarea externă a fost adăugată.</value>
+  </data>
+  <data name="Error: The external login was not added. External logins can only be associated with one account." xml:space="preserve">
+    <value>Eroare: Autentificarea externă nu a fost adăugată. Autentificările externe pot fi asociate cu un singur cont.</value>
+  </data>
+  <data name="Manage your account profile details." xml:space="preserve">
+    <value>Gestionează detaliile profilului contului tău.</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Nume de utilizator</value>
+  </data>
+  <data name="Choose your username." xml:space="preserve">
+    <value>Alege-ți numele de utilizator.</value>
+  </data>
+  <data name="Phone number" xml:space="preserve">
+    <value>Număr de telefon</value>
+  </data>
+  <data name="Enter your phone number" xml:space="preserve">
+    <value>Introdu numărul de telefon</value>
+  </data>
+  <data name="Save Profile" xml:space="preserve">
+    <value>Salvează profilul</value>
+  </data>
+  <data name="Error: Failed to set phone number." xml:space="preserve">
+    <value>Eroare: Nu s-a putut seta numărul de telefon.</value>
+  </data>
+  <data name="Your profile has been updated" xml:space="preserve">
+    <value>Profilul tău a fost actualizat</value>
+  </data>
+  <data name="Manage your passkeys" xml:space="preserve">
+    <value>Gestionează-ți cheile de acces</value>
+  </data>
+  <data name="Manage your passkeys for passwordless sign-in." xml:space="preserve">
+    <value>Gestionează-ți cheile de acces pentru autentificare fără parolă.</value>
+  </data>
+  <data name="Unnamed passkey" xml:space="preserve">
+    <value>Cheie de acces fără nume</value>
+  </data>
+  <data name="Rename this passkey" xml:space="preserve">
+    <value>Redenumește această cheie de acces</value>
+  </data>
+  <data name="Rename" xml:space="preserve">
+    <value>Redenumește</value>
+  </data>
+  <data name="Remove this passkey from your account" xml:space="preserve">
+    <value>Elimină această cheie de acces din contul tău</value>
+  </data>
+  <data name="No passkeys are registered yet." xml:space="preserve">
+    <value>Nicio cheie de acces înregistrată încă.</value>
+  </data>
+  <data name="You have reached the maximum number of allowed passkeys. Please delete one before adding a new one." xml:space="preserve">
+    <value>Ai atins numărul maxim de chei de acces permise. Te rugăm să ștergi una înainte de a adăuga una nouă.</value>
+  </data>
+  <data name="Add a new passkey" xml:space="preserve">
+    <value>Adaugă o cheie de acces nouă</value>
+  </data>
+  <data name="Error: The browser did not provide a passkey." xml:space="preserve">
+    <value>Eroare: Browserul nu a furnizat o cheie de acces.</value>
+  </data>
+  <data name="Error: You have reached the maximum number of allowed passkeys." xml:space="preserve">
+    <value>Eroare: Ai atins numărul maxim de chei de acces permise.</value>
+  </data>
+  <data name="Error: Could not add the passkey: {0}" xml:space="preserve">
+    <value>Eroare: Cheia de acces nu a putut fi adăugată: {0}</value>
+  </data>
+  <data name="Error: The passkey could not be added to your account." xml:space="preserve">
+    <value>Eroare: Cheia de acces nu a putut fi adăugată la contul tău.</value>
+  </data>
+  <data name="Error: Unknown action '{0}'." xml:space="preserve">
+    <value>Eroare: Acțiune necunoscută '{0}'.</value>
+  </data>
+  <data name="Error: The specified passkey ID had an invalid format." xml:space="preserve">
+    <value>Eroare: ID-ul cheii de acces specificate are un format invalid.</value>
+  </data>
+  <data name="Error: The passkey could not be deleted." xml:space="preserve">
+    <value>Eroare: Cheia de acces nu a putut fi ștearsă.</value>
+  </data>
+  <data name="Passkey deleted successfully." xml:space="preserve">
+    <value>Cheia de acces a fost ștearsă cu succes.</value>
+  </data>
+  <data name="Set password" xml:space="preserve">
+    <value>Setează parola</value>
+  </data>
+  <data name="Set your password" xml:space="preserve">
+    <value>Setează-ți parola</value>
+  </data>
+  <data name="Add a local password so you can log in without an external login." xml:space="preserve">
+    <value>Adaugă o parolă locală pentru a te putea autentifica fără o autentificare externă.</value>
+  </data>
+  <data name="You do not have a local username/password for this site. Add a local account so you can log in without an external login." xml:space="preserve">
+    <value>Nu ai un nume de utilizator/parolă locale pentru acest site. Adaugă un cont local pentru a te putea autentifica fără o autentificare externă.</value>
+  </data>
+  <data name="Your password has been set." xml:space="preserve">
+    <value>Parola ta a fost setată.</value>
+  </data>
+  <data name="Two-factor authentication (2FA)" xml:space="preserve">
+    <value>Autentificare cu doi factori (2FA)</value>
+  </data>
+  <data name="Add an extra layer of security to your account." xml:space="preserve">
+    <value>Adaugă un nivel suplimentar de securitate contului tău.</value>
+  </data>
+  <data name="You have no recovery codes left." xml:space="preserve">
+    <value>Nu mai ai coduri de recuperare rămase.</value>
+  </data>
+  <data name="You must" xml:space="preserve">
+    <value>Trebuie să</value>
+  </data>
+  <data name="generate a new set of recovery codes" xml:space="preserve">
+    <value>generezi un set nou de coduri de recuperare</value>
+  </data>
+  <data name="before you can log in with a recovery code." xml:space="preserve">
+    <value>înainte de a te putea autentifica cu un cod de recuperare.</value>
+  </data>
+  <data name="You have 1 recovery code left." xml:space="preserve">
+    <value>Mai ai 1 cod de recuperare rămas.</value>
+  </data>
+  <data name="You can" xml:space="preserve">
+    <value>Poți</value>
+  </data>
+  <data name="You have {0} recovery codes left." xml:space="preserve">
+    <value>Mai ai {0} coduri de recuperare rămase.</value>
+  </data>
+  <data name="You should" xml:space="preserve">
+    <value>Ar trebui să</value>
+  </data>
+  <data name="Forget this browser" xml:space="preserve">
+    <value>Uită acest browser</value>
+  </data>
+  <data name="Disable 2FA" xml:space="preserve">
+    <value>Dezactivează 2FA</value>
+  </data>
+  <data name="Reset recovery codes" xml:space="preserve">
+    <value>Resetează codurile de recuperare</value>
+  </data>
+  <data name="Authenticator app" xml:space="preserve">
+    <value>Aplicație de autentificare</value>
+  </data>
+  <data name="Add authenticator app" xml:space="preserve">
+    <value>Adaugă o aplicație de autentificare</value>
+  </data>
+  <data name="Set up authenticator app" xml:space="preserve">
+    <value>Configurează aplicația de autentificare</value>
+  </data>
+  <data name="Reset authenticator app" xml:space="preserve">
+    <value>Resetează aplicația de autentificare</value>
+  </data>
+  <data name="Privacy and cookie policy have not been accepted." xml:space="preserve">
+    <value>Politica de confidențialitate și cookie-uri nu a fost acceptată.</value>
+  </data>
+  <data name="You must accept the policy before you can enable two factor authentication." xml:space="preserve">
+    <value>Trebuie să accepți politica înainte de a putea activa autentificarea cu doi factori.</value>
+  </data>
+  <data name="The current browser has been forgotten. When you login again from this browser you will be prompted for your 2fa code." xml:space="preserve">
+    <value>Acest browser a fost uitat. Când te vei autentifica din nou din acest browser, ți se va cere codul 2FA.</value>
+  </data>
+  <data name="these docs" xml:space="preserve">
+    <value>aceste documente</value>
+  </data>
+  <data name="Delete Personal Data" xml:space="preserve">
+    <value>Șterge datele personale</value>
+  </data>
+  <data name="Permanently remove your account and all associated data." xml:space="preserve">
+    <value>Elimină definitiv contul tău și toate datele asociate.</value>
+  </data>
+  <data name="Deleting this data will permanently remove your account, and this cannot be recovered." xml:space="preserve">
+    <value>Ștergerea acestor date va elimina definitiv contul tău, iar acest lucru nu poate fi anulat.</value>
+  </data>
+  <data name="Enter your password to confirm" xml:space="preserve">
+    <value>Introdu parola pentru a confirma</value>
+  </data>
+  <data name="Delete data and close my account" xml:space="preserve">
+    <value>Șterge datele și închide-mi contul</value>
+  </data>
+  <data name="Error: Incorrect password." xml:space="preserve">
+    <value>Eroare: Parolă incorectă.</value>
+  </data>
+  <data name="Disable two-factor authentication (2FA)" xml:space="preserve">
+    <value>Dezactivează autentificarea cu doi factori (2FA)</value>
+  </data>
+  <data name="Disable two-factor authentication" xml:space="preserve">
+    <value>Dezactivează autentificarea cu doi factori</value>
+  </data>
+  <data name="Remove the extra security layer from your account." xml:space="preserve">
+    <value>Elimină nivelul suplimentar de securitate din contul tău.</value>
+  </data>
+  <data name="This action only disables 2FA." xml:space="preserve">
+    <value>Această acțiune doar dezactivează 2FA.</value>
+  </data>
+  <data name="Disabling 2FA does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should" xml:space="preserve">
+    <value>Dezactivarea 2FA nu modifică cheile folosite în aplicațiile de autentificare. Dacă dorești să schimbi cheia folosită într-o aplicație de autentificare, ar trebui să</value>
+  </data>
+  <data name="reset your authenticator keys." xml:space="preserve">
+    <value>resetezi cheile aplicației de autentificare.</value>
+  </data>
+  <data name="2fa has been disabled. You can reenable 2fa when you setup an authenticator app" xml:space="preserve">
+    <value>2FA a fost dezactivată. O poți reactiva atunci când configurezi o aplicație de autentificare</value>
+  </data>
+  <data name="Configure authenticator app" xml:space="preserve">
+    <value>Configurează aplicația de autentificare</value>
+  </data>
+  <data name="Set up two-factor authentication with an authenticator app." xml:space="preserve">
+    <value>Configurează autentificarea cu doi factori folosind o aplicație de autentificare.</value>
+  </data>
+  <data name="To use an authenticator app go through the following steps:" xml:space="preserve">
+    <value>Pentru a folosi o aplicație de autentificare, parcurge pașii următori:</value>
+  </data>
+  <data name="Download a two-factor authenticator app like Microsoft Authenticator for" xml:space="preserve">
+    <value>Descarcă o aplicație de autentificare cu doi factori, precum Microsoft Authenticator, pentru</value>
+  </data>
+  <data name="Android" xml:space="preserve">
+    <value>Android</value>
+  </data>
+  <data name="and" xml:space="preserve">
+    <value>și</value>
+  </data>
+  <data name="iOS" xml:space="preserve">
+    <value>iOS</value>
+  </data>
+  <data name="Google Authenticator for" xml:space="preserve">
+    <value>Google Authenticator pentru</value>
+  </data>
+  <data name="Scan the QR Code or enter this key into your two factor authenticator app:" xml:space="preserve">
+    <value>Scanează codul QR sau introdu această cheie în aplicația ta de autentificare cu doi factori:</value>
+  </data>
+  <data name="Spaces and casing do not matter." xml:space="preserve">
+    <value>Spațiile și literele mari/mici nu contează.</value>
+  </data>
+  <data name="Learn how to" xml:space="preserve">
+    <value>Află cum să</value>
+  </data>
+  <data name="enable QR code generation" xml:space="preserve">
+    <value>activezi generarea codului QR</value>
+  </data>
+  <data name="Once you have scanned the QR code or input the key above, your two factor authentication app will provide you with a unique code. Enter the code in the confirmation box below." xml:space="preserve">
+    <value>După ce ai scanat codul QR sau ai introdus cheia de mai sus, aplicația ta de autentificare cu doi factori îți va oferi un cod unic. Introdu codul în caseta de confirmare de mai jos.</value>
+  </data>
+  <data name="Verification Code" xml:space="preserve">
+    <value>Cod de verificare</value>
+  </data>
+  <data name="Enter the 6-digit code" xml:space="preserve">
+    <value>Introdu codul din 6 cifre</value>
+  </data>
+  <data name="Verify" xml:space="preserve">
+    <value>Verifică</value>
+  </data>
+  <data name="Error: Verification code is invalid." xml:space="preserve">
+    <value>Eroare: Codul de verificare este invalid.</value>
+  </data>
+  <data name="Your authenticator app has been verified." xml:space="preserve">
+    <value>Aplicația ta de autentificare a fost verificată.</value>
+  </data>
+  <data name="Generate two-factor authentication (2FA) recovery codes" xml:space="preserve">
+    <value>Generează coduri de recuperare pentru autentificarea cu doi factori (2FA)</value>
+  </data>
+  <data name="Generate recovery codes" xml:space="preserve">
+    <value>Generează coduri de recuperare</value>
+  </data>
+  <data name="Create new backup codes for two-factor authentication." xml:space="preserve">
+    <value>Creează coduri de rezervă noi pentru autentificarea cu doi factori.</value>
+  </data>
+  <data name="Generating new recovery codes does not change the keys used in authenticator apps. If you wish to change the key used in an authenticator app you should" xml:space="preserve">
+    <value>Generarea de coduri de recuperare noi nu modifică cheile folosite în aplicațiile de autentificare. Dacă dorești să schimbi cheia folosită într-o aplicație de autentificare, ar trebui să</value>
+  </data>
+  <data name="You have generated new recovery codes." xml:space="preserve">
+    <value>Ai generat coduri de recuperare noi.</value>
+  </data>
+  <data name="Download or delete your personal data." xml:space="preserve">
+    <value>Descarcă sau șterge datele tale personale.</value>
+  </data>
+  <data name="Your account contains personal data that you have given us. This page allows you to download or delete that data." xml:space="preserve">
+    <value>Contul tău conține date personale pe care ni le-ai oferit. Această pagină îți permite să descarci sau să ștergi aceste date.</value>
+  </data>
+  <data name="Download my data" xml:space="preserve">
+    <value>Descarcă-mi datele</value>
+  </data>
+  <data name="Delete my account" xml:space="preserve">
+    <value>Șterge-mi contul</value>
+  </data>
+  <data name="Rename passkey" xml:space="preserve">
+    <value>Redenumește cheia de acces</value>
+  </data>
+  <data name="Enter a new name for your &quot;{0}&quot; passkey." xml:space="preserve">
+    <value>Introdu un nume nou pentru cheia de acces "{0}".</value>
+  </data>
+  <data name="Name your passkey" xml:space="preserve">
+    <value>Denumește cheia de acces</value>
+  </data>
+  <data name="Give your passkey a recognizable name." xml:space="preserve">
+    <value>Dă cheii tale de acces un nume ușor de recunoscut.</value>
+  </data>
+  <data name="Passkey name" xml:space="preserve">
+    <value>Numele cheii de acces</value>
+  </data>
+  <data name="e.g. My laptop, Work phone" xml:space="preserve">
+    <value>de ex. Laptopul meu, Telefon de serviciu</value>
+  </data>
+  <data name="Save name" xml:space="preserve">
+    <value>Salvează numele</value>
+  </data>
+  <data name="Error: The specified passkey could not be found." xml:space="preserve">
+    <value>Eroare: Cheia de acces specificată nu a putut fi găsită.</value>
+  </data>
+  <data name="Error: The passkey could not be updated." xml:space="preserve">
+    <value>Eroare: Cheia de acces nu a putut fi actualizată.</value>
+  </data>
+  <data name="Passkey updated successfully." xml:space="preserve">
+    <value>Cheia de acces a fost actualizată cu succes.</value>
+  </data>
+  <data name="Reset authenticator key" xml:space="preserve">
+    <value>Resetează cheia de autentificare</value>
+  </data>
+  <data name="Reset your authenticator app configuration." xml:space="preserve">
+    <value>Resetează configurația aplicației tale de autentificare.</value>
+  </data>
+  <data name="If you reset your authenticator key your authenticator app will not work until you reconfigure it." xml:space="preserve">
+    <value>Dacă resetezi cheia de autentificare, aplicația ta de autentificare nu va funcționa până nu o reconfigurezi.</value>
+  </data>
+  <data name="This process disables 2FA until you verify your authenticator app. If you do not complete your authenticator app configuration you may lose access to your account." xml:space="preserve">
+    <value>Acest proces dezactivează 2FA până când verifici aplicația de autentificare. Dacă nu finalizezi configurarea aplicației de autentificare, este posibil să pierzi accesul la contul tău.</value>
+  </data>
+  <data name="Your authenticator app key has been reset, you will need to configure your authenticator app using the new key." xml:space="preserve">
+    <value>Cheia aplicației tale de autentificare a fost resetată; va trebui să configurezi aplicația de autentificare folosind noua cheie.</value>
+  </data>
+  <data name="Validation_FieldLength" xml:space="preserve">
+    <value>Câmpul {0} trebuie să aibă cel puțin {2} și cel mult {1} caractere.</value>
+  </data>
+  <data name="Validation_NewPasswordMismatch" xml:space="preserve">
+    <value>Parola nouă și parola de confirmare nu coincid.</value>
+  </data>
+  <data name="Validation_PasswordMismatch" xml:space="preserve">
+    <value>Parola și parola de confirmare nu coincid.</value>
+  </data>
+  <data name="Validation_PasskeyNameMaxLength" xml:space="preserve">
+    <value>Numele cheilor de acces nu pot depăși {1} caractere.</value>
+  </data>
+  <data name="Enter a new name for your {0} passkey." xml:space="preserve">
+    <value>Introdu un nume nou pentru cheia de acces {0}.</value>
+  </data>
+  <data name="Lang_SelectLanguage" xml:space="preserve">
+    <value>Selectează limba</value>
+  </data>
+  <data name="Theme_SelectTheme" xml:space="preserve">
+    <value>Selectează tema</value>
+  </data>
+  <data name="Theme_Light" xml:space="preserve">
+    <value>Deschisă</value>
+  </data>
+  <data name="Theme_Dark" xml:space="preserve">
+    <value>Întunecată</value>
+  </data>
+  <data name="Theme_Auto" xml:space="preserve">
+    <value>Automat</value>
+  </data>
+  <data name="Archive" xml:space="preserve">
+    <value>Arhivează</value>
+  </data>
+  <data name="Unarchive" xml:space="preserve">
+    <value>Dezarhivează</value>
+  </data>
+  <data name="Unknown" xml:space="preserve">
+    <value>Necunoscut</value>
+  </data>
+  <data name="ShowingResourcesRange" xml:space="preserve">
+    <value>Se afișează {0} - {1} din {2} resurse</value>
+  </data>
+  <data name="UrlLabel" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="UrlHelperText" xml:space="preserve">
+    <value>Introdu URL-ul resursei de învățare</value>
+  </data>
+  <data name="DescriptionLabel" xml:space="preserve">
+    <value>Descriere</value>
+  </data>
+  <data name="TagsLabel" xml:space="preserve">
+    <value>Etichete</value>
+  </data>
+  <data name="NotesLabel" xml:space="preserve">
+    <value>Notițe</value>
+  </data>
+  <data name="DateCompleted" xml:space="preserve">
+    <value>Data finalizării</value>
+  </data>
+  <data name="TagsHelperText" xml:space="preserve">
+    <value>Etichete separate prin virgulă</value>
+  </data>
+  <data name="NotesHelperText" xml:space="preserve">
+    <value>Adaugă notițele, învățămintele sau gândurile tale</value>
+  </data>
+  <data name="PleaseEnterUrlFirst" xml:space="preserve">
+    <value>Te rugăm să introduci mai întâi un URL</value>
+  </data>
+  <data name="CouldNotFetchMetadata" xml:space="preserve">
+    <value>Nu s-au putut prelua metadatele din URL</value>
+  </data>
+  <data name="MetadataFetchedSuccessfully" xml:space="preserve">
+    <value>Metadatele au fost preluate cu succes!</value>
+  </data>
+  <data name="ErrorFetchingMetadata" xml:space="preserve">
+    <value>Eroare la preluarea metadatelor:</value>
+  </data>
+  <data name="DuplicateUrlDetected" xml:space="preserve">
+    <value>URL duplicat detectat</value>
+  </data>
+  <data name="DuplicateUrlDetectedMessage" xml:space="preserve">
+    <value>Acest URL există deja în resursele tale. Dorești să îl adaugi oricum?</value>
+  </data>
+  <data name="AddAnyway" xml:space="preserve">
+    <value>Adaugă oricum</value>
+  </data>
+  <data name="ThumbnailAlt" xml:space="preserve">
+    <value>Miniatură</value>
+  </data>
+  <data name="Outline" xml:space="preserve">
+    <value>Schiță</value>
+  </data>
+  <data name="OutlineHelperText" xml:space="preserve">
+    <value>Planifică structura conținutului</value>
+  </data>
+  <data name="NoResourcesFoundMatching" xml:space="preserve">
+    <value>Nicio resursă găsită care să corespundă cu "{0}"</value>
+  </data>
+  <data name="ContentIdeaNotesHelperText" xml:space="preserve">
+    <value>Adaugă-ți gândurile și ideile</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>Numele grupului</value>
+  </data>
+  <data name="GroupNameHelperText" xml:space="preserve">
+    <value>Dă un nume colecției tale partajate</value>
+  </data>
+  <data name="GroupDescriptionHelperText" xml:space="preserve">
+    <value>Descrie despre ce este vorba în această colecție</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Caută</value>
+  </data>
+  <data name="ClearFilters" xml:space="preserve">
+    <value>Șterge filtrele</value>
+  </data>
+  <data name="MarketingFooterDescription" xml:space="preserve">
+    <value>Organizează-ți parcursul de învățare AI. Urmărește resurse, ia notițe și creează conținut.</value>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Produs</value>
+  </data>
+  <data name="Resources" xml:space="preserve">
+    <value>Resurse</value>
+  </data>
+  <data name="Support" xml:space="preserve">
+    <value>Suport</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Companie</value>
+  </data>
+  <data name="About" xml:space="preserve">
+    <value>Despre</value>
+  </data>
+  <data name="PrivacyPolicy" xml:space="preserve">
+    <value>Politica de confidențialitate</value>
+  </data>
+  <data name="TermsOfService" xml:space="preserve">
+    <value>Termeni și condiții</value>
+  </data>
+  <data name="CopyrightFooter" xml:space="preserve">
+    <value>© {0} LearnStack. Toate drepturile rezervate.</value>
+  </data>
+  <data name="Testimonial1Quote" xml:space="preserve">
+    <value>"În sfârșit, un instrument care înțelege cum învață dezvoltatorii. Am salvat sute de resurse și chiar le pot găsi când am nevoie de ele."</value>
+  </data>
+  <data name="Testimonial1Role" xml:space="preserve">
+    <value>Inginer ML la TechCorp</value>
+  </data>
+  <data name="Testimonial2Quote" xml:space="preserve">
+    <value>"Funcția de idei de conținut schimbă totul. Pot urmări exact ce resurse mi-au inspirat fiecare articol de blog pe care îl scriu."</value>
+  </data>
+  <data name="Testimonial2Role" xml:space="preserve">
+    <value>Blogger tehnologic și dezvoltator</value>
+  </data>
+  <data name="Testimonial3Quote" xml:space="preserve">
+    <value>"Am trecut de la peste 50 de file deschise la zero. LearnStack păstrează totul organizat, astfel încât să mă pot concentra pe a învăța cu adevărat."</value>
+  </data>
+  <data name="Testimonial3Role" xml:space="preserve">
+    <value>Cercetător AI</value>
+  </data>
+  <data name="HeroSampleTitle1" xml:space="preserve">
+    <value>Tutorial aprofundat GPT-4</value>
+  </data>
+  <data name="HeroSampleTitle2" xml:space="preserve">
+    <value>Înțelegerea Transformerelor</value>
+  </data>
+  <data name="HeroSampleTitle3" xml:space="preserve">
+    <value>Fundamentele Machine Learning</value>
+  </data>
+  <data name="HeroSampleTitle4" xml:space="preserve">
+    <value>Tutorial de dezvoltare web</value>
+  </data>
+  <data name="HeroSampleTitle5" xml:space="preserve">
+    <value>Modele de arhitectură cloud</value>
+  </data>
+  <data name="HeroSampleTitle6" xml:space="preserve">
+    <value>Structuri de date și algoritmi</value>
+  </data>
+  <data name="IAcceptTermsOfService" xml:space="preserve">
+    <value>Am citit și accept Termenii și condițiile</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Acceptă</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Refuză</value>
+  </data>
+  <data name="TermsOfServiceLoadError" xml:space="preserve">
+    <value>Nu s-au putut încărca Termenii și condițiile. Te rugăm să încerci din nou mai târziu.</value>
+  </data>
+  <data name="TermsOfServiceAcceptError" xml:space="preserve">
+    <value>Nu am putut salva acceptul tău. Te rugăm să încerci din nou.</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
+    <value>Prieteni</value>
+  </data>
+  <data name="FriendsSubtitle" xml:space="preserve">
+    <value>Conectează-te cu alți cursanți și distribuie-ți progresul de învățare</value>
+  </data>
+  <data name="NoFriendsYet" xml:space="preserve">
+    <value>Niciun prieten încă</value>
+  </data>
+  <data name="NoFriendsDescription" xml:space="preserve">
+    <value>Invită alți utilizatori LearnStack să se conecteze și să vadă resursele publice reciproc</value>
+  </data>
+  <data name="GenerateInviteLink" xml:space="preserve">
+    <value>Generează link de invitație</value>
+  </data>
+  <data name="InviteLinkCopied" xml:space="preserve">
+    <value>Linkul de invitație a fost copiat!</value>
+  </data>
+  <data name="InviteLinkDescription" xml:space="preserve">
+    <value>Distribuie acest link altui utilizator LearnStack pentru a vă conecta ca prieteni</value>
+  </data>
+  <data name="InviteExpiry" xml:space="preserve">
+    <value>Acest link expiră în 7 zile și poate fi folosit o singură dată</value>
+  </data>
+  <data name="JoinedOn" xml:space="preserve">
+    <value>Conectat din {0}</value>
+  </data>
+  <data name="ViewPublicResources" xml:space="preserve">
+    <value>Resurse publice</value>
+  </data>
+  <data name="RemoveFriend" xml:space="preserve">
+    <value>Elimină prietenul</value>
+  </data>
+  <data name="RemoveFriendConfirm" xml:space="preserve">
+    <value>Sigur dorești să elimini {0} din lista de prieteni?</value>
+  </data>
+  <data name="FriendRemoved" xml:space="preserve">
+    <value>Prieten eliminat.</value>
+  </data>
+  <data name="LoadingFriends" xml:space="preserve">
+    <value>Se încarcă prietenii...</value>
+  </data>
+  <data name="AcceptInvitation" xml:space="preserve">
+    <value>Acceptă invitația</value>
+  </data>
+  <data name="AcceptFriendRequest" xml:space="preserve">
+    <value>Acceptă cererea de prietenie</value>
+  </data>
+  <data name="YouAreInvitedBy" xml:space="preserve">
+    <value>{0} te-a invitat să te conectezi pe LearnStack</value>
+  </data>
+  <data name="InvitationAccepted" xml:space="preserve">
+    <value>Acum ești prieten cu {0}!</value>
+  </data>
+  <data name="InvitationAlreadyUsed" xml:space="preserve">
+    <value>Această invitație a fost deja folosită.</value>
+  </data>
+  <data name="InvitationExpired" xml:space="preserve">
+    <value>Această invitație a expirat.</value>
+  </data>
+  <data name="InvitationInvalid" xml:space="preserve">
+    <value>Link de invitație invalid.</value>
+  </data>
+  <data name="InvitationNotFound" xml:space="preserve">
+    <value>Invitație negăsită.</value>
+  </data>
+  <data name="AlreadyFriends" xml:space="preserve">
+    <value>Ești deja conectat cu această persoană.</value>
+  </data>
+  <data name="CannotInviteYourself" xml:space="preserve">
+    <value>Nu îți poți accepta propria invitație.</value>
+  </data>
+  <data name="BackToFriends" xml:space="preserve">
+    <value>Înapoi la prieteni</value>
+  </data>
+  <data name="MakePublic" xml:space="preserve">
+    <value>Fă public</value>
+  </data>
+  <data name="MakePrivate" xml:space="preserve">
+    <value>Fă privat</value>
+  </data>
+  <data name="MakePublicHelperText" xml:space="preserve">
+    <value>Prietenii pot vedea această resursă și starea ei</value>
+  </data>
+  <data name="FriendPublicResources" xml:space="preserve">
+    <value>Resursele publice ale lui {0}</value>
+  </data>
+  <data name="NoPublicResources" xml:space="preserve">
+    <value>Nicio resursă publică</value>
+  </data>
+  <data name="NoPublicResourcesDescription" xml:space="preserve">
+    <value>Acest utilizator nu a făcut publică nicio resursă încă.</value>
+  </data>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Acces refuzat</value>
+  </data>
+  <data name="MustBeFriendsToViewResources" xml:space="preserve">
+    <value>Trebuie să fii prieten cu acest utilizator pentru a-i vedea resursele publice.</value>
+  </data>
+  <data name="OnboardingTitle" xml:space="preserve">
+    <value>Bine ai venit la LearnStack</value>
+  </data>
+  <data name="OnboardingWelcomeStep" xml:space="preserve">
+    <value>Bun venit</value>
+  </data>
+  <data name="OnboardingWelcomeTitle" xml:space="preserve">
+    <value>Bine ai venit la LearnStack!</value>
+  </data>
+  <data name="OnboardingWelcomeDescription" xml:space="preserve">
+    <value>Centrul tău personal de învățare pentru a salva, organiza și urmări toate resursele de învățare într-un singur loc. Hai să-ți arătăm cum funcționează!</value>
+  </data>
+  <data name="OnboardingResourcesStep" xml:space="preserve">
+    <value>Resurse</value>
+  </data>
+  <data name="OnboardingResourcesTitle" xml:space="preserve">
+    <value>Biblioteca ta de resurse</value>
+  </data>
+  <data name="OnboardingResourcesDescription" xml:space="preserve">
+    <value>Salvează articole, videoclipuri, cursuri și multe altele. Urmărește-ți progresul de la „De învățat” până la „Finalizat” și păstrează-ți învățarea organizată.</value>
+  </data>
+  <data name="OnboardingFriendsStep" xml:space="preserve">
+    <value>Prieteni</value>
+  </data>
+  <data name="OnboardingFriendsTitle" xml:space="preserve">
+    <value>Conectează-te cu prietenii</value>
+  </data>
+  <data name="OnboardingFriendsDescription" xml:space="preserve">
+    <value>Invită prieteni pe LearnStack, distribuie-ți resursele publice și descoperă ce învață alții.</value>
+  </data>
+  <data name="OnboardingSharedStep" xml:space="preserve">
+    <value>Colecții</value>
+  </data>
+  <data name="OnboardingSharedTitle" xml:space="preserve">
+    <value>Colecții partajate</value>
+  </data>
+  <data name="OnboardingSharedDescription" xml:space="preserve">
+    <value>Selectează și distribuie colecții tematice de resurse prietenilor tăi sau comunității printr-un simplu link.</value>
+  </data>
+  <data name="OnboardingContentStep" xml:space="preserve">
+    <value>Idei de conținut</value>
+  </data>
+  <data name="OnboardingContentTitle" xml:space="preserve">
+    <value>Transformă învățarea în conținut</value>
+  </data>
+  <data name="OnboardingContentDescription" xml:space="preserve">
+    <value>Transformă ceea ce înveți în articole de blog, videoclipuri, tutoriale și multe altele. Urmărește-ți ideile de conținut și leagă-le de resursele tale.</value>
+  </data>
+  <data name="OnboardingCompleteTitle" xml:space="preserve">
+    <value>Ești gata de start!</value>
+  </data>
+  <data name="OnboardingCompleteDescription" xml:space="preserve">
+    <value>Ești pregătit să-ți începi parcursul de învățare. Adaugă prima ta resursă și începe să-ți organizezi cunoștințele!</value>
+  </data>
+  <data name="OnboardingGetStarted" xml:space="preserve">
+    <value>Începe</value>
+  </data>
+  <data name="LearningPulse" xml:space="preserve">
+    <value>Pulsul învățării</value>
+  </data>
+  <data name="LearningInsights" xml:space="preserve">
+    <value>Perspective de învățare</value>
+  </data>
+  <data name="LearningPulseDescription" xml:space="preserve">
+    <value>Vezi-ți avântul, mixul de învățare și obiceiurile care îți modelează progresul.</value>
+  </data>
+  <data name="BackToLibrary" xml:space="preserve">
+    <value>Înapoi la bibliotecă</value>
+  </data>
+  <data name="LoadingPulse" xml:space="preserve">
+    <value>Se citește pulsul tău de învățare...</value>
+  </data>
+  <data name="PulseUnavailable" xml:space="preserve">
+    <value>Pulsul tău nu este disponibil</value>
+  </data>
+  <data name="PulseUnavailableDescription" xml:space="preserve">
+    <value>Nu am putut încărca datele tale de învățare. Te rugăm să încerci din nou.</value>
+  </data>
+  <data name="Retry" xml:space="preserve">
+    <value>Reîncearcă</value>
+  </data>
+  <data name="StartLearningPulse" xml:space="preserve">
+    <value>Pornește-ți pulsul de învățare</value>
+  </data>
+  <data name="StartLearningPulseDescription" xml:space="preserve">
+    <value>Adaugă prima ta resursă, iar tiparele tale de învățare vor apărea aici.</value>
+  </data>
+  <data name="CompletedResources" xml:space="preserve">
+    <value>Resurse finalizate</value>
+  </data>
+  <data name="AllTime" xml:space="preserve">
+    <value>Din totdeauna</value>
+  </data>
+  <data name="CompletionRate" xml:space="preserve">
+    <value>Rata de finalizare</value>
+  </data>
+  <data name="OfAllResources" xml:space="preserve">
+    <value>Din resursele active</value>
+  </data>
+  <data name="ActiveDays" xml:space="preserve">
+    <value>Zile active</value>
+  </data>
+  <data name="Last30Days" xml:space="preserve">
+    <value>Ultimele 30 de zile</value>
+  </data>
+  <data name="LearningQueue" xml:space="preserve">
+    <value>Coada de învățare</value>
+  </data>
+  <data name="AwaitingAttention" xml:space="preserve">
+    <value>Încă în coada ta</value>
+  </data>
+  <data name="CompletionRhythm" xml:space="preserve">
+    <value>Ritmul de finalizare</value>
+  </data>
+  <data name="CompletionRhythmDescription" xml:space="preserve">
+    <value>Resurse finalizate în ultimele 12 săptămâni</value>
+  </data>
+  <data name="NoCompletionsYet" xml:space="preserve">
+    <value>Finalizează o resursă pentru a-ți începe ritmul.</value>
+  </data>
+  <data name="LearningMix" xml:space="preserve">
+    <value>Mixul de învățare</value>
+  </data>
+  <data name="LearningMixDescription" xml:space="preserve">
+    <value>Cum este distribuită biblioteca ta activă</value>
+  </data>
+  <data name="NoMixData" xml:space="preserve">
+    <value>Adaugă resurse pentru a-ți descoperi mixul de învățare.</value>
+  </data>
+  <data name="LearningSignals" xml:space="preserve">
+    <value>Semnale de învățare</value>
+  </data>
+  <data name="LearningSignalsDescription" xml:space="preserve">
+    <value>Tipare care merită observate acum</value>
+  </data>
+  <data name="Momentum" xml:space="preserve">
+    <value>Avânt</value>
+  </data>
+  <data name="Focus" xml:space="preserve">
+    <value>Concentrare</value>
+  </data>
+  <data name="KnowledgeCapture" xml:space="preserve">
+    <value>Captarea cunoștințelor</value>
+  </data>
+  <data name="MomentumAhead" xml:space="preserve">
+    <value>Ai finalizat {0} în ultimele 30 de zile, față de {1} în perioada anterioară.</value>
+  </data>
+  <data name="MomentumSteady" xml:space="preserve">
+    <value>Ai finalizat {0} în ultimele 30 de zile. Ține următoarea reușită în vizor.</value>
+  </data>
+  <data name="MomentumReset" xml:space="preserve">
+    <value>Nicio finalizare în ultimele 30 de zile. O resursă abordată cu atenție poate reporni ritmul.</value>
+  </data>
+  <data name="FocusReady" xml:space="preserve">
+    <value>Nimic nu este în desfășurare. Alege un element din coadă când ești pregătit.</value>
+  </data>
+  <data name="FocusClear" xml:space="preserve">
+    <value>Ai {0} elemente în desfășurare. Concentrarea ta este bine direcționată.</value>
+  </data>
+  <data name="FocusSpread" xml:space="preserve">
+    <value>Ai {0} elemente în desfășurare. Ar putea ajuta să termini unul înainte de a începe altul.</value>
+  </data>
+  <data name="NotesWaiting" xml:space="preserve">
+    <value>Semnalul tău de notare va apărea după prima finalizare.</value>
+  </data>
+  <data name="NotesStrong" xml:space="preserve">
+    <value>{0}% din resursele finalizate includ notițe. Traseul tău de învățare este bine documentat.</value>
+  </data>
+  <data name="NotesOpportunity" xml:space="preserve">
+    <value>{0}% din resursele finalizate includ notițe. O concluzie scurtă poate face fiecare reușită reutilizabilă.</value>
+  </data>
+  <data name="RecentWins" xml:space="preserve">
+    <value>Reușite recente</value>
+  </data>
+  <data name="RecentWinsDescription" xml:space="preserve">
+    <value>Cele mai recente resurse finalizate</value>
+  </data>
+  <data name="NoRecentWins" xml:space="preserve">
+    <value>Prima ta resursă finalizată va apărea aici.</value>
+  </data>
+</root>
