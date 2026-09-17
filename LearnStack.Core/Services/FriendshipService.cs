@@ -74,23 +74,22 @@ public class FriendshipService(IDbContextFactory<ApplicationDbContext> contextFa
         var asRequester = await context.LearnerFriendships
             .Where(lf => lf.RequesterId == userId)
             .Include(lf => lf.Addressee)
-            .Select(lf => new FriendViewModel(
-                lf.AddresseeId,
-                lf.Addressee!.UserName ?? lf.AddresseeId,
-                lf.DateCreated))
+            .Select(lf => new { FriendId = lf.AddresseeId, Friend = lf.Addressee, lf.DateCreated })
             .ToListAsync();
 
         var asAddressee = await context.LearnerFriendships
             .Where(lf => lf.AddresseeId == userId)
             .Include(lf => lf.Requester)
-            .Select(lf => new FriendViewModel(
-                lf.RequesterId,
-                lf.Requester!.UserName ?? lf.RequesterId,
-                lf.DateCreated))
+            .Select(lf => new { FriendId = lf.RequesterId, Friend = lf.Requester, lf.DateCreated })
             .ToListAsync();
 
+        // DisplayName is resolved in memory (never as raw email) via GetDisplayName().
         return asRequester
             .Concat(asAddressee)
+            .Select(f => new FriendViewModel(
+                f.FriendId,
+                f.Friend?.GetDisplayName() ?? f.FriendId,
+                f.DateCreated))
             .OrderByDescending(f => f.ConnectedSince)
             .ToList();
     }

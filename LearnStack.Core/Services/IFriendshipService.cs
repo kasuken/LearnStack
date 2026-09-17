@@ -2,7 +2,7 @@ using LearnStack.Data.Models;
 
 namespace LearnStack.Services;
 
-public record FriendViewModel(string UserId, string UserName, DateTime ConnectedSince);
+public record FriendViewModel(string UserId, string DisplayName, DateTime ConnectedSince);
 
 public interface IFriendshipService
 {
