@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using LearnStack.Data.Models;
@@ -5,7 +6,7 @@ using LearnStack.Data.Models;
 namespace LearnStack.Data;
 
 public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : IdentityDbContext<ApplicationUser>(options)
+    : IdentityDbContext<ApplicationUser>(options), IDataProtectionKeyContext
 {
     public DbSet<LearningResource> LearningResources { get; set; }
     public DbSet<ContentIdea> ContentIdeas { get; set; }
@@ -14,6 +15,11 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<SharedResourceGroupItem> SharedResourceGroupItems { get; set; }
     public DbSet<LearnerFriendship> LearnerFriendships { get; set; }
     public DbSet<FriendInvitation> FriendInvitations { get; set; }
+
+    // Backing store for the ASP.NET Core Data Protection key ring, so keys survive
+    // container restarts, deployments and slot swaps instead of living only in the
+    // container filesystem (see Program.cs AddDataProtection configuration).
+    public DbSet<DataProtectionKey> DataProtectionKeys { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
