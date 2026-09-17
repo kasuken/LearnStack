@@ -30,6 +30,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IContentIdeaService, ContentIdeaService>();
         services.AddScoped<ISharedResourceGroupService, SharedResourceGroupService>();
         services.AddScoped<IFriendshipService, FriendshipService>();
+        services.AddScoped<IAccountDeletionService, AccountDeletionService>();
         services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
         {
             client.Timeout = TimeSpan.FromSeconds(30);
