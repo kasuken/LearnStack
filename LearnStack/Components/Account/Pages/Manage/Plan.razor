@@ -1,0 +1,177 @@
+@page "/Account/Manage/Plan"
+
+@using LearnStack.Billing
+@using LearnStack.Data
+@using LearnStack.Data.Models
+@using LearnStack.Services
+@using Microsoft.AspNetCore.Identity
+
+@inject UserManager<ApplicationUser> UserManager
+@inject IEntitlementService EntitlementService
+@inject IBillingProvider BillingProvider
+@inject NavigationManager Navigation
+
+<PageTitle>@L["Plan"]</PageTitle>
+
+<div class="manage-section-header">
+    <h3>@L["Plan & usage"]</h3>
+    <p>@L["See your current LearnStack plan and resource usage, and upgrade or manage billing."]</p>
+</div>
+
+@if (_user is null)
+{
+    <p>@L["Loading..."]</p>
+}
+else if (_usage is not null)
+{
+    <div class="manage-card">
+        <div class="form-group">
+            <span class="form-label">@L["Current plan"]</span>
+            <div><strong>@_usage.PlanDisplayName</strong> &mdash; @_usage.PlanPriceDescription</div>
+        </div>
+
+        <div class="form-group">
+            <span class="form-label">@L["Resources used"]</span>
+            <div>
+                <strong>
+                    @(_usage.MaxResources.HasValue
+                        ? $"{_usage.ResourceCount} / {_usage.MaxResources.Value}"
+                        : L["{0} (unlimited)", _usage.ResourceCount].Value)
+                </strong>
+            </div>
+        </div>
+
+        @if (_usage.ResourceLimitReached)
+        {
+            <div class="alert-warning" role="alert">
+                @L["You've reached your {0} plan's limit of {1} resources. Archive one or upgrade to add more.", _usage.PlanDisplayName, _usage.MaxResources!.Value]
+            </div>
+        }
+
+        @if (_usage.GracePeriodEndsAtUtc.HasValue)
+        {
+            <div class="alert-warning" role="alert">
+                @L["A recent payment did not go through. Your Pro access continues until {0} (UTC); after that your plan reverts to Starter.", _usage.GracePeriodEndsAtUtc.Value.ToString("MMM d, yyyy")]
+            </div>
+        }
+
+        @if (_usage.PlanRenewsAtUtc.HasValue)
+        {
+            <p class="form-hint">@L["Renews {0} (UTC).", _usage.PlanRenewsAtUtc.Value.ToString("MMM d, yyyy")]</p>
+        }
+
+        @if (_actionError is not null)
+        {
+            <div class="alert-error" role="alert">@_actionError</div>
+        }
+
+        <div class="btn-group">
+            @if (_usage.Tier == PlanTier.Starter)
+            {
+                <button type="button" class="btn-primary" disabled="@_busy" @onclick="UpgradeToProAsync">
+                    @(_busy ? L["Starting checkout..."] : L["Upgrade to Pro"])
+                </button>
+            }
+            else
+            {
+                <button type="button" class="btn-secondary" disabled="@_busy" @onclick="OpenBillingPortalAsync">
+                    @(_busy ? L["Opening billing portal..."] : L["Manage billing"])
+                </button>
+            }
+        </div>
+    </div>
+
+    <div class="manage-card" style="margin-top: 20px;">
+        <div class="manage-section-header" style="margin-bottom: 12px;">
+            <h3 style="font-size: 1.1rem;">@L["Plans"]</h3>
+        </div>
+        <ul>
+            @foreach (var plan in PlanCatalog.All)
+            {
+                <li style="margin-bottom: 8px;">
+                    <strong>@plan.DisplayName</strong> (@plan.PriceDescription) &mdash; @string.Join(", ", plan.Capabilities)
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+@code {
+    private ApplicationUser? _user;
+    private PlanUsageSummaryDto? _usage;
+    private string? _actionError;
+    private bool _busy;
+
+    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserManager.GetUserAsync(HttpContext.User);
+        if (_user is null)
+            return;
+
+        _usage = await EntitlementService.GetUsageSummaryAsync(_user.Id);
+    }
+
+    private async Task UpgradeToProAsync()
+    {
+        if (_busy || _user is null)
+            return;
+
+        _busy = true;
+        _actionError = null;
+
+        try
+        {
+            // The account email is passed so the billing customer is created under the address
+            // the user signed in with, rather than one the hosted checkout page fills in itself.
+            var result = await BillingProvider.CreateCheckoutSessionAsync(
+                _user.Id, PlanTier.Pro, BillingInterval.Yearly, await UserManager.GetEmailAsync(_user));
+
+            if (!result.Supported)
+            {
+                _actionError = result.UnsupportedReason ?? L["Checkout is not available right now."];
+                return;
+            }
+
+            Navigation.NavigateTo(result.RedirectUrl!, forceLoad: true);
+        }
+        catch
+        {
+            _actionError = L["LearnStack could not start checkout. Try again."];
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+
+    private async Task OpenBillingPortalAsync()
+    {
+        if (_busy || _user is null)
+            return;
+
+        _busy = true;
+        _actionError = null;
+
+        try
+        {
+            var result = await BillingProvider.CreatePortalSessionAsync(_user.Id);
+            if (!result.Supported)
+            {
+                _actionError = result.UnsupportedReason ?? L["The billing portal is not available right now."];
+                return;
+            }
+
+            Navigation.NavigateTo(result.RedirectUrl!, forceLoad: true);
+        }
+        catch
+        {
+            _actionError = L["LearnStack could not open the billing portal. Try again."];
+        }
+        finally
+        {
+            _busy = false;
+        }
+    }
+}

@@ -1,3 +1,4 @@
+using LearnStack.Common;
 using LearnStack.Data;
 using LearnStack.Data.Models;
 using LearnStack.Helpers;
@@ -5,9 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LearnStack.Services;
 
-public class LearningResourceService(IDbContextFactory<ApplicationDbContext> contextFactory) : ILearningResourceService
+public class LearningResourceService(
+    IDbContextFactory<ApplicationDbContext> contextFactory,
+    IEntitlementService entitlementService) : ILearningResourceService
 {
     private readonly IDbContextFactory<ApplicationDbContext> _contextFactory = contextFactory;
+    private readonly IEntitlementService _entitlementService = entitlementService;
 
     public async Task<List<LearningResource>> GetAllAsync(string userId)
     {
@@ -98,6 +102,12 @@ public class LearningResourceService(IDbContextFactory<ApplicationDbContext> con
 
     public async Task<LearningResource> CreateAsync(LearningResource resource)
     {
+        var entitlementCheck = await _entitlementService.CanCreateResourceAsync(resource.UserId);
+        if (!entitlementCheck.IsAllowed)
+        {
+            throw new PlanEntitlementDeniedException(entitlementCheck.Reason!);
+        }
+
         await using var context = await _contextFactory.CreateDbContextAsync();
         context.LearningResources.Add(resource);
         await context.SaveChangesAsync();
