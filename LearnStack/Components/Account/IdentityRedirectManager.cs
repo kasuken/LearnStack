@@ -8,6 +8,9 @@ internal sealed class IdentityRedirectManager(NavigationManager navigationManage
 {
     public const string StatusCookieName = "Identity.StatusMessage";
 
+    // Sign-in landing page; "/" would only bounce here again via the marketing home page.
+    public const string PostLoginUri = "/resources";
+
     private static readonly CookieBuilder StatusCookieBuilder = new()
     {
         SameSite = SameSiteMode.Strict,
