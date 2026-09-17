@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using LearnStack.Components;
@@ -33,6 +34,20 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddLearnStackData(connectionString, migrationsAssembly: "LearnStack");
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+// Persist the Data Protection key ring outside the container so that auth cookies and
+// antiforgery tokens survive restarts, deployments, slot swaps and scale-out on App
+// Service. The default (ephemeral, in-container) key ring is fine for local Development.
+// (AddLearnStackData's AddDbContextFactory<ApplicationDbContext> call above also
+// registers ApplicationDbContext itself as a scoped service, which is what
+// PersistKeysToDbContext needs to resolve it.)
+var dataProtectionBuilder = builder.Services.AddDataProtection()
+    .SetApplicationName("LearnStack");
+
+if (!builder.Environment.IsDevelopment())
+{
+    dataProtectionBuilder.PersistKeysToDbContext<ApplicationDbContext>();
+}
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
     {
