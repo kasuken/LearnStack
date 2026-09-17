@@ -1,6 +1,8 @@
 using LearnStack.Data;
 using LearnStack.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LearnStack.Extensions;
@@ -31,6 +33,16 @@ public static class ServiceCollectionExtensions
         {
             client.Timeout = TimeSpan.FromSeconds(30);
         });
+        return services;
+    }
+
+    public static IServiceCollection AddLearnStackEmailSender(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {
+        services.Configure<EmailSenderOptions>(configuration.GetSection(EmailSenderOptions.SectionName));
+        services.AddSingleton<ISmtpClient, SmtpClientWrapper>();
+        services.AddSingleton<IEmailSender<ApplicationUser>, SmtpEmailSender>();
         return services;
     }
 }
