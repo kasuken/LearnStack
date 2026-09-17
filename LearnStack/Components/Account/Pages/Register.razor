@@ -277,7 +277,7 @@
 
         // Directly sign in the user without email confirmation
         await SignInManager.SignInAsync(user, isPersistent: false);
-        RedirectManager.RedirectTo(ReturnUrl ?? "/");
+        RedirectManager.RedirectTo(ReturnUrl ?? IdentityRedirectManager.PostLoginUri);
     }
 
     private ApplicationUser CreateUser()

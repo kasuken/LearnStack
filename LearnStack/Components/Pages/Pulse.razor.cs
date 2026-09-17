@@ -29,6 +29,12 @@ public partial class Pulse
 
     protected override async Task OnInitializedAsync()
     {
+        // Skip the prerender pass: it would load everything a second time once the circuit connects.
+        if (!RendererInfo.IsInteractive)
+        {
+            return;
+        }
+
         await LoadPulseAsync();
     }
 

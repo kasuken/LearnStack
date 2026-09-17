@@ -346,7 +346,7 @@
         {
             await UpdateLastAccessAtAsync();
             Logger.LogInformation("User logged in.");
-            RedirectManager.RedirectTo(ReturnUrl ?? "/");
+            RedirectManager.RedirectTo(ReturnUrl ?? IdentityRedirectManager.PostLoginUri);
         }
         else if (result.RequiresTwoFactor)
         {
