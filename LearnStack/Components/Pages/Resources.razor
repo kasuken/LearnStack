@@ -1,11 +1,15 @@
 @page "/resources"
 @using LearnStack.Services
+@using LearnStack.Core.Helpers
+@using LearnStack.Data
+@using Microsoft.AspNetCore.Identity
 @using System.Text
 @using System.Text.Json
 @attribute [Authorize]
 @inject ILearningResourceService ResourceService
 @inject IContentIdeaService ContentIdeaService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 @inject NavigationManager NavigationManager
@@ -309,7 +313,7 @@
                                     </MudChip>
                                 </MudStack>
                                 <MudText Typo="Typo.caption" Style="color: var(--mud-palette-text-secondary); margin-top: 6px;">
-                                    @L["DateAdded"]: @DateTimeHelper.GetRelativeDate(context.DateAdded, L) @GetAgeEmoji(context.DateAdded)
+                                    @L["DateAdded"]: @DateTimeHelper.GetRelativeDate(context.DateAdded, L, timeZoneId) @GetAgeEmoji(context.DateAdded)
                                 </MudText>
                             </MudStack>
                         </div>
@@ -406,7 +410,7 @@
                 </PropertyColumn>
                 <PropertyColumn Property="x => x.DateAdded" aria-label="@L["DateAdded"]">
                     <CellTemplate>
-                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@DateTimeHelper.GetRelativeDate(context.Item.DateAdded, L) @GetAgeEmoji(context.Item.DateAdded)</MudText>
+                        <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);">@DateTimeHelper.GetRelativeDate(context.Item.DateAdded, L, timeZoneId) @GetAgeEmoji(context.Item.DateAdded)</MudText>
                     </CellTemplate>
                 </PropertyColumn>
                 <TemplateColumn Title="@L["Actions"]" Sortable="false">
@@ -469,6 +473,7 @@
     private bool showFilters = false;
     private bool showArchived = false;
     private string userId = string.Empty;
+    private string? timeZoneId;
     private int activeTabIndex = 0;
     private ViewMode viewMode = ViewMode.List;
     
@@ -486,6 +491,8 @@
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
+        var currentUser = await UserManager.GetUserAsync(authState.User);
+        timeZoneId = currentUser?.TimeZoneId;
 
         await ResourceService.ArchiveStaleResourcesAsync(userId);
         await LoadResources();
@@ -785,13 +792,13 @@
 
     private string GetAgeEmoji(DateTime date)
     {
-        var diff = DateTime.UtcNow - date;
+        var daysAgo = UserTimeZoneHelper.GetDaysAgo(date, DateTime.UtcNow, timeZoneId);
 
-        if (diff.TotalDays < 7) return "😀";
-        if (diff.TotalDays < 30) return "🙂";
-        if (diff.TotalDays < 90) return "😐";
-        if (diff.TotalDays < 180) return "😕";
-        if (diff.TotalDays < 365) return "☹️";
+        if (daysAgo < 7) return "😀";
+        if (daysAgo < 30) return "🙂";
+        if (daysAgo < 90) return "😐";
+        if (daysAgo < 180) return "😕";
+        if (daysAgo < 365) return "☹️";
         return "😢";
     }
 

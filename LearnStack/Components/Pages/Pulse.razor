@@ -1,8 +1,11 @@
 @page "/pulse"
 @using LearnStack.Services
+@using LearnStack.Data
+@using Microsoft.AspNetCore.Identity
 @attribute [Authorize]
 @inject ILearningResourceService ResourceService
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject UserManager<ApplicationUser> UserManager
 @inject ILogger<Pulse> Logger
 
 <PageTitle>@L["LearningPulse"] - LearnStack</PageTitle>
