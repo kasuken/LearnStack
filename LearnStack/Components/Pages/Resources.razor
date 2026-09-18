@@ -489,6 +489,12 @@
     private int contentIdeasCount;
     protected override async Task OnInitializedAsync()
     {
+        // Skip the prerender pass: it would load everything a second time once the circuit connects.
+        if (!RendererInfo.IsInteractive)
+        {
+            return;
+        }
+
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         userId = authState.User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
         var currentUser = await UserManager.GetUserAsync(authState.User);
