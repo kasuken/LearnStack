@@ -1,6 +1,6 @@
 using System.Data.Common;
 using System.Globalization;
-using System.Security.Claims;
+using LearnStack.Core.Helpers;
 using LearnStack.Data.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -52,15 +52,15 @@ public partial class Pulse
         try
         {
             var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-            var userId = authState.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await UserManager.GetUserAsync(authState.User);
 
-            if (string.IsNullOrWhiteSpace(userId))
+            if (user is null)
             {
                 resources = [];
             }
             else
             {
-                var loadedResources = await ResourceService.GetAllAsync(userId);
+                var loadedResources = await ResourceService.GetAllAsync(user.Id);
                 resources = loadedResources
                     .Where(resource => !resource.IsArchived)
                     .Select(resource => new PulseResourceState(
@@ -75,7 +75,7 @@ public partial class Pulse
                     .ToList();
             }
 
-            BuildPulse(DateTime.UtcNow);
+            BuildPulse(DateTime.UtcNow, user?.TimeZoneId);
         }
         catch (DbException exception)
         {
@@ -94,7 +94,7 @@ public partial class Pulse
         }
     }
 
-    private void BuildPulse(DateTime utcNow)
+    private void BuildPulse(DateTime utcNow, string? timeZoneId)
     {
         var completedResources = resources
             .Where(resource => resource.Status == ContentStatus.Completed)
@@ -113,18 +113,28 @@ public partial class Pulse
             .Take(3)
             .ToList();
 
-        var currentPeriodStart = utcNow.Date.AddDays(-29);
-        var previousPeriodStart = currentPeriodStart.AddDays(-30);
-        var currentPeriodEnd = utcNow.Date.AddDays(1);
+        // Day/week boundaries are computed in the user's local time zone so that
+        // "today", the trailing 30-day windows, and active-day counts line up with
+        // the calendar day the user actually experienced, not the UTC calendar day.
+        var timeZone = UserTimeZoneHelper.ResolveTimeZone(timeZoneId);
+        var localNow = UserTimeZoneHelper.ConvertUtcToUserLocal(utcNow, timeZone);
+
+        var currentPeriodStartLocal = localNow.Date.AddDays(-29);
+        var previousPeriodStartLocal = currentPeriodStartLocal.AddDays(-30);
+        var currentPeriodEndLocal = localNow.Date.AddDays(1);
+
+        var currentPeriodStart = UserTimeZoneHelper.ConvertUserLocalToUtc(currentPeriodStartLocal, timeZone);
+        var previousPeriodStart = UserTimeZoneHelper.ConvertUserLocalToUtc(previousPeriodStartLocal, timeZone);
+        var currentPeriodEnd = UserTimeZoneHelper.ConvertUserLocalToUtc(currentPeriodEndLocal, timeZone);
 
         currentPeriodCompletions = CountCompletions(completedResources, currentPeriodStart, currentPeriodEnd);
         previousPeriodCompletions = CountCompletions(completedResources, previousPeriodStart, currentPeriodStart);
-        activeDays = GetActiveDays(currentPeriodStart, currentPeriodEnd);
+        activeDays = GetActiveDays(currentPeriodStart, currentPeriodEnd, timeZone);
         contentTypeCounts = resources
             .GroupBy(resource => resource.ContentType)
             .ToDictionary(group => group.Key, group => group.Count());
 
-        BuildWeeklyActivity(completedResources, utcNow);
+        BuildWeeklyActivity(completedResources, utcNow, timeZoneId);
     }
 
     private static int CountCompletions(
@@ -136,34 +146,27 @@ public partial class Pulse
             resource.DateCompleted >= periodStart && resource.DateCompleted < periodEnd);
     }
 
-    private int GetActiveDays(DateTime periodStart, DateTime periodEnd)
+    private int GetActiveDays(DateTime periodStart, DateTime periodEnd, TimeZoneInfo timeZone)
     {
         return resources
             .SelectMany(resource => new DateTime?[] { resource.DateAdded, resource.DateCompleted })
             .Where(activityDate => activityDate >= periodStart && activityDate < periodEnd)
-            .Select(activityDate => activityDate!.Value.Date)
+            .Select(activityDate => UserTimeZoneHelper.ConvertUtcToUserLocal(activityDate!.Value, timeZone).Date)
             .Distinct()
             .Count();
     }
 
-    private void BuildWeeklyActivity(IReadOnlyList<PulseResourceState> completedResources, DateTime utcNow)
+    private void BuildWeeklyActivity(IReadOnlyList<PulseResourceState> completedResources, DateTime utcNow, string? timeZoneId)
     {
-        var daysSinceMonday = ((int)utcNow.DayOfWeek + 6) % 7;
-        var currentWeekStart = utcNow.Date.AddDays(-daysSinceMonday);
-        var firstWeekStart = currentWeekStart.AddDays(-7 * (WeekCount - 1));
-        var counts = new List<int>(WeekCount);
-        var labels = new List<string>(WeekCount);
+        var completionDatesUtc = completedResources
+            .Where(resource => resource.DateCompleted.HasValue)
+            .Select(resource => resource.DateCompleted!.Value)
+            .ToList();
 
-        for (var index = 0; index < WeekCount; index++)
-        {
-            var weekStart = firstWeekStart.AddDays(index * 7);
-            var weekEnd = weekStart.AddDays(7);
-            counts.Add(CountCompletions(completedResources, weekStart, weekEnd));
-            labels.Add(weekStart.ToString("MMM d", CultureInfo.CurrentCulture));
-        }
-
-        weeklyCompletionCounts = counts;
-        weekLabels = labels;
+        weeklyCompletionCounts = PulseAnalyticsHelper.GetWeeklyCompletionCounts(completionDatesUtc, utcNow, timeZoneId, WeekCount);
+        weekLabels = PulseAnalyticsHelper.GetWeekStartDatesLocal(utcNow, timeZoneId, WeekCount)
+            .Select(weekStart => weekStart.ToString("MMM d", CultureInfo.CurrentCulture))
+            .ToList();
     }
 
     private string GetContentTypeText(ContentType contentType) => contentType switch

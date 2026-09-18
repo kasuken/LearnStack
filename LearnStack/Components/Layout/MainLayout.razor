@@ -134,11 +134,47 @@
             await JSRuntime.InvokeVoidAsync("setDarkMode", _isDarkMode);
             StateHasChanged();
 
+            await DetectAndSaveTimeZoneAsync();
+
             if (await CheckTosAcceptanceAsync())
             {
                 await CheckOnboardingAsync();
             }
         }
+    }
+
+    private async Task DetectAndSaveTimeZoneAsync()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var claimsPrincipal = authState.User;
+
+        if (claimsPrincipal.Identity?.IsAuthenticated != true)
+            return;
+
+        var user = await UserManager.GetUserAsync(claimsPrincipal);
+        if (user is null || !string.IsNullOrWhiteSpace(user.TimeZoneId))
+            return;
+
+        var detectedTimeZoneId = await JSRuntime.InvokeAsync<string?>("getBrowserTimeZone");
+        if (string.IsNullOrWhiteSpace(detectedTimeZoneId))
+            return;
+
+        try
+        {
+            // Validate against IANA ids only - never fall back to server-local time.
+            TimeZoneInfo.FindSystemTimeZoneById(detectedTimeZoneId);
+        }
+        catch (TimeZoneNotFoundException)
+        {
+            return;
+        }
+        catch (InvalidTimeZoneException)
+        {
+            return;
+        }
+
+        user.TimeZoneId = detectedTimeZoneId;
+        await UserManager.UpdateAsync(user);
     }
 
     private async Task<bool> CheckTosAcceptanceAsync()

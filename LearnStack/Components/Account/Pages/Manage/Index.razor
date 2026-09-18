@@ -3,6 +3,7 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Identity
 @using LearnStack.Data
+@using LearnStack.Core.Helpers
 
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
@@ -86,6 +87,18 @@
             <label for="Input.PhoneNumber" class="form-label">@L["Phone number"]</label>
             <InputText @bind-Value="Input.PhoneNumber" id="Input.PhoneNumber" class="form-input" placeholder="@L["Enter your phone number"]"/>
             <ValidationMessage For="() => Input.PhoneNumber" class="validation-message"/>
+        </div>
+
+        <div class="form-group">
+            <label for="Input.TimeZoneId" class="form-label">@L["Time zone"]</label>
+            <InputSelect @bind-Value="Input.TimeZoneId" id="Input.TimeZoneId" class="form-input">
+                @foreach (var timeZoneId in timeZoneOptions)
+                {
+                    <option value="@timeZoneId">@timeZoneId</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="() => Input.TimeZoneId" class="validation-message"/>
+            <p class="form-hint">@L["Used to show dates and the learning pulse chart in your local time."]</p>
         </div>
 
         <div class="form-actions">
@@ -249,6 +262,7 @@
     private bool isEmailConfirmed;
     private bool twoFactorEnabled;
     private DateTime? lastAccessAt;
+    private List<string> timeZoneOptions = [];
 
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
@@ -272,8 +286,15 @@
         twoFactorEnabled = await UserManager.GetTwoFactorEnabledAsync(user);
         lastAccessAt = user.LastAccessAt;
 
+        timeZoneOptions = UserTimeZoneHelper.CommonTimeZoneIds.ToList();
+        if (!string.IsNullOrWhiteSpace(user.TimeZoneId) && !timeZoneOptions.Contains(user.TimeZoneId))
+        {
+            timeZoneOptions.Add(user.TimeZoneId);
+        }
+
         Input.PhoneNumber ??= phoneNumber;
         Input.DisplayName ??= displayName;
+        Input.TimeZoneId ??= user.TimeZoneId ?? UserTimeZoneHelper.DefaultTimeZoneId;
     }
 
     private async Task OnValidSubmitAsync()
@@ -305,8 +326,42 @@
             }
         }
 
+        if (Input.TimeZoneId != user.TimeZoneId)
+        {
+            if (string.IsNullOrWhiteSpace(Input.TimeZoneId) || !IsValidIanaTimeZone(Input.TimeZoneId))
+            {
+                RedirectManager.RedirectToCurrentPageWithStatus(L["Error: Invalid time zone."], HttpContext);
+                return;
+            }
+
+            user.TimeZoneId = Input.TimeZoneId;
+            var updateResult = await UserManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                RedirectManager.RedirectToCurrentPageWithStatus(L["Error: Failed to update time zone."], HttpContext);
+                return;
+            }
+        }
+
         await SignInManager.RefreshSignInAsync(user);
         RedirectManager.RedirectToCurrentPageWithStatus(L["Your profile has been updated"], HttpContext);
+    }
+
+    private static bool IsValidIanaTimeZone(string timeZoneId)
+    {
+        try
+        {
+            TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+            return true;
+        }
+        catch (TimeZoneNotFoundException)
+        {
+            return false;
+        }
+        catch (InvalidTimeZoneException)
+        {
+            return false;
+        }
     }
 
     private string GetInitials()
@@ -327,5 +382,8 @@
         [Phone]
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
+
+        [Display(Name = "Time zone")]
+        public string? TimeZoneId { get; set; }
     }
 }

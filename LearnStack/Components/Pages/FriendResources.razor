@@ -51,7 +51,7 @@
                 </MudAvatar>
                 <MudStack Spacing="0">
                     <MudText Typo="Typo.h5" Style="font-weight: 700; color: #0f172a; letter-spacing: -0.5px;">
-                        @L["FriendPublicResources", friendName?.Split('@')[0] ?? ""]
+                        @L["FriendPublicResources", friendName ?? ""]
                     </MudText>
                     <MudChip T="string" Size="Size.Small" Style="background: #dcfce7; color: #059669; font-weight: 600; border-radius: 6px; margin-top: 4px;">
                         <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Class="mr-1" />
@@ -153,20 +153,19 @@
         {
             var friends = await FriendshipService.GetFriendsAsync(userId);
             var friend = friends.FirstOrDefault(f => f.UserId == FriendUserId);
-            friendName = friend?.UserName;
+            friendName = friend?.DisplayName;
             resources = await ResourceService.GetPublicResourcesByUserIdAsync(FriendUserId);
         }
 
         isLoading = false;
     }
 
-    private string GetInitials(string userName)
+    private string GetInitials(string displayName)
     {
-        var name = userName.Split('@')[0];
-        var parts = name.Split('.');
+        var parts = displayName.Split([' ', '.', '@'], StringSplitOptions.RemoveEmptyEntries);
         if (parts.Length >= 2)
             return $"{parts[0][0]}{parts[1][0]}".ToUpper();
-        return name.Length >= 2 ? name[..2].ToUpper() : name.ToUpper();
+        return displayName.Length >= 2 ? displayName[..2].ToUpper() : displayName.ToUpper();
     }
 
     private string GetThumbnailDataUrl(LearningResource resource)

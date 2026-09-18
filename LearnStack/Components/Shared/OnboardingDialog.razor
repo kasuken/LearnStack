@@ -191,6 +191,11 @@
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(user.DisplayName))
+        {
+            user.DisplayName = user.GetDisplayName();
+        }
+
         user.OnboardingCompletedAt = DateTime.UtcNow;
         var updateResult = await UserManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
