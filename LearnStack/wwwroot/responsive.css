@@ -1,0 +1,469 @@
+/* ========================================
+   LearnStack - Responsive / mobile layer
+   Loaded after app.css. The desktop layout
+   lives in app.css and is left untouched;
+   everything here is additive.
+   ======================================== */
+
+/* ----------------------------------------
+   Layout primitives shared by all widths
+   ---------------------------------------- */
+
+.app-main {
+    padding-top: var(--app-bar-height, 64px);
+    min-height: 100dvh;
+}
+
+/* Resource list row: handle | thumbnail | content | actions */
+.resource-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.resource-row-handle,
+.resource-row-thumb,
+.resource-row-actions {
+    flex-shrink: 0;
+}
+
+.resource-row-main {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Long titles and bare URLs must never widen the card. */
+.resource-row-main .mud-typography,
+.resource-row-main .mud-link {
+    overflow-wrap: anywhere;
+}
+
+/* ----------------------------------------
+   Tablets and small laptops
+   ---------------------------------------- */
+
+@media (max-width: 959.98px) {
+    .page-header-actions .mud-button-root {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+/* Just above the phone breakpoint the page header is a row again, but the
+   title plus four action buttons still needs ~660px. Let it wrap so the
+   actions drop to their own line rather than running off the edge. */
+@media (min-width: 600px) and (max-width: 959.98px) {
+    .page-header {
+        flex-wrap: wrap;
+        row-gap: 12px;
+    }
+
+    .page-header-actions {
+        flex-wrap: wrap;
+    }
+}
+
+/* ----------------------------------------
+   Phones (< 600px)
+   ---------------------------------------- */
+
+@media (max-width: 599.98px) {
+
+    :root {
+        --app-bar-height: 56px;
+    }
+
+    /* Nothing may scroll the page sideways. */
+    html,
+    body {
+        overflow-x: hidden;
+    }
+
+    /* ---- App bar ---- */
+    .mud-appbar.app-header,
+    .mud-appbar.app-header .mud-toolbar {
+        min-height: var(--app-bar-height);
+        height: var(--app-bar-height);
+    }
+
+    .mud-appbar.app-header .mud-toolbar {
+        padding-left: 12px;
+        padding-right: 4px;
+    }
+
+    .app-brand .mud-typography-h6 {
+        font-size: 1rem;
+    }
+
+    .app-brand img {
+        height: 28px;
+    }
+
+    /* MudStack emits its own .d-flex, which wins over MudBlazor's .d-none in
+       the cascade, so the name/email block stayed visible on phones and pushed
+       the header 150px past the viewport. Hide it explicitly. */
+    .app-user-meta {
+        display: none !important;
+    }
+
+    .app-user {
+        gap: 0 !important;
+    }
+
+    .app-user .mud-avatar {
+        width: 34px;
+        height: 34px;
+        font-size: 0.8rem;
+    }
+
+    /* ---- Page container ---- */
+    .mud-container {
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+    }
+
+    /* ---- Page header: title block stacked over its actions ---- */
+    .page-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 12px;
+    }
+
+    .page-title,
+    .page-header .mud-typography-h5 {
+        font-size: 1.25rem;
+    }
+
+    .page-subtitle {
+        font-size: 0.85rem;
+    }
+
+    /* Secondary nav buttons become one swipeable strip rather than wrapping
+       into a tall block that pushes the real content below the fold. */
+    .page-header-actions {
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+        margin-inline: -12px;
+        padding-inline: 12px;
+    }
+
+    .page-header-actions::-webkit-scrollbar {
+        display: none;
+    }
+
+    .page-header-actions > * {
+        flex: 0 0 auto;
+        white-space: nowrap;
+    }
+
+    /* Friends has a single primary action - let it fill the width instead. */
+    .page-header > .mud-button-root {
+        width: 100%;
+    }
+
+    /* ---- Stat cards ---- */
+    .stat-card {
+        padding: 14px;
+        gap: 12px;
+    }
+
+    .stat-card .stat-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        flex-shrink: 0;
+    }
+
+    .stat-card .stat-icon .mud-icon-root {
+        font-size: 1.15rem;
+    }
+
+    .stat-card .stat-value {
+        font-size: 1.25rem;
+    }
+
+    .stat-card .stat-label {
+        font-size: 0.75rem;
+        line-height: 1.25;
+    }
+
+    /* ---- Tabs ----
+       MudBlazor reserves a fixed 160px per tab, so only two fit on a phone.
+       Size them to their label instead and drop the icons. The tab bar stays
+       scrollable, which matters for the longer translated labels. */
+    .mud-tabs .mud-tab {
+        min-width: 0;
+        width: auto;
+        flex: 0 0 auto;
+        padding: 6px 10px;
+        font-size: 0.75rem;
+        letter-spacing: 0;
+    }
+
+    .mud-tabs .mud-tab .mud-icon-root {
+        display: none;
+    }
+
+    /* ---- Filter / toolbar row ---- */
+    .filter-section {
+        padding: 12px !important;
+    }
+
+    .filter-toolbar {
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+        gap: 8px !important;
+    }
+
+    /* The sort/type selects carry inline pixel widths, so they need overriding.
+       MudSelect's outermost node is .mud-select - that is the flex item here. */
+    .filter-toolbar > .mud-select {
+        width: auto !important;
+        flex: 1 1 132px;
+        min-width: 0;
+    }
+
+    /* The primary action gets a full-width row of its own. */
+    .filter-toolbar > .mud-button-root:last-child {
+        flex: 1 0 100%;
+        justify-content: center;
+    }
+
+    /* ---- Resource list rows ---- */
+    .resource-card {
+        padding: 12px !important;
+    }
+
+    .resource-row {
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    /* Drag-to-reorder is not usable by touch; the handle only steals width. */
+    .resource-row-handle {
+        display: none;
+    }
+
+    .resource-row-thumb .thumbnail-container {
+        width: 76px;
+        height: 76px;
+        min-width: 76px;
+        min-height: 76px;
+        border-radius: 12px;
+    }
+
+    .resource-row-main {
+        flex: 1 1 0;
+    }
+
+    /* Actions drop to a full-width row and flatten into a single wrap. */
+    .resource-row-actions {
+        flex: 1 0 100%;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding-top: 8px;
+        border-top: 1px solid var(--divider);
+    }
+
+    /* MudStack renders as a plain `d-flex flex-column` div (no .mud-stack class),
+       so dissolve both nesting levels and let every button share one wrap row.
+       MudBlazor's .d-flex utility is itself !important, hence the override. */
+    .resource-row-actions > div,
+    .resource-row-actions > div > div {
+        display: contents !important;
+    }
+
+    .resource-row-actions .mud-button-root {
+        flex: 0 0 auto;
+    }
+
+    /* ---- Pagination ---- */
+    .pager-bar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px;
+    }
+
+    .pager-bar .mud-pagination {
+        justify-content: center;
+    }
+
+    .pager-bar .mud-pagination ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* ---- Data grid: scroll it rather than squash it ---- */
+    .mud-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .mud-table-container > table {
+        min-width: 560px;
+    }
+
+    /* ---- Dialogs: near full screen, never taller than the viewport ---- */
+    .mud-dialog {
+        margin: 8px !important;
+        width: calc(100vw - 16px) !important;
+        max-width: calc(100vw - 16px) !important;
+        max-height: calc(100dvh - 16px);
+    }
+
+    .mud-dialog .mud-dialog-content {
+        padding: 1rem !important;
+        max-height: calc(100dvh - 168px);
+        overflow-y: auto;
+    }
+
+    .mud-dialog .mud-dialog-actions {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .mud-dialog .mud-dialog-actions .mud-button-root {
+        flex: 1 1 auto;
+        justify-content: center;
+    }
+
+    /* ---- Touch targets: Material asks for ~48px, MudBlazor small is 30px ---- */
+    .mud-icon-button {
+        min-width: 40px;
+        min-height: 40px;
+    }
+
+    .mud-button-root {
+        min-height: 40px;
+    }
+
+    /* ---- Popovers must stay inside the viewport ---- */
+    .mud-popover {
+        max-width: calc(100vw - 16px);
+    }
+
+    /* ---- Snackbar spans the width above the thumb zone ---- */
+    .mud-snackbar-location-bottom-right,
+    .mud-snackbar-location-bottom-left,
+    .mud-snackbar-location-bottom-center {
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        width: auto;
+    }
+
+    /* ---- iOS zooms the page when a focused field's text is under 16px ---- */
+    .mud-input-root,
+    .mud-input-slot,
+    input.form-control,
+    select.form-control,
+    textarea.form-control,
+    .form-input {
+        font-size: 16px !important;
+    }
+
+    /* ---- Long unbroken strings (share URLs, emails) ---- */
+    .mud-typography {
+        overflow-wrap: anywhere;
+    }
+
+    /* Rows of chips, badges and meta items inside page content wrap instead of
+       running past the edge. The app bar is outside .mud-main-content. The
+       excluded classes are ones this file already gives a layout of their own:
+       wrapping a container that is flex-direction:column would lay its children
+       out in *columns* and blow the page width out instead. */
+    .mud-main-content .d-flex.flex-row:not(.page-header):not(.page-header-actions):not(.pager-bar):not(.filter-toolbar):not(.resource-row) {
+        flex-wrap: wrap;
+    }
+
+    .mud-chip {
+        max-width: 100%;
+    }
+
+    /* ---- Account settings pages ---- */
+    .manage-nav {
+        scrollbar-width: none;
+    }
+
+    .manage-nav::-webkit-scrollbar {
+        display: none;
+    }
+
+    .manage-nav-link {
+        min-height: 40px;
+    }
+
+    .manage-topbar-logo,
+    .manage-topbar-back {
+        min-height: 40px;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+
+/* ----------------------------------------
+   Marketing pages (/ and /welcome) on narrow phones.
+   Those pages carry their own <style> blocks, which render after this file,
+   so these overrides need !important to win.
+   ---------------------------------------- */
+
+@media (max-width: 480px) {
+    .hero,
+    .features,
+    .testimonials,
+    .cta,
+    .pricing,
+    .section-header,
+    .nav-container,
+    .footer-content {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Grid and flex children default to min-width:auto, so a single long word
+       or a wide button sets the floor for the whole column. */
+    .hero > *,
+    .hero-content,
+    .hero-visual,
+    .hero-card {
+        min-width: 0 !important;
+    }
+
+    .hero h1 {
+        font-size: 1.75rem !important;
+        overflow-wrap: anywhere;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-secondary {
+        padding: 0.9rem 1.25rem !important;
+        font-size: 1rem !important;
+        justify-content: center;
+    }
+}
+
+/* Small phones: keep the secondary nav strip compact. */
+@media (max-width: 380px) {
+    .page-header-actions .mud-button-root {
+        font-size: 0.78rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
+
+/* Landscape phones: the app bar eats too much of a short viewport. */
+@media (max-height: 460px) and (orientation: landscape) {
+    :root {
+        --app-bar-height: 48px;
+    }
+
+    .mud-dialog .mud-dialog-content {
+        max-height: calc(100dvh - 120px);
+    }
+}

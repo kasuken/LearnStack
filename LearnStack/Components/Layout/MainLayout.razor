@@ -21,7 +21,7 @@
 
 <MudLayout>
     <MudAppBar Elevation="0" Class="app-header" Style="background: var(--mud-palette-surface); border-bottom: 1px solid var(--mud-palette-lines-default);">
-        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Style="cursor: pointer;" @onclick="@(() => NavigationManager.NavigateTo("/resources"))">
+        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2" Class="app-brand" Style="cursor: pointer;" @onclick="@(() => NavigationManager.NavigateTo("/resources"))">
             <img src="img/logoOnly.png" alt="LearnStack" height="36" style="border-radius: 8px;" />
             <MudText Typo="Typo.h6" Style="font-weight: 700; color: var(--mud-palette-text-primary); letter-spacing: -0.5px;">
                 LearnStack
@@ -32,12 +32,12 @@
         <LanguageSelector />
         <AuthorizeView>
             <Authorized>
-                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3" Class="app-user">
                     <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
                         <MudAvatar Style="background: #4f46e5; font-weight: 600; color: white;" Size="Size.Medium">
                             @GetUserInitials(context.User.Identity?.Name)
                         </MudAvatar>
-                        <MudStack Spacing="0" Class="d-none d-sm-flex">
+                        <MudStack Spacing="0" Class="app-user-meta">
                             <MudText Typo="Typo.body2" Style="font-weight: 600; color: var(--mud-palette-text-primary);">@context.User.Identity?.Name?.Split('@')[0]</MudText>
                             <MudText Typo="Typo.caption" Style="color: var(--mud-palette-text-secondary);">@GetUserEmail(context.User)</MudText>
                         </MudStack>
@@ -92,7 +92,7 @@
             </NotAuthorized>
         </AuthorizeView>
     </MudAppBar>
-    <MudMainContent Style="background: var(--mud-palette-background); min-height: 100vh; padding-top: 64px;">
+    <MudMainContent Class="app-main" Style="background: var(--mud-palette-background);">
         @Body
     </MudMainContent>
 </MudLayout>

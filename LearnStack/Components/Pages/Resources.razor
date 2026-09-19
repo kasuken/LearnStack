@@ -29,7 +29,7 @@
             </MudStack>
             <MudText Typo="Typo.body2" Class="page-subtitle">@L["ResourceLibraryDescription"]</MudText>
         </MudStack>
-        <MudStack Row="true" Spacing="2">
+        <MudStack Row="true" Spacing="2" Class="page-header-actions">
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.People" 
                       OnClick="@(() => NavigationManager.NavigateTo("/friends"))" 
@@ -127,7 +127,7 @@
                              Style="border-radius: 12px;" />
             </MudItem>
             <MudItem xs="12" md="7">
-                <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
+                <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center" Class="filter-toolbar">
                     <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small" Style="border-radius: 10px; overflow: hidden;">
                         <MudIconButton Icon="@Icons.Material.Filled.ViewList" 
                                       Color="@(viewMode == ViewMode.List ? Color.Primary : Color.Default)"
@@ -260,14 +260,14 @@
             </ChildContent>
             <ItemRenderer>
                 <div class="resource-card draggable-item animate-fade-in-up" style="padding: 16px;">
-                    <div style="display: flex; gap: 16px; align-items: center;">
+                    <div class="resource-row">
                         @* Drag Handle *@
-                        <div style="flex-shrink: 0;" class="drag-handle">
+                        <div class="drag-handle resource-row-handle">
                             <MudIcon Icon="@Icons.Material.Filled.DragIndicator" Style="cursor: grab; color: #9e9e9e;" />
                         </div>
-                        
+
                         @* Thumbnail *@
-                        <div style="flex-shrink: 0;">
+                        <div class="resource-row-thumb">
                             <div class="thumbnail-container">
                                 @if (context.ThumbnailImage != null && context.ThumbnailImage.Length > 0)
                                 {
@@ -289,7 +289,7 @@
                         </div>
 
                         @* Content *@
-                        <div style="flex: 1; min-width: 0;">
+                        <div class="resource-row-main">
                             <MudStack Spacing="1">
                                 <MudText Typo="Typo.subtitle1" Style="font-weight: 600; color: var(--mud-palette-text-primary);">@context.Title</MudText>
                                 <MudLink Href="@context.Url" Target="_blank" Typo="Typo.caption" Style="color: #5c6bc0; font-weight: 500;">
@@ -319,7 +319,7 @@
                         </div>
 
                         @* Actions *@
-                        <div style="flex-shrink: 0;">
+                        <div class="resource-row-actions">
                             <MudStack Spacing="2">
                                 <MudStack Row="true" Spacing="1" Justify="Justify.FlexEnd">
                                     <MudIconButton Icon="@Icons.Material.Filled.Edit" Size="Size.Small" Style="color: #5c6bc0;" OnClick="@(() => OpenEditDialog(context))" />
@@ -362,7 +362,7 @@
         
         @* Pagination *@
         <div class="resource-card" style="padding: 16px; margin-top: 20px;">
-            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="pager-bar">
                 <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary); font-weight: 500;">
                     @L["ShowingResourcesRange", ((currentPage - 1) * pageSize + 1), Math.Min(currentPage * pageSize, filteredResources.Count), filteredResources.Count]
                 </MudText>
@@ -442,7 +442,7 @@
         
         @* Pagination *@
         <div class="resource-card" style="padding: 16px; margin-top: 20px;">
-            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="pager-bar">
                 <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary); font-weight: 500;">
                     @L["ShowingResourcesRange", ((currentPage - 1) * pageSize + 1), Math.Min(currentPage * pageSize, filteredResources.Count), filteredResources.Count]
                 </MudText>

@@ -154,6 +154,7 @@
         font-size: 0.9rem;
         color: #64748b;
         margin-bottom: 10px;
+        overflow-wrap: anywhere;
     }
 
     .avatar-badges {
@@ -193,6 +194,34 @@
         align-items: flex-end;
         gap: 2px;
         flex-shrink: 0;
+    }
+
+    @@media (max-width: 599.98px) {
+        .profile-avatar-card {
+            gap: 14px;
+        }
+
+        .avatar-circle {
+            width: 56px;
+            height: 56px;
+        }
+
+        .avatar-initials {
+            font-size: 1.35rem;
+        }
+
+        .avatar-name {
+            font-size: 1.1rem;
+            white-space: normal;
+        }
+
+        /* Full width under the avatar, left aligned, so it cannot collide with the email. */
+        .avatar-last-access {
+            flex: 1 0 100%;
+            flex-direction: row;
+            align-items: baseline;
+            gap: 8px;
+        }
     }
 
     .last-access-label {

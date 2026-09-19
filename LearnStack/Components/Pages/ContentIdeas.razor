@@ -22,7 +22,7 @@
             </MudStack>
             <MudText Typo="Typo.body2" Class="page-subtitle">@L["ContentIdeasSubtitle"]</MudText>
         </MudStack>
-        <MudStack Row="true" Spacing="2">
+        <MudStack Row="true" Spacing="2" Class="page-header-actions">
             <MudButton Variant="Variant.Outlined" 
                       StartIcon="@Icons.Material.Filled.MenuBook" 
                       OnClick="@(() => NavigationManager.NavigateTo("/resources"))" 
@@ -79,6 +79,10 @@
                 <div class="stat-icon" style="background: #f3e8ff;">
                     <MudIcon Icon="@Icons.Material.Filled.Lightbulb" Style="color: #a855f7;" />
                 </div>
+                <div class="stat-content">
+                    <span class="stat-value">@totalCount</span>
+                    <span class="stat-label">@L["ContentIdeas"]</span>
+                </div>
             </div>
         </MudItem>
     </MudGrid>
@@ -98,7 +102,7 @@
                              Style="border-radius: 12px;" />
             </MudItem>
             <MudItem xs="12" md="8">
-                <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center">
+                <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center" Class="filter-toolbar">
                     <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small">
                         <MudIconButton Icon="@Icons.Material.Filled.GridView" 
                                       Color="@(viewMode == ViewMode.Grid ? Color.Warning : Color.Default)"
@@ -270,7 +274,7 @@
         
         @* Pagination *@
         <div class="resource-card" style="padding: 16px; margin-top: 20px;">
-            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="pager-bar">
                 <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary); font-weight: 500;">
                     @L["Ideas"]: @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) / @filteredIdeas.Count
                 </MudText>
@@ -340,7 +344,7 @@
         
         @* Pagination *@
         <div class="resource-card" style="padding: 16px; margin-top: 20px;">
-            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+            <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="pager-bar">
                 <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary); font-weight: 500;">
                     @L["Ideas"]: @((currentPage - 1) * pageSize + 1) - @(Math.Min(currentPage * pageSize, filteredIdeas.Count)) / @filteredIdeas.Count
                 </MudText>
