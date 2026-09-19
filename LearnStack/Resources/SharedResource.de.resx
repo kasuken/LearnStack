@@ -229,7 +229,7 @@
     <value>Kostenlos starten</value>
   </data>
   <data name="HeroDescription" xml:space="preserve">
-    <value>Schluss mit dem Ertrinken in Browser-Tabs. LearnStack hilft Ihnen, Ihre KI-Lernressourcen zu organisieren, priorisieren und verfolgen – von Blogbeiträgen und Podcasts bis hin zu Videos und Kursen. Schnelles Lernen mit geteilten Lernlinks. Alles an einem Ort.</value>
+    <value>Schluss mit dem Ertrinken in Browser-Tabs. LearnStack hilft Ihnen, all Ihre Lernressourcen zu organisieren, priorisieren und verfolgen – von Blogbeiträgen und Podcasts bis hin zu Videos und Kursen. Schnelles Lernen mit geteilten Lernlinks. Alles an einem Ort.</value>
   </data>
   <data name="OldestFirst" xml:space="preserve">
     <value>Älteste zuerst</value>
@@ -250,7 +250,7 @@
     <value>Lernressource bearbeiten</value>
   </data>
   <data name="HeroTitle" xml:space="preserve">
-    <value>KI meistern – eine Ressource nach der anderen</value>
+    <value>Meistern Sie alles – eine Ressource nach der anderen</value>
   </data>
   <data name="ResourceLibraryDescription" xml:space="preserve">
     <value>Speichern und organisieren Sie Blogbeiträge, Videos, Podcasts, Kurse und Dokumentation. Automatisches Abrufen von Metadaten aus URLs für schnelle Einrichtung.</value>
@@ -406,7 +406,7 @@
     <value>Kostenlos mit dem Lernen beginnen</value>
   </data>
   <data name="HeroBadge" xml:space="preserve">
-    <value>Ihr KI-Lernbegleiter</value>
+    <value>Ihr persönlicher Lernbegleiter</value>
   </data>
   <data name="NoCreditCardFreeForever" xml:space="preserve">
     <value>Keine Kreditkarte erforderlich • Für Einzelpersonen dauerhaft kostenlos</value>
@@ -424,7 +424,7 @@
     <value>Wechseln Sie zwischen Kartenansicht und Datentabelle. Passen Sie Ihren Arbeitsbereich an Ihre Arbeitsweise an.</value>
   </data>
   <data name="FeaturesSubtitle" xml:space="preserve">
-    <value>Entwickelt für Entwickler, Forscher und KI-Enthusiasten, die beim Lernen am Ball bleiben möchten.</value>
+    <value>Entwickelt für Entwickler, Forscher und lebenslang Lernende, die beim Lernen am Ball bleiben möchten.</value>
   </data>
   <data name="AddResource" xml:space="preserve">
     <value>Ressource hinzufügen</value>
@@ -445,7 +445,7 @@
     <value>+{0} weitere</value>
   </data>
   <data name="JoinThousandsLearners" xml:space="preserve">
-    <value>Schließen Sie sich Tausenden von Lernenden an, die LearnStack nutzen, um KI zu meistern – eine Ressource nach der anderen.</value>
+    <value>Schließen Sie sich Tausenden von Lernenden an, die LearnStack nutzen, um neue Fähigkeiten zu meistern – eine Ressource nach der anderen.</value>
   </data>
   <data name="PoweredByLearnStack" xml:space="preserve">
     <value>POWERED BY LEARNSTACK</value>
