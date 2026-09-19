@@ -62,6 +62,7 @@ builder.Services.AddLearnStackEmailSender(builder.Configuration);
 
 // Add application services
 builder.Services.AddLearnStackApplicationServices();
+builder.Services.AddLearnStackBilling(builder.Configuration);
 
 var app = builder.Build();
 

@@ -15,6 +15,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<SharedResourceGroupItem> SharedResourceGroupItems { get; set; }
     public DbSet<LearnerFriendship> LearnerFriendships { get; set; }
     public DbSet<FriendInvitation> FriendInvitations { get; set; }
+    public DbSet<UserPlan> UserPlans { get; set; }
+    public DbSet<ProcessedWebhookEvent> ProcessedWebhookEvents { get; set; }
 
     // Backing store for the ASP.NET Core Data Protection key ring, so keys survive
     // container restarts, deployments and slot swaps instead of living only in the
@@ -108,5 +110,19 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .WithMany()
             .HasForeignKey(lf => lf.AddresseeId)
             .OnDelete(DeleteBehavior.NoAction);
+
+        builder.Entity<UserPlan>()
+            .HasIndex(p => p.UserId)
+            .IsUnique();
+
+        builder.Entity<UserPlan>()
+            .HasOne(p => p.User)
+            .WithMany()
+            .HasForeignKey(p => p.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ProcessedWebhookEvent>()
+            .HasIndex(e => e.ProviderEventId)
+            .IsUnique();
     }
 }

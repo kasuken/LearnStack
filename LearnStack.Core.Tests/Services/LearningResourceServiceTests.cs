@@ -1,3 +1,4 @@
+using LearnStack.Common;
 using LearnStack.Data.Models;
 using LearnStack.Services;
 
@@ -12,6 +13,12 @@ public class LearningResourceServiceTests
     private static Task<TestDbContextFactory> MakeFactory()
         => TestDbContextFactory.CreateAsync(UserId, OtherUserId);
 
+    // Every LearningResourceService in these tests is backed by a real EntitlementService
+    // sharing the same factory, so plan-limit enforcement runs exactly as it would in
+    // production rather than being mocked away.
+    private static LearningResourceService MakeService(TestDbContextFactory factory)
+        => new(factory, new EntitlementService(factory));
+
     // -----------------------------------------------------------------------
     // CreateAsync / GetAllAsync
     // -----------------------------------------------------------------------
@@ -20,7 +27,7 @@ public class LearningResourceServiceTests
     public async Task CreateAsync_StoresAndReturnsResource()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         var resource = await svc.CreateAsync(new LearningResource
         {
@@ -42,7 +49,7 @@ public class LearningResourceServiceTests
     public async Task GetAllAsync_ReturnsOnlyResourcesForOwner()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         await svc.CreateAsync(MakeResource(UserId, "A"));
         await svc.CreateAsync(MakeResource(OtherUserId, "B"));
@@ -61,7 +68,7 @@ public class LearningResourceServiceTests
     public async Task UrlExistsAsync_WhenExactUrlExists_ReturnsTrue()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         await svc.CreateAsync(MakeResource(UserId, url: "https://example.com/page"));
 
@@ -72,7 +79,7 @@ public class LearningResourceServiceTests
     public async Task UrlExistsAsync_WhenUrlDiffersOnlyInCase_ReturnsTrue()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         await svc.CreateAsync(MakeResource(UserId, url: "https://EXAMPLE.COM/page"));
 
@@ -83,7 +90,7 @@ public class LearningResourceServiceTests
     public async Task UrlExistsAsync_WhenUrlDiffersOnlyInTrailingSlash_ReturnsTrue()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         await svc.CreateAsync(MakeResource(UserId, url: "https://example.com/page/"));
 
@@ -94,7 +101,7 @@ public class LearningResourceServiceTests
     public async Task UrlExistsAsync_WhenUrlBelongsToDifferentUser_ReturnsFalse()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         await svc.CreateAsync(MakeResource(OtherUserId, url: "https://example.com/page"));
 
@@ -105,7 +112,7 @@ public class LearningResourceServiceTests
     public async Task UrlExistsAsync_WhenExcludeIdMatchesExistingResource_ReturnsFalse()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         var existing = await svc.CreateAsync(MakeResource(UserId, url: "https://example.com/page"));
 
@@ -120,7 +127,7 @@ public class LearningResourceServiceTests
     public async Task DeleteAsync_DoesNotDeleteResourceOwnedByAnotherUser()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         var resource = await svc.CreateAsync(MakeResource(OtherUserId, "X"));
 
@@ -135,7 +142,7 @@ public class LearningResourceServiceTests
     public async Task DeleteAsync_RemovesOwnedResource()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         var resource = await svc.CreateAsync(MakeResource(UserId, "X"));
         var deleted = await svc.DeleteAsync(resource.Id, UserId);
@@ -152,7 +159,7 @@ public class LearningResourceServiceTests
     public async Task ToggleArchiveAsync_FlipsIsArchivedFlag()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         var resource = await svc.CreateAsync(MakeResource(UserId));
         Assert.False(resource.IsArchived);
@@ -168,7 +175,7 @@ public class LearningResourceServiceTests
     public async Task TogglePublicAsync_FlipsIsPublicFlag()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         var resource = await svc.CreateAsync(MakeResource(UserId));
         Assert.False(resource.IsPublic);
@@ -185,7 +192,7 @@ public class LearningResourceServiceTests
     public async Task GetPublicResourcesByUserIdAsync_ReturnsOnlyPublicNonArchivedItems()
     {
         await using var factory = await MakeFactory();
-        var svc = new LearningResourceService(factory);
+        var svc = MakeService(factory);
 
         var pub = await svc.CreateAsync(MakeResource(UserId, "Public", isPublic: true));
         await svc.CreateAsync(MakeResource(UserId, "Private"));
@@ -195,6 +202,43 @@ public class LearningResourceServiceTests
 
         Assert.Single(results);
         Assert.Equal(pub.Id, results[0].Id);
+    }
+
+    // -----------------------------------------------------------------------
+    // CreateAsync - Starter plan resource cap (PlanEntitlementDeniedException)
+    // -----------------------------------------------------------------------
+
+    [Fact]
+    public async Task CreateAsync_PastStarterCapOfTwenty_ThrowsPlanEntitlementDeniedException()
+    {
+        await using var factory = await MakeFactory();
+        var svc = MakeService(factory);
+
+        for (var i = 0; i < 20; i++)
+        {
+            await svc.CreateAsync(MakeResource(UserId, $"Resource {i}"));
+        }
+
+        await Assert.ThrowsAsync<PlanEntitlementDeniedException>(
+            () => svc.CreateAsync(MakeResource(UserId, "One too many")));
+    }
+
+    [Fact]
+    public async Task CreateAsync_ProTier_IsUnaffectedByTwentyResourceCap()
+    {
+        await using var factory = await MakeFactory();
+        var entitlements = new EntitlementService(factory);
+        var svc = new LearningResourceService(factory, entitlements);
+
+        await entitlements.SetPlanTierAsync(UserId, PlanTier.Pro);
+
+        for (var i = 0; i < 21; i++)
+        {
+            await svc.CreateAsync(MakeResource(UserId, $"Resource {i}"));
+        }
+
+        var results = await svc.GetAllAsync(UserId);
+        Assert.Equal(21, results.Count);
     }
 
     // -----------------------------------------------------------------------
