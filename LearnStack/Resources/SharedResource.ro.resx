@@ -229,7 +229,7 @@
     <value>Începe gratuit</value>
   </data>
   <data name="HeroDescription" xml:space="preserve">
-    <value>Nu te mai pierde printre zeci de file de browser. LearnStack te ajută să organizezi, prioritizezi și urmărești resursele tale de învățare despre AI - de la articole de blog și podcasturi, până la videoclipuri și cursuri. Învață rapid cu linkuri de învățare partajate. Totul într-un singur loc.</value>
+    <value>Nu te mai pierde printre zeci de file de browser. LearnStack te ajută să organizezi, prioritizezi și urmărești toate resursele tale de învățare - de la articole de blog și podcasturi, până la videoclipuri și cursuri. Învață rapid cu linkuri de învățare partajate. Totul într-un singur loc.</value>
   </data>
   <data name="OldestFirst" xml:space="preserve">
     <value>Cele mai vechi primele</value>
@@ -250,7 +250,7 @@
     <value>Editează resursa de învățare</value>
   </data>
   <data name="HeroTitle" xml:space="preserve">
-    <value>Stăpânește AI, o resursă pe rând</value>
+    <value>Stăpânește orice subiect, o resursă pe rând</value>
   </data>
   <data name="ResourceLibraryDescription" xml:space="preserve">
     <value>Salvează și organizează articole de blog, videoclipuri, podcasturi, cursuri și documentație. Preia automat metadatele din URL-uri pentru o configurare rapidă.</value>
@@ -406,7 +406,7 @@
     <value>Începe să înveți gratuit</value>
   </data>
   <data name="HeroBadge" xml:space="preserve">
-    <value>Partenerul tău de învățare AI</value>
+    <value>Partenerul tău de învățare</value>
   </data>
   <data name="NoCreditCardFreeForever" xml:space="preserve">
     <value>Nu este necesar cardul de credit • Gratuit pentru totdeauna pentru persoane fizice</value>
@@ -424,7 +424,7 @@
     <value>Comută între vizualizarea pe carduri și grila de date. Personalizează-ți spațiul de lucru după preferințele tale.</value>
   </data>
   <data name="FeaturesSubtitle" xml:space="preserve">
-    <value>Conceput pentru dezvoltatori, cercetători și pasionați de AI care vor să-și țină învățarea sub control.</value>
+    <value>Conceput pentru dezvoltatori, cercetători și oricine învață continuu și vrea să-și țină învățarea sub control.</value>
   </data>
   <data name="AddResource" xml:space="preserve">
     <value>Adaugă resursă</value>
@@ -445,7 +445,7 @@
     <value>+{0} în plus</value>
   </data>
   <data name="JoinThousandsLearners" xml:space="preserve">
-    <value>Alătură-te miilor de persoane care folosesc LearnStack pentru a stăpâni AI, o resursă pe rând.</value>
+    <value>Alătură-te miilor de persoane care folosesc LearnStack pentru a stăpâni noi competențe, o resursă pe rând.</value>
   </data>
   <data name="PoweredByLearnStack" xml:space="preserve">
     <value>REALIZAT DE LEARNSTACK</value>
@@ -1387,7 +1387,7 @@
     <value>Șterge filtrele</value>
   </data>
   <data name="MarketingFooterDescription" xml:space="preserve">
-    <value>Organizează-ți parcursul de învățare AI. Urmărește resurse, ia notițe și creează conținut.</value>
+    <value>Organizează-ți parcursul de învățare. Urmărește resurse, ia notițe și creează conținut.</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Produs</value>
@@ -1417,7 +1417,7 @@
     <value>"În sfârșit, un instrument care înțelege cum învață dezvoltatorii. Am salvat sute de resurse și chiar le pot găsi când am nevoie de ele."</value>
   </data>
   <data name="Testimonial1Role" xml:space="preserve">
-    <value>Inginer ML la TechCorp</value>
+    <value>Inginer software la TechCorp</value>
   </data>
   <data name="Testimonial2Quote" xml:space="preserve">
     <value>"Funcția de idei de conținut schimbă totul. Pot urmări exact ce resurse mi-au inspirat fiecare articol de blog pe care îl scriu."</value>
@@ -1429,16 +1429,16 @@
     <value>"Am trecut de la peste 50 de file deschise la zero. LearnStack păstrează totul organizat, astfel încât să mă pot concentra pe a învăța cu adevărat."</value>
   </data>
   <data name="Testimonial3Role" xml:space="preserve">
-    <value>Cercetător AI</value>
+    <value>Designer de produs</value>
   </data>
   <data name="HeroSampleTitle1" xml:space="preserve">
-    <value>Tutorial aprofundat GPT-4</value>
+    <value>Analiză aprofundată a performanței React</value>
   </data>
   <data name="HeroSampleTitle2" xml:space="preserve">
-    <value>Înțelegerea Transformerelor</value>
+    <value>Înțelegerea designului de sisteme</value>
   </data>
   <data name="HeroSampleTitle3" xml:space="preserve">
-    <value>Fundamentele Machine Learning</value>
+    <value>Esențialul managementului de produs</value>
   </data>
   <data name="HeroSampleTitle4" xml:space="preserve">
     <value>Tutorial de dezvoltare web</value>

@@ -229,7 +229,7 @@
     <value>Comenzar gratis</value>
   </data>
   <data name="HeroDescription" xml:space="preserve">
-    <value>Deja de ahogarte en pestañas del navegador. LearnStack te ayuda a organizar, priorizar y rastrear tus recursos de aprendizaje de IA, desde entradas de blog y podcasts hasta videos y cursos. Aprendizaje rápido con enlaces de aprendizaje compartidos. Todo en un solo lugar.</value>
+    <value>Deja de ahogarte en pestañas del navegador. LearnStack te ayuda a organizar, priorizar y rastrear todos tus recursos de aprendizaje, desde entradas de blog y podcasts hasta videos y cursos. Aprendizaje rápido con enlaces de aprendizaje compartidos. Todo en un solo lugar.</value>
   </data>
   <data name="OldestFirst" xml:space="preserve">
     <value>Más antiguos primero</value>
@@ -250,7 +250,7 @@
     <value>Editar recurso de aprendizaje</value>
   </data>
   <data name="HeroTitle" xml:space="preserve">
-    <value>Domina la IA un recurso a la vez</value>
+    <value>Domina cualquier tema, un recurso a la vez</value>
   </data>
   <data name="ResourceLibraryDescription" xml:space="preserve">
     <value>Guarda y organiza entradas de blog, videos, podcasts, cursos y documentación. Obtén metadatos automáticamente de URLs para una configuración rápida.</value>
@@ -406,7 +406,7 @@
     <value>Empezar a aprender gratis</value>
   </data>
   <data name="HeroBadge" xml:space="preserve">
-    <value>Tu compañero de aprendizaje de IA</value>
+    <value>Tu compañero de aprendizaje personal</value>
   </data>
   <data name="NoCreditCardFreeForever" xml:space="preserve">
     <value>No se requiere tarjeta de crédito • Gratis para siempre para individuos</value>
@@ -424,7 +424,7 @@
     <value>Alterna entre vista de tarjetas y cuadrícula de datos. Personaliza tu espacio de trabajo según tu forma de trabajar.</value>
   </data>
   <data name="FeaturesSubtitle" xml:space="preserve">
-    <value>Diseñado para desarrolladores, investigadores y entusiastas de la IA que quieren estar al día con su aprendizaje.</value>
+    <value>Diseñado para desarrolladores, investigadores y personas que aprenden de por vida y quieren estar al día con su aprendizaje.</value>
   </data>
   <data name="AddResource" xml:space="preserve">
     <value>Agregar recurso</value>
@@ -445,7 +445,7 @@
     <value>+{0} más</value>
   </data>
   <data name="JoinThousandsLearners" xml:space="preserve">
-    <value>Únete a miles de aprendices que usan LearnStack para dominar la IA, un recurso a la vez.</value>
+    <value>Únete a miles de aprendices que usan LearnStack para dominar nuevas habilidades, un recurso a la vez.</value>
   </data>
   <data name="PoweredByLearnStack" xml:space="preserve">
     <value>POWERED BY LEARNSTACK</value>

@@ -229,7 +229,7 @@
     <value>Get Started Free</value>
   </data>
   <data name="HeroDescription" xml:space="preserve">
-    <value>Stop drowning in browser tabs. LearnStack helps you organize, prioritize, and track your AI learning resources - from blog posts and podcasts to videos and courses. Fast learning with shared learning links. All in one place.</value>
+    <value>Stop drowning in browser tabs. LearnStack helps you organize, prioritize, and track every learning resource you collect - from blog posts and podcasts to videos and courses. Fast learning with shared learning links. All in one place.</value>
   </data>
   <data name="OldestFirst" xml:space="preserve">
     <value>Oldest First</value>
@@ -250,7 +250,7 @@
     <value>Edit Learning Resource</value>
   </data>
   <data name="HeroTitle" xml:space="preserve">
-    <value>Master AI One Resource at a Time</value>
+    <value>Master Anything, One Resource at a Time</value>
   </data>
   <data name="ResourceLibraryDescription" xml:space="preserve">
     <value>Save and organize blog posts, videos, podcasts, courses, and documentation. Auto-fetch metadata from URLs for quick setup.</value>
@@ -406,7 +406,7 @@
     <value>Start Learning Free</value>
   </data>
   <data name="HeroBadge" xml:space="preserve">
-    <value>Your AI Learning Companion</value>
+    <value>Your Personal Learning Companion</value>
   </data>
   <data name="NoCreditCardFreeForever" xml:space="preserve">
     <value>No credit card required • Free forever for individuals</value>
@@ -424,7 +424,7 @@
     <value>Switch between card view and data grid. Customize your workspace to match how you like to work.</value>
   </data>
   <data name="FeaturesSubtitle" xml:space="preserve">
-    <value>Designed for developers, researchers, and AI enthusiasts who want to stay on top of their learning.</value>
+    <value>Designed for developers, researchers, and lifelong learners who want to stay on top of what they're learning.</value>
   </data>
   <data name="AddResource" xml:space="preserve">
     <value>Add Resource</value>
@@ -445,7 +445,7 @@
     <value>+{0} more</value>
   </data>
   <data name="JoinThousandsLearners" xml:space="preserve">
-    <value>Join thousands of learners who use LearnStack to master AI, one resource at a time.</value>
+    <value>Join thousands of learners who use LearnStack to master new skills, one resource at a time.</value>
   </data>
   <data name="PoweredByLearnStack" xml:space="preserve">
     <value>POWERED BY LEARNSTACK</value>
@@ -1387,7 +1387,7 @@
     <value>Clear filters</value>
   </data>
   <data name="MarketingFooterDescription" xml:space="preserve">
-    <value>Organize your AI learning journey. Track resources, take notes, and create content.</value>
+    <value>Organize your learning journey. Track resources, take notes, and create content.</value>
   </data>
   <data name="Product" xml:space="preserve">
     <value>Product</value>
@@ -1417,7 +1417,7 @@
     <value>"Finally, a tool that understands how developers learn. I've saved hundreds of resources and can actually find them when I need them."</value>
   </data>
   <data name="Testimonial1Role" xml:space="preserve">
-    <value>ML Engineer at TechCorp</value>
+    <value>Software Engineer at TechCorp</value>
   </data>
   <data name="Testimonial2Quote" xml:space="preserve">
     <value>"The content ideas feature is a game-changer. I can trace exactly which resources inspired each blog post I write."</value>
@@ -1429,16 +1429,16 @@
     <value>"I went from 50+ open tabs to zero. LearnStack keeps everything organized so I can focus on actually learning."</value>
   </data>
   <data name="Testimonial3Role" xml:space="preserve">
-    <value>AI Researcher</value>
+    <value>Product Designer</value>
   </data>
   <data name="HeroSampleTitle1" xml:space="preserve">
-    <value>GPT-4 Deep Dive Tutorial</value>
+    <value>React Performance Deep Dive</value>
   </data>
   <data name="HeroSampleTitle2" xml:space="preserve">
-    <value>Understanding Transformers</value>
+    <value>Understanding System Design</value>
   </data>
   <data name="HeroSampleTitle3" xml:space="preserve">
-    <value>Machine Learning Fundamentals</value>
+    <value>Product Management Essentials</value>
   </data>
   <data name="HeroSampleTitle4" xml:space="preserve">
     <value>Web Development Tutorial</value>
