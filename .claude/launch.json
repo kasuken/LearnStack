@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "learnstack",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "LearnStack/LearnStack.csproj", "--launch-profile", "http"],
+      "port": 5164
+    }
+  ]
+}

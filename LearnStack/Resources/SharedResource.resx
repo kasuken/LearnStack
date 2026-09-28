@@ -696,6 +696,9 @@
   <data name="Invalid email or password. Please try again." xml:space="preserve">
     <value>Invalid email or password. Please try again.</value>
   </data>
+  <data name="Your account is not confirmed yet. Please confirm your email before signing in." xml:space="preserve">
+    <value>Your account is not confirmed yet. Please confirm your email before signing in.</value>
+  </data>
   <data name="Two-factor authentication" xml:space="preserve">
     <value>Two-factor authentication</value>
   </data>

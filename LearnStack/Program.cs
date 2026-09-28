@@ -51,7 +51,10 @@ if (!builder.Environment.IsDevelopment())
 
 builder.Services.AddIdentityCore<ApplicationUser>(options =>
     {
-        options.SignIn.RequireConfirmedAccount = true;
+        // Registration signs the user in directly without sending a confirmation email,
+        // so requiring a confirmed account here would lock every new user out after
+        // their first session. Re-enable only once a real email sender is configured.
+        options.SignIn.RequireConfirmedAccount = false;
         options.Stores.SchemaVersion = IdentitySchemaVersions.Version3;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()

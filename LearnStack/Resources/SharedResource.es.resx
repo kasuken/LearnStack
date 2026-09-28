@@ -693,6 +693,9 @@
   <data name="or sign in with" xml:space="preserve">
     <value>o iniciar sesión con</value>
   </data>
+  <data name="Your account is not confirmed yet. Please confirm your email before signing in." xml:space="preserve">
+    <value>Tu cuenta aún no está confirmada. Confirma tu correo electrónico antes de iniciar sesión.</value>
+  </data>
   <data name="Invalid email or password. Please try again." xml:space="preserve">
     <value>Correo electrónico o contraseña no válidos. Por favor intenta de nuevo.</value>
   </data>

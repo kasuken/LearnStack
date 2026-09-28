@@ -87,3 +87,5 @@ publish/
 
 # Application Insights
 ApplicationInsights.config
+
+.playwright-mcp/
