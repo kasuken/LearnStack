@@ -4,11 +4,14 @@
 @using System.Text
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
+@using LearnStack.Billing
 @using LearnStack.Data
 
 @inject UserManager<ApplicationUser> UserManager
 @inject SignInManager<ApplicationUser> SignInManager
 @inject IdentityRedirectManager RedirectManager
+@inject IBillingProvider BillingProvider
+@inject ILogger<ConfirmEmailChange> Logger
 
 <PageTitle>@L["Confirm email change"]</PageTitle>
 
@@ -58,6 +61,13 @@
         {
             message = L["Error changing user name."];
             return;
+        }
+
+        // Best effort: the email change itself has already succeeded, and a failure here only
+        // means receipts keep going to the old address until the next successful sync.
+        if (!await BillingProvider.UpdateCustomerEmailAsync(user.Id, Email))
+        {
+            Logger.LogWarning("Billing customer email was not updated after user {UserId} changed their email.", user.Id);
         }
 
         await SignInManager.RefreshSignInAsync(user);

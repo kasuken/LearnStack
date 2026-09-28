@@ -9,7 +9,9 @@
 @inject UserManager<ApplicationUser> UserManager
 @inject IEntitlementService EntitlementService
 @inject IBillingProvider BillingProvider
+@inject IBillingWebhookProcessor BillingWebhookProcessor
 @inject NavigationManager Navigation
+@inject ILogger<Plan> Logger
 
 <PageTitle>@L["Plan"]</PageTitle>
 
@@ -24,10 +26,15 @@
 }
 else if (_usage is not null)
 {
+    @if (_checkoutNotice is not null)
+    {
+        <div class="alert alert-success" role="status">@_checkoutNotice</div>
+    }
+
     <div class="manage-card">
         <div class="form-group">
             <span class="form-label">@L["Current plan"]</span>
-            <div><strong>@_usage.PlanDisplayName</strong> &mdash; @_usage.PlanPriceDescription</div>
+            <div><strong>@_usage.PlanDisplayName</strong> &mdash; @L[_usage.PlanPriceDescription]</div>
         </div>
 
         <div class="form-group">
@@ -48,14 +55,24 @@ else if (_usage is not null)
             </div>
         }
 
-        @if (_usage.GracePeriodEndsAtUtc.HasValue)
+        @if (_usage.PaidAccessSuspended)
+        {
+            <div class="alert-warning" role="alert">
+                @L["Your Pro access is paused because a payment did not go through. Update your payment method under Manage billing to restore it."]
+            </div>
+        }
+        else if (_usage.GracePeriodEndsAtUtc.HasValue)
         {
             <div class="alert-warning" role="alert">
                 @L["A recent payment did not go through. Your Pro access continues until {0} (UTC); after that your plan reverts to Starter.", _usage.GracePeriodEndsAtUtc.Value.ToString("MMM d, yyyy")]
             </div>
         }
 
-        @if (_usage.PlanRenewsAtUtc.HasValue)
+        @if (_usage.PlanCancelsAtUtc.HasValue)
+        {
+            <p class="form-hint">@L["Your Pro plan is cancelled and ends on {0} (UTC). You can resume it under Manage billing before then.", _usage.PlanCancelsAtUtc.Value.ToString("MMM d, yyyy")]</p>
+        }
+        else if (_usage.PlanRenewsAtUtc.HasValue)
         {
             <p class="form-hint">@L["Renews {0} (UTC).", _usage.PlanRenewsAtUtc.Value.ToString("MMM d, yyyy")]</p>
         }
@@ -65,20 +82,28 @@ else if (_usage is not null)
             <div class="alert-error" role="alert">@_actionError</div>
         }
 
-        <div class="btn-group">
-            @if (_usage.Tier == PlanTier.Starter)
-            {
-                <button type="button" class="btn-primary" disabled="@_busy" @onclick="UpgradeToProAsync">
-                    @(_busy ? L["Starting checkout..."] : L["Upgrade to Pro"])
+        @* Account pages render as static SSR, where @onclick never runs, so both actions are posted forms.
+           A suspended subscription still exists at the provider and is fixed in the portal; a second
+           checkout would start a duplicate subscription. *@
+        @if (_usage.Tier == PlanTier.Starter && !_usage.PaidAccessSuspended)
+        {
+            <form method="post" @formname="upgrade" @onsubmit="UpgradeToProAsync" class="btn-group">
+                <AntiforgeryToken />
+                <button type="submit" name="Interval" value="@BillingInterval.Yearly" class="btn-primary">
+                    @L["Upgrade to Pro (yearly)"]
                 </button>
-            }
-            else
-            {
-                <button type="button" class="btn-secondary" disabled="@_busy" @onclick="OpenBillingPortalAsync">
-                    @(_busy ? L["Opening billing portal..."] : L["Manage billing"])
+                <button type="submit" name="Interval" value="@BillingInterval.Monthly" class="btn-secondary">
+                    @L["Upgrade to Pro (monthly)"]
                 </button>
-            }
-        </div>
+            </form>
+        }
+        else
+        {
+            <form method="post" @formname="billing-portal" @onsubmit="OpenBillingPortalAsync" class="btn-group">
+                <AntiforgeryToken />
+                <button type="submit" class="btn-secondary">@L["Manage billing"]</button>
+            </form>
+        }
     </div>
 
     <div class="manage-card" style="margin-top: 20px;">
@@ -89,7 +114,7 @@ else if (_usage is not null)
             @foreach (var plan in PlanCatalog.All)
             {
                 <li style="margin-bottom: 8px;">
-                    <strong>@plan.DisplayName</strong> (@plan.PriceDescription) &mdash; @string.Join(", ", plan.Capabilities)
+                    <strong>@plan.DisplayName</strong> (@L[plan.PriceDescription]) &mdash; @string.Join(", ", plan.Capabilities.Select(c => L[c].Value))
                 </li>
             }
         </ul>
@@ -100,9 +125,15 @@ else if (_usage is not null)
     private ApplicationUser? _user;
     private PlanUsageSummaryDto? _usage;
     private string? _actionError;
-    private bool _busy;
+    private string? _checkoutNotice;
 
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromForm(FormName = "upgrade")] private string? Interval { get; set; }
+
+    [SupplyParameterFromQuery(Name = StripeBillingProvider.CheckoutSessionIdQueryKey)] private string? CheckoutSessionId { get; set; }
+
+    [SupplyParameterFromQuery(Name = StripeBillingProvider.CheckoutOutcomeQueryKey)] private string? CheckoutOutcome { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -110,68 +141,94 @@ else if (_usage is not null)
         if (_user is null)
             return;
 
+        if (HttpMethods.IsGet(HttpContext.Request.Method))
+            await ShowCheckoutOutcomeAsync(_user.Id);
+
         _usage = await EntitlementService.GetUsageSummaryAsync(_user.Id);
+    }
+
+    private async Task ShowCheckoutOutcomeAsync(string userId)
+    {
+        if (CheckoutOutcome == StripeBillingProvider.CheckoutCancelledValue)
+        {
+            _checkoutNotice = L["Checkout was cancelled. You have not been charged."];
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(CheckoutSessionId))
+            return;
+
+        // Confirmed against the provider directly, because the webhook that would otherwise
+        // upgrade the plan usually lands a few seconds after the user is already back here.
+        var confirmed = false;
+        try
+        {
+            confirmed = await BillingWebhookProcessor.ConfirmCheckoutAsync(userId, CheckoutSessionId);
+        }
+        catch (Exception ex)
+        {
+            Logger.LogWarning(ex, "Could not confirm checkout session {SessionId} for user {UserId}.", CheckoutSessionId, userId);
+        }
+
+        _checkoutNotice = confirmed
+            ? L["Welcome to Pro! Your plan is active."]
+            : L["Payment received. Your Pro plan is being activated; refresh this page in a moment."];
     }
 
     private async Task UpgradeToProAsync()
     {
-        if (_busy || _user is null)
+        if (_user is null)
             return;
 
-        _busy = true;
-        _actionError = null;
+        var interval = Enum.TryParse<BillingInterval>(Interval, ignoreCase: true, out var parsed) ? parsed : BillingInterval.Yearly;
 
+        CheckoutSessionResult result;
         try
         {
             // The account email is passed so the billing customer is created under the address
             // the user signed in with, rather than one the hosted checkout page fills in itself.
-            var result = await BillingProvider.CreateCheckoutSessionAsync(
-                _user.Id, PlanTier.Pro, BillingInterval.Yearly, await UserManager.GetEmailAsync(_user));
-
-            if (!result.Supported)
-            {
-                _actionError = result.UnsupportedReason ?? L["Checkout is not available right now."];
-                return;
-            }
-
-            Navigation.NavigateTo(result.RedirectUrl!, forceLoad: true);
+            result = await BillingProvider.CreateCheckoutSessionAsync(
+                _user.Id, PlanTier.Pro, interval, await UserManager.GetEmailAsync(_user));
         }
-        catch
+        catch (Exception ex)
         {
+            Logger.LogError(ex, "Starting checkout failed for user {UserId}.", _user.Id);
             _actionError = L["LearnStack could not start checkout. Try again."];
+            return;
         }
-        finally
+
+        if (!result.Supported)
         {
-            _busy = false;
+            _actionError = result.UnsupportedReason is null ? L["Checkout is not available right now."] : L[result.UnsupportedReason];
+            return;
         }
+
+        Navigation.NavigateTo(result.RedirectUrl!, forceLoad: true);
     }
 
     private async Task OpenBillingPortalAsync()
     {
-        if (_busy || _user is null)
+        if (_user is null)
             return;
 
-        _busy = true;
-        _actionError = null;
-
+        PortalSessionResult result;
         try
         {
-            var result = await BillingProvider.CreatePortalSessionAsync(_user.Id);
-            if (!result.Supported)
-            {
-                _actionError = result.UnsupportedReason ?? L["The billing portal is not available right now."];
-                return;
-            }
-
-            Navigation.NavigateTo(result.RedirectUrl!, forceLoad: true);
+            result = await BillingProvider.CreatePortalSessionAsync(_user.Id);
         }
-        catch
+        catch (Exception ex)
         {
+            Logger.LogError(ex, "Opening the billing portal failed for user {UserId}.", _user.Id);
             _actionError = L["LearnStack could not open the billing portal. Try again."];
+            return;
         }
-        finally
+
+        if (!result.Supported)
         {
-            _busy = false;
+            _actionError = result.UnsupportedReason is null ? L["The billing portal is not available right now."] : L[result.UnsupportedReason];
+            return;
         }
+
+        Navigation.NavigateTo(result.RedirectUrl!, forceLoad: true);
     }
 }

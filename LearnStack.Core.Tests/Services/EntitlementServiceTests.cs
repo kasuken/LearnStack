@@ -1,3 +1,4 @@
+using LearnStack.Common;
 using LearnStack.Data.Models;
 using LearnStack.Services;
 
@@ -90,6 +91,94 @@ public class EntitlementServiceTests
         Assert.True(result.IsAllowed);
     }
 
+    [Fact]
+    public async Task CanCreateResourceAsync_ProWithElapsedGracePeriod_EnforcesStarterLimit()
+    {
+        await using var factory = await MakeFactory();
+        var entitlements = new EntitlementService(factory);
+        var resources = new LearningResourceService(factory, entitlements);
+
+        await entitlements.SetPlanTierAsync(UserId, PlanTier.Pro);
+        for (var i = 0; i < 20; i++)
+        {
+            await resources.CreateAsync(MakeResource($"Resource {i}"));
+        }
+
+        await entitlements.SetGracePeriodAsync(UserId, DateTime.UtcNow.AddMinutes(-1));
+
+        Assert.False((await entitlements.CanCreateResourceAsync(UserId)).IsAllowed);
+
+        var summary = await entitlements.GetUsageSummaryAsync(UserId);
+        Assert.Equal(PlanTier.Starter, summary.Tier);
+        Assert.True(summary.PaidAccessSuspended);
+    }
+
+    [Fact]
+    public async Task CanCreateResourceAsync_ProWithinGracePeriod_KeepsProAccess()
+    {
+        await using var factory = await MakeFactory();
+        var entitlements = new EntitlementService(factory);
+        var resources = new LearningResourceService(factory, entitlements);
+
+        await entitlements.SetPlanTierAsync(UserId, PlanTier.Pro);
+        for (var i = 0; i < 20; i++)
+        {
+            await resources.CreateAsync(MakeResource($"Resource {i}"));
+        }
+
+        await entitlements.SetGracePeriodAsync(UserId, DateTime.UtcNow.AddDays(3));
+
+        Assert.True((await entitlements.CanCreateResourceAsync(UserId)).IsAllowed);
+        Assert.False((await entitlements.GetUsageSummaryAsync(UserId)).PaidAccessSuspended);
+    }
+
+    // -----------------------------------------------------------------------
+    // Restoring archived resources counts against the limit
+    // -----------------------------------------------------------------------
+
+    [Fact]
+    public async Task ToggleArchiveAsync_UnarchivingAtTheStarterLimit_IsDeniedAndLeavesTheResourceArchived()
+    {
+        await using var factory = await MakeFactory();
+        var entitlements = new EntitlementService(factory);
+        var resources = new LearningResourceService(factory, entitlements);
+
+        var archived = await resources.CreateAsync(MakeResource("Archived"));
+        await resources.ToggleArchiveAsync(archived.Id, UserId);
+        for (var i = 0; i < 20; i++)
+        {
+            await resources.CreateAsync(MakeResource($"Resource {i}"));
+        }
+
+        await Assert.ThrowsAsync<PlanEntitlementDeniedException>(() => resources.ToggleArchiveAsync(archived.Id, UserId));
+        Assert.True((await resources.GetByIdAsync(archived.Id, UserId))!.IsArchived);
+
+        // Archiving is always allowed, and frees the slot the restore needs.
+        var other = (await resources.GetAllAsync(UserId)).First(r => !r.IsArchived);
+        await resources.ToggleArchiveAsync(other.Id, UserId);
+        Assert.False(await resources.ToggleArchiveAsync(archived.Id, UserId));
+    }
+
+    [Fact]
+    public async Task UpdateAsync_UnarchivingAtTheStarterLimit_IsDenied()
+    {
+        await using var factory = await MakeFactory();
+        var entitlements = new EntitlementService(factory);
+        var resources = new LearningResourceService(factory, entitlements);
+
+        var archived = await resources.CreateAsync(MakeResource("Archived"));
+        await resources.ToggleArchiveAsync(archived.Id, UserId);
+        for (var i = 0; i < 20; i++)
+        {
+            await resources.CreateAsync(MakeResource($"Resource {i}"));
+        }
+
+        var edit = (await resources.GetByIdAsync(archived.Id, UserId))!;
+        edit.IsArchived = false;
+
+        await Assert.ThrowsAsync<PlanEntitlementDeniedException>(() => resources.UpdateAsync(edit, UserId));
+    }
+
     // -----------------------------------------------------------------------
     // GetUsageSummaryAsync
     // -----------------------------------------------------------------------
@@ -148,6 +237,20 @@ public class EntitlementServiceTests
     // -----------------------------------------------------------------------
     // SetPlanTierAsync / RecordBillingReferencesAsync / SetGracePeriodAsync
     // -----------------------------------------------------------------------
+
+    [Fact]
+    public async Task SetPlanTierAsync_DowngradeToStarter_ClearsTheRenewalDate()
+    {
+        await using var factory = await MakeFactory();
+        var entitlements = new EntitlementService(factory);
+
+        await entitlements.SetPlanTierAsync(UserId, PlanTier.Pro, new DateTime(2027, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+        await entitlements.SetPlanTierAsync(UserId, PlanTier.Starter);
+
+        var summary = await entitlements.GetUsageSummaryAsync(UserId);
+        Assert.Equal(PlanTier.Starter, summary.Tier);
+        Assert.Null(summary.PlanRenewsAtUtc);
+    }
 
     [Fact]
     public async Task SetPlanTierAsync_CreatesUserPlanRowWhenMissing()

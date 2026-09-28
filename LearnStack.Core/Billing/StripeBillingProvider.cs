@@ -34,8 +34,32 @@ public sealed class StripeBillingProvider : IBillingProvider
 {
     internal const string UserIdMetadataKey = "learnstack_user_id";
 
+    /// <summary>Query key the checkout success URL carries the Stripe Checkout Session id in.</summary>
+    public const string CheckoutSessionIdQueryKey = "session_id";
+
+    /// <summary>Query key and value the checkout cancel URL carries, so the return page can say checkout was abandoned.</summary>
+    public const string CheckoutOutcomeQueryKey = "checkout";
+
+    /// <inheritdoc cref="CheckoutOutcomeQueryKey"/>
+    public const string CheckoutCancelledValue = "cancelled";
+
+    private const string CheckoutSessionIdPlaceholder = "{CHECKOUT_SESSION_ID}";
+    private const string AlreadySubscribedReason = "You already have a Pro subscription. Use Manage billing to change it.";
+    private const string CheckoutFailedReason = "We couldn't start checkout just now. Please try again in a moment.";
+
     private static readonly string[] EntitlingStatuses = ["active", "trialing", "past_due"];
+
+    // Statuses in which Stripe will not bill the subscription again on its own. "incomplete" is
+    // deliberately absent: it is a first payment still in progress, which either becomes active
+    // or expires into "incomplete_expired".
+    private static readonly string[] EndedStatuses = ["canceled", "unpaid", "incomplete_expired", "paused"];
+
     private static readonly TimeSpan DefaultPaymentFailureGracePeriod = TimeSpan.FromDays(7);
+
+    // Added to Stripe's next retry time so the grace period outlasts the retry's own webhook
+    // delivery; without it paid access would lapse in the seconds between a retry succeeding
+    // and its invoice.paid event arriving.
+    private static readonly TimeSpan RetryWebhookAllowance = TimeSpan.FromDays(1);
 
     private readonly BillingOptions _options;
     private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
@@ -67,7 +91,27 @@ public sealed class StripeBillingProvider : IBillingProvider
             return new CheckoutSessionResult(false, null, "Only upgrading to Pro requires checkout.");
 
         var priceId = ResolvePriceId(targetTier, interval);
-        var existingCustomerId = await GetStoredCustomerIdAsync(userId, cancellationToken).ConfigureAwait(false);
+
+        var stored = await GetStoredBillingAsync(userId, cancellationToken).ConfigureAwait(false);
+        if (stored?.Tier == PlanTier.Pro)
+            return new CheckoutSessionResult(false, null, AlreadySubscribedReason);
+
+        var existingCustomerId = stored?.CustomerId;
+        if (!string.IsNullOrWhiteSpace(existingCustomerId))
+        {
+            // The stored tier lags Stripe until the webhook lands, so a second tab or a quick
+            // double submit would otherwise open a second checkout and a second subscription.
+            try
+            {
+                if (await HasLiveSubscriptionAsync(existingCustomerId, cancellationToken).ConfigureAwait(false))
+                    return new CheckoutSessionResult(false, null, AlreadySubscribedReason);
+            }
+            catch (StripeException ex)
+            {
+                _logger.LogError(ex, "Could not check existing Stripe subscriptions for user {UserId}.", userId);
+                return new CheckoutSessionResult(false, null, CheckoutFailedReason);
+            }
+        }
 
         var sessionOptions = new SessionCreateOptions
         {
@@ -85,8 +129,14 @@ public sealed class StripeBillingProvider : IBillingProvider
             Metadata = new Dictionary<string, string> { [UserIdMetadataKey] = userId },
             LineItems = [new SessionLineItemOptions { Price = priceId, Quantity = 1 }],
             AllowPromotionCodes = true,
-            SuccessUrl = _options.CheckoutSuccessUrl,
-            CancelUrl = _options.CheckoutCancelUrl,
+            // Stripe substitutes {CHECKOUT_SESSION_ID} itself, which lets the return page confirm
+            // the purchase straight away instead of waiting for the webhook.
+            SuccessUrl = _options.CheckoutSuccessUrl!.Contains(CheckoutSessionIdPlaceholder, StringComparison.Ordinal)
+                ? _options.CheckoutSuccessUrl
+                : AppendQuery(_options.CheckoutSuccessUrl, $"{CheckoutSessionIdQueryKey}={CheckoutSessionIdPlaceholder}"),
+            CancelUrl = _options.CheckoutCancelUrl!.Contains($"{CheckoutOutcomeQueryKey}=", StringComparison.Ordinal)
+                ? _options.CheckoutCancelUrl
+                : AppendQuery(_options.CheckoutCancelUrl, $"{CheckoutOutcomeQueryKey}={CheckoutCancelledValue}"),
             SubscriptionData = new SessionSubscriptionDataOptions
             {
                 Metadata = new Dictionary<string, string> { [UserIdMetadataKey] = userId },
@@ -106,7 +156,68 @@ public sealed class StripeBillingProvider : IBillingProvider
         catch (StripeException ex)
         {
             _logger.LogError(ex, "Stripe checkout session creation failed for user {UserId} on price {PriceId}.", userId, priceId);
-            return new CheckoutSessionResult(false, null, "We couldn't start checkout just now. Please try again in a moment.");
+            return new CheckoutSessionResult(false, null, CheckoutFailedReason);
+        }
+    }
+
+    public async Task<ParsedBillingWebhookEvent?> GetCompletedCheckoutAsync(
+        string userId,
+        string checkoutSessionId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(checkoutSessionId);
+
+        Session session;
+        try
+        {
+            var options = new SessionGetOptions();
+            options.AddExpand("subscription");
+            session = await new SessionService(_stripeClient)
+                .GetAsync(checkoutSessionId, options, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+        }
+        catch (StripeException ex)
+        {
+            _logger.LogWarning(ex, "Could not read Stripe checkout session {SessionId} for user {UserId}.", checkoutSessionId, userId);
+            return null;
+        }
+
+        if (session.Mode != "subscription" || session.Status != "complete" || session.Subscription is not { } subscription)
+            return null;
+
+        // The session id arrives in a URL anyone can edit, so it only counts for the user it was created for.
+        var sessionUserId = session.ClientReferenceId ?? GetMetadataUserId(session.Metadata);
+        if (sessionUserId != userId)
+        {
+            _logger.LogWarning("Stripe checkout session {SessionId} does not belong to user {UserId}; ignoring.", checkoutSessionId, userId);
+            return null;
+        }
+
+        var parsed = MapSubscription(session.Id, "checkout.session.returned", userId, subscription, deleted: false, occurredAtUtc: null);
+        return parsed with { BillingProviderCustomerId = session.CustomerId ?? parsed.BillingProviderCustomerId };
+    }
+
+    public async Task<bool> UpdateCustomerEmailAsync(string userId, string email, CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(email);
+
+        var customerId = await GetStoredCustomerIdAsync(userId, cancellationToken).ConfigureAwait(false);
+        if (string.IsNullOrWhiteSpace(customerId))
+            return true;
+
+        try
+        {
+            await new CustomerService(_stripeClient)
+                .UpdateAsync(customerId, new CustomerUpdateOptions { Email = email }, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+            return true;
+        }
+        catch (StripeException ex)
+        {
+            _logger.LogError(ex, "Could not update the Stripe customer email for user {UserId} (customer {CustomerId}).", userId, customerId);
+            return false;
         }
     }
 
@@ -138,6 +249,49 @@ public sealed class StripeBillingProvider : IBillingProvider
         {
             _logger.LogError(ex, "Stripe billing portal session creation failed for user {UserId}.", userId);
             return new PortalSessionResult(false, null, "We couldn't open the billing portal just now. Please try again in a moment.");
+        }
+    }
+
+    public async Task<SubscriptionCancellationResult> CancelSubscriptionsAsync(
+        string userId,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+
+        var customerId = await GetStoredCustomerIdAsync(userId, cancellationToken).ConfigureAwait(false);
+        if (string.IsNullOrWhiteSpace(customerId))
+            return SubscriptionCancellationResult.Success;
+
+        var subscriptionService = new SubscriptionService(_stripeClient);
+
+        try
+        {
+            // Every subscription on the customer, not only the stored one: a duplicate checkout
+            // leaves a second subscription LearnStack never recorded, and it would keep charging.
+            var subscriptions = await subscriptionService
+                .ListAsync(new SubscriptionListOptions { Customer = customerId, Limit = 100 }, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+
+            foreach (var subscription in subscriptions.Data.Where(sub => sub.Status is not ("canceled" or "incomplete_expired")))
+            {
+                try
+                {
+                    await subscriptionService
+                        .CancelAsync(subscription.Id, cancellationToken: cancellationToken)
+                        .ConfigureAwait(false);
+                }
+                catch (StripeException ex) when (ex.StripeError?.Code == "resource_missing")
+                {
+                    // Already gone on Stripe's side, which is the outcome we wanted.
+                }
+            }
+
+            return SubscriptionCancellationResult.Success;
+        }
+        catch (StripeException ex)
+        {
+            _logger.LogError(ex, "Stripe subscription cancellation failed for user {UserId} (customer {CustomerId}).", userId, customerId);
+            return new SubscriptionCancellationResult(false, "Stripe subscription cancellation failed.");
         }
     }
 
@@ -218,7 +372,8 @@ public sealed class StripeBillingProvider : IBillingProvider
             NewTier: null,
             PeriodEndsAtUtc: null,
             BillingProviderCustomerId: session.CustomerId,
-            BillingProviderSubscriptionId: session.SubscriptionId);
+            BillingProviderSubscriptionId: session.SubscriptionId,
+            OccurredAtUtc: GetOccurredAtUtc(stripeEvent));
     }
 
     private async Task<ParsedBillingWebhookEvent?> ParseSubscriptionEventAsync(
@@ -240,40 +395,54 @@ public sealed class StripeBillingProvider : IBillingProvider
             return null;
         }
 
-        if (stripeEvent.Type == EventTypes.CustomerSubscriptionDeleted)
-        {
-            return new ParsedBillingWebhookEvent(
-                ProviderEventId: stripeEvent.Id,
-                EventType: stripeEvent.Type,
-                TargetUserId: userId,
-                NewTier: PlanTier.Starter,
-                PeriodEndsAtUtc: null,
-                BillingProviderCustomerId: subscription.CustomerId,
-                BillingProviderSubscriptionId: subscription.Id,
-                ClearsGracePeriod: true);
-        }
+        return MapSubscription(
+            stripeEvent.Id,
+            stripeEvent.Type,
+            userId,
+            subscription,
+            deleted: stripeEvent.Type == EventTypes.CustomerSubscriptionDeleted,
+            GetOccurredAtUtc(stripeEvent));
+    }
 
-        if (EntitlingStatuses.Contains(subscription.Status))
-        {
-            return new ParsedBillingWebhookEvent(
-                ProviderEventId: stripeEvent.Id,
-                EventType: stripeEvent.Type,
-                TargetUserId: userId,
-                NewTier: ResolveTier(subscription),
-                PeriodEndsAtUtc: GetCurrentPeriodEndUtc(subscription),
-                BillingProviderCustomerId: subscription.CustomerId,
-                BillingProviderSubscriptionId: subscription.Id,
-                ClearsGracePeriod: subscription.Status is "active" or "trialing");
-        }
-
-        return new ParsedBillingWebhookEvent(
-            ProviderEventId: stripeEvent.Id,
-            EventType: stripeEvent.Type,
+    /// <summary>
+    /// Maps a subscription's state onto the plan it entitles <paramref name="userId"/> to. Shared
+    /// by subscription webhooks and the checkout-return confirmation, so both apply identical rules.
+    /// </summary>
+    private ParsedBillingWebhookEvent MapSubscription(
+        string eventId,
+        string eventType,
+        string userId,
+        Subscription subscription,
+        bool deleted,
+        DateTime? occurredAtUtc)
+    {
+        var linkOnly = new ParsedBillingWebhookEvent(
+            ProviderEventId: eventId,
+            EventType: eventType,
             TargetUserId: userId,
             NewTier: null,
             PeriodEndsAtUtc: null,
             BillingProviderCustomerId: subscription.CustomerId,
-            BillingProviderSubscriptionId: subscription.Id);
+            BillingProviderSubscriptionId: subscription.Id,
+            OccurredAtUtc: occurredAtUtc);
+
+        if (deleted || EndedStatuses.Contains(subscription.Status))
+            return linkOnly with { NewTier = PlanTier.Starter, ClearsGracePeriod = true };
+
+        if (!EntitlingStatuses.Contains(subscription.Status))
+            return linkOnly;
+
+        var periodEndsAtUtc = GetCurrentPeriodEndUtc(subscription);
+        return linkOnly with
+        {
+            NewTier = ResolveTier(subscription),
+            PeriodEndsAtUtc = periodEndsAtUtc,
+            ClearsGracePeriod = subscription.Status is "active" or "trialing",
+            HasCancellationSchedule = true,
+            // The portal schedules a cancellation either as cancel_at_period_end or, on newer
+            // API versions, as an explicit cancel_at; both mean "stop renewing on this date".
+            CancelsAtUtc = subscription.CancelAt?.ToUniversalTime() ?? (subscription.CancelAtPeriodEnd ? periodEndsAtUtc : null),
+        };
     }
 
     private async Task<ParsedBillingWebhookEvent?> MapInvoicePaymentFailedAsync(Event stripeEvent, CancellationToken cancellationToken)
@@ -285,8 +454,9 @@ public sealed class StripeBillingProvider : IBillingProvider
         if (userId is null)
             return null;
 
-        var gracePeriodEndsAtUtc = invoice.NextPaymentAttempt?.ToUniversalTime()
-            ?? DateTime.UtcNow + DefaultPaymentFailureGracePeriod;
+        var gracePeriodEndsAtUtc = invoice.NextPaymentAttempt is { } nextPaymentAttempt
+            ? nextPaymentAttempt.ToUniversalTime() + RetryWebhookAllowance
+            : DateTime.UtcNow + DefaultPaymentFailureGracePeriod;
 
         return new ParsedBillingWebhookEvent(
             ProviderEventId: stripeEvent.Id,
@@ -294,7 +464,8 @@ public sealed class StripeBillingProvider : IBillingProvider
             TargetUserId: userId,
             NewTier: null,
             PeriodEndsAtUtc: null,
-            GracePeriodEndsAtUtc: gracePeriodEndsAtUtc);
+            GracePeriodEndsAtUtc: gracePeriodEndsAtUtc,
+            OccurredAtUtc: GetOccurredAtUtc(stripeEvent));
     }
 
     private async Task<ParsedBillingWebhookEvent?> MapInvoicePaidAsync(Event stripeEvent, CancellationToken cancellationToken)
@@ -306,13 +477,18 @@ public sealed class StripeBillingProvider : IBillingProvider
         if (userId is null)
             return null;
 
+        // Only the grace period is cleared here. Tier and renewal date come from subscription
+        // events alone: an invoice can belong to a price LearnStack does not sell, or arrive
+        // after the subscription was deleted, and its period_end is the period just billed
+        // rather than the next renewal.
         return new ParsedBillingWebhookEvent(
             ProviderEventId: stripeEvent.Id,
             EventType: stripeEvent.Type,
             TargetUserId: userId,
-            NewTier: PlanTier.Pro,
-            PeriodEndsAtUtc: invoice.PeriodEnd.ToUniversalTime(),
-            ClearsGracePeriod: true);
+            NewTier: null,
+            PeriodEndsAtUtc: null,
+            ClearsGracePeriod: true,
+            OccurredAtUtc: GetOccurredAtUtc(stripeEvent));
     }
 
     private PlanTier ResolveTier(Subscription subscription)
@@ -342,6 +518,9 @@ public sealed class StripeBillingProvider : IBillingProvider
         return periodEnds is { Count: > 0 } ? periodEnds.Max().ToUniversalTime() : null;
     }
 
+    private static DateTime? GetOccurredAtUtc(Event stripeEvent) =>
+        stripeEvent.Created == default ? null : stripeEvent.Created.ToUniversalTime();
+
     private string ResolvePriceId(PlanTier tier, BillingInterval interval) => (tier, interval) switch
     {
         (PlanTier.Pro, BillingInterval.Monthly) => _options.ProMonthlyPriceId!,
@@ -363,6 +542,30 @@ public sealed class StripeBillingProvider : IBillingProvider
         return await context.UserPlans.AsNoTracking()
             .Where(plan => plan.BillingProviderCustomerId == customerId)
             .Select(plan => plan.UserId)
+            .FirstOrDefaultAsync(cancellationToken)
+            .ConfigureAwait(false);
+    }
+
+    private async Task<bool> HasLiveSubscriptionAsync(string customerId, CancellationToken cancellationToken)
+    {
+        var subscriptions = await new SubscriptionService(_stripeClient)
+            .ListAsync(new SubscriptionListOptions { Customer = customerId, Limit = 100 }, cancellationToken: cancellationToken)
+            .ConfigureAwait(false);
+
+        return subscriptions.Data.Any(subscription => EntitlingStatuses.Contains(subscription.Status));
+    }
+
+    private static string AppendQuery(string url, string query) =>
+        url + (url.Contains('?', StringComparison.Ordinal) ? "&" : "?") + query;
+
+    private sealed record StoredBilling(PlanTier Tier, string? CustomerId);
+
+    private async Task<StoredBilling?> GetStoredBillingAsync(string userId, CancellationToken cancellationToken)
+    {
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        return await context.UserPlans.AsNoTracking()
+            .Where(plan => plan.UserId == userId)
+            .Select(plan => new StoredBilling(plan.Tier, plan.BillingProviderCustomerId))
             .FirstOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
     }

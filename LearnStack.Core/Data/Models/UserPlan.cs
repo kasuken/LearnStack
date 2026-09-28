@@ -22,10 +22,24 @@ public class UserPlan
     public DateTime? PlanRenewsAtUtc { get; set; }
 
     /// <summary>
+    /// When a subscription the user cancelled stops granting paid access. While set, the plan
+    /// does not renew at <see cref="PlanRenewsAtUtc"/>. Null when no cancellation is scheduled.
+    /// </summary>
+    public DateTime? PlanCancelsAtUtc { get; set; }
+
+    /// <summary>
     /// When a payment-failure grace period ends. While set and in the future, the user keeps
-    /// paid access despite a failed charge; once it elapses, a reconciliation should downgrade the plan.
+    /// paid access despite a failed charge; once it elapses, <c>EntitlementService</c> enforces
+    /// Starter limits even though <see cref="Tier"/> still reads Pro, until a successful charge
+    /// clears it or the provider ends the subscription.
     /// </summary>
     public DateTime? GracePeriodEndsAtUtc { get; set; }
+
+    /// <summary>
+    /// Creation time of the most recent billing webhook event whose state change was applied.
+    /// Events older than this are skipped, because providers do not deliver in order.
+    /// </summary>
+    public DateTime? LastBillingEventAtUtc { get; set; }
 
     /// <summary>The billing provider's customer id. Null under <c>NullBillingProvider</c>.</summary>
     [MaxLength(200)]

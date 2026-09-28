@@ -1,4 +1,5 @@
 @page "/resources"
+@using LearnStack.Common
 @using LearnStack.Services
 @using LearnStack.Core.Helpers
 @using LearnStack.Data
@@ -768,7 +769,16 @@
 
     private async Task ToggleArchive(LearningResource resource)
     {
-        await ResourceService.ToggleArchiveAsync(resource.Id, userId);
+        try
+        {
+            await ResourceService.ToggleArchiveAsync(resource.Id, userId);
+        }
+        catch (PlanEntitlementDeniedException ex)
+        {
+            Snackbar.Add(L[ex.Message], Severity.Warning);
+            return;
+        }
+
         resource.IsArchived = !resource.IsArchived;
         await LoadStatistics();
         ApplyFilters();

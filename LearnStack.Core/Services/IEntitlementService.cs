@@ -18,6 +18,8 @@ public interface IEntitlementService
     /// <summary>
     /// Sets <paramref name="userId"/>'s plan tier, creating the <c>UserPlan</c> row if none
     /// exists yet (defaulting to Starter), and optionally records the new renewal timestamp.
+    /// Moving to Starter clears any stored renewal and cancellation timestamps, since nothing
+    /// renews or remains to be cancelled.
     /// Not scoped to "current user": called from the internal/admin plan-change path and from
     /// the billing webhook processor, neither of which necessarily runs in the affected user's
     /// own HTTP context.
@@ -39,6 +41,28 @@ public interface IEntitlementService
         string userId,
         string? billingProviderCustomerId,
         string? billingProviderSubscriptionId,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Records (or, when <paramref name="cancelsAtUtc"/> is null, clears) the date a cancelled
+    /// subscription stops granting paid access. Does not change the tier: the provider ends the
+    /// subscription on that date and its own event downgrades the plan.
+    /// </summary>
+    Task SetScheduledCancellationAsync(
+        string userId,
+        DateTime? cancelsAtUtc,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Records <paramref name="occurredAtUtc"/> as the latest billing event applied for
+    /// <paramref name="userId"/>, unless an event created later has already been applied. Returns
+    /// false (and changes nothing) for such an out-of-order older event, whose state change must
+    /// then be skipped. An event created at the same instant as the last one is not stale, so a
+    /// retried delivery of a partly-applied event still goes through.
+    /// </summary>
+    Task<bool> TryRecordBillingEventTimeAsync(
+        string userId,
+        DateTime occurredAtUtc,
         CancellationToken cancellationToken = default);
 
     /// <summary>
