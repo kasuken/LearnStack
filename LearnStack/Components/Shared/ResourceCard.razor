@@ -1,5 +1,7 @@
+@using LearnStack.Common
 @using LearnStack.Services
 @inject ILearningResourceService ResourceService
+@inject ISnackbar Snackbar
 
 <MudCard Elevation="0" Class="resource-card d-flex flex-column" Style="height: 100%; border-radius: 16px; overflow: hidden;">
     @if (Resource.ThumbnailImage != null)
@@ -151,7 +153,16 @@
 
     private async Task ToggleArchive()
     {
-        await ResourceService.ToggleArchiveAsync(Resource.Id, UserId);
+        try
+        {
+            await ResourceService.ToggleArchiveAsync(Resource.Id, UserId);
+        }
+        catch (PlanEntitlementDeniedException ex)
+        {
+            Snackbar.Add(L[ex.Message], Severity.Warning);
+            return;
+        }
+
         Resource.IsArchived = !Resource.IsArchived;
         await OnArchiveToggle.InvokeAsync();
     }

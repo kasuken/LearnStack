@@ -79,8 +79,14 @@
 
         var userId = await UserManager.GetUserIdAsync(user);
 
-        var deleted = await AccountDeletionService.DeleteAccountAsync(userId);
-        if (!deleted)
+        var result = await AccountDeletionService.DeleteAccountAsync(userId);
+        if (result == AccountDeletionResult.BillingCancellationFailed)
+        {
+            message = L["Error: We couldn't cancel your Pro subscription, so your account was not deleted. Try again in a moment."];
+            return;
+        }
+
+        if (result != AccountDeletionResult.Deleted)
         {
             throw new InvalidOperationException("Unexpected error occurred deleting user.");
         }

@@ -1577,4 +1577,124 @@
   <data name="NoRecentWins" xml:space="preserve">
     <value>Deine erste abgeschlossene Ressource erscheint hier.</value>
   </data>
+  <data name="Plan" xml:space="preserve">
+    <value>Tarif</value>
+  </data>
+  <data name="Plan &amp; usage" xml:space="preserve">
+    <value>Tarif &amp; Nutzung</value>
+  </data>
+  <data name="See your current LearnStack plan and resource usage, and upgrade or manage billing." xml:space="preserve">
+    <value>Sieh dir deinen aktuellen LearnStack-Tarif und deine Ressourcennutzung an, führe ein Upgrade durch oder verwalte die Abrechnung.</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>Wird geladen...</value>
+  </data>
+  <data name="Current plan" xml:space="preserve">
+    <value>Aktueller Tarif</value>
+  </data>
+  <data name="Resources used" xml:space="preserve">
+    <value>Genutzte Ressourcen</value>
+  </data>
+  <data name="{0} (unlimited)" xml:space="preserve">
+    <value>{0} (unbegrenzt)</value>
+  </data>
+  <data name="You've reached your {0} plan's limit of {1} resources. Archive one or upgrade to add more." xml:space="preserve">
+    <value>Du hast das Limit deines {0}-Tarifs von {1} Ressourcen erreicht. Archiviere eine Ressource oder führe ein Upgrade durch, um weitere hinzuzufügen.</value>
+  </data>
+  <data name="Your Pro access is paused because a payment did not go through. Update your payment method under Manage billing to restore it." xml:space="preserve">
+    <value>Dein Pro-Zugang ist pausiert, weil eine Zahlung fehlgeschlagen ist. Aktualisiere deine Zahlungsmethode unter „Abrechnung verwalten“, um ihn wiederherzustellen.</value>
+  </data>
+  <data name="A recent payment did not go through. Your Pro access continues until {0} (UTC); after that your plan reverts to Starter." xml:space="preserve">
+    <value>Eine kürzliche Zahlung ist fehlgeschlagen. Dein Pro-Zugang bleibt bis {0} (UTC) bestehen; danach wechselt dein Tarif zurück zu Starter.</value>
+  </data>
+  <data name="Your Pro plan is cancelled and ends on {0} (UTC). You can resume it under Manage billing before then." xml:space="preserve">
+    <value>Dein Pro-Tarif ist gekündigt und endet am {0} (UTC). Bis dahin kannst du ihn unter „Abrechnung verwalten“ fortsetzen.</value>
+  </data>
+  <data name="Renews {0} (UTC)." xml:space="preserve">
+    <value>Verlängert sich am {0} (UTC).</value>
+  </data>
+  <data name="Upgrade to Pro (yearly)" xml:space="preserve">
+    <value>Upgrade auf Pro (jährlich)</value>
+  </data>
+  <data name="Upgrade to Pro (monthly)" xml:space="preserve">
+    <value>Upgrade auf Pro (monatlich)</value>
+  </data>
+  <data name="Manage billing" xml:space="preserve">
+    <value>Abrechnung verwalten</value>
+  </data>
+  <data name="Plans" xml:space="preserve">
+    <value>Tarife</value>
+  </data>
+  <data name="Checkout was cancelled. You have not been charged." xml:space="preserve">
+    <value>Der Bezahlvorgang wurde abgebrochen. Dir wurde nichts berechnet.</value>
+  </data>
+  <data name="Welcome to Pro! Your plan is active." xml:space="preserve">
+    <value>Willkommen bei Pro! Dein Tarif ist aktiv.</value>
+  </data>
+  <data name="Payment received. Your Pro plan is being activated; refresh this page in a moment." xml:space="preserve">
+    <value>Zahlung erhalten. Dein Pro-Tarif wird aktiviert; lade diese Seite gleich neu.</value>
+  </data>
+  <data name="LearnStack could not start checkout. Try again." xml:space="preserve">
+    <value>LearnStack konnte den Bezahlvorgang nicht starten. Versuche es erneut.</value>
+  </data>
+  <data name="Checkout is not available right now." xml:space="preserve">
+    <value>Der Bezahlvorgang ist derzeit nicht verfügbar.</value>
+  </data>
+  <data name="LearnStack could not open the billing portal. Try again." xml:space="preserve">
+    <value>LearnStack konnte das Abrechnungsportal nicht öffnen. Versuche es erneut.</value>
+  </data>
+  <data name="The billing portal is not available right now." xml:space="preserve">
+    <value>Das Abrechnungsportal ist derzeit nicht verfügbar.</value>
+  </data>
+  <data name="$0 / forever" xml:space="preserve">
+    <value>0 $ / für immer</value>
+  </data>
+  <data name="Track up to 20 learning resources" xml:space="preserve">
+    <value>Bis zu 20 Lernressourcen verwalten</value>
+  </data>
+  <data name="Content ideas and shared groups" xml:space="preserve">
+    <value>Content-Ideen und geteilte Gruppen</value>
+  </data>
+  <data name="Friends and public resource sharing" xml:space="preserve">
+    <value>Freunde und öffentliches Teilen von Ressourcen</value>
+  </data>
+  <data name="Everything in Starter" xml:space="preserve">
+    <value>Alles aus Starter</value>
+  </data>
+  <data name="Unlimited learning resources" xml:space="preserve">
+    <value>Unbegrenzte Lernressourcen</value>
+  </data>
+  <data name="Priority support" xml:space="preserve">
+    <value>Priorisierter Support</value>
+  </data>
+  <data name="No payment provider is configured yet. Contact us to upgrade." xml:space="preserve">
+    <value>Es ist noch kein Zahlungsanbieter eingerichtet. Kontaktiere uns für ein Upgrade.</value>
+  </data>
+  <data name="Only upgrading to Pro requires checkout." xml:space="preserve">
+    <value>Nur ein Upgrade auf Pro erfordert einen Bezahlvorgang.</value>
+  </data>
+  <data name="Stripe did not return a checkout URL." xml:space="preserve">
+    <value>Stripe hat keine Bezahl-URL zurückgegeben.</value>
+  </data>
+  <data name="We couldn't start checkout just now. Please try again in a moment." xml:space="preserve">
+    <value>Wir konnten den Bezahlvorgang gerade nicht starten. Bitte versuche es gleich noch einmal.</value>
+  </data>
+  <data name="You don't have a billing account yet. Upgrade to Pro first." xml:space="preserve">
+    <value>Du hast noch kein Abrechnungskonto. Führe zuerst ein Upgrade auf Pro durch.</value>
+  </data>
+  <data name="Stripe did not return a portal URL." xml:space="preserve">
+    <value>Stripe hat keine Portal-URL zurückgegeben.</value>
+  </data>
+  <data name="We couldn't open the billing portal just now. Please try again in a moment." xml:space="preserve">
+    <value>Wir konnten das Abrechnungsportal gerade nicht öffnen. Bitte versuche es gleich noch einmal.</value>
+  </data>
+  <data name="You already have a Pro subscription. Use Manage billing to change it." xml:space="preserve">
+    <value>Du hast bereits ein Pro-Abo. Ändere es unter „Abrechnung verwalten“.</value>
+  </data>
+  <data name="Your Starter plan allows up to 20 resources. Archive one or upgrade to add more." xml:space="preserve">
+    <value>Dein Starter-Tarif erlaubt bis zu 20 Ressourcen. Archiviere eine oder führe ein Upgrade durch, um weitere hinzuzufügen.</value>
+  </data>
+  <data name="Error: We couldn't cancel your Pro subscription, so your account was not deleted. Try again in a moment." xml:space="preserve">
+    <value>Fehler: Wir konnten dein Pro-Abo nicht kündigen, daher wurde dein Konto nicht gelöscht. Versuche es gleich noch einmal.</value>
+  </data>
 </root>

@@ -31,6 +31,9 @@ public class LearningResourceService(
             .FirstOrDefaultAsync(lr => lr.Id == id && lr.UserId == userId);
         if (resource == null) return false;
 
+        if (resource.IsArchived)
+            await EnsureWithinResourceLimitAsync(userId);
+
         resource.IsArchived = !resource.IsArchived;
         await context.SaveChangesAsync();
         return resource.IsArchived;
@@ -102,11 +105,7 @@ public class LearningResourceService(
 
     public async Task<LearningResource> CreateAsync(LearningResource resource)
     {
-        var entitlementCheck = await _entitlementService.CanCreateResourceAsync(resource.UserId);
-        if (!entitlementCheck.IsAllowed)
-        {
-            throw new PlanEntitlementDeniedException(entitlementCheck.Reason!);
-        }
+        await EnsureWithinResourceLimitAsync(resource.UserId);
 
         await using var context = await _contextFactory.CreateDbContextAsync();
         context.LearningResources.Add(resource);
@@ -120,6 +119,9 @@ public class LearningResourceService(
         var existing = await context.LearningResources
             .FirstOrDefaultAsync(lr => lr.Id == resource.Id && lr.UserId == userId);
         if (existing == null) return null;
+
+        if (existing.IsArchived && !resource.IsArchived)
+            await EnsureWithinResourceLimitAsync(userId);
 
         existing.Url = resource.Url;
         existing.Title = resource.Title;
@@ -208,5 +210,19 @@ public class LearningResourceService(
             .ThenBy(lr => lr.CustomOrder)
             .ThenByDescending(lr => lr.DateAdded)
             .ToListAsync();
+    }
+
+    /// <summary>
+    /// Throws when <paramref name="userId"/> is at their plan's resource limit. Creating a
+    /// resource and restoring an archived one both add to the non-archived count the limit
+    /// is measured on, so both go through this check.
+    /// </summary>
+    private async Task EnsureWithinResourceLimitAsync(string userId)
+    {
+        var entitlementCheck = await _entitlementService.CanCreateResourceAsync(userId);
+        if (!entitlementCheck.IsAllowed)
+        {
+            throw new PlanEntitlementDeniedException(entitlementCheck.Reason!);
+        }
     }
 }

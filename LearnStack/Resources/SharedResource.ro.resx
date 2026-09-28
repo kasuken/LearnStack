@@ -1746,4 +1746,124 @@
   <data name="NoRecentWins" xml:space="preserve">
     <value>Prima ta resursă finalizată va apărea aici.</value>
   </data>
+  <data name="Plan" xml:space="preserve">
+    <value>Plan</value>
+  </data>
+  <data name="Plan &amp; usage" xml:space="preserve">
+    <value>Plan și utilizare</value>
+  </data>
+  <data name="See your current LearnStack plan and resource usage, and upgrade or manage billing." xml:space="preserve">
+    <value>Vezi planul LearnStack actual și utilizarea resurselor, fă upgrade sau gestionează facturarea.</value>
+  </data>
+  <data name="Loading..." xml:space="preserve">
+    <value>Se încarcă...</value>
+  </data>
+  <data name="Current plan" xml:space="preserve">
+    <value>Plan actual</value>
+  </data>
+  <data name="Resources used" xml:space="preserve">
+    <value>Resurse utilizate</value>
+  </data>
+  <data name="{0} (unlimited)" xml:space="preserve">
+    <value>{0} (nelimitat)</value>
+  </data>
+  <data name="You've reached your {0} plan's limit of {1} resources. Archive one or upgrade to add more." xml:space="preserve">
+    <value>Ai atins limita de {1} resurse a planului {0}. Arhivează una sau fă upgrade pentru a adăuga mai multe.</value>
+  </data>
+  <data name="Your Pro access is paused because a payment did not go through. Update your payment method under Manage billing to restore it." xml:space="preserve">
+    <value>Accesul Pro este suspendat deoarece o plată nu a reușit. Actualizează metoda de plată din Gestionează facturarea pentru a-l restabili.</value>
+  </data>
+  <data name="A recent payment did not go through. Your Pro access continues until {0} (UTC); after that your plan reverts to Starter." xml:space="preserve">
+    <value>O plată recentă nu a reușit. Accesul Pro continuă până la {0} (UTC); după aceea planul revine la Starter.</value>
+  </data>
+  <data name="Your Pro plan is cancelled and ends on {0} (UTC). You can resume it under Manage billing before then." xml:space="preserve">
+    <value>Planul Pro este anulat și se încheie pe {0} (UTC). Îl poți relua din Gestionează facturarea până atunci.</value>
+  </data>
+  <data name="Renews {0} (UTC)." xml:space="preserve">
+    <value>Se reînnoiește pe {0} (UTC).</value>
+  </data>
+  <data name="Upgrade to Pro (yearly)" xml:space="preserve">
+    <value>Upgrade la Pro (anual)</value>
+  </data>
+  <data name="Upgrade to Pro (monthly)" xml:space="preserve">
+    <value>Upgrade la Pro (lunar)</value>
+  </data>
+  <data name="Manage billing" xml:space="preserve">
+    <value>Gestionează facturarea</value>
+  </data>
+  <data name="Plans" xml:space="preserve">
+    <value>Planuri</value>
+  </data>
+  <data name="Checkout was cancelled. You have not been charged." xml:space="preserve">
+    <value>Plata a fost anulată. Nu ți s-a perceput nimic.</value>
+  </data>
+  <data name="Welcome to Pro! Your plan is active." xml:space="preserve">
+    <value>Bun venit la Pro! Planul tău este activ.</value>
+  </data>
+  <data name="Payment received. Your Pro plan is being activated; refresh this page in a moment." xml:space="preserve">
+    <value>Plată primită. Planul Pro se activează; reîmprospătează pagina în câteva momente.</value>
+  </data>
+  <data name="LearnStack could not start checkout. Try again." xml:space="preserve">
+    <value>LearnStack nu a putut porni plata. Încearcă din nou.</value>
+  </data>
+  <data name="Checkout is not available right now." xml:space="preserve">
+    <value>Plata nu este disponibilă momentan.</value>
+  </data>
+  <data name="LearnStack could not open the billing portal. Try again." xml:space="preserve">
+    <value>LearnStack nu a putut deschide portalul de facturare. Încearcă din nou.</value>
+  </data>
+  <data name="The billing portal is not available right now." xml:space="preserve">
+    <value>Portalul de facturare nu este disponibil momentan.</value>
+  </data>
+  <data name="$0 / forever" xml:space="preserve">
+    <value>0 $ / pentru totdeauna</value>
+  </data>
+  <data name="Track up to 20 learning resources" xml:space="preserve">
+    <value>Urmărește până la 20 de resurse de învățare</value>
+  </data>
+  <data name="Content ideas and shared groups" xml:space="preserve">
+    <value>Idei de conținut și grupuri partajate</value>
+  </data>
+  <data name="Friends and public resource sharing" xml:space="preserve">
+    <value>Prieteni și partajarea publică a resurselor</value>
+  </data>
+  <data name="Everything in Starter" xml:space="preserve">
+    <value>Tot ce include Starter</value>
+  </data>
+  <data name="Unlimited learning resources" xml:space="preserve">
+    <value>Resurse de învățare nelimitate</value>
+  </data>
+  <data name="Priority support" xml:space="preserve">
+    <value>Asistență prioritară</value>
+  </data>
+  <data name="No payment provider is configured yet. Contact us to upgrade." xml:space="preserve">
+    <value>Nu este configurat încă niciun furnizor de plăți. Contactează-ne pentru upgrade.</value>
+  </data>
+  <data name="Only upgrading to Pro requires checkout." xml:space="preserve">
+    <value>Doar upgrade-ul la Pro necesită plată.</value>
+  </data>
+  <data name="Stripe did not return a checkout URL." xml:space="preserve">
+    <value>Stripe nu a returnat un URL de plată.</value>
+  </data>
+  <data name="We couldn't start checkout just now. Please try again in a moment." xml:space="preserve">
+    <value>Nu am putut porni plata acum. Încearcă din nou în câteva momente.</value>
+  </data>
+  <data name="You don't have a billing account yet. Upgrade to Pro first." xml:space="preserve">
+    <value>Nu ai încă un cont de facturare. Fă mai întâi upgrade la Pro.</value>
+  </data>
+  <data name="Stripe did not return a portal URL." xml:space="preserve">
+    <value>Stripe nu a returnat un URL de portal.</value>
+  </data>
+  <data name="We couldn't open the billing portal just now. Please try again in a moment." xml:space="preserve">
+    <value>Nu am putut deschide portalul de facturare acum. Încearcă din nou în câteva momente.</value>
+  </data>
+  <data name="You already have a Pro subscription. Use Manage billing to change it." xml:space="preserve">
+    <value>Ai deja un abonament Pro. Folosește Gestionează facturarea pentru a-l modifica.</value>
+  </data>
+  <data name="Your Starter plan allows up to 20 resources. Archive one or upgrade to add more." xml:space="preserve">
+    <value>Planul Starter permite până la 20 de resurse. Arhivează una sau fă upgrade pentru a adăuga mai multe.</value>
+  </data>
+  <data name="Error: We couldn't cancel your Pro subscription, so your account was not deleted. Try again in a moment." xml:space="preserve">
+    <value>Eroare: nu am putut anula abonamentul Pro, așa că contul nu a fost șters. Încearcă din nou în câteva momente.</value>
+  </data>
 </root>

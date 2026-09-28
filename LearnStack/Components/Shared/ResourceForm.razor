@@ -326,7 +326,7 @@
             }
             catch (PlanEntitlementDeniedException ex)
             {
-                Snackbar.Add(ex.Message, Severity.Warning);
+                Snackbar.Add(L[ex.Message], Severity.Warning);
                 return;
             }
         }

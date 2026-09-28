@@ -17,4 +17,15 @@ public interface IBillingWebhookProcessor
         string payload,
         string signatureHeader,
         CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Applies the subscription a completed checkout created for <paramref name="userId"/>,
+    /// read live from the provider when the user returns from checkout, so the upgrade shows
+    /// immediately instead of after the webhook arrives. Returns true when the user is now on a
+    /// paid plan; false when the session is unknown, incomplete, or belongs to someone else.
+    /// </summary>
+    Task<bool> ConfirmCheckoutAsync(
+        string userId,
+        string checkoutSessionId,
+        CancellationToken cancellationToken = default);
 }

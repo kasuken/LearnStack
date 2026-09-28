@@ -1,3 +1,4 @@
+using LearnStack.Billing;
 using LearnStack.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,19 +16,31 @@ namespace LearnStack.Services;
 /// idea, added one to a shared collection, or accepted/received a friend
 /// request or invitation.
 /// </summary>
-public class AccountDeletionService(IDbContextFactory<ApplicationDbContext> contextFactory) : IAccountDeletionService
+public class AccountDeletionService(
+    IDbContextFactory<ApplicationDbContext> contextFactory,
+    IBillingProvider billingProvider) : IAccountDeletionService
 {
     private readonly IDbContextFactory<ApplicationDbContext> _contextFactory =
         contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
 
-    public async Task<bool> DeleteAccountAsync(string userId)
+    private readonly IBillingProvider _billingProvider =
+        billingProvider ?? throw new ArgumentNullException(nameof(billingProvider));
+
+    public async Task<AccountDeletionResult> DeleteAccountAsync(string userId)
     {
         ArgumentException.ThrowIfNullOrEmpty(userId);
 
         await using var context = await _contextFactory.CreateDbContextAsync();
 
         var user = await context.Users.FirstOrDefaultAsync(u => u.Id == userId);
-        if (user is null) return false;
+        if (user is null) return AccountDeletionResult.UserNotFound;
+
+        // Billing is cancelled before any row is removed, because the UserPlan row holds the
+        // only link to the provider's customer. Deleting first would leave a subscription that
+        // keeps charging and can no longer be traced back to anyone. If the database work
+        // below then fails, the account survives on Starter, which is the safe direction.
+        var cancellation = await _billingProvider.CancelSubscriptionsAsync(userId);
+        if (!cancellation.Succeeded) return AccountDeletionResult.BillingCancellationFailed;
 
         await using var transaction = await context.Database.BeginTransactionAsync();
 
@@ -95,6 +108,6 @@ public class AccountDeletionService(IDbContextFactory<ApplicationDbContext> cont
         await context.SaveChangesAsync();
 
         await transaction.CommitAsync();
-        return true;
+        return AccountDeletionResult.Deleted;
     }
 }

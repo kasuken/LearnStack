@@ -31,8 +31,32 @@ public interface IBillingProvider
         string? accountEmail = null,
         CancellationToken cancellationToken = default);
 
+    /// <summary>
+    /// Reads the current state of a checkout session <paramref name="userId"/> just returned
+    /// from, so the plan can be applied without waiting for its webhook. Returns null when the
+    /// session is not a completed subscription checkout belonging to <paramref name="userId"/>.
+    /// </summary>
+    Task<ParsedBillingWebhookEvent?> GetCompletedCheckoutAsync(
+        string userId,
+        string checkoutSessionId,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Updates the email on <paramref name="userId"/>'s billing customer, so receipts follow a
+    /// changed account email. Returns false when the provider rejected the update; true when
+    /// it succeeded or the user has no billing customer.
+    /// </summary>
+    Task<bool> UpdateCustomerEmailAsync(string userId, string email, CancellationToken cancellationToken = default);
+
     /// <summary>Starts a hosted self-service billing-portal session for <paramref name="userId"/>.</summary>
     Task<PortalSessionResult> CreatePortalSessionAsync(string userId, CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Immediately cancels every live subscription billing <paramref name="userId"/>, so that
+    /// deleting an account never leaves the provider charging for it. Succeeds when there is
+    /// nothing to cancel.
+    /// </summary>
+    Task<SubscriptionCancellationResult> CancelSubscriptionsAsync(string userId, CancellationToken cancellationToken = default);
 
     /// <summary>Verifies an inbound webhook request's signature before its payload is trusted.</summary>
     Task<WebhookVerificationResult> VerifyWebhookSignatureAsync(

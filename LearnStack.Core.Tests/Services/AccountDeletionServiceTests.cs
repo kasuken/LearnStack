@@ -1,6 +1,8 @@
+using LearnStack.Billing;
 using LearnStack.Data.Models;
 using LearnStack.Services;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace LearnStack.Core.Tests.Services;
 
@@ -15,18 +17,35 @@ public class AccountDeletionServiceTests
     [Fact]
     public void Constructor_WhenContextFactoryIsNull_ThrowsArgumentNullException()
     {
-        Assert.Throws<ArgumentNullException>(() => new AccountDeletionService(null!));
+        Assert.Throws<ArgumentNullException>(() => new AccountDeletionService(null!, new NullBillingProvider()));
     }
 
     [Fact]
-    public async Task DeleteAccountAsync_WhenUserDoesNotExist_ReturnsFalse()
+    public async Task DeleteAccountAsync_WhenUserDoesNotExist_ReturnsUserNotFound()
     {
         await using var factory = await MakeFactory();
-        var service = new AccountDeletionService(factory);
+        var service = new AccountDeletionService(factory, new NullBillingProvider());
 
         var result = await service.DeleteAccountAsync("no-such-user");
 
-        Assert.False(result);
+        Assert.Equal(AccountDeletionResult.UserNotFound, result);
+    }
+
+    [Fact]
+    public async Task DeleteAccountAsync_WhenBillingCancellationFails_KeepsTheAccount()
+    {
+        await using var factory = await MakeFactory();
+        var billingProvider = new Mock<IBillingProvider>();
+        billingProvider
+            .Setup(p => p.CancelSubscriptionsAsync(UserId, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new SubscriptionCancellationResult(false, "Stripe is down."));
+        var service = new AccountDeletionService(factory, billingProvider.Object);
+
+        var result = await service.DeleteAccountAsync(UserId);
+
+        Assert.Equal(AccountDeletionResult.BillingCancellationFailed, result);
+        await using var context = await factory.CreateDbContextAsync();
+        Assert.True(await context.Users.AnyAsync(u => u.Id == UserId));
     }
 
     /// <summary>
@@ -131,11 +150,11 @@ public class AccountDeletionServiceTests
             await context.SaveChangesAsync();
         }
 
-        var service = new AccountDeletionService(factory);
+        var service = new AccountDeletionService(factory, new NullBillingProvider());
 
         var result = await service.DeleteAccountAsync(UserId);
 
-        Assert.True(result);
+        Assert.Equal(AccountDeletionResult.Deleted, result);
 
         await using var verifyContext = factory.CreateDbContext();
 
