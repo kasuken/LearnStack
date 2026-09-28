@@ -4,6 +4,44 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.4.0] - 2026-09-28
+
+### Added
+- Stripe billing with per-plan resource limits
+  - Two-tier Starter/Pro plans; Starter caps non-archived learning resources at 20, Pro is unlimited
+  - `IEntitlementService` as the single authority for granting or denying paid-only actions, enforced server-side in `LearningResourceService.CreateAsync` rather than only in the UI
+  - `IBillingProvider` abstraction with `NullBillingProvider` as the safe default (`Billing:Provider = None`), so the app runs fully without Stripe configured
+  - `StripeBillingProvider` (Stripe.net) selected via `Billing:Provider = Stripe`, with fail-fast configuration validation
+  - Verified inbound webhooks applied idempotently through a `ProcessedWebhookEvent` ledger keyed on the provider event id, via `/api/webhooks/billing`
+  - Plan & usage account page for viewing usage and starting checkout/portal sessions
+- Per-user timezone support for relative dates and Pulse analytics
+  - Nullable IANA `TimeZoneId` on `ApplicationUser`, editable from Account/Manage and auto-detected from the browser on first render
+  - `UserTimeZoneHelper` and `PulseAnalyticsHelper` to resolve time zones and bucket weekly completions against the user's local Monday-aligned week
+  - Fixes wrong "Today"/"Yesterday" labels, misaligned Pulse buckets, wrong active-day counts, and drifting resource age emoji for non-UTC users
+- Romanian translation (`SharedResource.ro.resx`), covering all 577 shared UI, marketing, account, onboarding and Identity strings
+- Mobile-responsive layout for authenticated pages
+  - New `wwwroot/responsive.css` layer loaded after MudBlazor; desktop layout untouched and additive only
+  - Compacted app bar, stacked page headers, reflowed resource rows, wrapping filter/pagination bars, near-fullscreen dialogs, 16px inputs (stops iOS zoom-on-focus) and 40px minimum tap targets
+- Improved new user onboarding
+- Marketing screenshots of the app
+
+### Changed
+- Marketing message broadened beyond AI learning across all six locales, including hero, features, CTA, footer, testimonial roles, SEO metadata and JSON-LD structured data on `/` and `/welcome`
+- Friend-facing surfaces now render `DisplayName` instead of the raw email local-part, falling back to the local-part only when no display name is set
+- Data Protection keys persisted to SQL via `PersistKeysToDbContext` in Production instead of the container filesystem, so restarts, deployments, slot swaps and scale-out no longer invalidate auth cookies and antiforgery tokens
+
+### Fixed
+- **New accounts were locked out after their first session.** `RequireConfirmedAccount` was enabled while registration signs users in directly without sending a confirmation email, so every account created since could never sign in again and reported only "Invalid email or password". Confirmation is now disabled until a real email sender is configured, and the login page surfaces an unconfirmed account as its own distinct message instead of a credential failure
+- Foreign key conflict when deleting an account with linked resources; new `AccountDeletionService` removes all dependents and the user inside a single transaction
+- OpenGraph fetcher hardened against redirect SSRF and oversized responses: manual redirect following with per-hop revalidation (max 5 hops), ports restricted to 80/443, 1 MB body cap, and a `ConnectCallback` that closes the DNS-rebinding TOCTOU gap
+- Bumped `Microsoft.AspNetCore.DataProtection.EntityFrameworkCore` to 10.0.12 to avoid the critical cookie-forging vulnerability in 10.0.0–10.0.6 ([GHSA-9mv3-2cwr-p262](https://github.com/advisories/GHSA-9mv3-2cwr-p262))
+- Resources and Pulse pages loaded twice (once while prerendering, again on circuit connect); sign-in now routes straight to `/resources`
+- Oversized Blazor circuit state: resource collections no longer transferred through persistent component state, so thumbnail data cannot exceed the SignalR startup message limit
+- Missing user display name migration
+- Empty fourth stat card on Content Ideas, and email overlapping the last-active date on the account profile card
+
+---
+
 ## [1.3.0]
 
 ### Added
