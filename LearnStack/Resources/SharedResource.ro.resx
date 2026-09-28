@@ -693,6 +693,9 @@
   <data name="or sign in with" xml:space="preserve">
     <value>sau conectează-te cu</value>
   </data>
+  <data name="Your account is not confirmed yet. Please confirm your email before signing in." xml:space="preserve">
+    <value>Contul tău nu este încă confirmat. Te rugăm să îți confirmi emailul înainte de autentificare.</value>
+  </data>
   <data name="Invalid email or password. Please try again." xml:space="preserve">
     <value>Email sau parolă incorecte. Te rugăm să încerci din nou.</value>
   </data>
