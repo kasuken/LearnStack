@@ -18,7 +18,7 @@ public class EntitlementService(IDbContextFactory<ApplicationDbContext> contextF
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
-        var plan = PlanCatalog.Get(await GetPlanTierAsync(userId, cancellationToken).ConfigureAwait(false));
+        var plan = PlanCatalog.Get(await GetEffectivePlanTierAsync(userId, cancellationToken).ConfigureAwait(false));
 
         if (plan.MaxResources is null)
             return EntitlementCheckResult.Allow();
@@ -37,7 +37,8 @@ public class EntitlementService(IDbContextFactory<ApplicationDbContext> contextF
         ArgumentException.ThrowIfNullOrWhiteSpace(userId);
 
         var userPlan = await GetOrCreateUserPlanAsync(userId, cancellationToken).ConfigureAwait(false);
-        var plan = PlanCatalog.Get(userPlan.Tier);
+        var suspended = IsPaidAccessSuspended(userPlan.Tier, userPlan.GracePeriodEndsAtUtc);
+        var plan = PlanCatalog.Get(suspended ? PlanTier.Starter : userPlan.Tier);
 
         var resourceCount = await CountNonArchivedResourcesAsync(userId, cancellationToken).ConfigureAwait(false);
 
@@ -49,7 +50,9 @@ public class EntitlementService(IDbContextFactory<ApplicationDbContext> contextF
             plan.MaxResources,
             plan.MaxResources.HasValue && resourceCount >= plan.MaxResources.Value,
             userPlan.PlanRenewsAtUtc,
-            userPlan.GracePeriodEndsAtUtc);
+            userPlan.GracePeriodEndsAtUtc,
+            suspended,
+            userPlan.PlanCancelsAtUtc);
     }
 
     public async Task SetPlanTierAsync(
@@ -63,13 +66,15 @@ public class EntitlementService(IDbContextFactory<ApplicationDbContext> contextF
         await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
         var userPlan = await GetOrCreateUserPlanAsync(context, userId, cancellationToken).ConfigureAwait(false);
 
-        var tierUnchanged = userPlan.Tier == tier;
-        userPlan.Tier = tier;
-        if (planRenewsAtUtc.HasValue)
-            userPlan.PlanRenewsAtUtc = planRenewsAtUtc;
-
-        if (tierUnchanged && !planRenewsAtUtc.HasValue)
+        var isStarter = tier == PlanTier.Starter;
+        var newRenewsAtUtc = isStarter ? null : planRenewsAtUtc ?? userPlan.PlanRenewsAtUtc;
+        var newCancelsAtUtc = isStarter ? null : userPlan.PlanCancelsAtUtc;
+        if (userPlan.Tier == tier && userPlan.PlanRenewsAtUtc == newRenewsAtUtc && userPlan.PlanCancelsAtUtc == newCancelsAtUtc)
             return;
+
+        userPlan.Tier = tier;
+        userPlan.PlanRenewsAtUtc = newRenewsAtUtc;
+        userPlan.PlanCancelsAtUtc = newCancelsAtUtc;
 
         await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -102,6 +107,44 @@ public class EntitlementService(IDbContextFactory<ApplicationDbContext> contextF
             await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
+    public async Task SetScheduledCancellationAsync(
+        string userId,
+        DateTime? cancelsAtUtc,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var userPlan = await GetOrCreateUserPlanAsync(context, userId, cancellationToken).ConfigureAwait(false);
+        if (userPlan.PlanCancelsAtUtc == cancelsAtUtc)
+            return;
+
+        userPlan.PlanCancelsAtUtc = cancelsAtUtc;
+        await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    public async Task<bool> TryRecordBillingEventTimeAsync(
+        string userId,
+        DateTime occurredAtUtc,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(userId);
+
+        await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+        var userPlan = await GetOrCreateUserPlanAsync(context, userId, cancellationToken).ConfigureAwait(false);
+
+        if (userPlan.LastBillingEventAtUtc > occurredAtUtc)
+            return false;
+
+        if (userPlan.LastBillingEventAtUtc != occurredAtUtc)
+        {
+            userPlan.LastBillingEventAtUtc = occurredAtUtc;
+            await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        return true;
+    }
+
     public async Task SetGracePeriodAsync(
         string userId,
         DateTime? gracePeriodEndsAtUtc,
@@ -118,18 +161,29 @@ public class EntitlementService(IDbContextFactory<ApplicationDbContext> contextF
         await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    private async Task<PlanTier> GetPlanTierAsync(string userId, CancellationToken cancellationToken)
+    private async Task<PlanTier> GetEffectivePlanTierAsync(string userId, CancellationToken cancellationToken)
     {
         await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
-        var tier = await context.UserPlans.AsNoTracking()
+        var plan = await context.UserPlans.AsNoTracking()
             .Where(p => p.UserId == userId)
-            .Select(p => (PlanTier?)p.Tier)
+            .Select(p => new { p.Tier, p.GracePeriodEndsAtUtc })
             .FirstOrDefaultAsync(cancellationToken)
             .ConfigureAwait(false);
 
         // No row yet means the user has never had a plan change recorded: default Starter.
-        return tier ?? PlanTier.Starter;
+        if (plan is null)
+            return PlanTier.Starter;
+
+        return IsPaidAccessSuspended(plan.Tier, plan.GracePeriodEndsAtUtc) ? PlanTier.Starter : plan.Tier;
     }
+
+    /// <summary>
+    /// A paid tier whose payment-failure grace period has elapsed. Evaluated on read rather than
+    /// by a background job, so the downgrade takes effect the moment the grace period ends and
+    /// reverses itself as soon as a successful charge clears the grace period.
+    /// </summary>
+    private static bool IsPaidAccessSuspended(PlanTier tier, DateTime? gracePeriodEndsAtUtc) =>
+        tier != PlanTier.Starter && gracePeriodEndsAtUtc <= DateTime.UtcNow;
 
     private async Task<UserPlan> GetOrCreateUserPlanAsync(string userId, CancellationToken cancellationToken)
     {

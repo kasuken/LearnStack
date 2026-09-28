@@ -149,6 +149,50 @@ Add these in Azure App Service **Configuration** → **Application settings**:
 | `ASPNETCORE_ENVIRONMENT` | `Production` | Sets production environment |
 | `WEBSITE_TIME_ZONE` | `UTC` (or your timezone) | Sets application timezone |
 
+## Stripe Billing
+
+Billing is off by default (`Billing__Provider` = `None`), so the app runs without Stripe. To take payments for the Pro plan:
+
+### In the Stripe Dashboard
+
+1. **Product catalog**: create a *Pro* product with two recurring prices, one monthly and one yearly. Copy both price ids (`price_...`).
+2. **Developers → Webhooks**: add an endpoint at `https://<your-app>/api/webhooks/billing` that listens for:
+   - `checkout.session.completed`
+   - `customer.subscription.created`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+   - `invoice.paid`
+   - `invoice.payment_failed`
+
+   Copy the endpoint's signing secret (`whsec_...`).
+3. **Settings → Billing → Customer portal**: allow customers to update payment methods and cancel subscriptions, and add both Pro prices under *Subscriptions → Customers can switch plans* so users can move between monthly and yearly.
+4. **Settings → Billing → Subscriptions and emails**: choose what happens after all payment retries fail. *Cancel the subscription* or *Mark as unpaid* both downgrade the user to Starter. With *Leave as-is*, the user loses Pro access 7 days after the last failed retry.
+
+### In Azure App Service → Configuration → Application settings
+
+Store the secrets as Key Vault references where possible.
+
+| Key | Value |
+|-----|-------|
+| `Billing__Provider` | `Stripe` |
+| `Billing__ApiKey` | Secret key (`sk_live_...`, or `sk_test_...` for a staging slot) |
+| `Billing__WebhookSigningSecret` | Webhook signing secret (`whsec_...`) |
+| `Billing__ProMonthlyPriceId` | Monthly Pro price id |
+| `Billing__ProYearlyPriceId` | Yearly Pro price id |
+| `Billing__CheckoutSuccessUrl` | `https://<your-app>/Account/Manage/Plan` |
+| `Billing__CheckoutCancelUrl` | `https://<your-app>/Account/Manage/Plan` |
+| `Billing__PortalReturnUrl` | `https://<your-app>/Account/Manage/Plan` |
+
+The app adds `session_id={CHECKOUT_SESSION_ID}` to the success URL and `checkout=cancelled` to the cancel URL itself, so the Plan page can confirm an upgrade the moment the user returns. If any Stripe setting is missing, startup fails with an error that lists every missing key.
+
+### Testing locally
+
+```bash
+stripe listen --forward-to http://localhost:5164/api/webhooks/billing
+```
+
+Use the `whsec_...` secret that `stripe listen` prints as `Billing:WebhookSigningSecret` in user secrets, then pay with the test card `4242 4242 4242 4242`.
+
 ## SSL/HTTPS
 
 Azure App Service provides free SSL certificates:

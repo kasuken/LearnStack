@@ -28,9 +28,21 @@ public sealed class NullBillingProvider : IBillingProvider
         CancellationToken cancellationToken = default) =>
         Task.FromResult(new CheckoutSessionResult(false, null, NotConfiguredReason));
 
+    public Task<ParsedBillingWebhookEvent?> GetCompletedCheckoutAsync(
+        string userId, string checkoutSessionId, CancellationToken cancellationToken = default) =>
+        Task.FromResult<ParsedBillingWebhookEvent?>(null);
+
+    public Task<bool> UpdateCustomerEmailAsync(
+        string userId, string email, CancellationToken cancellationToken = default) =>
+        Task.FromResult(true);
+
     public Task<PortalSessionResult> CreatePortalSessionAsync(
         string userId, CancellationToken cancellationToken = default) =>
         Task.FromResult(new PortalSessionResult(false, null, NotConfiguredReason));
+
+    public Task<SubscriptionCancellationResult> CancelSubscriptionsAsync(
+        string userId, CancellationToken cancellationToken = default) =>
+        Task.FromResult(SubscriptionCancellationResult.Success);
 
     public Task<WebhookVerificationResult> VerifyWebhookSignatureAsync(
         string payload, string signatureHeader, CancellationToken cancellationToken = default) =>
