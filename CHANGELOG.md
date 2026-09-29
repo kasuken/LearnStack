@@ -4,6 +4,18 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.4.1] - 2026-09-29
+
+### Fixed
+- Billing on a Stripe account shared with another product (such as Brainy)
+  - Stripe delivers every event to every endpoint, signed with that endpoint's own secret, so a valid signature alone never proved an event was LearnStack's; events belonging to another product are now acknowledged and ignored
+  - Checkout completions identify the user only from LearnStack's own `learnstack_user_id` metadata, never from `client_reference_id` alone, which previously failed the `UserPlan` foreign key for another product's checkout and made Stripe retry the delivery
+  - Subscription events are ignored unless they carry LearnStack metadata or a configured LearnStack price, so another product's subscription on the same customer can no longer downgrade a LearnStack user
+  - Invoice events must belong to a LearnStack subscription (metadata snapshot, stored subscription id, or a LearnStack price line) before they set or clear a grace period
+  - Account deletion cancels only LearnStack's own subscriptions, and the duplicate-checkout guard no longer counts another product's live subscription
+
+---
+
 ## [1.4.0] - 2026-09-28
 
 ### Added

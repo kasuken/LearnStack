@@ -29,6 +29,15 @@ namespace LearnStack.Billing;
 /// price that exists in Stripe but is not configured here resolves to no paid tier rather
 /// than silently granting Pro.
 /// </para>
+/// <para>
+/// The Stripe account is shared with other products (Brainy), and Stripe delivers every event
+/// on an account to every webhook endpoint, each signed with that endpoint's own secret. A
+/// valid signature therefore does not mean an event is LearnStack's. Every event, and every
+/// subscription LearnStack acts on through the API, is ignored unless it carries LearnStack's
+/// own metadata key, bills a configured LearnStack price, or is the subscription LearnStack
+/// stored; <c>client_reference_id</c> is a generic field every product sets, so it never
+/// identifies a LearnStack user on its own.
+/// </para>
 /// </remarks>
 public sealed class StripeBillingProvider : IBillingProvider
 {
@@ -266,13 +275,15 @@ public sealed class StripeBillingProvider : IBillingProvider
 
         try
         {
-            // Every subscription on the customer, not only the stored one: a duplicate checkout
-            // leaves a second subscription LearnStack never recorded, and it would keep charging.
+            // Every LearnStack subscription on the customer, not only the stored one: a duplicate
+            // checkout leaves a second subscription LearnStack never recorded, and it would keep
+            // charging. Another product's subscription on the same customer is left alone.
             var subscriptions = await subscriptionService
                 .ListAsync(new SubscriptionListOptions { Customer = customerId, Limit = 100 }, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
 
-            foreach (var subscription in subscriptions.Data.Where(sub => sub.Status is not ("canceled" or "incomplete_expired")))
+            foreach (var subscription in subscriptions.Data.Where(sub =>
+                sub.Status is not ("canceled" or "incomplete_expired") && IsLearnStackSubscription(sub)))
             {
                 try
                 {
@@ -358,10 +369,13 @@ public sealed class StripeBillingProvider : IBillingProvider
         if (stripeEvent.Data.Object is not Session session || session.Mode != "subscription")
             return null;
 
-        var userId = session.ClientReferenceId ?? GetMetadataUserId(session.Metadata);
-        if (string.IsNullOrWhiteSpace(userId))
+        // Metadata, not client_reference_id: another product's checkout sets its own user id in
+        // client_reference_id, and treating that as a LearnStack user id would fail the UserPlan
+        // foreign key and make Stripe retry the delivery until it disables the endpoint.
+        var userId = GetMetadataUserId(session.Metadata);
+        if (userId is null)
         {
-            _logger.LogWarning("Stripe checkout session {SessionId} completed without a LearnStack user id; ignoring.", session.Id);
+            _logger.LogInformation("Stripe checkout session {SessionId} carries no LearnStack user id; ignoring it as another product's.", session.Id);
             return null;
         }
 
@@ -382,6 +396,15 @@ public sealed class StripeBillingProvider : IBillingProvider
     {
         if (stripeEvent.Data.Object is not Subscription subscription)
             return null;
+
+        if (!IsLearnStackSubscription(subscription))
+        {
+            // Another product's subscription, even when its customer id happens to match a
+            // LearnStack customer. Mapping it would downgrade (unknown price → Starter) or
+            // relink a paying LearnStack user.
+            _logger.LogInformation("Stripe subscription {SubscriptionId} is not a LearnStack subscription; ignoring.", subscription.Id);
+            return null;
+        }
 
         var userId = GetMetadataUserId(subscription.Metadata)
             ?? await ResolveUserIdFromCustomerIdAsync(subscription.CustomerId, cancellationToken).ConfigureAwait(false);
@@ -450,7 +473,7 @@ public sealed class StripeBillingProvider : IBillingProvider
         if (stripeEvent.Data.Object is not Invoice invoice)
             return null;
 
-        var userId = await ResolveUserIdFromCustomerIdAsync(invoice.CustomerId, cancellationToken).ConfigureAwait(false);
+        var userId = await ResolveInvoiceUserIdAsync(invoice, cancellationToken).ConfigureAwait(false);
         if (userId is null)
             return null;
 
@@ -473,7 +496,7 @@ public sealed class StripeBillingProvider : IBillingProvider
         if (stripeEvent.Data.Object is not Invoice invoice)
             return null;
 
-        var userId = await ResolveUserIdFromCustomerIdAsync(invoice.CustomerId, cancellationToken).ConfigureAwait(false);
+        var userId = await ResolveInvoiceUserIdAsync(invoice, cancellationToken).ConfigureAwait(false);
         if (userId is null)
             return null;
 
@@ -491,14 +514,69 @@ public sealed class StripeBillingProvider : IBillingProvider
             OccurredAtUtc: GetOccurredAtUtc(stripeEvent));
     }
 
-    private PlanTier ResolveTier(Subscription subscription)
+    /// <summary>
+    /// Resolves the LearnStack user an invoice belongs to, or null when it is another product's.
+    /// Invoices carry no user metadata of their own, so ownership comes from the subscription
+    /// they bill: its metadata snapshot, the subscription id LearnStack stored, or a LearnStack
+    /// price on one of the lines. The customer id alone is never enough, because it says nothing
+    /// about which product's subscription the invoice is for.
+    /// </summary>
+    private async Task<string?> ResolveInvoiceUserIdAsync(Invoice invoice, CancellationToken cancellationToken)
     {
-        var priceIds = subscription.Items?.Data?
+        var subscriptionDetails = invoice.Parent?.SubscriptionDetails;
+
+        var metadataUserId = GetMetadataUserId(subscriptionDetails?.Metadata);
+        if (metadataUserId is not null)
+            return metadataUserId;
+
+        var subscriptionId = subscriptionDetails?.SubscriptionId;
+        if (!string.IsNullOrWhiteSpace(subscriptionId))
+        {
+            await using var context = await _contextFactory.CreateDbContextAsync(cancellationToken).ConfigureAwait(false);
+            var storedUserId = await context.UserPlans.AsNoTracking()
+                .Where(plan => plan.BillingProviderSubscriptionId == subscriptionId)
+                .Select(plan => plan.UserId)
+                .FirstOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+            if (storedUserId is not null)
+                return storedUserId;
+        }
+
+        var billsLearnStackPrice = invoice.Lines?.Data?
+            .Any(line => IsConfiguredPrice(line.Pricing?.PriceDetails?.PriceId)) == true;
+        if (!billsLearnStackPrice)
+        {
+            _logger.LogInformation("Stripe invoice {InvoiceId} is not for a LearnStack subscription; ignoring.", invoice.Id);
+            return null;
+        }
+
+        return await ResolveUserIdFromCustomerIdAsync(invoice.CustomerId, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Whether a subscription was sold by LearnStack: every LearnStack checkout stamps its
+    /// metadata key on the subscription, and a subscription created by hand in the Dashboard is
+    /// still recognisable by a configured LearnStack price.
+    /// </summary>
+    private bool IsLearnStackSubscription(Subscription subscription) =>
+        GetMetadataUserId(subscription.Metadata) is not null || GetPriceIds(subscription).Any(IsConfiguredPrice);
+
+    private bool IsConfiguredPrice(string? priceId) =>
+        !string.IsNullOrWhiteSpace(priceId)
+        && (priceId == _options.ProMonthlyPriceId || priceId == _options.ProYearlyPriceId);
+
+    private static List<string> GetPriceIds(Subscription subscription) =>
+        subscription.Items?.Data?
             .Select(item => item.Price?.Id)
             .Where(id => !string.IsNullOrWhiteSpace(id))
+            .Select(id => id!)
             .ToList() ?? [];
 
-        if (priceIds.Any(id => id == _options.ProMonthlyPriceId || id == _options.ProYearlyPriceId))
+    private PlanTier ResolveTier(Subscription subscription)
+    {
+        var priceIds = GetPriceIds(subscription);
+
+        if (priceIds.Any(IsConfiguredPrice))
             return PlanTier.Pro;
 
         _logger.LogWarning(
@@ -552,7 +630,8 @@ public sealed class StripeBillingProvider : IBillingProvider
             .ListAsync(new SubscriptionListOptions { Customer = customerId, Limit = 100 }, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
 
-        return subscriptions.Data.Any(subscription => EntitlingStatuses.Contains(subscription.Status));
+        return subscriptions.Data.Any(subscription =>
+            EntitlingStatuses.Contains(subscription.Status) && IsLearnStackSubscription(subscription));
     }
 
     private static string AppendQuery(string url, string query) =>
