@@ -16,6 +16,14 @@ public class StripeBillingProviderTests
     private const string SubscriptionId = "sub_test_123";
     private const string MonthlyPriceId = "price_monthly_test";
     private const string YearlyPriceId = "price_yearly_test";
+    private const string LearnStackMetadataKey = "learnstack_user_id";
+
+    // Another product (Brainy) billed through the same Stripe account: its events reach
+    // LearnStack's endpoint too, validly signed with LearnStack's own endpoint secret.
+    private const string OtherProductMetadataKey = "brainy_user_id";
+    private const string OtherProductUserId = "brainy-user-1";
+    private const string OtherProductPriceId = "price_brainy_pro";
+    private const string OtherProductSubscriptionId = "sub_brainy_1";
 
     private static readonly string ApiVersion = (string)typeof(StripeConfiguration).Assembly
         .GetType("Stripe.ApiVersion")!
@@ -267,7 +275,8 @@ public class StripeBillingProviderTests
 
         var provider = CreateProvider(factory);
 
-        var parsed = await provider.ParseWebhookEventAsync(InvoicePayload("evt_invoice_failed_1", "invoice.payment_failed", nextPaymentAttempt: 1751328000));
+        var parsed = await provider.ParseWebhookEventAsync(
+            InvoicePayload("evt_invoice_failed_1", "invoice.payment_failed", nextPaymentAttempt: 1751328000, linePriceId: YearlyPriceId));
 
         Assert.NotNull(parsed);
         Assert.Null(parsed!.NewTier);
@@ -293,7 +302,8 @@ public class StripeBillingProviderTests
 
         var provider = CreateProvider(factory);
 
-        var parsed = await provider.ParseWebhookEventAsync(InvoicePayload("evt_invoice_paid_1", "invoice.paid", periodEnd: 1748736000));
+        var parsed = await provider.ParseWebhookEventAsync(
+            InvoicePayload("evt_invoice_paid_1", "invoice.paid", periodEnd: 1748736000, linePriceId: YearlyPriceId));
 
         // Tier and renewal come from subscription events only: an invoice may be for a price
         // LearnStack does not sell, or arrive after the subscription was deleted.
@@ -301,6 +311,117 @@ public class StripeBillingProviderTests
         Assert.Null(parsed!.NewTier);
         Assert.Null(parsed.PeriodEndsAtUtc);
         Assert.True(parsed.ClearsGracePeriod);
+    }
+
+    [Fact]
+    public async Task ParseWebhookEventAsync_InvoiceWithLearnStackSubscriptionMetadata_ResolvesUserFromTheMetadata()
+    {
+        await using var factory = await TestDbContextFactory.CreateAsync(UserId);
+        var provider = CreateProvider(factory);
+
+        var parsed = await provider.ParseWebhookEventAsync(
+            InvoicePayload("evt_invoice_metadata", "invoice.paid", periodEnd: 1748736000, subscriptionMetadataUserId: UserId));
+
+        Assert.NotNull(parsed);
+        Assert.Equal(UserId, parsed!.TargetUserId);
+    }
+
+    [Fact]
+    public async Task ParseWebhookEventAsync_InvoiceForTheStoredSubscription_ResolvesUserWithoutAConfiguredPrice()
+    {
+        await using var factory = await TestDbContextFactory.CreateAsync(UserId);
+        await using (var context = await factory.CreateDbContextAsync())
+        {
+            context.UserPlans.Add(new UserPlan
+            {
+                UserId = UserId,
+                Tier = PlanTier.Pro,
+                BillingProviderCustomerId = CustomerId,
+                BillingProviderSubscriptionId = SubscriptionId,
+            });
+            await context.SaveChangesAsync();
+        }
+
+        var provider = CreateProvider(factory);
+
+        var parsed = await provider.ParseWebhookEventAsync(
+            InvoicePayload("evt_invoice_stored_sub", "invoice.payment_failed", nextPaymentAttempt: 1751328000, subscriptionId: SubscriptionId));
+
+        Assert.NotNull(parsed);
+        Assert.Equal(UserId, parsed!.TargetUserId);
+    }
+
+    [Fact]
+    public async Task ParseWebhookEventAsync_CheckoutFromAnotherProduct_IsIgnored()
+    {
+        // client_reference_id is set by every product's checkout, so it alone must never be
+        // read as a LearnStack user id (it would also fail the UserPlan foreign key).
+        await using var factory = await TestDbContextFactory.CreateAsync(UserId);
+        var provider = CreateProvider(factory);
+
+        var parsed = await provider.ParseWebhookEventAsync(
+            CheckoutCompletedPayload("evt_other_checkout", OtherProductUserId, metadataKey: OtherProductMetadataKey));
+
+        Assert.Null(parsed);
+    }
+
+    [Theory]
+    [InlineData("customer.subscription.created")]
+    [InlineData("customer.subscription.updated")]
+    [InlineData("customer.subscription.deleted")]
+    public async Task ParseWebhookEventAsync_AnotherProductsSubscriptionOnALearnStackCustomer_IsIgnored(string eventType)
+    {
+        // Same Stripe customer as a paying LearnStack user. Before this was guarded, an unknown
+        // price mapped to Starter and a deletion downgraded the LearnStack user.
+        await using var factory = await TestDbContextFactory.CreateAsync(UserId);
+        await using (var context = await factory.CreateDbContextAsync())
+        {
+            context.UserPlans.Add(new UserPlan { UserId = UserId, Tier = PlanTier.Pro, BillingProviderCustomerId = CustomerId, BillingProviderSubscriptionId = SubscriptionId });
+            await context.SaveChangesAsync();
+        }
+
+        var provider = CreateProvider(factory);
+
+        var parsed = await provider.ParseWebhookEventAsync(SubscriptionPayload(
+            "evt_other_subscription",
+            eventType,
+            "active",
+            OtherProductPriceId,
+            1748736000,
+            metadataUserId: OtherProductUserId,
+            metadataKey: OtherProductMetadataKey,
+            subscriptionId: OtherProductSubscriptionId));
+
+        Assert.Null(parsed);
+    }
+
+    [Theory]
+    [InlineData("invoice.paid")]
+    [InlineData("invoice.payment_failed")]
+    public async Task ParseWebhookEventAsync_AnotherProductsInvoiceOnALearnStackCustomer_IsIgnored(string eventType)
+    {
+        // Before this was guarded, a failed invoice for another product put the LearnStack user
+        // into a grace period, and a paid one cleared it.
+        await using var factory = await TestDbContextFactory.CreateAsync(UserId);
+        await using (var context = await factory.CreateDbContextAsync())
+        {
+            context.UserPlans.Add(new UserPlan { UserId = UserId, Tier = PlanTier.Pro, BillingProviderCustomerId = CustomerId, BillingProviderSubscriptionId = SubscriptionId });
+            await context.SaveChangesAsync();
+        }
+
+        var provider = CreateProvider(factory);
+
+        var parsed = await provider.ParseWebhookEventAsync(InvoicePayload(
+            "evt_other_invoice",
+            eventType,
+            nextPaymentAttempt: 1751328000,
+            periodEnd: 1748736000,
+            subscriptionId: OtherProductSubscriptionId,
+            subscriptionMetadataUserId: OtherProductUserId,
+            metadataKey: OtherProductMetadataKey,
+            linePriceId: OtherProductPriceId));
+
+        Assert.Null(parsed);
     }
 
     [Fact]
@@ -429,7 +550,7 @@ public class StripeBillingProviderTests
         }
 
         var fakeClient = new FakeStripeClient(type => type == typeof(StripeList<Subscription>)
-            ? new StripeList<Subscription> { Data = [new Subscription { Id = SubscriptionId, Status = "active" }] }
+            ? new StripeList<Subscription> { Data = [new Subscription { Id = SubscriptionId, Status = "active", Metadata = LearnStackMetadata() }] }
             : throw new InvalidOperationException("Should not create a checkout session."));
         var provider = CreateProvider(factory, stripeClient: fakeClient);
 
@@ -437,6 +558,29 @@ public class StripeBillingProviderTests
 
         Assert.False(result.Supported);
         Assert.DoesNotContain(fakeClient.Requests, r => r.Path == "/v1/checkout/sessions");
+    }
+
+    [Fact]
+    public async Task CreateCheckoutSessionAsync_WhenTheCustomerOnlyHasAnotherProductsSubscription_OpensCheckout()
+    {
+        await using var factory = await TestDbContextFactory.CreateAsync(UserId);
+        await using (var context = await factory.CreateDbContextAsync())
+        {
+            context.UserPlans.Add(new UserPlan { UserId = UserId, Tier = PlanTier.Starter, BillingProviderCustomerId = CustomerId });
+            await context.SaveChangesAsync();
+        }
+
+        var fakeClient = new FakeStripeClient(type => type == typeof(StripeList<Subscription>)
+            ? new StripeList<Subscription>
+            {
+                Data = [new Subscription { Id = OtherProductSubscriptionId, Status = "active", Metadata = new() { [OtherProductMetadataKey] = OtherProductUserId } }],
+            }
+            : new Stripe.Checkout.Session { Id = "cs_test_1", Url = "https://checkout.stripe.com/c/pay/cs_test_1" });
+        var provider = CreateProvider(factory, stripeClient: fakeClient);
+
+        var result = await provider.CreateCheckoutSessionAsync(UserId, PlanTier.Pro);
+
+        Assert.True(result.Supported);
     }
 
     [Fact]
@@ -590,7 +734,7 @@ public class StripeBillingProviderTests
     }
 
     [Fact]
-    public async Task CancelSubscriptionsAsync_CancelsEveryLiveSubscriptionOnTheCustomer()
+    public async Task CancelSubscriptionsAsync_CancelsEveryLiveLearnStackSubscriptionOnTheCustomer()
     {
         await using var factory = await TestDbContextFactory.CreateAsync(UserId);
         await using (var context = await factory.CreateDbContextAsync())
@@ -604,9 +748,11 @@ public class StripeBillingProviderTests
             {
                 Data =
                 [
-                    new Subscription { Id = "sub_live", Status = "active" },
-                    new Subscription { Id = "sub_duplicate", Status = "past_due" },
-                    new Subscription { Id = "sub_expired", Status = "incomplete_expired" },
+                    new Subscription { Id = "sub_live", Status = "active", Metadata = LearnStackMetadata() },
+                    new Subscription { Id = "sub_duplicate", Status = "past_due", Metadata = LearnStackMetadata() },
+                    new Subscription { Id = "sub_expired", Status = "incomplete_expired", Metadata = LearnStackMetadata() },
+                    // Another product's subscription on the same customer must keep running.
+                    new Subscription { Id = OtherProductSubscriptionId, Status = "active", Metadata = new() { [OtherProductMetadataKey] = OtherProductUserId } },
                 ],
             }
             : new Subscription { Status = "canceled" });
@@ -648,7 +794,11 @@ public class StripeBillingProviderTests
         }
         """;
 
-    private static string CheckoutCompletedPayload(string eventId, string? clientReferenceId, string mode = "subscription") =>
+    private static string CheckoutCompletedPayload(
+        string eventId,
+        string? clientReferenceId,
+        string mode = "subscription",
+        string metadataKey = LearnStackMetadataKey) =>
         $$"""
         {
           "id": "{{eventId}}",
@@ -661,6 +811,7 @@ public class StripeBillingProviderTests
               "object": "checkout.session",
               "mode": "{{mode}}",
               "client_reference_id": {{(clientReferenceId is null ? "null" : $"\"{clientReferenceId}\"")}},
+              "metadata": {{MetadataJson(metadataKey, clientReferenceId)}},
               "customer": "{{CustomerId}}",
               "subscription": "{{SubscriptionId}}"
             }
@@ -676,7 +827,9 @@ public class StripeBillingProviderTests
         long currentPeriodEnd,
         string? metadataUserId = UserId,
         long created = 1748000000,
-        bool cancelAtPeriodEnd = false) =>
+        bool cancelAtPeriodEnd = false,
+        string metadataKey = LearnStackMetadataKey,
+        string subscriptionId = SubscriptionId) =>
         $$"""
         {
           "id": "{{eventId}}",
@@ -686,12 +839,12 @@ public class StripeBillingProviderTests
           "type": "{{eventType}}",
           "data": {
             "object": {
-              "id": "{{SubscriptionId}}",
+              "id": "{{subscriptionId}}",
               "object": "subscription",
               "customer": "{{CustomerId}}",
               "status": "{{status}}",
               "cancel_at_period_end": {{(cancelAtPeriodEnd ? "true" : "false")}},
-              "metadata": {{(metadataUserId is null ? "{}" : $$"""{"learnstack_user_id": "{{metadataUserId}}"}""")}},
+              "metadata": {{MetadataJson(metadataKey, metadataUserId)}},
               "items": {
                 "object": "list",
                 "data": [
@@ -708,7 +861,20 @@ public class StripeBillingProviderTests
         }
         """;
 
-    private static string InvoicePayload(string eventId, string eventType, long? nextPaymentAttempt = null, long? periodEnd = null) =>
+    /// <summary>
+    /// An invoice event in the shape Stripe's current API sends: the billed subscription (and a
+    /// snapshot of its metadata) under <c>parent.subscription_details</c>, and each line's
+    /// price under <c>pricing.price_details</c>.
+    /// </summary>
+    private static string InvoicePayload(
+        string eventId,
+        string eventType,
+        long? nextPaymentAttempt = null,
+        long? periodEnd = null,
+        string subscriptionId = "sub_unrecorded",
+        string? subscriptionMetadataUserId = null,
+        string metadataKey = LearnStackMetadataKey,
+        string linePriceId = "price_unconfigured") =>
         $$"""
         {
           "id": "{{eventId}}",
@@ -719,9 +885,34 @@ public class StripeBillingProviderTests
             "object": {
               "id": "in_test_1",
               "object": "invoice",
-              "customer": "{{CustomerId}}"{{(nextPaymentAttempt.HasValue ? $",\n              \"next_payment_attempt\": {nextPaymentAttempt.Value}" : string.Empty)}}{{(periodEnd.HasValue ? $",\n              \"period_end\": {periodEnd.Value}" : string.Empty)}}
+              "customer": "{{CustomerId}}",
+              "parent": {
+                "type": "subscription_details",
+                "subscription_details": {
+                  "subscription": "{{subscriptionId}}",
+                  "metadata": {{MetadataJson(metadataKey, subscriptionMetadataUserId)}}
+                }
+              },
+              "lines": {
+                "object": "list",
+                "data": [
+                  {
+                    "id": "il_test_1",
+                    "object": "line_item",
+                    "pricing": {
+                      "type": "price_details",
+                      "price_details": { "price": "{{linePriceId}}", "product": "prod_test_1" }
+                    }
+                  }
+                ]
+              }{{(nextPaymentAttempt.HasValue ? $",\n              \"next_payment_attempt\": {nextPaymentAttempt.Value}" : string.Empty)}}{{(periodEnd.HasValue ? $",\n              \"period_end\": {periodEnd.Value}" : string.Empty)}}
             }
           }
         }
         """;
+
+    private static string MetadataJson(string key, string? userId) =>
+        userId is null ? "{}" : $$"""{"{{key}}": "{{userId}}"}""";
+
+    private static Dictionary<string, string> LearnStackMetadata() => new() { [LearnStackMetadataKey] = UserId };
 }
