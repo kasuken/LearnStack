@@ -89,3 +89,7 @@ publish/
 ApplicationInsights.config
 
 .playwright-mcp/
+# Local tool state
+*.DotSettings.user
+/.claude/worktrees/
+build_err.txt

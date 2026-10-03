@@ -191,8 +191,8 @@ After each deployment, you get:
 
 Track your deployments:
 
-1. **GitHub Actions**: [Actions Tab](../../actions)
-2. **Releases**: [Releases Page](../../releases)
+1. **GitHub Actions**: [Actions Tab](https://github.com/kasuken/LearnStack/actions)
+2. **Releases**: [Releases Page](https://github.com/kasuken/LearnStack/releases)
 3. **Azure Portal**: App Service → Deployment Center
 4. **Application Insights**: Azure → App Service → Application Insights
 

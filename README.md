@@ -8,8 +8,9 @@ Blazor Server application for organizing learning resources, turning them into c
 ![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square)
 ![Blazor Server](https://img.shields.io/badge/Blazor-Server-5C2D91?style=flat-square)
 ![MudBlazor](https://img.shields.io/badge/UI-MudBlazor-594AE2?style=flat-square)
+[![License: AGPL-3.0](https://img.shields.io/badge/license-AGPL--3.0-blue?style=flat-square)](LICENSE)
 
-[Overview](#overview) • [Features](#features) • [Getting started](#getting-started) • [Configuration](#configuration) • [Deployment](#deployment) • [Project structure](#project-structure)
+[Overview](#overview) • [Features](#features) • [Getting started](#getting-started) • [Configuration](#configuration) • [Deployment](#deployment) • [Project structure](#project-structure) • [Contributing](#contributing) • [License](#license)
 
 </div>
 
@@ -24,6 +25,12 @@ LearnStack helps learners and creators manage the full path from discovery to pu
 - Use the app in multiple languages with light and dark themes.
 
 The application is built with ASP.NET Core, Blazor Server, Entity Framework Core, SQL Server, MudBlazor, and ASP.NET Identity.
+
+## Hosted or self-hosted
+
+LearnStack is available as a hosted service at **[learnstack.cloud](https://learnstack.cloud)**, and it's also fully open source: you can run your own instance from this repository with just a SQL Server database.
+
+Paid features of the hosted service sit behind configuration and are off by default. Stripe billing for the Pro plan is controlled by `Billing:Provider`, which defaults to `None`, so a self-hosted instance runs without Stripe credentials. Never commit real keys; use user secrets, environment variables or a secret store.
 
 ## Features
 
@@ -135,8 +142,10 @@ The workflow:
 
 Useful docs:
 
-- [Azure deployment guide](./.github/DEPLOYMENT.md)
-- [Release and versioning guide](./.github/RELEASES.md)
+- [Azure deployment guide](./docs/DEPLOYMENT.md)
+- [Release and versioning guide](./docs/RELEASES.md)
+- [CI/CD pipeline overview](./docs/PIPELINE.md)
+- [Quick reference](./docs/QUICK-REFERENCE.md)
 
 > [!TIP]
 > The workflow is configured for the `learnstack-prod-001` Azure Web App name by default. If you fork the repository, update `.github/workflows/azure-app-service.yml` and the `AZURE_WEBAPP_PUBLISH_PROFILE` secret for your own environment.
@@ -156,10 +165,9 @@ Useful docs:
 |  |- Resources/          # Localization resource files
 |  |- Services/           # Application services and metadata fetching
 |  |- wwwroot/            # Static assets, PWA manifest/icons, styles, scripts, logos, ToS page
+|- docs/                 # Deployment, release and pipeline guides
 |- .github/
 |  |- workflows/          # Azure deployment and release automation
-|  |- DEPLOYMENT.md
-|  |- RELEASES.md
 ```
 
 ## What the app covers today
@@ -174,3 +182,18 @@ Useful docs:
 
 If you want to extend the project, the most natural next areas are richer collaboration, analytics, and smarter idea generation from saved resources.
 
+## Contributing
+
+Contributions are welcome! Please read the [contributing guidelines](https://github.com/kasuken/.github/blob/main/CONTRIBUTING.md) and the [Code of Conduct](https://github.com/kasuken/.github/blob/main/CODE_OF_CONDUCT.md) before opening a pull request. All contributors must sign the [Contributor License Agreement](https://github.com/kasuken/.github/blob/main/CLA.md); a bot will ask you to on your first pull request.
+
+## Security
+
+Please **do not** report security vulnerabilities in public issues. Use [private vulnerability reporting](https://github.com/kasuken/LearnStack/security/advisories/new) instead. See the [Security Policy](https://github.com/kasuken/.github/blob/main/SECURITY.md) for details.
+
+## License
+
+LearnStack is licensed under the [GNU Affero General Public License v3.0 only](LICENSE) (`AGPL-3.0-only`). If you run a modified version of LearnStack as a network service, the AGPL requires you to make your modified source code available to its users. Set `SourceCodeUrl` in configuration to point the in-app "Source code" link at your repository.
+
+Third-party components and their licenses are listed in [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md).
+
+"LearnStack" and the LearnStack logo are trademarks of Emanuele Bartolesi and are not licensed under the AGPL. If you publish a modified public instance, please use a different name and logo.

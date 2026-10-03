@@ -1697,4 +1697,7 @@
   <data name="Error: We couldn't cancel your Pro subscription, so your account was not deleted. Try again in a moment." xml:space="preserve">
     <value>Error: No hemos podido cancelar tu suscripción Pro, así que tu cuenta no se ha eliminado. Inténtalo de nuevo en un momento.</value>
   </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Código fuente</value>
+  </data>
 </root>

@@ -1697,4 +1697,7 @@
   <data name="Error: We couldn't cancel your Pro subscription, so your account was not deleted. Try again in a moment." xml:space="preserve">
     <value>Errore: non è stato possibile annullare il tuo abbonamento Pro, quindi il tuo account non è stato eliminato. Riprova tra qualche istante.</value>
   </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Codice sorgente</value>
+  </data>
 </root>

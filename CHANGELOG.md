@@ -4,9 +4,25 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Added
+- Released as open source under the GNU AGPL v3.0 (`AGPL-3.0-only`), with a Contributor License Agreement for contributions
+- "Source code" link in the account menu, configurable with `SourceCodeUrl` (AGPL section 13)
+- Issue forms, CODEOWNERS, Dependabot configuration, `.editorconfig`, `.gitattributes` and third-party notices
+
+### Changed
+- Deployment, release, pipeline and quick-reference guides moved from `.github/` to `docs/`
+
+### Removed
+- Accidentally tracked local files (Claude worktrees, Rider user settings, build error log)
+
+---
+
 ## [1.4.1] - 2026-09-29
 
 ### Fixed
+- `LearnStack.sln` no longer references the private `LearnStack.Admin` project, so `dotnet build LearnStack.sln` works on a fresh clone
 - Billing on a Stripe account shared with another product (such as Brainy)
   - Stripe delivers every event to every endpoint, signed with that endpoint's own secret, so a valid signature alone never proved an event was LearnStack's; events belonging to another product are now acknowledged and ignored
   - Checkout completions identify the user only from LearnStack's own `learnstack_user_id` metadata, never from `client_reference_id` alone, which previously failed the `UserPlan` foreign key for another product's checkout and made Stripe retry the delivery
