@@ -22,8 +22,7 @@ env:
   DOTNET_VERSION: '10.0.x'
 
 permissions:
-  contents: write
-  packages: write
+  contents: write  # create tags and GitHub releases
 
 jobs:
   build-and-deploy:
@@ -31,7 +30,7 @@ jobs:
     
     steps:
       - name: 🚀 Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0  # Fetch all history for version calculation
 
@@ -71,7 +70,7 @@ jobs:
           echo "version_number=${MAJOR}.${MINOR}.${PATCH}" >> $GITHUB_OUTPUT
 
       - name: 🔧 Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4.3.1
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -96,7 +95,7 @@ jobs:
 
       - name: 🌐 Deploy to Azure Web App
         id: deploy
-        uses: azure/webapps-deploy@v3
+        uses: azure/webapps-deploy@02a81bead70021f5284939794bcec79c271ab383 # v3.0.8
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
@@ -129,7 +128,7 @@ jobs:
           echo "Release notes generated"
 
       - name: 🎉 Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
         with:
           tag_name: ${{ steps.version.outputs.version }}
           name: Release ${{ steps.version.outputs.version }}
