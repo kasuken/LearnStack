@@ -4,6 +4,21 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Added
+- Released as open source under the GNU AGPL v3.0 (`AGPL-3.0-only`), with a Contributor License Agreement for contributions
+- "Source code" link in the account menu, configurable with `SourceCodeUrl` (AGPL section 13)
+- Issue forms, CODEOWNERS, Dependabot configuration, `.editorconfig`, `.gitattributes` and third-party notices
+
+### Changed
+- Deployment, release, pipeline and quick-reference guides moved from `.github/` to `docs/`
+
+### Removed
+- Accidentally tracked local files (Claude worktrees, Rider user settings, build error log)
+
+---
+
 ## [1.4.1] - 2026-09-29
 
 ### Fixed

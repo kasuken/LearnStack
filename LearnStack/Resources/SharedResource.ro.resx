@@ -1866,4 +1866,7 @@
   <data name="Error: We couldn't cancel your Pro subscription, so your account was not deleted. Try again in a moment." xml:space="preserve">
     <value>Eroare: nu am putut anula abonamentul Pro, așa că contul nu a fost șters. Încearcă din nou în câteva momente.</value>
   </data>
+  <data name="SourceCode" xml:space="preserve">
+    <value>Cod sursă</value>
+  </data>
 </root>

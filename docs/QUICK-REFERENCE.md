@@ -199,9 +199,9 @@ Type = SQLServer
 | 📦 **Releases** | https://github.com/kasuken/LearnStack/releases |
 | 🔧 **Actions** | https://github.com/kasuken/LearnStack/actions |
 | 🐛 **Issues** | https://github.com/kasuken/LearnStack/issues |
-| 📖 **Deployment Guide** | [DEPLOYMENT.md](.github/DEPLOYMENT.md) |
-| 🏷️ **Release Guide** | [RELEASES.md](.github/RELEASES.md) |
-| 🔄 **Pipeline Docs** | [PIPELINE.md](.github/PIPELINE.md) |
+| 📖 **Deployment Guide** | [DEPLOYMENT.md](DEPLOYMENT.md) |
+| 🏷️ **Release Guide** | [RELEASES.md](RELEASES.md) |
+| 🔄 **Pipeline Docs** | [PIPELINE.md](PIPELINE.md) |
 | 📝 **Changelog** | [CHANGELOG.md](../CHANGELOG.md) |
 
 ## Azure Portal Quick Links
@@ -272,7 +272,7 @@ dotnet build -c Release
 
 ## Need Help?
 
-- 📖 Read the [full documentation](.github/)
+- 📖 Read the [full documentation](./)
 - 🐛 [Open an issue](https://github.com/kasuken/LearnStack/issues/new)
 - 💬 [Start a discussion](https://github.com/kasuken/LearnStack/discussions)
 - 📧 Contact: @kasuken
