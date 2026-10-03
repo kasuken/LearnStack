@@ -10,12 +10,14 @@ All notable changes to LearnStack will be documented in this file.
 - Released as open source under the GNU AGPL v3.0 (`AGPL-3.0-only`), with a Contributor License Agreement for contributions
 - "Source code" link in the account menu, configurable with `SourceCodeUrl` (AGPL section 13)
 - Issue forms, CODEOWNERS, Dependabot configuration, `.editorconfig`, `.gitattributes` and third-party notices
+- `/health/live` and `/health/ready` endpoints; every release is smoke tested against `/health/ready`
 
 ### Changed
-- Deployment, release, pipeline and quick-reference guides moved from `.github/` to `docs/`
+- Pushing to `main` no longer deploys or creates a `v0.1.x` release. Releases use the shared kasuken release workflow (run **Release** with a version bump), which waits for CI, deploys with Azure OIDC instead of a publish profile, smoke tests, and tags the release with the version from this changelog.
 
 ### Removed
 - Accidentally tracked local files (Claude worktrees, Rider user settings, build error log)
+- The deployment, release, pipeline and quick-reference guides and `version.json`, which described the old push-to-deploy pipeline
 
 ---
 
