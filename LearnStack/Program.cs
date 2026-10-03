@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
                        throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddLearnStackData(connectionString, migrationsAssembly: "LearnStack");
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>("database", tags: ["ready"]);
 
 // Persist the Data Protection key ring outside the container so that auth cookies and
 // antiforgery tokens survive restarts, deployments, slot swaps and scale-out on App
@@ -102,6 +105,15 @@ else
 
 app.UseStatusCodePagesWithReExecute("/not-found", createScopeForStatusCodePages: true);
 app.UseHttpsRedirection();
+
+// /health/live tells App Service the process is up; /health/ready also checks the database
+// and gates every release (see .github/workflows/release.yml).
+app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => false });
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready")
+});
+
 app.UseRequestLocalization();
 
 app.UseRouting();

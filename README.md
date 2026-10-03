@@ -4,7 +4,7 @@
 
 Blazor Server application for organizing learning resources, turning them into content ideas, and sharing curated knowledge with other learners.
 
-[![Deploy to Azure App Service](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml/badge.svg)](https://github.com/kasuken/LearnStack/actions/workflows/azure-app-service.yml)
+[![CI](https://github.com/kasuken/LearnStack/actions/workflows/ci.yml/badge.svg)](https://github.com/kasuken/LearnStack/actions/workflows/ci.yml)
 ![.NET 10](https://img.shields.io/badge/.NET-10-512BD4?style=flat-square)
 ![Blazor Server](https://img.shields.io/badge/Blazor-Server-5C2D91?style=flat-square)
 ![MudBlazor](https://img.shields.io/badge/UI-MudBlazor-594AE2?style=flat-square)
@@ -130,25 +130,16 @@ $env:ConnectionStrings__DefaultConnection="Server=tcp:your-server.database.windo
 
 ## Deployment
 
-LearnStack includes a GitHub Actions workflow that deploys the app to Azure App Service whenever changes are pushed to `main`.
+The hosted service runs on Azure App Service. Merging to `main` only runs CI; production changes when a release is cut with the [Release workflow](.github/workflows/release.yml):
 
-The workflow:
+```bash
+gh workflow run release.yml -R kasuken/LearnStack -f bump=minor      # patch | minor | major
+gh workflow run release.yml -R kasuken/LearnStack -f redeploy=v1.4.1 # roll back
+```
 
-- builds and publishes the Blazor application,
-- deploys it to Azure App Service,
-- calculates the next semantic version,
-- creates a Git tag,
-- publishes a GitHub release.
+The workflow waits for CI to pass on the commit, builds once, deploys through the `production` environment with Azure OIDC, smoke tests `/health/ready`, and then tags and publishes the GitHub release. The steps are shared with the other kasuken SaaS apps; see [RELEASING.md](https://github.com/kasuken/.github/blob/main/RELEASING.md).
 
-Useful docs:
-
-- [Azure deployment guide](./docs/DEPLOYMENT.md)
-- [Release and versioning guide](./docs/RELEASES.md)
-- [CI/CD pipeline overview](./docs/PIPELINE.md)
-- [Quick reference](./docs/QUICK-REFERENCE.md)
-
-> [!TIP]
-> The workflow is configured for the `learnstack-prod-001` Azure Web App name by default. If you fork the repository, update `.github/workflows/azure-app-service.yml` and the `AZURE_WEBAPP_PUBLISH_PROFILE` secret for your own environment.
+Hosted-only settings (for example `Billing__Provider=Stripe`) and all secrets are App Service application settings, never committed files.
 
 ## Project structure
 
