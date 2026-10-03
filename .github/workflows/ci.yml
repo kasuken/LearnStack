@@ -28,11 +28,8 @@ jobs:
       - name: Restore .NET tools
         run: dotnet tool restore
 
-      # Build the projects directly: LearnStack.sln also references the private LearnStack.Admin project.
       - name: Build
-        run: |
-          dotnet build ./LearnStack/LearnStack.csproj --configuration Release
-          dotnet build ./LearnStack.Core.Tests/LearnStack.Core.Tests.csproj --configuration Release
+        run: dotnet build LearnStack.sln --configuration Release
 
       - name: Verify database migrations
         run: dotnet ef migrations has-pending-model-changes --project ./LearnStack/LearnStack.csproj --startup-project ./LearnStack/LearnStack.csproj --configuration Release --no-build
