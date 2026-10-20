@@ -4,7 +4,19 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
-## [Unreleased]
+## [1.5.0] - 2026-10-21
+
+### Added
+- Bookshelf view for learning resources:
+  - Realistic 3D library bookshelf presentation with wooden shelf boards, beveled fascia edges, cast shadows, and metallic bookends
+  - Organic book spines with varied heights, thicknesses, and rich leather/cloth color palettes mapped by content type
+  - Spine details: cylindrical lighting, embossed gold ridge bands, silk bookmark ribbons for in-progress and high-priority resources, completed star emblems, and paper label bands
+  - Interactive hover lift with floating dark tooltip displaying title, domain, content type, and status
+  - 3D hardcover "take-down" modal card with custom woodcut/engraving SVG artwork for each content type, serif typography, author/domain, and action bar
+  - Keyboard navigation: Left/Right arrows walk the shelf, and Escape returns the book to the shelf
+  - Front-facing Covers showcase display mode with 3D perspective and hover tilt
+  - Quick category filtering chips and arrangement by Content Type, Status, Priority, or Continuous shelf rows
+  - Available across Resource Library, Friend Resources, and Shared Collections
 
 ### Added
 - Released as open source under the GNU AGPL v3.0 (`AGPL-3.0-only`), with a Contributor License Agreement for contributions

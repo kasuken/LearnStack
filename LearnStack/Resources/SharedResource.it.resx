@@ -1700,4 +1700,34 @@
   <data name="SourceCode" xml:space="preserve">
     <value>Codice sorgente</value>
   </data>
+  <data name="BookshelfView" xml:space="preserve">
+    <value>Vista libreria</value>
+  </data>
+  <data name="BookshelfSpines" xml:space="preserve">
+    <value>Dorsi</value>
+  </data>
+  <data name="BookshelfCovers" xml:space="preserve">
+    <value>Copertine</value>
+  </data>
+  <data name="ArrangeBy" xml:space="preserve">
+    <value>Disponi per</value>
+  </data>
+  <data name="ClickSpineToTakeDown" xml:space="preserve">
+    <value>Fai clic su un dorso per estrarlo. Le frecce scorrono lo scaffale.</value>
+  </data>
+  <data name="PutBackOnShelf" xml:space="preserve">
+    <value>Rimetti sullo scaffale</value>
+  </data>
+  <data name="OpenResource" xml:space="preserve">
+    <value>Apri risorsa</value>
+  </data>
+  <data name="PreviousBook" xml:space="preserve">
+    <value>Libro precedente</value>
+  </data>
+  <data name="NextBook" xml:space="preserve">
+    <value>Libro successivo</value>
+  </data>
+  <data name="AllShelves" xml:space="preserve">
+    <value>Tutto</value>
+  </data>
 </root>

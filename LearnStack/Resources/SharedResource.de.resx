@@ -1700,4 +1700,34 @@
   <data name="SourceCode" xml:space="preserve">
     <value>Quellcode</value>
   </data>
+  <data name="BookshelfView" xml:space="preserve">
+    <value>Bücherregal-Ansicht</value>
+  </data>
+  <data name="BookshelfSpines" xml:space="preserve">
+    <value>Buchrücken</value>
+  </data>
+  <data name="BookshelfCovers" xml:space="preserve">
+    <value>Buchcover</value>
+  </data>
+  <data name="ArrangeBy" xml:space="preserve">
+    <value>Anordnen nach</value>
+  </data>
+  <data name="ClickSpineToTakeDown" xml:space="preserve">
+    <value>Klicken Sie auf einen Buchrücken, um das Buch herauszunehmen. Pfeiltasten bewegen sich im Regal.</value>
+  </data>
+  <data name="PutBackOnShelf" xml:space="preserve">
+    <value>Zurück ins Regal stellen</value>
+  </data>
+  <data name="OpenResource" xml:space="preserve">
+    <value>Ressource öffnen</value>
+  </data>
+  <data name="PreviousBook" xml:space="preserve">
+    <value>Vorheriges Buch</value>
+  </data>
+  <data name="NextBook" xml:space="preserve">
+    <value>Nächstes Buch</value>
+  </data>
+  <data name="AllShelves" xml:space="preserve">
+    <value>Alle</value>
+  </data>
 </root>

@@ -52,14 +52,26 @@
             {
                 <MudText Typo="Typo.body1" Style="color: #475569; line-height: 1.6;" Class="mt-3">@group.Description</MudText>
             }
-            <MudStack Row="true" Spacing="3" Class="mt-4">
-                <MudChip T="string" Size="Size.Small" Style="background: #dcfce7; color: #059669; font-weight: 600; border-radius: 6px;">
-                    <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Class="mr-1" />
-                    @L["ResourceCount", group.Items.Count]
-                </MudChip>
-                <MudChip T="string" Size="Size.Small" Style="background: #f1f5f9; color: #475569; font-weight: 600; border-radius: 6px;">
-                    @group.DateCreated.ToString("D")
-                </MudChip>
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Class="mt-4" Style="flex-wrap: wrap; gap: 12px;">
+                <MudStack Row="true" Spacing="3">
+                    <MudChip T="string" Size="Size.Small" Style="background: #dcfce7; color: #059669; font-weight: 600; border-radius: 6px;">
+                        <MudIcon Icon="@Icons.Material.Filled.MenuBook" Size="Size.Small" Class="mr-1" />
+                        @L["ResourceCount", group.Items.Count]
+                    </MudChip>
+                    <MudChip T="string" Size="Size.Small" Style="background: #f1f5f9; color: #475569; font-weight: 600; border-radius: 6px;">
+                        @group.DateCreated.ToString("D")
+                    </MudChip>
+                </MudStack>
+                <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small" Style="border-radius: 10px; overflow: hidden;">
+                    <MudIconButton Icon="@Icons.Material.Filled.GridView" 
+                                  Color="@(viewMode == "grid" ? Color.Primary : Color.Default)"
+                                  OnClick="@(() => { viewMode = "grid"; StateHasChanged(); })"
+                                  aria-label="@L["GridView"]" />
+                    <MudIconButton Icon="@Icons.Material.Filled.MenuBook" 
+                                  Color="@(viewMode == "bookshelf" ? Color.Primary : Color.Default)"
+                                  OnClick="@(() => { viewMode = "bookshelf"; StateHasChanged(); })"
+                                  aria-label="@L["BookshelfView"]" />
+                </MudButtonGroup>
             </MudStack>
         </MudPaper>
 
@@ -69,6 +81,11 @@
             <MudPaper Elevation="0" Class="pa-6" Style="text-align: center; border: 1px solid #e2e8f0; border-radius: 16px; background: #f8fafc;">
                 <MudText Typo="Typo.body1" Style="color: #64748b;">@L["NoResourcesInCollection"]</MudText>
             </MudPaper>
+        }
+        else if (viewMode == "bookshelf")
+        {
+            var collectionResources = group.Items.Where(i => i.LearningResource != null).Select(i => i.LearningResource!).ToList();
+            <BookshelfView Resources="@collectionResources" ReadOnly="true" />
         }
         else
         {
@@ -150,6 +167,7 @@
 
     private SharedResourceGroup? group;
     private bool isLoading = true;
+    private string viewMode = "grid";
 
     protected override async Task OnInitializedAsync()
     {

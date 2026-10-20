@@ -1,0 +1,806 @@
+/* ==========================================================================
+   BookshelfView Styles - Realistic 3D Bookshelf & Library Spines
+   Inspired by classic library shelves, book cover art, and physical book spines
+   ========================================================================== */
+
+.bookshelf-wrapper {
+    position: relative;
+    width: 100%;
+    outline: none;
+    user-select: none;
+    padding-bottom: 2rem;
+}
+
+/* ── Top Bookshelf Toolbar ────────────────────────────────────────────── */
+.bookshelf-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 18px;
+    margin-bottom: 24px;
+    background: var(--mud-palette-surface, #ffffff);
+    border: 1px solid var(--mud-palette-lines-default, #e2e8f0);
+    border-radius: 14px;
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.04);
+}
+
+.bookshelf-toolbar-left,
+.bookshelf-toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.view-mode-toggle {
+    display: inline-flex;
+    background: var(--mud-palette-background, #f1f5f9);
+    padding: 3px;
+    border-radius: 10px;
+    border: 1px solid var(--mud-palette-lines-default, #e2e8f0);
+}
+
+.view-mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--mud-palette-text-secondary, #64748b);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.view-mode-btn:hover {
+    color: var(--mud-palette-text-primary, #0f172a);
+}
+
+.view-mode-btn.active {
+    background: var(--mud-palette-surface, #ffffff);
+    color: var(--mud-palette-primary, #4f46e5);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Category Filter Chips */
+.bookshelf-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 24px;
+    padding: 2px 0;
+}
+
+.bookshelf-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    background: var(--mud-palette-surface, #ffffff);
+    border: 1px solid var(--mud-palette-lines-default, #e2e8f0);
+    color: var(--mud-palette-text-secondary, #475569);
+    cursor: pointer;
+    transition: all 0.18s ease;
+}
+
+.bookshelf-chip:hover {
+    border-color: var(--mud-palette-primary, #4f46e5);
+    color: var(--mud-palette-primary, #4f46e5);
+    transform: translateY(-1px);
+}
+
+.bookshelf-chip.active {
+    background: var(--mud-palette-primary, #4f46e5);
+    border-color: var(--mud-palette-primary, #4f46e5);
+    color: #ffffff;
+    box-shadow: 0 2px 6px -1px rgba(79, 70, 229, 0.35);
+}
+
+.bookshelf-chip-count {
+    font-size: 0.72rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.bookshelf-chip.active .bookshelf-chip-count {
+    background: rgba(255, 255, 255, 0.25);
+    color: #ffffff;
+}
+
+/* ── Shelf Structure ─────────────────────────────────────────────────── */
+.shelves-container {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    position: relative;
+    padding: 10px 0 30px;
+}
+
+.shelf-section {
+    position: relative;
+    width: 100%;
+}
+
+.shelf-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    padding: 0 8px;
+}
+
+.shelf-header-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--mud-palette-text-primary, #0f172a);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* The physical shelf row */
+.shelf-stage {
+    position: relative;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.shelf-books-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 0;
+    min-height: 236px;
+    padding: 0 36px 0 36px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scrollbar-width: thin;
+    position: relative;
+    z-index: 2;
+}
+
+.shelf-books-row::-webkit-scrollbar {
+    height: 4px;
+}
+
+.shelf-books-row::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+}
+
+/* Bookends */
+.shelf-bookend {
+    position: absolute;
+    bottom: 0;
+    width: 18px;
+    height: 72px;
+    z-index: 3;
+    pointer-events: none;
+    border-radius: 4px 14px 0 0;
+    background: linear-gradient(135deg, #a8a29e 0%, #78716c 60%, #57534e 100%);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25), inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.shelf-bookend.left {
+    left: 12px;
+    border-radius: 4px 14px 0 0;
+}
+
+.shelf-bookend.right {
+    right: 12px;
+    border-radius: 14px 4px 0 0;
+}
+
+/* Physical Wooden Shelf Board */
+.shelf-board {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+}
+
+/* Top surface of the wooden shelf */
+.shelf-board-top {
+    height: 12px;
+    width: 100%;
+    background: linear-gradient(180deg, #ede5da 0%, #dfd5c7 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.7);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    border-radius: 4px 4px 0 0;
+}
+
+/* Front beveled fascia edge */
+.shelf-board-front {
+    height: 18px;
+    width: 100%;
+    background: linear-gradient(180deg, #d3c7b7 0%, #bcaf9d 100%);
+    border-bottom: 1px solid #9e917f;
+    box-shadow: 0 14px 20px -4px rgba(0, 0, 0, 0.22), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 3px 3px;
+    position: relative;
+}
+
+/* Dark theme shelf board */
+:global(.mud-theme-dark) .shelf-board-top,
+:global([data-theme="dark"]) .shelf-board-top {
+    background: linear-gradient(180deg, #2d2938 0%, #23202c 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+:global(.mud-theme-dark) .shelf-board-front,
+:global([data-theme="dark"]) .shelf-board-front {
+    background: linear-gradient(180deg, #1f1c27 0%, #17151e 100%);
+    border-bottom: 1px solid #0d0c12;
+    box-shadow: 0 16px 24px -4px rgba(0, 0, 0, 0.6);
+}
+
+/* Section Tag Pill below shelf */
+.shelf-footer-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    padding: 4px 12px;
+    border-radius: 14px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--mud-palette-surface, #ffffff);
+    border: 1px solid var(--mud-palette-lines-default, #e2e8f0);
+    color: var(--mud-palette-text-secondary, #64748b);
+    width: fit-content;
+}
+
+/* ── Book Spine ──────────────────────────────────────────────────────── */
+.book-spine {
+    position: relative;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 4px 8px 4px;
+    box-sizing: border-box;
+    border-radius: 3px 3px 1px 1px;
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.22s ease, filter 0.15s ease;
+    overflow: visible;
+}
+
+/* 3D cylindrical lighting simulation on spine */
+.book-spine::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.38) 0%, 
+        rgba(255, 255, 255, 0.22) 16%, 
+        rgba(255, 255, 255, 0.04) 48%, 
+        rgba(0, 0, 0, 0.08) 84%, 
+        rgba(0, 0, 0, 0.45) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Spine edge shadow against neighboring books */
+.book-spine::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.25);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Spine gold / embossed accent ridges */
+.spine-ridge {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.spine-ridge.top-1 { top: 12px; }
+.spine-ridge.top-2 { top: 16px; }
+.spine-ridge.bottom-1 { bottom: 22px; }
+.spine-ridge.bottom-2 { bottom: 26px; }
+
+/* Bookmark Ribbon hanging over top edge */
+.bookmark-ribbon {
+    position: absolute;
+    top: -12px;
+    right: 7px;
+    width: 7px;
+    height: 22px;
+    background: #e11d48;
+    z-index: 5;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+    border-radius: 1px 1px 0 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 82%, 0 100%);
+}
+
+.bookmark-ribbon.gold {
+    background: #f59e0b;
+}
+
+.bookmark-ribbon.emerald {
+    background: #10b981;
+}
+
+/* Paper label band on spine */
+.spine-paper-label {
+    position: absolute;
+    top: 24px;
+    bottom: 34px;
+    left: 3px;
+    right: 3px;
+    background: #fdfbf7;
+    border-radius: 2px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3), inset 0 0 3px rgba(0, 0, 0, 0.1);
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 2px;
+}
+
+.spine-paper-label .spine-title {
+    color: #1a1a1a !important;
+    text-shadow: none !important;
+}
+
+/* Spine Text Typography */
+.spine-content {
+    position: relative;
+    z-index: 4;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+.spine-title-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+    max-height: 160px;
+}
+
+.spine-title {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-height: 150px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.94);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+    user-select: none;
+}
+
+.spine-tag {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 7.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90%;
+    text-align: center;
+    margin-top: 4px;
+}
+
+.spine-completed-star {
+    font-size: 9px;
+    color: #fbbf24;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    margin-bottom: 2px;
+}
+
+/* Spine Hover & Active states */
+.book-spine:hover {
+    transform: translateY(-14px) scale(1.02);
+    box-shadow: 0 18px 25px -4px rgba(0, 0, 0, 0.45);
+    z-index: 20;
+    filter: brightness(1.06);
+}
+
+.book-spine.selected {
+    transform: translateY(-16px);
+    box-shadow: 0 20px 30px -4px rgba(79, 70, 229, 0.45);
+    outline: 2px solid #818cf8;
+    z-index: 21;
+}
+
+/* Hover Tooltip Floating Above Spine (Screenshot 1) */
+.spine-tooltip {
+    position: absolute;
+    bottom: calc(100% + 14px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #18181b;
+    color: #ffffff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    box-shadow: 0 10px 18px -3px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    animation: fadeInTooltip 0.15s ease-out;
+}
+
+.spine-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #18181b;
+}
+
+.spine-tooltip-title {
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 0.82rem;
+}
+
+.spine-tooltip-sub {
+    font-size: 0.72rem;
+    color: #a1a1aa;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+@keyframes fadeInTooltip {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 6px);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+/* ── "Take Down" Book Modal / Overlay (Screenshot 2) ─────────────────── */
+.book-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+    backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInModal 0.2s ease-out;
+}
+
+@keyframes fadeInModal {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.book-card-3d {
+    position: relative;
+    width: 380px;
+    max-width: 90vw;
+    border-radius: 8px 18px 18px 8px;
+    box-shadow: 
+        -16px 0 24px -4px rgba(0, 0, 0, 0.45),
+        0 24px 45px -10px rgba(0, 0, 0, 0.5),
+        inset 6px 0 10px rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: popBook 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-sizing: border-box;
+}
+
+@keyframes popBook {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Spine Hinge Depth Effect on Left Edge of the Book */
+.book-card-spine-hinge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 22px;
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.5) 0%, 
+        rgba(0, 0, 0, 0.2) 60%, 
+        rgba(255, 255, 255, 0.15) 85%, 
+        rgba(0, 0, 0, 0.35) 100%);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Hardcover Inner Decorative Frame */
+.book-card-inner {
+    margin: 16px 16px 16px 28px;
+    padding: 20px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    outline: 1px solid rgba(255, 255, 255, 0.15);
+    outline-offset: 4px;
+    background: rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    color: #ffffff;
+}
+
+/* Cover Illustration / Artwork Box */
+.book-cover-art-box {
+    width: 100%;
+    height: 180px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: #fdfbf7;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+.book-cover-art-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-cover-art-svg {
+    width: 80%;
+    height: 80%;
+}
+
+/* Cover Metadata Row */
+.book-cover-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Large Serif Cover Title */
+.book-cover-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #ffffff;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.book-cover-author {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.book-cover-description {
+    font-size: 0.82rem;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.85);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 8px 10px;
+    border-radius: 4px;
+}
+
+/* Modal Action Buttons */
+.book-card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.walk-shelf-helper {
+    text-align: center;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.75);
+    margin-top: 14px;
+    letter-spacing: 0.02em;
+}
+
+/* ── Front Cover Showcase View (Screenshot 3) ───────────────────────── */
+.covers-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 28px 20px;
+    padding: 10px 0;
+}
+
+.showcase-book-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    perspective: 900px;
+    cursor: pointer;
+}
+
+.showcase-book-card {
+    position: relative;
+    width: 170px;
+    height: 245px;
+    border-radius: 4px 12px 12px 4px;
+    box-shadow: 
+        -8px 4px 16px -2px rgba(0, 0, 0, 0.35),
+        0 10px 18px -4px rgba(0, 0, 0, 0.25);
+    transform: rotateY(-8deg);
+    transform-origin: left center;
+    transition: transform 0.24s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.24s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.showcase-book-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 14px;
+    background: linear-gradient(90deg, 
+        rgba(0, 0, 0, 0.45) 0%, 
+        rgba(255, 255, 255, 0.15) 75%, 
+        rgba(0, 0, 0, 0.25) 100%);
+    z-index: 4;
+}
+
+.showcase-book-item:hover .showcase-book-card {
+    transform: rotateY(-18deg) translateY(-8px) scale(1.03);
+    box-shadow: 
+        -14px 12px 24px -3px rgba(0, 0, 0, 0.45),
+        0 16px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.showcase-book-inner {
+    margin: 8px 8px 8px 18px;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+    height: calc(100% - 16px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    color: #ffffff;
+}
+
+.showcase-art-box {
+    width: 100%;
+    height: 95px;
+    background: #fdfbf7;
+    border-radius: 3px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showcase-art-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.showcase-meta {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 4px;
+}
+
+.showcase-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 0.88rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #ffffff;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.showcase-author {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.75);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.showcase-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 170px;
+    margin-top: 8px;
+    font-size: 0.75rem;
+    color: var(--mud-palette-text-secondary, #64748b);
+    font-weight: 500;
+}
+
+@media (max-width: 600px) {
+    .bookshelf-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .shelf-books-row {
+        padding: 0 16px;
+    }
+    .book-card-3d {
+        width: 100%;
+    }
+}

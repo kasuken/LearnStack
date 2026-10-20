@@ -130,6 +130,10 @@
             <MudItem xs="12" md="7">
                 <MudStack Row="true" Spacing="2" Justify="Justify.FlexEnd" AlignItems="AlignItems.Center" Class="filter-toolbar">
                     <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small" Style="border-radius: 10px; overflow: hidden;">
+                        <MudIconButton Icon="@Icons.Material.Filled.MenuBook" 
+                                      Color="@(viewMode == ViewMode.Bookshelf ? Color.Primary : Color.Default)"
+                                      OnClick="@(() => { viewMode = ViewMode.Bookshelf; StateHasChanged(); })"
+                                      aria-label="@L["BookshelfView"]" />
                         <MudIconButton Icon="@Icons.Material.Filled.ViewList" 
                                       Color="@(viewMode == ViewMode.List ? Color.Primary : Color.Default)"
                                       OnClick="@(() => { viewMode = ViewMode.List; StateHasChanged(); })"
@@ -452,13 +456,24 @@
             </MudStack>
         </div>
     }
+    else if (viewMode == ViewMode.Bookshelf)
+    {
+        <BookshelfView Resources="@filteredResources"
+                       TimeZoneId="@timeZoneId"
+                       OnEdit="OpenEditDialog"
+                       OnDelete="DeleteResource"
+                       OnStatusChanged="@(args => UpdateStatus(args.Resource, args.Status))"
+                       OnToggleArchive="ToggleArchive"
+                       OnTogglePublic="TogglePublic" />
+    }
 </MudContainer>
 
 @code {
     private enum ViewMode
     {
         List,
-        DataGrid
+        DataGrid,
+        Bookshelf
     }
 
     private List<LearningResource> resources = new();

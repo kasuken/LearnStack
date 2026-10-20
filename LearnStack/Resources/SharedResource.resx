@@ -1868,4 +1868,34 @@
   <data name="SourceCode" xml:space="preserve">
     <value>Source code</value>
   </data>
+  <data name="BookshelfView" xml:space="preserve">
+    <value>Bookshelf View</value>
+  </data>
+  <data name="BookshelfSpines" xml:space="preserve">
+    <value>Spines</value>
+  </data>
+  <data name="BookshelfCovers" xml:space="preserve">
+    <value>Covers</value>
+  </data>
+  <data name="ArrangeBy" xml:space="preserve">
+    <value>Arrange by</value>
+  </data>
+  <data name="ClickSpineToTakeDown" xml:space="preserve">
+    <value>Click a spine to take it down. Arrow keys walk the shelf.</value>
+  </data>
+  <data name="PutBackOnShelf" xml:space="preserve">
+    <value>Put back on shelf</value>
+  </data>
+  <data name="OpenResource" xml:space="preserve">
+    <value>Open Resource</value>
+  </data>
+  <data name="PreviousBook" xml:space="preserve">
+    <value>Previous Book</value>
+  </data>
+  <data name="NextBook" xml:space="preserve">
+    <value>Next Book</value>
+  </data>
+  <data name="AllShelves" xml:space="preserve">
+    <value>All</value>
+  </data>
 </root>

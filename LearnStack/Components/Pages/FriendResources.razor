@@ -45,7 +45,8 @@
         </MudStack>
 
         <MudPaper Elevation="0" Class="pa-6 mb-6" Style="border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05);">
-            <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
+            <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween" Style="flex-wrap: wrap; gap: 16px;">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3">
                 <MudAvatar Style="background: linear-gradient(135deg, #4f46e5, #818cf8); font-weight: 600; color: white; width: 56px; height: 56px; font-size: 1.4rem;">
                     @GetInitials(friendName ?? "?")
                 </MudAvatar>
@@ -59,7 +60,18 @@
                     </MudChip>
                 </MudStack>
             </MudStack>
-        </MudPaper>
+            <MudButtonGroup Variant="Variant.Outlined" Size="Size.Small" Style="border-radius: 10px; overflow: hidden;">
+                <MudIconButton Icon="@Icons.Material.Filled.GridView" 
+                              Color="@(viewMode == "grid" ? Color.Primary : Color.Default)"
+                              OnClick="@(() => { viewMode = "grid"; StateHasChanged(); })"
+                              aria-label="@L["GridView"]" />
+                <MudIconButton Icon="@Icons.Material.Filled.MenuBook" 
+                              Color="@(viewMode == "bookshelf" ? Color.Primary : Color.Default)"
+                              OnClick="@(() => { viewMode = "bookshelf"; StateHasChanged(); })"
+                              aria-label="@L["BookshelfView"]" />
+            </MudButtonGroup>
+        </MudStack>
+    </MudPaper>
 
         @if (!resources.Any())
         {
@@ -68,6 +80,10 @@
                 <MudText Typo="Typo.h6" Class="mt-4" Style="color: #475569; font-weight: 600;">@L["NoPublicResources"]</MudText>
                 <MudText Typo="Typo.body1" Class="mt-2" Style="color: #64748b;">@L["NoPublicResourcesDescription"]</MudText>
             </MudPaper>
+        }
+        else if (viewMode == "bookshelf")
+        {
+            <BookshelfView Resources="@resources" ReadOnly="true" />
         }
         else
         {
@@ -141,6 +157,7 @@
     private bool isFriend = false;
     private string? friendName;
     private string userId = string.Empty;
+    private string viewMode = "grid";
 
     protected override async Task OnInitializedAsync()
     {

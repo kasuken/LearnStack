@@ -1700,4 +1700,34 @@
   <data name="SourceCode" xml:space="preserve">
     <value>Code source</value>
   </data>
+  <data name="BookshelfView" xml:space="preserve">
+    <value>Vue bibliothèque</value>
+  </data>
+  <data name="BookshelfSpines" xml:space="preserve">
+    <value>Tranches</value>
+  </data>
+  <data name="BookshelfCovers" xml:space="preserve">
+    <value>Couvertures</value>
+  </data>
+  <data name="ArrangeBy" xml:space="preserve">
+    <value>Organiser par</value>
+  </data>
+  <data name="ClickSpineToTakeDown" xml:space="preserve">
+    <value>Cliquez sur une tranche pour l'ouvrir. Les flèches parcourent l'étagère.</value>
+  </data>
+  <data name="PutBackOnShelf" xml:space="preserve">
+    <value>Remettre sur l'étagère</value>
+  </data>
+  <data name="OpenResource" xml:space="preserve">
+    <value>Ouvrir la ressource</value>
+  </data>
+  <data name="PreviousBook" xml:space="preserve">
+    <value>Livre précédent</value>
+  </data>
+  <data name="NextBook" xml:space="preserve">
+    <value>Livre suivant</value>
+  </data>
+  <data name="AllShelves" xml:space="preserve">
+    <value>Tout</value>
+  </data>
 </root>

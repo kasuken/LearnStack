@@ -1869,4 +1869,34 @@
   <data name="SourceCode" xml:space="preserve">
     <value>Cod sursă</value>
   </data>
+  <data name="BookshelfView" xml:space="preserve">
+    <value>Vizualizare bibliotecă</value>
+  </data>
+  <data name="BookshelfSpines" xml:space="preserve">
+    <value>Cotoare</value>
+  </data>
+  <data name="BookshelfCovers" xml:space="preserve">
+    <value>Coperți</value>
+  </data>
+  <data name="ArrangeBy" xml:space="preserve">
+    <value>Aranjează după</value>
+  </data>
+  <data name="ClickSpineToTakeDown" xml:space="preserve">
+    <value>Apasă pe un cotor pentru a-l deschide. Tastele săgeți navighează raftul.</value>
+  </data>
+  <data name="PutBackOnShelf" xml:space="preserve">
+    <value>Pune înapoi pe raft</value>
+  </data>
+  <data name="OpenResource" xml:space="preserve">
+    <value>Deschide resursa</value>
+  </data>
+  <data name="PreviousBook" xml:space="preserve">
+    <value>Cartea anterioară</value>
+  </data>
+  <data name="NextBook" xml:space="preserve">
+    <value>Cartea următoare</value>
+  </data>
+  <data name="AllShelves" xml:space="preserve">
+    <value>Toate</value>
+  </data>
 </root>

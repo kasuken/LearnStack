@@ -1700,4 +1700,34 @@
   <data name="SourceCode" xml:space="preserve">
     <value>Código fuente</value>
   </data>
+  <data name="BookshelfView" xml:space="preserve">
+    <value>Vista de estantería</value>
+  </data>
+  <data name="BookshelfSpines" xml:space="preserve">
+    <value>Lomos</value>
+  </data>
+  <data name="BookshelfCovers" xml:space="preserve">
+    <value>Portadas</value>
+  </data>
+  <data name="ArrangeBy" xml:space="preserve">
+    <value>Organizar por</value>
+  </data>
+  <data name="ClickSpineToTakeDown" xml:space="preserve">
+    <value>Haz clic en un lomo para sacarlo. Las teclas de flecha recorren la estantería.</value>
+  </data>
+  <data name="PutBackOnShelf" xml:space="preserve">
+    <value>Volver a la estantería</value>
+  </data>
+  <data name="OpenResource" xml:space="preserve">
+    <value>Abrir recurso</value>
+  </data>
+  <data name="PreviousBook" xml:space="preserve">
+    <value>Libro anterior</value>
+  </data>
+  <data name="NextBook" xml:space="preserve">
+    <value>Siguiente libro</value>
+  </data>
+  <data name="AllShelves" xml:space="preserve">
+    <value>Todo</value>
+  </data>
 </root>
