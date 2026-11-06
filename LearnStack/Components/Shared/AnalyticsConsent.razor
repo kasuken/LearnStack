@@ -1,0 +1,78 @@
+@implements IAsyncDisposable
+@inject IJSRuntime JS
+@inject ILogger<AnalyticsConsent> Logger
+
+@if (_ready)
+{
+    <aside class="analytics-consent" aria-label="@L["Analytics preferences"]">
+        @if (_showChoices)
+        {
+            <p>@L["Optional Microsoft Clarity analytics uses cookies, heatmaps and session recordings to help improve LearnStack. No analytics loads unless you accept. Advertising consent stays off."]</p>
+            <a href="/privacy">@L["PrivacyPolicy"]</a>
+            <div class="analytics-actions">
+                <button type="button" @onclick="() => ChooseAsync(false)">@L["Reject analytics"]</button>
+                <button type="button" @onclick="() => ChooseAsync(true)">@L["Accept analytics"]</button>
+            </div>
+        }
+        else
+        {
+            <button type="button" @onclick="() => _showChoices = true">@L["Analytics preferences"]</button>
+        }
+        @if (_error)
+        {
+            <p role="alert">@L["Analytics preferences could not be saved. Analytics remains off unless previously accepted. Please reload and try again."]</p>
+        }
+    </aside>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public string ProjectId { get; set; } = "";
+
+    private AnalyticsConsentInterop? _interop;
+    private bool _ready;
+    private bool _showChoices;
+    private bool _error;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+            return;
+
+        _interop = new AnalyticsConsentInterop(JS);
+        try
+        {
+            _showChoices = string.IsNullOrEmpty(await _interop.InitializeAsync(ProjectId));
+        }
+        catch (JSException exception)
+        {
+            Logger.LogWarning(exception, "Could not initialize analytics consent.");
+            _showChoices = _error = true;
+        }
+        _ready = true;
+        StateHasChanged();
+    }
+
+    private async Task ChooseAsync(bool accepted)
+    {
+        if (_interop is null)
+            return;
+
+        try
+        {
+            await _interop.SetConsentAsync(accepted);
+            _showChoices = _error = false;
+        }
+        catch (JSException exception)
+        {
+            Logger.LogWarning(exception, "Could not save analytics consent.");
+            _error = true;
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_interop is not null)
+            await _interop.DisposeAsync();
+    }
+}

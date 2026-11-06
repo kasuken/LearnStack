@@ -128,6 +128,16 @@ $env:ConnectionStrings__DefaultConnection="Server=tcp:your-server.database.windo
 - Request localization uses cookie selection first, then the `Accept-Language` header.
 - Open Graph metadata fetching uses a dedicated HTTP client and includes YouTube oEmbed support.
 
+### Optional analytics
+
+Microsoft Clarity project `z9ncpem9a9` is enabled only in Production, and its tag is loaded only after explicit browser consent. Set `Clarity__ProjectId` to your own project ID when self-hosting, or to an empty string to disable the integration. Development and staging do not load Clarity or show its consent UI.
+
+Enable **Consent Mode** and **Strict masking** in the Clarity dashboard before deploying. The integration grants only `analytics_Storage`; `ad_Storage` is always denied. Page text is masked at the document body, and no account identifiers are passed to Clarity. Review dashboard URL masking/exclusions for sensitive URLs and configure retention and access appropriately. Clarity remains a third-party service, not cookieless first-party analytics.
+
+The browser stores accepted/rejected preferences for 180 days. **Analytics preferences** is available on every page to change the choice. Withdrawal clears first-party Clarity cookies and reloads the document to stop all collection, including cookieless tracking. The public `/privacy` page describes this processing and links to Microsoft's privacy and retention information. Operators must review that disclosure for their deployment and establish the required processor agreements before enabling collection.
+
+Run the consent regression tests with Node.js: `node --test LearnStack.Core.Tests\AnalyticsConsent.test.mjs`.
+
 ## Deployment
 
 The hosted service runs on Azure App Service. Merging to `main` only runs CI; production changes when a release is cut with the [Release workflow](.github/workflows/release.yml):

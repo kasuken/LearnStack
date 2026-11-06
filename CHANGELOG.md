@@ -4,6 +4,18 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.6.0] - 2026-11-07
+
+### Added
+- **Optional privacy-conscious analytics** - Microsoft Clarity loads in Production only after explicit opt-in consent. Advertising consent remains denied, page text is masked, and browser preferences expire after 180 days.
+- **Analytics preferences** - Accept or reject analytics on any page, and withdraw consent later to clear first-party Clarity cookies and reload the page to stop collection.
+- **Privacy disclosure** - A public `/privacy` page linked from the marketing footer explains application data, optional analytics, and user choices.
+
+### Changed
+- **Self-hosted analytics configuration** - Set `Clarity:ProjectId` to your own project or leave it empty to disable analytics. Enable Consent Mode and Strict masking in your Clarity dashboard before deployment.
+
+---
+
 ## [1.5.0] - 2026-10-21
 
 ### Added

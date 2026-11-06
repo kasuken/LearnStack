@@ -1,5 +1,7 @@
 @using Microsoft.AspNetCore.Components.Web
 @using System.Globalization
+@inject IWebHostEnvironment Environment
+@inject IConfiguration Configuration
 <!DOCTYPE html>
 <html lang="@CultureInfo.CurrentCulture.TwoLetterISOLanguageName">
 
@@ -29,8 +31,12 @@
     <HeadOutlet @rendermode="@RenderModeForPage"/>
 </head>
 
-<body>
+<body data-clarity-mask="true">
 <Routes @rendermode="@RenderModeForPage"/>
+@if (Environment.IsProduction() && !string.IsNullOrWhiteSpace(Configuration["Clarity:ProjectId"]))
+{
+    <AnalyticsConsent ProjectId="@(Configuration["Clarity:ProjectId"]!)" @rendermode="InteractiveServer"/>
+}
 <ReconnectModal/>
 <script src="@Assets["_framework/blazor.web.js"]"></script>
 <script src="@Assets["Components/Account/Shared/PasskeySubmit.razor.js"]" type="module"></script>
@@ -67,4 +73,3 @@
         }
     }
 }
-

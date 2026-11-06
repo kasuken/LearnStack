@@ -1,0 +1,18 @@
+.privacy-policy {
+    max-width: 52rem;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+.privacy-policy h2 {
+    margin: 2rem 0 0.75rem;
+}
+
+.privacy-policy p {
+    margin-bottom: 1rem;
+}
+
+.privacy-policy a {
+    color: #4338ca;
+    text-decoration: underline;
+}

@@ -1,0 +1,44 @@
+.analytics-consent {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 1400;
+    max-width: min(28rem, calc(100vw - 2rem));
+    padding: 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.5rem;
+    background: #fff;
+    color: #0f172a;
+    box-shadow: 0 4px 16px #0002;
+    font-size: 0.875rem;
+}
+
+.analytics-consent p {
+    margin: 0 0 0.75rem;
+}
+
+.analytics-consent a {
+    color: #4338ca;
+    text-decoration: underline;
+}
+
+.analytics-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+}
+
+.analytics-consent button {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #475569;
+    border-radius: 0.25rem;
+    background: #fff;
+    color: #0f172a;
+    cursor: pointer;
+}
+
+.analytics-consent button:focus-visible {
+    outline: 3px solid #4338ca;
+    outline-offset: 2px;
+}

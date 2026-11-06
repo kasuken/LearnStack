@@ -36,3 +36,6 @@ jobs:
 
       - name: Test
         run: dotnet test ./LearnStack.Core.Tests/LearnStack.Core.Tests.csproj --configuration Release --no-build --verbosity normal
+
+      - name: Test analytics consent
+        run: node --test ./LearnStack.Core.Tests/AnalyticsConsent.test.mjs
