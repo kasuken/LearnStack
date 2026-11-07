@@ -10,6 +10,7 @@ using Microsoft.Extensions.Primitives;
 using LearnStack.Components.Account.Pages;
 using LearnStack.Components.Account.Pages.Manage;
 using LearnStack.Data;
+using LearnStack.Services;
 
 namespace Microsoft.AspNetCore.Routing;
 
@@ -118,6 +119,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
         manageGroup.MapPost("/DownloadPersonalData", async (
             HttpContext context,
             [FromServices] UserManager<ApplicationUser> userManager,
+            [FromServices] IPersonalDataExportService exportService,
             [FromServices] AuthenticationStateProvider authenticationStateProvider) =>
         {
             var user = await userManager.GetUserAsync(context.User);
@@ -130,7 +132,7 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
             downloadLogger.LogInformation("User with ID '{UserId}' asked for their personal data.", userId);
 
             // Only include personal data for download
-            var personalData = new Dictionary<string, string>();
+            var personalData = new Dictionary<string, object?>();
             var personalDataProps = typeof(ApplicationUser).GetProperties()
                 .Where(prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
@@ -144,8 +146,19 @@ internal static class IdentityComponentsEndpointRouteBuilderExtensions
                 personalData.Add($"{l.LoginProvider} external login provider key", l.ProviderKey);
             }
 
-            personalData.Add("Authenticator Key", (await userManager.GetAuthenticatorKeyAsync(user))!);
-            var fileBytes = JsonSerializer.SerializeToUtf8Bytes(personalData);
+            personalData.Add("Authenticator Key", await userManager.GetAuthenticatorKeyAsync(user));
+
+            // Everything the user owns: resources, notes, ideas, collections, friendships, plan.
+            var userContent = await exportService.ExportAsync(userId, context.RequestAborted);
+            if (userContent is not null)
+            {
+                foreach (var (section, value) in userContent)
+                {
+                    personalData.Add(section, value);
+                }
+            }
+
+            var fileBytes = JsonSerializer.SerializeToUtf8Bytes(personalData, new JsonSerializerOptions { WriteIndented = true });
 
             context.Response.Headers.TryAdd("Content-Disposition", "attachment; filename=PersonalData.json");
             return TypedResults.File(fileBytes, contentType: "application/json", fileDownloadName: "PersonalData.json");
