@@ -4,6 +4,14 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.6.1] - 2026-11-07
+
+### Fixed
+- **Unobtrusive analytics consent** - The consent banner now disappears after accepting or rejecting analytics, without leaving a floating preferences button over the app.
+- **Consent remains accessible** - Reopen analytics preferences from the account menu or privacy page to change or withdraw consent.
+
+---
+
 ## [1.6.0] - 2026-11-07
 
 ### Added

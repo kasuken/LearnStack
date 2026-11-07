@@ -1,8 +1,10 @@
 @implements IAsyncDisposable
 @inject IJSRuntime JS
 @inject ILogger<AnalyticsConsent> Logger
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.WebUtilities
 
-@if (_ready)
+@if (_ready && (_showChoices || _error))
 {
     <aside class="analytics-consent" aria-label="@L["Analytics preferences"]">
         @if (_showChoices)
@@ -13,10 +15,6 @@
                 <button type="button" @onclick="() => ChooseAsync(false)">@L["Reject analytics"]</button>
                 <button type="button" @onclick="() => ChooseAsync(true)">@L["Accept analytics"]</button>
             </div>
-        }
-        else
-        {
-            <button type="button" @onclick="() => _showChoices = true">@L["Analytics preferences"]</button>
         }
         @if (_error)
         {
@@ -34,6 +32,33 @@
     private bool _showChoices;
     private bool _error;
 
+    private bool PreferencesRequested => QueryHelpers.ParseQuery(new Uri(Navigation.Uri).Query)
+        .TryGetValue("analytics", out var value) && value == "preferences";
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private async void OnLocationChanged(object? sender, LocationChangedEventArgs args)
+    {
+        if (!PreferencesRequested)
+            return;
+
+        try
+        {
+            await InvokeAsync(() =>
+            {
+                _showChoices = true;
+                StateHasChanged();
+            });
+        }
+        catch (Exception exception)
+        {
+            await DispatchExceptionAsync(exception);
+        }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
@@ -42,7 +67,7 @@
         _interop = new AnalyticsConsentInterop(JS);
         try
         {
-            _showChoices = string.IsNullOrEmpty(await _interop.InitializeAsync(ProjectId));
+            _showChoices = string.IsNullOrEmpty(await _interop.InitializeAsync(ProjectId)) || PreferencesRequested;
         }
         catch (JSException exception)
         {
@@ -72,6 +97,7 @@
 
     public async ValueTask DisposeAsync()
     {
+        Navigation.LocationChanged -= OnLocationChanged;
         if (_interop is not null)
             await _interop.DisposeAsync();
     }
