@@ -1341,6 +1341,9 @@
   <data name="PleaseEnterUrlFirst" xml:space="preserve">
     <value>Please enter a URL first</value>
   </data>
+  <data name="TooManyMetadataFetches" xml:space="preserve">
+    <value>Too many metadata requests in progress. Please wait a moment and try again.</value>
+  </data>
   <data name="CouldNotFetchMetadata" xml:space="preserve">
     <value>Could not fetch metadata from URL</value>
   </data>

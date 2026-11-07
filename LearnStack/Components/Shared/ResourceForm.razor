@@ -2,6 +2,7 @@
 @using LearnStack.Services
 @inject ILearningResourceService ResourceService
 @inject IOpenGraphService OpenGraphService
+@inject IOpenGraphFetchThrottle FetchThrottle
 @inject IDialogService DialogService
 @inject ISnackbar Snackbar
 
@@ -184,6 +185,13 @@
         if (string.IsNullOrWhiteSpace(model.Url))
         {
             Snackbar.Add(L["PleaseEnterUrlFirst"].Value, Severity.Warning);
+            return;
+        }
+
+        using var fetchLease = FetchThrottle.TryAcquire(string.IsNullOrEmpty(UserId) ? "anonymous" : UserId);
+        if (fetchLease is null)
+        {
+            Snackbar.Add(L["TooManyMetadataFetches"].Value, Severity.Warning);
             return;
         }
 

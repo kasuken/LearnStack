@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using LearnStack;
 using LearnStack.Components;
 using LearnStack.Components.Account;
 using LearnStack.Data;
@@ -31,6 +32,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddLearnStackLocalization();
+builder.Services.AddSingleton<SiteUrls>();
+builder.Services.AddLearnStackRateLimiting();
 builder.Services.AddControllers();
 
 builder.Services.AddMudServices();
@@ -153,11 +156,13 @@ app.MapHealthChecks("/health/ready", new HealthCheckOptions
 app.UseRequestLocalization();
 
 app.UseRouting();
+app.UseRateLimiter();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseAntiforgery();
 
 app.MapControllers();
+app.MapSeoEndpoints();
 app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();

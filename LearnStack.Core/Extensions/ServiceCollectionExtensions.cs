@@ -32,6 +32,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISharedResourceGroupService, SharedResourceGroupService>();
         services.AddScoped<IFriendshipService, FriendshipService>();
         services.AddScoped<IAccountDeletionService, AccountDeletionService>();
+        services.AddScoped<IPersonalDataExportService, PersonalDataExportService>();
+        services.AddSingleton<IOpenGraphFetchThrottle>(new OpenGraphFetchThrottle());
         services.AddHttpClient<IOpenGraphService, OpenGraphService>(client =>
         {
             client.Timeout = TimeSpan.FromSeconds(30);
