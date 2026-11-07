@@ -110,6 +110,8 @@ dotnet build LearnStack.sln
 ## Configuration
 
 The main application settings live in `LearnStack/appsettings.json` and `LearnStack/appsettings.Development.json`.
+Production defaults accept requests only for `learnstack.cloud`; when self-hosting, set `AllowedHosts`
+to your public hostname(s).
 
 ### Required settings
 

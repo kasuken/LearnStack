@@ -4,6 +4,15 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.6.2] - 2026-11-07
+
+### Security
+- Restrict production Host headers to `learnstack.cloud` and retain localhost hosts for development.
+- Honor Azure App Service forwarded client IP and scheme headers before HTTPS and HSTS middleware.
+- Add report-only Content Security Policy and standard browser security headers.
+
+---
+
 ## [1.6.1] - 2026-11-07
 
 ### Fixed

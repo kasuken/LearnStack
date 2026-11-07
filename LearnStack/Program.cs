@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using LearnStack.Components;
@@ -10,6 +11,20 @@ using LearnStack.Extensions;
 using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var isAzureAppService = !string.IsNullOrWhiteSpace(builder.Configuration["WEBSITE_INSTANCE_ID"]);
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.ForwardLimit = 1;
+
+    if (isAzureAppService)
+    {
+        // App Service routes public traffic through its platform proxy before it reaches the worker.
+        options.KnownIPNetworks.Clear();
+        options.KnownProxies.Clear();
+    }
+});
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -92,6 +107,27 @@ using (var scope = app.Services.CreateScope())
 }
 
 // Configure the HTTP request pipeline.
+app.UseForwardedHeaders();
+
+app.Use(async (context, next) =>
+{
+    var headers = context.Response.Headers;
+    headers["Content-Security-Policy-Report-Only"] =
+        "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; " +
+        "script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' https://fonts.gstatic.com data:; " +
+        "img-src 'self' data: blob:; " +
+        "connect-src 'self' wss: https://*.clarity.ms; " +
+        "worker-src 'self' blob:";
+    headers["X-Content-Type-Options"] = "nosniff";
+    headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    headers["X-Frame-Options"] = "DENY";
+    headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
+
+    await next();
+});
+
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
