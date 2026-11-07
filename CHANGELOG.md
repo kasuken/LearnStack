@@ -4,6 +4,18 @@ All notable changes to LearnStack will be documented in this file.
 
 ---
 
+## [1.7.0] - 2026-11-07
+
+### Added
+- Rate limiting: per-IP throttling (HTTP 429 with `Retry-After`) of account form posts and of shared-collection and friend-invitation links, plus per-user and global caps on concurrent link metadata fetches.
+- Password sign-in now locks an account out after repeated failures.
+
+### Changed
+- The personal data download now includes everything you saved: resources and notes, content ideas, shared collections, friendships, invitations and plan.
+- Canonical, social-share and structured-data URLs, `robots.txt` and `sitemap.xml` use the configured site domain (`Site:BaseUrl`, default `https://learnstack.cloud`) instead of `learnstack.app`.
+
+---
+
 ## [1.6.2] - 2026-11-07
 
 ### Security
