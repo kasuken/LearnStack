@@ -1,6 +1,7 @@
 @page "/"
 @layout MarketingLayout
 @inject NavigationManager NavigationManager
+@inject SiteUrls Site
 
 @* SEO Meta Tags - These will be used for unauthenticated visitors *@
 <PageTitle>LearnStack - Organize Your Learning Journey</PageTitle>
@@ -16,10 +17,10 @@
     
     @* Open Graph / Facebook *@
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://learnstack.app/" />
+    <meta property="og:url" content="@Site.Url("/")" />
     <meta property="og:title" content="LearnStack - Organize Your Learning Journey" />
     <meta property="og:description" content="Track learning resources from the internet, take notes, and create content from your learning materials. Free to get started." />
-    <meta property="og:image" content="https://learnstack.app/images/og-image.png" />
+    <meta property="og:image" content="@Site.Url("images/og-image.png")" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="LearnStack - Organize Your Learning Journey" />
@@ -30,14 +31,14 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@@learnstack" />
     <meta name="twitter:creator" content="@@learnstack" />
-    <meta name="twitter:url" content="https://learnstack.app/" />
+    <meta name="twitter:url" content="@Site.Url("/")" />
     <meta name="twitter:title" content="LearnStack - Organize Your Learning Journey" />
     <meta name="twitter:description" content="Track learning resources from the internet, take notes, and create content from your learning materials." />
-    <meta name="twitter:image" content="https://learnstack.app/images/twitter-card.png" />
+    <meta name="twitter:image" content="@Site.Url("images/twitter-card.png")" />
     <meta name="twitter:image:alt" content="LearnStack - Organize Your Learning Journey" />
     
     @* Canonical URL *@
-    <link rel="canonical" href="https://learnstack.app/" />
+    <link rel="canonical" href="@Site.Url("/")" />
     
     @* Structured Data - Organization *@
     <script type="application/ld+json">
@@ -46,7 +47,7 @@
         "@@type": "WebApplication",
         "name": "LearnStack",
         "description": "A learning content management application for organizing and tracking learning resources from across the internet",
-        "url": "https://learnstack.app",
+        "url": "@Site.BaseUrl",
         "applicationCategory": "EducationalApplication",
         "operatingSystem": "Web Browser",
         "browserRequirements": "Requires JavaScript. Requires HTML5.",
@@ -67,7 +68,7 @@
             "Multiple content type support (blog posts, videos, podcasts, courses)",
             "Tag-based filtering and search"
         ],
-        "screenshot": "https://learnstack.app/images/screenshot.png"
+        "screenshot": "@Site.Url("images/screenshot.png")"
     }
     </script>
     
