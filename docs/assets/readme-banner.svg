@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="480" viewBox="0 0 1200 480" fill="none" role="img" aria-labelledby="title description">
+  <title id="title">LearnStack — Keep the signal. Build what's next.</title>
+  <desc id="description">A luminous teal stack of learning resources rises into an idea and branches into a connected collection. LearnStack organizes learning, content ideas, and shared knowledge.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1200" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0f172a"/>
+      <stop offset="1" stop-color="#101e2c"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="735" y1="174" x2="1017" y2="310" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#78e3dd"/>
+      <stop offset="1" stop-color="#39a9b1"/>
+    </linearGradient>
+    <linearGradient id="slate" x1="735" y1="262" x2="1017" y2="398" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#405a6b"/>
+      <stop offset="1" stop-color="#233a4b"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="0" cy="0" r="1" gradientTransform="translate(881 266) scale(276 215)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#39a9b1" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#39a9b1" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="1" y="1" width="1198" height="478" rx="24" fill="url(#background)" stroke="#405365" stroke-width="2"/>
+  <rect x="622" y="38" width="538" height="404" fill="url(#halo)"/>
+  <path d="M653 421 1154 183M678 448 1179 210M689 78 1150 301" stroke="#b4d5dd" stroke-opacity=".07"/>
+  <path d="M48 46h36M48 46v36M1152 398v36h-36" stroke="#78e3dd" stroke-opacity=".45" stroke-width="2"/>
+
+  <g transform="translate(66 79)">
+    <path d="m0 16 32-13 32 13-32 14Z" fill="#40b4b8"/>
+    <path d="m0 32 32 14 32-14v12L32 58 0 44Z" fill="#587485"/>
+    <path d="m0 51 32 14 32-14v12L32 77 0 63Z" fill="#405a6b"/>
+  </g>
+  <text x="150" y="137" fill="#f8fafc" font-family="'Trebuchet MS', Verdana, sans-serif" font-size="72" font-weight="700" letter-spacing="-3">LearnStack</text>
+  <text x="66" y="237" fill="#f8fafc" font-family="'Trebuchet MS', Verdana, sans-serif" font-size="48" font-weight="700" letter-spacing="-1.5">Keep the signal.</text>
+  <text x="66" y="294" fill="#78e3dd" font-family="'Trebuchet MS', Verdana, sans-serif" font-size="48" font-weight="700" letter-spacing="-1.5">Build what's next.</text>
+  <path d="M66 333h52" stroke="#40b4b8" stroke-width="4"/>
+  <text x="66" y="390" fill="#bdced9" font-family="'Trebuchet MS', Verdana, sans-serif" font-size="36">Save. Create. Share.</text>
+
+  <!-- The three planes echo the existing LearnStack mark. -->
+  <path d="m732 338 145-68 145 68-145 68Z" fill="url(#slate)" stroke="#587485" stroke-width="2"/>
+  <path d="m732 338 145 68 145-68v18l-145 68-145-68Z" fill="#203748" stroke="#405a6b" stroke-width="2" stroke-linejoin="round"/>
+  <path d="m732 286 145-68 145 68-145 68Z" fill="#343d77" stroke="#818cf8" stroke-width="2"/>
+  <path d="m732 286 145 68 145-68v18l-145 68-145-68Z" fill="#252e5a" stroke="#656eb0" stroke-width="2" stroke-linejoin="round"/>
+  <path d="m732 234 145-68 145 68-145 68Z" fill="url(#teal)" stroke="#9bece6" stroke-width="2"/>
+  <path d="m732 234 145 68 145-68v18l-145 68-145-68Z" fill="#268b98" stroke="#63c8cb" stroke-width="2" stroke-linejoin="round"/>
+
+  <!-- Abstract resource glyphs, not a fabricated product interface. -->
+  <g stroke="#123e4b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m810 232 28-13 31 15-28 13Z"/>
+    <path d="m818 232 19 9m-8-14 19 9"/>
+    <path d="m887 209 28 3-15 19Z" fill="#123e4b" stroke="none"/>
+    <path d="m913 257 24-11m-15 20 24-11m-33-7 24-11"/>
+  </g>
+  <path d="M877 166v-30q0-14 14-14h164" stroke="#78e3dd" stroke-width="3" stroke-linecap="round"/>
+  <path d="M1010 122q22 0 22 22v62" stroke="#78e3dd" stroke-width="3" stroke-linecap="round"/>
+  <path d="M1029 267h40q14 0 14 14v52" stroke="#818cf8" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="877" cy="122" r="28" fill="#152f3c" stroke="#78e3dd" stroke-width="2"/>
+  <path d="m877 105 4.5 12.5L894 122l-12.5 4.5L877 139l-4.5-12.5L860 122l12.5-4.5Z" fill="#9bece6"/>
+  <circle cx="1074" cy="122" r="26" fill="#183643" stroke="#78e3dd" stroke-width="2"/>
+  <circle cx="1032" cy="232" r="26" fill="#183643" stroke="#78e3dd" stroke-width="2"/>
+  <g stroke="#9bece6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m1063 117 11-5 11 5-11 5Zm0 10 11 5 11-5"/>
+    <path d="m1021 227 11-5 11 5-11 5Zm0 10 11 5 11-5"/>
+  </g>
+  <circle cx="1083" cy="359" r="26" fill="#252e5a" stroke="#818cf8" stroke-width="2"/>
+  <path d="m1072 354 11-5 11 5-11 5Zm0 10 11 5 11-5" stroke="#bdc4ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="877" cy="440" r="3" fill="#78e3dd"/>
+  <path d="M893 440h34m-100 0h34" stroke="#587485" stroke-width="2"/>
+</svg>
