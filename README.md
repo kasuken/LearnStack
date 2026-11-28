@@ -1,6 +1,8 @@
 ﻿<div align="center">
 
-<img src="./LearnStack/wwwroot/img/logoRect.png" alt="LearnStack logo" width="400" />
+<img src="./docs/assets/readme-banner.svg" alt="LearnStack: Keep the signal. Build what's next. A stack of learning resources becomes ideas and shared knowledge." width="1200" />
+
+<h1>LearnStack</h1>
 
 Blazor Server application for organizing learning resources, turning them into content ideas, and sharing curated knowledge with other learners.
 
